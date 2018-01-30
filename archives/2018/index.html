@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>archiv: 2018 | elbadaernU&#39;s IT related personal station</title>
+  <title>archivos: 2018 | elbadaernU&#39;s IT related personal station</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   
@@ -99,7 +99,7 @@
                 
                   <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
+                  <li> <a class="main-nav-link" href="/categories">Categorías</a> </li>
                 
                   <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
                 
@@ -178,14 +178,14 @@
   <div class="archive-article-inner">
     <header class="archive-article-header">
       
-	<a href="/2018/01/29/Start-test/" class="archive-article-date">
-	  <time datetime="2018-01-29T06:20:21.000Z" itemprop="datePublished">2018-01-29</time>
+	<a href="/2018/01/25/hello-world/" class="archive-article-date">
+	  <time datetime="2018-01-25T10:06:03.258Z" itemprop="datePublished">2018-01-25</time>
 	</a>
 
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2018/01/29/Start-test/">Start test</a>
+      <a class="archive-article-title" href="/2018/01/25/hello-world/">Hello World</a>
     </h1>
   
 
@@ -199,14 +199,14 @@
   <div class="archive-article-inner">
     <header class="archive-article-header">
       
-	<a href="/2018/01/25/hello-world/" class="archive-article-date">
-	  <time datetime="2018-01-25T10:06:03.258Z" itemprop="datePublished">2018-01-25</time>
+	<a href="/2018/01/25/Start-test/" class="archive-article-date">
+	  <time datetime="2018-01-25T06:20:21.000Z" itemprop="datePublished">2018-01-25</time>
 	</a>
 
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2018/01/25/hello-world/">Hello World</a>
+      <a class="archive-article-title" href="/2018/01/25/Start-test/">Start test</a>
     </h1>
   
 
@@ -298,7 +298,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archivos</h3>
 
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">2</span></li></ul>
@@ -309,16 +309,16 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Posts recientes</h3>
     <div class="widget">
       <ul>
         
           <li>
-            <a href="/2018/01/29/Start-test/">Start test</a>
+            <a href="/2018/01/25/hello-world/">Hello World</a>
           </li>
         
           <li>
-            <a href="/2018/01/25/hello-world/">Hello World</a>
+            <a href="/2018/01/25/Start-test/">Start test</a>
           </li>
         
       </ul>
@@ -335,7 +335,7 @@
 
   <div class="container">
       	<div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p> Construido por <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
 	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 elbadaernU&#39;s IT related personal station All Rights Reserved.</p>
 	      
 	      
@@ -365,7 +365,6 @@
       contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
     }
 </script>
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=419596411&auto=1&height=66"></iframe>
     </div>
     <!-- <nav id="mobile-nav">
   
@@ -508,4 +507,32 @@
   <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
   
 </body>
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    right: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/z16.model.json", 0.5);});
+})();
+</script>
+
 </html>
