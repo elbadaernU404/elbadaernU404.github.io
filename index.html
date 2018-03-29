@@ -258,6 +258,52 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-CTF-Tests-2"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/03/29/CTF-Tests-2/">CTF-Tests(2)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/29/CTF-Tests-2/" class="article-date">
+	  <time datetime="2018-03-29T13:34:58.000Z" itemprop="datePublished">2018-03-29</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>仍然是5道普通的CTF。</p>
+<h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p><img src="/2018/03/29/CTF-Tests-2/A.png" alt=""><br>页面会不断弹出”FLAG就在这里”、”来找找吧”这样的信息。在强行关闭弹窗后，审查元素，得到如下的编码，弄清后在网站[<a href="http://tool.chinaz.com/tools/urlencode.aspx" target="_blank" rel="noopener">http://tool.chinaz.com/tools/urlencode.aspx</a>] Unicode解码得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/B.png" alt=""></p>
+<h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><p><img src="/2018/03/29/CTF-Tests-2/C.png" alt=""><br>根据提示打开源代码，找到之后同样按照提示进行解码后便得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/D.png" alt=""><br><img src="/2018/03/29/CTF-Tests-2/E.png" alt=""></p>
+<h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><p><img src="/2018/03/29/CTF-Tests-2/F.png" alt=""><br>了解到同样是一个编码后，根据提示JSFuck(呃…)解码，会得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/G.png" alt=""><br><img src="/2018/03/29/CTF-Tests-2/H.png" alt=""></p>
+<h2 id="4"><a href="#4" class="headerlink" title="4."></a>4.</h2><p><img src="/2018/03/29/CTF-Tests-2/I.png" alt=""><br><img src="/2018/03/29/CTF-Tests-2/J.png" alt=""><br>题目叫头等舱，而打开后提示什么都没有，审查元素以及查看源后无果，用Burpsuite抓包，得到Flag。<br><img src="/2018/03/29/CTF-Tests-2/K.png" alt=""></p>
+<h2 id="5"><a href="#5" class="headerlink" title="5."></a>5.</h2><p><img src="/2018/03/29/CTF-Tests-2/L.png" alt=""><br>只有这些内容，尝试从语法入手后添加链接，回车后会得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/M.png" alt=""><br><img src="/2018/03/29/CTF-Tests-2/N.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-CTF-Tests"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
