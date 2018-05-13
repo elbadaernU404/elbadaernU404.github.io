@@ -283,7 +283,8 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <script src="\assets\js\APlayer.min.js"> </script><h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p><img src="/2018/05/07/ISCC2018的部分WP/1.png" alt=""><br>要求输入比服务器上大的数字，随便输入几个9，发现最多只能输入三位数，直接F12找到maxlength=3将3修改为4再随意填入一个四位数即可。<br><img src="/2018/05/07/ISCC2018的部分WP/2.png" alt=""></p>
+        <script src="\assets\js\APlayer.min.js"> </script><p>（持续更新…）</p>
+<h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p><img src="/2018/05/07/ISCC2018的部分WP/1.png" alt=""><br>要求输入比服务器上大的数字，随便输入几个9，发现最多只能输入三位数，直接F12找到maxlength=3将3修改为4再随意填入一个四位数即可。<br><img src="/2018/05/07/ISCC2018的部分WP/2.png" alt=""></p>
 <h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><p>打开地址后是一份PHP代码：<br><img src="/2018/05/07/ISCC2018的部分WP/3.png" alt=""><br>由代码读出需要使strcmp函数值为0，应该是要构造出长度相等的数组。构造payload，在连接后添入/?password[]=a，返回flag。<br><img src="/2018/05/07/ISCC2018的部分WP/4.png" alt=""></p>
 <h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><p><img src="/2018/05/07/ISCC2018的部分WP/5.png" alt=""><br>用Burpsuite抓包，GO一次后得到提示在Request添加X-Forwarded-For:127.0.0.1即可。<br><img src="/2018/05/07/ISCC2018的部分WP/6.png" alt=""></p>
 <h2 id="4"><a href="#4" class="headerlink" title="4."></a>4.</h2><p><img src="/2018/05/07/ISCC2018的部分WP/7.png" alt=""><br>百度了一下XSS：又称CSS (Cross Site Script)，跨站脚本攻击。<br><img src="/2018/05/07/ISCC2018的部分WP/extra.png" alt=""><br>所以链接后的那一部分应该是被植入了脚本并隐藏进链接中。<br><img src="/2018/05/07/ISCC2018的部分WP/url.png" alt=""><br>解码后根据+v+了解到是utf-7编码，解码后得到key的内容，填入得flag。<br><img src="/2018/05/07/ISCC2018的部分WP/8.png" alt=""><br><img src="/2018/05/07/ISCC2018的部分WP/9.png" alt=""></p>
