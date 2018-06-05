@@ -17,7 +17,11 @@
 <meta property="og:description" content="（持续更新ing…） Day1.所谓实训的大目标只有一个俄罗斯方块的设计，工具为Codeblocks。实际上挺无聊，上午上机的环境之前都有配置过，简单调试了下，坑爹的是不知情的情况下安装了什么伽卡他卡我卡大家卡的流氓学生端课堂工具（已灭口，下图1附加方法）。下午随进度写了几行代码，仅仅调整了光标以及颜色等的设置，然后就（结束了？？）emmmmm，GG，懵逼中水掉一天，还是顺带学些其他的玩意吧XD">
 <meta property="og:image" content="http://yoursite.com/2018/06/04/2018年上实训记录/Day1B.png">
 <meta property="og:image" content="http://yoursite.com/2018/06/04/2018年上实训记录/Day1A.png">
-<meta property="og:updated_time" content="2018-06-05T01:59:38.736Z">
+<meta property="og:image" content="http://yoursite.com/2018/06/04/2018年上实训记录/Day2A.png">
+<meta property="og:image" content="http://yoursite.com/2018/06/04/2018年上实训记录/Day2B.png">
+<meta property="og:image" content="http://yoursite.com/2018/06/04/2018年上实训记录/Day2C.png">
+<meta property="og:image" content="http://yoursite.com/2018/06/04/2018年上实训记录/Day2D.png">
+<meta property="og:updated_time" content="2018-06-05T09:00:23.066Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2018年上实训记录">
 <meta name="twitter:description" content="（持续更新ing…） Day1.所谓实训的大目标只有一个俄罗斯方块的设计，工具为Codeblocks。实际上挺无聊，上午上机的环境之前都有配置过，简单调试了下，坑爹的是不知情的情况下安装了什么伽卡他卡我卡大家卡的流氓学生端课堂工具（已灭口，下图1附加方法）。下午随进度写了几行代码，仅仅调整了光标以及颜色等的设置，然后就（结束了？？）emmmmm，GG，懵逼中水掉一天，还是顺带学些其他的玩意吧XD">
@@ -98,11 +102,11 @@
             <div class="navbar-collapse collapse">
               <ul class="hnav navbar-nav">
                 
-                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
                 
                   <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
                 
@@ -118,7 +122,7 @@
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
             <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="ins-section-wrapper">
@@ -130,11 +134,11 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
+            POSTS: 'Beiträge',
+            PAGES: 'Seiten',
+            CATEGORIES: 'Kategorien',
             TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
+            UNTITLED: '(Unbenannt)',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
@@ -176,7 +180,7 @@
     <div class="article-meta">
       
 	<a href="/2018/06/04/2018年上实训记录/" class="article-date">
-	  <time datetime="2018-06-04T01:03:07.000Z" itemprop="datePublished">2018-06-04</time>
+	  <time datetime="2018-06-04T08:59:38.000Z" itemprop="datePublished">2018-06-04</time>
 	</a>
 
       
@@ -209,6 +213,7 @@
 <p>int main()<br>{<br>    Output=GetStdHandle(STD_OUTPUT_HANDLE);<br>    printPrompting();<br>}</p>
 <p>void gotoxyWithFullwidth(short x,short y)//进行全角定位<br>{<br>    static COORD cd;<br>    cd.X=(x*2);<br>    cd.Y=y;<br>    SetConsoleCursorPosition(Output,cd);<br>}</p>
 <p>void printPrompting()//显示提示信息<br>{<br>    SetConsoleTextAttribute(Output,11);<br>    gotoxyWithFullwidth(28,12);<br>    printf(“控制：”);<br>}</p>
+<p>收录下午的代码（主要是利用循环增添提示信息等）：<br><img src="/2018/06/04/2018年上实训记录/Day2A.png" alt=""><br><img src="/2018/06/04/2018年上实训记录/Day2B.png" alt=""><br><img src="/2018/06/04/2018年上实训记录/Day2C.png" alt=""><br><img src="/2018/06/04/2018年上实训记录/Day2D.png" alt=""></p>
 
       
     </div>
@@ -249,7 +254,7 @@
   
   
     <a href="/2018/05/07/ISCC2018的部分WP/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">ISCC2018的部分WP</div>
     </a>
   
@@ -262,7 +267,7 @@
 
   <aside id="toc-sidebar">
     <div id="toc" class="toc-article">
-    <strong class="toc-title">Contents</strong>
+    <strong class="toc-title">Inhalt</strong>
     
         <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Day1"><span class="nav-number">1.</span> <span class="nav-text">Day1.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Day2"><span class="nav-number">2.</span> <span class="nav-text">Day2.</span></a></li></ol>
     

@@ -258,6 +258,66 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-2018年上实训记录"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/06/04/2018年上实训记录/">2018年上实训记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/06/04/2018年上实训记录/" class="article-date">
+	  <time datetime="2018-06-04T08:59:38.000Z" itemprop="datePublished">2018-06-04</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>（持续更新ing…）</p>
+<h2 id="Day1"><a href="#Day1" class="headerlink" title="Day1."></a>Day1.</h2><p>所谓实训的大目标只有一个俄罗斯方块的设计，工具为Codeblocks。<br>实际上挺无聊，上午上机的环境之前都有配置过，简单调试了下，坑爹的是不知情的情况下安装了什么伽卡他卡我卡大家卡的流氓学生端课堂工具（已灭口，下图1附加方法）。下午随进度写了几行代码，仅仅调整了光标以及颜色等的设置，然后就（结束了？？）emmmmm，GG，懵逼中水掉一天，还是顺带学些其他的玩意吧XD。<br>不多吐槽，这玩意虽然常见，代码千千万万但到自己手里毕竟也是第一次做，踏实些。<br><img src="/2018/06/04/2018年上实训记录/Day1B.png" alt=""><br><img src="/2018/06/04/2018年上实训记录/Day1A.png" alt=""></p>
+<h2 id="Day2"><a href="#Day2" class="headerlink" title="Day2."></a>Day2.</h2><p>收录上午的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Headers/day1.h</span><br></pre></td></tr></table></figure></p>
+<p>#ifndef DAY1_H_INCLUDED</p>
+<p>#define DAY1_H_INCLUDED</p>
+<p>#include<stdio.h></stdio.h></p>
+<p>#include<stdlib.h></stdlib.h></p>
+<p>#include<string.h></string.h></p>
+<p>#include<time.h></time.h></p>
+<p>#include<conio.h></conio.h></p>
+<p>#include<windows.h></windows.h></p>
+<p>#include<stdbool.h></stdbool.h></p>
+<p>typedef struct TetriManager<br>{<br>    unsigned int pool[28];//游戏池<br>    int x;//当前方块横坐标，此处坐标为X轴左上角横坐标<br>    int y;//当前方块纵坐标，此处坐标为Y轴左上角纵坐标<br>    int type[3];//当前、下一个和下下一个方块的类型<br>    int orientation[3];//当前、下一个和下下一个方块的旋转状态<br>    unsigned score;//得分<br>    unsigned erasedCount[4];//消行数<br>    unsigned erasedTotle;//消失行总数<br>    unsigned tetrisTotal;//方块总数<br>    bool dead;//游戏是否结束<br>}Manager;</p>
+<p>typedef struct TetrisControl<br>{<br>    bool pause;//暂停<br>    bool clockwise;//旋转方向：顺时针为true<br>    int direction;//移动方向：0向左运动，1向右运动<br>    int color[28][16]<br>}Control;</p>
+<p>HANDLE Output;<br>void printPrompting();<br>void gotoxyWithFullwidth(short x,short y);</p>
+<p>#endif // DAY1_H_INCLUDED<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Sources/main.c</span><br></pre></td></tr></table></figure></p>
+<p>int main()<br>{<br>    Output=GetStdHandle(STD_OUTPUT_HANDLE);<br>    printPrompting();<br>}</p>
+<p>void gotoxyWithFullwidth(short x,short y)//进行全角定位<br>{<br>    static COORD cd;<br>    cd.X=(x*2);<br>    cd.Y=y;<br>    SetConsoleCursorPosition(Output,cd);<br>}</p>
+<p>void printPrompting()//显示提示信息<br>{<br>    SetConsoleTextAttribute(Output,11);<br>    gotoxyWithFullwidth(28,12);<br>    printf(“控制：”);<br>}</p>
+<p>收录下午的代码（主要是利用循环增添提示信息等）：<br><img src="/2018/06/04/2018年上实训记录/Day2A.png" alt=""><br><img src="/2018/06/04/2018年上实训记录/Day2B.png" alt=""><br><img src="/2018/06/04/2018年上实训记录/Day2C.png" alt=""><br><img src="/2018/06/04/2018年上实训记录/Day2D.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-ISCC2018的部分WP"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -673,48 +733,12 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-Start-test"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
+
+
+  <nav id="page-nav">
     
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/01/25/Start-test/">Start test</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/01/25/Start-test/" class="article-date">
-	  <time datetime="2018-01-25T06:20:21.000Z" itemprop="datePublished">2018-01-25</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>@2018.1<br>Okeydokey.Finished.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">weiter &raquo;</a>
+  </nav>
 
 </section>
         
