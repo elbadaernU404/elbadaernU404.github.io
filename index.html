@@ -234,11 +234,11 @@
   <div class="intro-navigate">
       <p class="navigater-list">
         
-          <a id="beautifont" class="main-nav-link" href="/">Home</a>
+          <a id="beautifont" class="main-nav-link" href="/">Startseite</a>
         
-          <a id="beautifont" class="main-nav-link" href="/archives">Archives</a>
+          <a id="beautifont" class="main-nav-link" href="/archives">Archive</a>
         
-          <a id="beautifont" class="main-nav-link" href="/categories">Categories</a>
+          <a id="beautifont" class="main-nav-link" href="/categories">Kategorien</a>
         
           <a id="beautifont" class="main-nav-link" href="/tags">Tags</a>
         
@@ -266,7 +266,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/07/17/海龟绘图法（Python）/">海龟绘图法（Python）</a>
+      <a class="article-title" href="/2018/07/15/海龟绘图法（Python）/">海龟绘图法（Python）</a>
     </h1>
   
 
@@ -274,8 +274,8 @@
     
     <div class="article-meta">
       
-	<a href="/2018/07/17/海龟绘图法（Python）/" class="article-date">
-	  <time datetime="2018-07-17T09:26:57.000Z" itemprop="datePublished">2018-07-17</time>
+	<a href="/2018/07/15/海龟绘图法（Python）/" class="article-date">
+	  <time datetime="2018-07-15T09:26:57.000Z" itemprop="datePublished">2018-07-15</time>
 	</a>
 
       
@@ -284,10 +284,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <script src="\assets\js\APlayer.min.js"> </script><p>这里是python中的一个绘图模块:海龟绘图(turtle)。此模块可以让操作者绘制图形，而非打印文本。<br>其他命令参考：<a href="https://docs.python.org/3/library/turtle.html" target="_blank" rel="noopener">https://docs.python.org/3/library/turtle.html</a><br>绘图方法:参考搜索turtle graphis</p>
-<h2 id="最简单的示例"><a href="#最简单的示例" class="headerlink" title="最简单的示例:"></a>最简单的示例:</h2><p>import turtle<br>t=turtle.Pen()<br>t.reset()<br>for x in range(100):<br>    t.forward(x)<br>    t.left(90)<br>效果图:<br><img src="/2018/07/17/海龟绘图法（Python）/A.png" alt=""><br>这里需要注意的是，存储文件时文件名称不能以turtle命名，否则解释器将会报错。</p>
-<h2 id="之后可以尝试结合随机函数和随机语句来绘制较为复杂的图形"><a href="#之后可以尝试结合随机函数和随机语句来绘制较为复杂的图形" class="headerlink" title="之后可以尝试结合随机函数和随机语句来绘制较为复杂的图形:"></a>之后可以尝试结合随机函数和随机语句来绘制较为复杂的图形:</h2><p>import turtle as t<br>from random import randint<br>t.TurtleScreen._RUNNING = True #使程序于IDLE中顺利运行<br>t.speed(0)  #速度最快<br>t.bgcolor(“black”) #背景色为黑色<br>t.setpos(-25, 25) #起始位置<br>t.colormode(255) #颜色模式为真彩色<br>i = 0 #赋哑值<br>for a in range(0,200): #绘制花瓣<br>    r = randint(0, 255)<br>    g = randint(0, 255)<br>    b = randint(0, 255)<br>    t.pencolor(r, g, b)<br>    t.forward(50 + i)<br>    t.right(85)<br>    t.forward(i)<br>    t.left(30)<br>    i += 1<br>t.left(90) #绘制花杆<br>t.pensize(width=10)<br>t.pencolor(“green”)<br>t.speed(10)<br>t.forward(250)<br>t.done()<br>效果图：<br><img src="/2018/07/17/海龟绘图法（Python）/B.png" alt=""></p>
+<h2 id="最简单的示例"><a href="#最简单的示例" class="headerlink" title="最简单的示例:"></a>最简单的示例:</h2><p>import turtle<br>t=turtle.Pen()<br>t.reset()<br>for x in range(100):<br>    t.forward(x)<br>    t.left(90)<br>效果图:<br><img src="/2018/07/15/海龟绘图法（Python）/A.png" alt=""><br>这里需要注意的是，存储文件时文件名称不能以turtle命名，否则解释器将会报错。</p>
+<h2 id="之后可以尝试结合随机函数和随机语句来绘制较为复杂的图形"><a href="#之后可以尝试结合随机函数和随机语句来绘制较为复杂的图形" class="headerlink" title="之后可以尝试结合随机函数和随机语句来绘制较为复杂的图形:"></a>之后可以尝试结合随机函数和随机语句来绘制较为复杂的图形:</h2><p>import turtle as t<br>from random import randint<br>t.TurtleScreen._RUNNING = True #使程序于IDLE中顺利运行<br>t.speed(0)  #速度最快<br>t.bgcolor(“black”) #背景色为黑色<br>t.setpos(-25, 25) #起始位置<br>t.colormode(255) #颜色模式为真彩色<br>i = 0 #赋哑值<br>for a in range(0,200): #绘制花瓣<br>    r = randint(0, 255)<br>    g = randint(0, 255)<br>    b = randint(0, 255)<br>    t.pencolor(r, g, b)<br>    t.forward(50 + i)<br>    t.right(85)<br>    t.forward(i)<br>    t.left(30)<br>    i += 1<br>t.left(90) #绘制花杆<br>t.pensize(width=10)<br>t.pencolor(“green”)<br>t.speed(10)<br>t.forward(250)<br>t.done()<br>效果图：<br><img src="/2018/07/15/海龟绘图法（Python）/B.png" alt=""></p>
 <h2 id="可以进一步来设计一个小游戏"><a href="#可以进一步来设计一个小游戏" class="headerlink" title="可以进一步来设计一个小游戏:"></a>可以进一步来设计一个小游戏:</h2><p>import turtle as t<br>from random import randint</p>
-<p>t.TurtleScreen._RUNNING = True<br>t.setup(width=750, height=350, startx=None, starty=None) #界面大小设置<br>t.hideturtle() #隐藏海龟画笔<br>t.color(“orange”)<br>t.penup()<br>t.setpos(0, 0)<br>myfont = (“隶书”, 16, “normal”) #设置字体<br>target = randint(1, 100)<br>t.write(“一个1到100之间的整数，猜猜看：”, font=myfont)<br>guess = 0<br>while target!=guess in range(0,100):<br>    guess = t.simpledialog.askinteger(“猜数游戏”, “请输入一个整数：”)<br>    if guess == target:<br>        answer = “Congratulations!”<br>        t.bgcolor(“black”)<br>    elif not guess:<br>        t.clear()<br>        t.write(“Give Up,Game Over.”, font=myfont)<br>        break<br>    elif guess &gt; target:<br>        answer = “你猜大了，再猜一次：”<br>    else:<br>        answer = “你猜小了，再猜一次：”<br>    t.clear()<br>    t.write(answer, font=myfont)<br>t.done()<br>初始界面:<br><img src="/2018/07/17/海龟绘图法（Python）/C.png" alt=""><br>胜利界面:<br><img src="/2018/07/17/海龟绘图法（Python）/D.png" alt=""><br>放弃界面:<br><img src="/2018/07/17/海龟绘图法（Python）/E.png" alt=""></p>
+<p>t.TurtleScreen._RUNNING = True<br>t.setup(width=750, height=350, startx=None, starty=None) #界面大小设置<br>t.hideturtle() #隐藏海龟画笔<br>t.color(“orange”)<br>t.penup()<br>t.setpos(0, 0)<br>myfont = (“隶书”, 16, “normal”) #设置字体<br>target = randint(1, 100)<br>t.write(“一个1到100之间的整数，猜猜看：”, font=myfont)<br>guess = 0<br>while target!=guess in range(0,100):<br>    guess = t.simpledialog.askinteger(“猜数游戏”, “请输入一个整数：”)<br>    if guess == target:<br>        answer = “Congratulations!”<br>        t.bgcolor(“black”)<br>    elif not guess:<br>        t.clear()<br>        t.write(“Give Up,Game Over.”, font=myfont)<br>        break<br>    elif guess &gt; target:<br>        answer = “你猜大了，再猜一次：”<br>    else:<br>        answer = “你猜小了，再猜一次：”<br>    t.clear()<br>    t.write(answer, font=myfont)<br>t.done()<br>初始界面:<br><img src="/2018/07/15/海龟绘图法（Python）/C.png" alt=""><br>胜利界面:<br><img src="/2018/07/15/海龟绘图法（Python）/D.png" alt=""><br>放弃界面:<br><img src="/2018/07/15/海龟绘图法（Python）/E.png" alt=""></p>
 
       
     </div>
@@ -727,7 +727,7 @@
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">weiter &raquo;</a>
   </nav>
 
 </section>
