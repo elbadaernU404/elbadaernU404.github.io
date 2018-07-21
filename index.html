@@ -238,7 +238,7 @@
         
           <a id="beautifont" class="main-nav-link" href="/archives">Archive</a>
         
-          <a id="beautifont" class="main-nav-link" href="/categories">Kategorien</a>
+          <a id="beautifont" class="main-nav-link" href="/categories">Categorías</a>
         
           <a id="beautifont" class="main-nav-link" href="/tags">Tags</a>
         
@@ -294,9 +294,9 @@
 <p>接下来使用Session对象来确保对话的持续，使服务器知道请求均为同一PC端发出。使用get获得网页源码中的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">search = requests.session()</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resault = search.get(&apos;http://120.24.86.145:8002/qiumingshan/&apos;)</span><br></pre></td></tr></table></figure>
 <p>接下来通过正则表达式来提取需要利用的信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">re = re.search(r&apos;^&lt;div&gt;(.*)=\?;&lt;/div&gt;$&apos;, resault.text,re.S|re.M|re.I)</span><br></pre></td></tr></table></figure></p>
-<p>在正则表达式中，“.”为通配符，与除换行符外的其他字符都匹配，“.*”表示通配符可出现0、1或多次。从网页中我们可以看到每次算术式都在改变，但是最后的“=?”是不变的，所以对最后的“=?”保留原样，并使用反斜杠\进行转义：“=\?”，而为了表示re模块需要的单个反斜杠，通常需要用两个反斜杠来进行转义，包涵解释器的转义和re模块执行的转义。所以在表达式的开始我使用了原始字符串的标志r来取消了解释器反斜杠的使用。<br>由脱字符^来开始，打开链接，F12进行审查元素，可以看到需要利用到的部分包括在HTML标签“&lt;div&gt;…&lt;/div&gt; ”中：<br><img src="/2018/07/20/Python正则表达式和requests爬虫/E.png" alt=""><br>将主体算术部分用小括号“()”来进行编组，此时“.*”为编组1。以美元符号“$”来表示字符串的末尾，用resault.text将字符串返回。re.S、re.M、re.I的作用分别为以“.”代替任何字符，多行模式，以及忽略大小写，按位或运算符“|”在这里表示这些flags定义全部成立。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">value =&#123;&apos;value&apos;: eval(re.group(1))&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在正则表达式中，“.”为通配符，与除换行符外的其他字符都匹配，“.*”表示通配符可出现0、1或多次。从网页中我们可以看到每次算术式都在改变，但是最后的“=?”是不变的，所以对最后的“=?”保留原样，并使用反斜杠\进行转义：“=\?”（正则表达式中问号代表0或1，是特殊字符），而为了表示re模块需要的单个反斜杠，通常需要用两个反斜杠来进行转义，包涵解释器的转义和re模块执行的转义。所以在表达式的开始我使用了原始字符串的标志r来取消了解释器反斜杠的使用。<br>由脱字符^来开始，打开链接，F12进行审查元素，可以看到需要利用到的部分包括在HTML标签“&lt;div&gt;…&lt;/div&gt; ”中：<br><img src="/2018/07/20/Python正则表达式和requests爬虫/E.png" alt=""><br>将主体算术部分用小括号“()”来进行编组，此时“.*”为编组1。以美元符号“$”来表示字符串的末尾，用resault.text将字符串返回。re.S、re.M、re.I的作用分别为以“.”代替任何字符，多行模式，以及忽略大小写，按位或运算符“|”在这里表示这些flags定义全部成立。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">value =&#123;&apos;value&apos;: eval(re.group(1))&#125;</span><br></pre></td></tr></table></figure></p>
 <p>定义一个字典value，其键值分别为’value’和算术式的结果。eval函数用于计算字符串表示的python表达式的值并返回结果，即计算出编组1中算术式的值，并作为值与’value’匹配。<br>发送post请求：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resault = search.post(&apos;http://120.24.86.145:8002/qiumingshan/&apos;, data=value)</span><br></pre></td></tr></table></figure></p>
-<p>post请求的参数以data关键字参数来传递，而data参数传递字典，这里传递的便是字典’value’。<br>显示结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(resault.text)</span><br></pre></td></tr></table></figure></p>
+<p>post请求的参数以data关键字参数来传递，而data参数传递字典，这里传递的便是字典’value’。<br>显示结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;The Resault is:&apos;，eval(re.group(1)))</span><br><span class="line">print(resault.text)</span><br></pre></td></tr></table></figure></p>
 <p>这样解题的脚本便完成了。在IDLE中运行，可以得到flag。<br><img src="/2018/07/20/Python正则表达式和requests爬虫/G.png" alt=""><br><img src="/2018/07/20/Python正则表达式和requests爬虫/F.png" alt=""></p>
 
       
@@ -738,7 +738,7 @@
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">weiter &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Siguiente &raquo;</a>
   </nav>
 
 </section>
@@ -752,7 +752,7 @@
 
   <div class="container">
       	<div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p> Construido por <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
 	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 elbadaernU&#39;s All Rights Reserved.</p>
 	      
 	      
