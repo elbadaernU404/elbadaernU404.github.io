@@ -234,11 +234,11 @@
   <div class="intro-navigate">
       <p class="navigater-list">
         
-          <a id="beautifont" class="main-nav-link" href="/">Startseite</a>
+          <a id="beautifont" class="main-nav-link" href="/">Home</a>
         
-          <a id="beautifont" class="main-nav-link" href="/archives">Archive</a>
+          <a id="beautifont" class="main-nav-link" href="/archives">Archives</a>
         
-          <a id="beautifont" class="main-nav-link" href="/categories">Kategorien</a>
+          <a id="beautifont" class="main-nav-link" href="/categories">Categories</a>
         
           <a id="beautifont" class="main-nav-link" href="/tags">Tags</a>
         
@@ -257,6 +257,58 @@
       <div id="content" class="outer">
         
           <section id="main" style="float:none;">
+  
+    <article id="post-Python爬虫相关"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/07/29/Python爬虫相关/">Python爬虫相关</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/07/29/Python爬虫相关/" class="article-date">
+	  <time datetime="2018-07-29T11:25:10.000Z" itemprop="datePublished">2018-07-29</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h1 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h1><h2 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h2><p>并发是同时具有多个活动的系统，实质是一个或多个物理CPU在若干道程序（或线程）之间多路复用。<br><img src="/2018/07/29/Python爬虫相关/A.png" alt=""><br>并行是真正意义上的不同事件或线程在同一时刻同时执行。并行利用并发使系统运行更快，在操作系统的多个抽象层次运用。<br><img src="/2018/07/29/Python爬虫相关/B.png" alt=""></p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>程序不能自己运行，只有将程序装载进内存，由系统分配资源后才能运行。程序是指令的集合，可以视为指令的静态文本，而进程是指令的执行活动，是动态的行为。<br>进程是操作系统对于一个运行中程序的抽象，是CPU、内存、IO设备的抽象。系统可以同时运行多个进程。</p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程是操作系统进行运算调度的最小单位，被包含于进程中，是进程的实际运作单位。一个进程可以由多个线程组成，线程之间共享代码和数据。<br>由于在实际网络服务器中对并行的需求，线程成为重要的编程模型：<br>1.多线程之间比多进程之间更易共享数据。<br>2.线程一般比进程高效。</p>
+<h1 id="深度优先和广度优先"><a href="#深度优先和广度优先" class="headerlink" title="深度优先和广度优先"></a>深度优先和广度优先</h1><p>在爬虫系统中，待抓取URL队列是很重要的一部分，待抓取URL队列中的URL以什么样的顺序排列也是一个很重要的问题，因为这涉及到先抓取哪个页面，后抓取哪个页面。而决定这些URL排列顺序的方法，叫做抓取策略。以下是两种常用的策略：深度优先、广度优先。 </p>
+<h2 id="深度优先"><a href="#深度优先" class="headerlink" title="深度优先"></a>深度优先</h2><p>深度优先是指网络爬虫会从起始页开始，一个链接一个链接跟踪下去，处理完这条线路之后再转入下一个起始页，继续追踪链接。<br><img src="/2018/07/29/Python爬虫相关/C.png" alt=""><br>深度优先的爬取的顺序式：<br>A-B-D-E-I-C-F-G-H （递归）<br>算法（伪代码形式）：<br><img src="/2018/07/29/Python爬虫相关/D.png" alt=""></p>
+<h2 id="广度优先"><a href="#广度优先" class="headerlink" title="广度优先"></a>广度优先</h2><p>广度优先，是指将新下载网页发现的链接直接插入到待抓取URL队列的末尾，也就是指网络爬虫会先抓取起始页中的所有网页，然后在选择其中的一个连接网页，继续抓取在此网页中链接的所有网页。<br><img src="/2018/07/29/Python爬虫相关/E.png" alt=""><br>广度优先的爬取顺序为：<br>A-B-C-D-E-F-G-H-I (队列)<br>算法（伪代码形式）：<br><img src="/2018/07/29/Python爬虫相关/F.png" alt=""></p>
+<h1 id="Cookie和Session"><a href="#Cookie和Session" class="headerlink" title="Cookie和Session"></a>Cookie和Session</h1><h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><p>简单的说就是当用户通过http协议访问一个服务器的时候，这个服务器会将一些Name/Value键值对返回给客户端浏览器，并将这些数据加上一些限制条件。在条件符合时，这个用户下次再访问服务器的时候，数据又被完整的带给服务器。<br>因为http是一种无状态协议，用户首次访问web站点的时候，服务器对用户一无所知。而Cookie就像是服务器给每个来访问的用户贴的标签，而这些标签就是对来访问的客户端的独有的身份的一个标识，这里就如同每个人的身份证一样，带着你的个人信息。而当一个客户端第一次连接过来的时候，服务端就会给他打一个标签，这里就如同给你发了一个身份证，当你下载带着这个身份证来的时候，服务器就知道你是谁了。所以Cookie是存在客户端的，这里其实就是在你的浏览器中。</p>
+<h2 id="Cookie分类"><a href="#Cookie分类" class="headerlink" title="Cookie分类"></a>Cookie分类</h2><p>Cookie主要分为两种：<br>会话Cookie：不设置过期时间，保存在浏览器的内存中，关闭浏览器，Cookie便被销毁<br>普通Cookie:设置了过期时间，保存在硬盘上</p>
+<h2 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h2><p>上面我们知道了Cookie可以让服务器端跟踪每个客户端的访问，但是每次客户端的访问都必须传回这些 Cookie，如果 Cookie 很多，这无形地增加了客户端与服务端的数据传输量，而 Session 的出现正是为了解决这个问题。<br>同一个客户端每次和服务端交互时，不需要每次都传回所有的Cookie值，而是只要传回一个ID这个ID是客户端第一次访问服务器的时候生成的，而且每个客户端是唯一的。这样每个客户端就有了一个唯一的ID，客户端只要传回这个ID就行了，这个ID通常是NANE为JSESIONID的一个Cookie。所以Session其实是利用Cookie进行信息处理的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">requests.get(&quot;http://httpbin.org/cookies/set/number/123456&quot;)</span><br><span class="line">response = requests.get(&quot;http://httpbin.org/cookies&quot;)</span><br><span class="line">print(response.text)</span><br></pre></td></tr></table></figure></p>
+<p>这样是错误的，会话无法维持。正确写法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">s = requests.Session()</span><br><span class="line">s.get(&quot;http://httpbin.org/cookies/set/number/123456&quot;)</span><br><span class="line">response = s.get(&quot;http://httpbin.org/cookies&quot;)</span><br><span class="line">print(response.text)</span><br></pre></td></tr></table></figure></p>
+<p>对于Cookie，因为人为的可分析本地Cookie进行Cookie欺骗，Session相对安全。而Session会一段时间内保持在服务器中，访问量越多越占用服务器性能。如果主要减轻服务器压力，Cookie相对合适。</p>
+<h1 id="HTML中form表单"><a href="#HTML中form表单" class="headerlink" title="HTML中form表单"></a>HTML中form表单</h1><p>登录页面会有一个form表单提交，form表单的功能是用于搜集不同类型的用户输入的内容。有了表单，网页的内容可以由用户自己创建。<br><img src="/2018/07/29/Python爬虫相关/G.png" alt=""><br>获取authenticity_token信息后，可以获得Cookie信息，分析登录包获取提交地址，可以一步步实现通过爬虫程序登录网站。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-Python正则表达式和requests爬虫"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
@@ -693,52 +745,11 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-BurpSuite"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/03/22/BurpSuite/">BurpSuite</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/03/22/BurpSuite/" class="article-date">
-	  <time datetime="2018-03-22T12:25:03.000Z" itemprop="datePublished">2018-03-22</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>最近开始弄CTF。学习信息安全，自我意识到仅仅只靠php这些语言和编译器是远远不足的，各式各样的工具同样发挥着非常重要的作用。之前就听说过打嗝，但是实装BurpSuite则是不久前再度被安利才进行，过程仍然一波三折。我发现很多所谓的教程更多完全只是提供了完整的具体思路，完全没有考虑过真正初次接触者的感受，很多细节是非常令人头痛的，我觉得探索更多应该放在实践之中，而不是在初学之中。<br>BurpSuite是一款基于Java环境下的Java程序，那么在安装Burp之前需要先配置Java环境，正巧我还没有接触过Java，所以先搭载了jdk，安装完毕，之后下载了52破解平台的Burp专业版（之前在官网还下载过直装普通版，专业版花费有些高），习惯性解压，得到两个文件夹。然后晕了，恩？Burp怎么打开？虽然没有应用程序，但也应该有可执行的部分，将文件夹逐个打开后是许许多多.Class文件。初步推测Java环境未能搭建成功，Win+R，开启CMD，输入Java -version，结果确实是提示’Java不是内部或外部命令，也不是可运行的程序或批处理文件’，因为之前装nodejs时出过类似问题，第一时间想到的是版本不符，于是我去Java官网将Jdk最新版本、8u161、8u162都尝试安装，期间也尝试了Burp的各个版本，之后在52确定了Burp1.7和jdk161完全没有问题，开始在其他方面查找问题。<br><img src="/2018/03/22/BurpSuite/A.png" alt=""><br>询问大佬之后才意识到jdk的安装是有门道的，于是我开始查找教程一步步安装jdk，发现一直遗漏了关键的步骤，就是在最后手动配置Java环境变量（这玩意还真不是安装包一步到位的……）一番处理后，打开CMD，Java安装成功。<br><img src="/2018/03/22/BurpSuite/B.png" alt=""><br>接下来我重新解压了Burp，尴尬的是仍然是两个文件夹，摆在我的面前。一番尝试无果，回归懵逼状态。又是一番搜索之后，无意中了解到.jar与.zip文件之间的孽缘，原来那两个“压缩包”可以直接打开运行……安装算是成功了，按照52的教程一步步顺利的打开了BurpSuite。<br><img src="/2018/03/22/BurpSuite/E.png" alt=""><br>而配置完成后，这两天开始实践CTF时在Burp中再一次遇到了瓶颈，无论如何刷新网页，Burp都不会自己抓包，也是，虽然我设置了Burp的端口127.0.0.1：8082，但是和服务器的链接应该还是有待协调，最后在局域里添加进准备好端口，并在Firefox里设置好代理，终于，BurpSuite开始在浏览器的刷新下自动抓包。到这里差不多全部完成了。<br><img src="/2018/03/22/BurpSuite/C.png" alt=""><br><img src="/2018/03/22/BurpSuite/D.png" alt=""><br>大体而言就是这样，过程拖泥带水，不过结果还算近人意。下一次安装工具时希望能稍微顺利一些。可能我碰上的细节问题也会是很多人第一次处理的麻烦所在，虽然讨厌，但只要步骤正确，终究能够完成，这或许是计算机的魅力所在。<br>@elbadaernU 2018.3.22</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">weiter &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 
 </section>
