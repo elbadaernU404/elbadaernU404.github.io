@@ -234,15 +234,15 @@
   <div class="intro-navigate">
       <p class="navigater-list">
         
-          <a id="beautifont" class="main-nav-link" href="/">Startseite</a>
+          <a id="beautifont" class="main-nav-link" href="/">Accueil</a>
         
-          <a id="beautifont" class="main-nav-link" href="/archives">Archive</a>
+          <a id="beautifont" class="main-nav-link" href="/archives">Archives</a>
         
-          <a id="beautifont" class="main-nav-link" href="/categories">Kategorien</a>
+          <a id="beautifont" class="main-nav-link" href="/categories">Catégories</a>
         
-          <a id="beautifont" class="main-nav-link" href="/tags">Tags</a>
+          <a id="beautifont" class="main-nav-link" href="/tags">Mots-clés</a>
         
-          <a id="beautifont" class="main-nav-link" href="/about">About</a>
+          <a id="beautifont" class="main-nav-link" href="/about">À propos</a>
         
       </p>
   </div>
@@ -291,10 +291,12 @@
 <h2 id="广度优先"><a href="#广度优先" class="headerlink" title="广度优先"></a>广度优先</h2><p>广度优先，是指将新下载网页发现的链接直接插入到待抓取URL队列的末尾，也就是指网络爬虫会先抓取起始页中的所有网页，然后在选择其中的一个连接网页，继续抓取在此网页中链接的所有网页。<br><img src="/2018/07/29/Python爬虫相关/E.png" alt=""><br>广度优先的爬取顺序为：<br>A-B-C-D-E-F-G-H-I (队列)<br>算法（伪代码形式）：<br><img src="/2018/07/29/Python爬虫相关/F.png" alt=""></p>
 <h1 id="Cookie和Session"><a href="#Cookie和Session" class="headerlink" title="Cookie和Session"></a>Cookie和Session</h1><h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><p>简单的说就是当用户通过http协议访问一个服务器的时候，这个服务器会将一些Name/Value键值对返回给客户端浏览器，并将这些数据加上一些限制条件。在条件符合时，这个用户下次再访问服务器的时候，数据又被完整的带给服务器。<br>因为http是一种无状态协议，用户首次访问web站点的时候，服务器对用户一无所知。而Cookie就像是服务器给每个来访问的用户贴的标签，而这些标签就是对来访问的客户端的独有的身份的一个标识，这里就如同每个人的身份证一样，带着你的个人信息。而当一个客户端第一次连接过来的时候，服务端就会给他打一个标签，这里就如同给你发了一个身份证，当你下载带着这个身份证来的时候，服务器就知道你是谁了。所以Cookie是存在客户端的，这里其实就是在你的浏览器中。</p>
 <h2 id="Cookie分类"><a href="#Cookie分类" class="headerlink" title="Cookie分类"></a>Cookie分类</h2><p>Cookie主要分为两种：<br>会话Cookie：不设置过期时间，保存在浏览器的内存中，关闭浏览器，Cookie便被销毁<br>普通Cookie:设置了过期时间，保存在硬盘上</p>
-<h2 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h2><p>上面我们知道了Cookie可以让服务器端跟踪每个客户端的访问，但是每次客户端的访问都必须传回这些 Cookie，如果 Cookie 很多，这无形地增加了客户端与服务端的数据传输量，而 Session 的出现正是为了解决这个问题。<br>同一个客户端每次和服务端交互时，不需要每次都传回所有的Cookie值，而是只要传回一个ID这个ID是客户端第一次访问服务器的时候生成的，而且每个客户端是唯一的。这样每个客户端就有了一个唯一的ID，客户端只要传回这个ID就行了，这个ID通常是NANE为JSESIONID的一个Cookie。所以Session其实是利用Cookie进行信息处理的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">requests.get(&quot;http://httpbin.org/cookies/set/number/123456&quot;)</span><br><span class="line">response = requests.get(&quot;http://httpbin.org/cookies&quot;)</span><br><span class="line">print(response.text)</span><br></pre></td></tr></table></figure></p>
-<p>这样是错误的，会话无法维持。正确写法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">s = requests.Session()</span><br><span class="line">s.get(&quot;http://httpbin.org/cookies/set/number/123456&quot;)</span><br><span class="line">response = s.get(&quot;http://httpbin.org/cookies&quot;)</span><br><span class="line">print(response.text)</span><br></pre></td></tr></table></figure></p>
-<p>对于Cookie，因为人为的可分析本地Cookie进行Cookie欺骗，Session相对安全。而Session会一段时间内保持在服务器中，访问量越多越占用服务器性能。如果主要减轻服务器压力，Cookie相对合适。</p>
-<h1 id="HTML中form表单"><a href="#HTML中form表单" class="headerlink" title="HTML中form表单"></a>HTML中form表单</h1><p>登录页面会有一个form表单提交，form表单的功能是用于搜集不同类型的用户输入的内容。有了表单，网页的内容可以由用户自己创建。<br><img src="/2018/07/29/Python爬虫相关/G.png" alt=""><br>获取authenticity_token信息后，可以获得Cookie信息，分析登录包获取提交地址，可以一步步实现通过爬虫程序登录网站。</p>
+<h2 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h2><p>上面我们知道了Cookie可以让服务器端跟踪每个客户端的访问，但是每次客户端的访问都必须传回这些 Cookie，如果 Cookie 很多，这无形地增加了客户端与服务端的数据传输量，而 Session 的出现正是为了解决这个问题。<br>同一个客户端每次和服务端交互时，不需要每次都传回所有的Cookie值，而是只要传回一个ID这个ID是客户端第一次访问服务器的时候生成的，而且每个客户端是唯一的。这样每个客户端就有了一个唯一的ID，客户端只要传回这个ID就行了，这个ID通常是NANE为JSESIONID的一个Cookie。所以Session其实是利用Cookie进行信息处理的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">resault = requests.get(&apos;http://120.24.86.145:8002/qiumingshan/&apos;)</span><br><span class="line">re = re.requests(r&apos;^&lt;div&gt;(.*)=\?;&lt;/div&gt;$&apos;, resault.text,re.S|re.M|re.I)</span><br><span class="line">value =&#123;&apos;value&apos;: eval(re.group(1))&#125;</span><br><span class="line"></span><br><span class="line">resault = requests.post(&apos;http://120.24.86.145:8002/qiumingshan/&apos;, data=value)</span><br><span class="line">print(&apos;The Resault is:&apos;,eval(re.group(1)))</span><br><span class="line">print(resault.text)</span><br></pre></td></tr></table></figure></p>
+<p>这样是错误的，会话无法维持。正确写法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">search = requests.session()</span><br><span class="line">resault = search.get(&apos;http://120.24.86.145:8002/qiumingshan/&apos;)</span><br><span class="line">re = re.search(r&apos;^&lt;div&gt;(.*)=\?;&lt;/div&gt;$&apos;, resault.text,re.S|re.M|re.I)</span><br><span class="line">value =&#123;&apos;value&apos;: eval(re.group(1))&#125;</span><br><span class="line"></span><br><span class="line">resault = search.post(&apos;http://120.24.86.145:8002/qiumingshan/&apos;, data=value)</span><br><span class="line">print(&apos;The Resault is:&apos;,eval(re.group(1)))</span><br><span class="line">print(resault.text)</span><br></pre></td></tr></table></figure></p>
+<p>用HTML测试网站httpbin.org举例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">requests.get(&quot;http://httpbin.org/cookies/set/number/123456&quot;)</span><br><span class="line">response = requests.get(&quot;http://httpbin.org/cookies&quot;)</span><br><span class="line">print(response.text)</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="/2018/07/29/Python爬虫相关/E1.png" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">s = requests.Session()</span><br><span class="line">s.get(&quot;http://httpbin.org/cookies/set/number/123456&quot;)</span><br><span class="line">response = s.get(&quot;http://httpbin.org/cookies&quot;)</span><br><span class="line">print(response.text)</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="/2018/07/29/Python爬虫相关/E2.png" alt=""><br>对于Cookie，因为人为的可分析本地Cookie进行Cookie欺骗，Session相对安全。而Session会一段时间内保持在服务器中，访问量越多越占用服务器性能。如果主要减轻服务器压力，Cookie相对合适。</p>
+<h1 id="HTML中form表单"><a href="#HTML中form表单" class="headerlink" title="HTML中form表单"></a>HTML中form表单</h1><p>登录页面会有一个form表单提交，form表单的功能是用于搜集不同类型的用户输入的内容。有了表单，网页的内容可以由用户自己创建。<br><img src="/2018/07/29/Python爬虫相关/G.png" alt=""><br>获取authenticity_token信息后，可以获得Cookie信息，分析登录包获取提交地址，利用Scrapy爬虫框架等一步步实现通过爬虫程序登录网站。</p>
 
       
     </div>
@@ -749,7 +751,7 @@
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">weiter &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Suiv. &raquo;</a>
   </nav>
 
 </section>
@@ -763,7 +765,7 @@
 
   <div class="container">
       	<div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p> Propulsé par <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
 	      <p id="copyRightEn">Copyright &copy; 2017 - 2018 elbadaernU&#39;s All Rights Reserved.</p>
 	      
 	      
