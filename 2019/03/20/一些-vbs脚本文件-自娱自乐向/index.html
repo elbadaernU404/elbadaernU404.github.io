@@ -3,28 +3,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>burpsuite | elbadaernU&#39;s</title>
+  <title>一些.vbs脚本文件(自娱自乐向) | elbadaernU&#39;s</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   
   
   
-  <meta name="description" content="最近开始弄CTF。学习信息安全，自我意识到仅仅只靠php这些语言和编译器是远远不足的，各式各样的工具同样发挥着非常重要的作用。之前就听说过打嗝，但是实装BurpSuite则是不久前再度被安利才进行，过程仍然一波三折。我发现很多所谓的教程更多完全只是提供了完整的具体思路，完全没有考虑过真正初次接触者的感受，很多细节是非常令人头痛的，我觉得探索更多应该放在实践之中，而不是在初学之中。BurpSuit">
+  <meta name="description" content=".vbs我记得初识basic语言好像要回溯到2014年以前，初中时代，当时考试的重心主要是放在读程序逻辑上，几个语句，像loop…until至今印象深刻。记录几个简单的.vbs脚本，计算机可以直接执行。 1.###消息框招呼脚本记事本编写’msgbox “Hello，9.9”‘，将文件后缀.txt修改为.vbs即可，双击运行后弹出消息框，可以将此脚本设置为开机启动，恩，硬核自己给自己打个招呼来自">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BurpSuite">
-<meta property="og:url" content="http://yoursite.com/2018/03/22/BurpSuite/index.html">
+<meta property="og:title" content="一些.vbs脚本文件(自娱自乐向)">
+<meta property="og:url" content="http://yoursite.com/2019/03/20/一些-vbs脚本文件-自娱自乐向/index.html">
 <meta property="og:site_name" content="elbadaernU&#39;s">
-<meta property="og:description" content="最近开始弄CTF。学习信息安全，自我意识到仅仅只靠php这些语言和编译器是远远不足的，各式各样的工具同样发挥着非常重要的作用。之前就听说过打嗝，但是实装BurpSuite则是不久前再度被安利才进行，过程仍然一波三折。我发现很多所谓的教程更多完全只是提供了完整的具体思路，完全没有考虑过真正初次接触者的感受，很多细节是非常令人头痛的，我觉得探索更多应该放在实践之中，而不是在初学之中。BurpSuit">
-<meta property="og:image" content="http://yoursite.com/2018/03/22/BurpSuite/A.png">
-<meta property="og:image" content="http://yoursite.com/2018/03/22/BurpSuite/B.png">
-<meta property="og:image" content="http://yoursite.com/2018/03/22/BurpSuite/E.png">
-<meta property="og:image" content="http://yoursite.com/2018/03/22/BurpSuite/C.png">
-<meta property="og:image" content="http://yoursite.com/2018/03/22/BurpSuite/D.png">
-<meta property="og:updated_time" content="2018-03-22T17:46:06.769Z">
+<meta property="og:description" content=".vbs我记得初识basic语言好像要回溯到2014年以前，初中时代，当时考试的重心主要是放在读程序逻辑上，几个语句，像loop…until至今印象深刻。记录几个简单的.vbs脚本，计算机可以直接执行。 1.###消息框招呼脚本记事本编写’msgbox “Hello，9.9”‘，将文件后缀.txt修改为.vbs即可，双击运行后弹出消息框，可以将此脚本设置为开机启动，恩，硬核自己给自己打个招呼来自">
+<meta property="og:image" content="http://yoursite.com/2019/03/20/一些-vbs脚本文件-自娱自乐向/A.png">
+<meta property="og:image" content="http://yoursite.com/2019/03/20/一些-vbs脚本文件-自娱自乐向/B.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/03/20/一些-vbs脚本文件-自娱自乐向/C.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/03/20/一些-vbs脚本文件-自娱自乐向/D.jpg">
+<meta property="og:updated_time" content="2019-04-10T11:12:27.316Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BurpSuite">
-<meta name="twitter:description" content="最近开始弄CTF。学习信息安全，自我意识到仅仅只靠php这些语言和编译器是远远不足的，各式各样的工具同样发挥着非常重要的作用。之前就听说过打嗝，但是实装BurpSuite则是不久前再度被安利才进行，过程仍然一波三折。我发现很多所谓的教程更多完全只是提供了完整的具体思路，完全没有考虑过真正初次接触者的感受，很多细节是非常令人头痛的，我觉得探索更多应该放在实践之中，而不是在初学之中。BurpSuit">
-<meta name="twitter:image" content="http://yoursite.com/2018/03/22/BurpSuite/A.png">
+<meta name="twitter:title" content="一些.vbs脚本文件(自娱自乐向)">
+<meta name="twitter:description" content=".vbs我记得初识basic语言好像要回溯到2014年以前，初中时代，当时考试的重心主要是放在读程序逻辑上，几个语句，像loop…until至今印象深刻。记录几个简单的.vbs脚本，计算机可以直接执行。 1.###消息框招呼脚本记事本编写’msgbox “Hello，9.9”‘，将文件后缀.txt修改为.vbs即可，双击运行后弹出消息框，可以将此脚本设置为开机启动，恩，硬核自己给自己打个招呼来自">
+<meta name="twitter:image" content="http://yoursite.com/2019/03/20/一些-vbs脚本文件-自娱自乐向/A.png">
   
     <link rel="alternate" href="/atom.xml" title="elbadaernU&#39;s" type="application/atom+xml">
   
@@ -162,7 +161,7 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-BurpSuite" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-一些-vbs脚本文件-自娱自乐向" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
     
@@ -170,7 +169,7 @@
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      BurpSuite
+      一些.vbs脚本文件(自娱自乐向)
     </h1>
   
 
@@ -178,8 +177,8 @@
     
     <div class="article-meta">
       
-	<a href="/2018/03/22/BurpSuite/" class="article-date">
-	  <time datetime="2018-03-22T12:25:03.000Z" itemprop="datePublished">2018-03-22</time>
+	<a href="/2019/03/20/一些-vbs脚本文件-自娱自乐向/" class="article-date">
+	  <time datetime="2019-03-20T11:57:57.000Z" itemprop="datePublished">2019-03-20</time>
 	</a>
 
       
@@ -193,7 +192,14 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <script src="\assets\js\APlayer.min.js"> </script><p>最近开始弄CTF。学习信息安全，自我意识到仅仅只靠php这些语言和编译器是远远不足的，各式各样的工具同样发挥着非常重要的作用。之前就听说过打嗝，但是实装BurpSuite则是不久前再度被安利才进行，过程仍然一波三折。我发现很多所谓的教程更多完全只是提供了完整的具体思路，完全没有考虑过真正初次接触者的感受，很多细节是非常令人头痛的，我觉得探索更多应该放在实践之中，而不是在初学之中。<br>BurpSuite是一款基于Java环境下的Java程序，那么在安装Burp之前需要先配置Java环境，正巧我还没有接触过Java，所以先搭载了jdk，安装完毕，之后下载了52破解平台的Burp专业版（之前在官网还下载过直装普通版，专业版花费有些高），习惯性解压，得到两个文件夹。然后晕了，恩？Burp怎么打开？虽然没有应用程序，但也应该有可执行的部分，将文件夹逐个打开后是许许多多.Class文件。初步推测Java环境未能搭建成功，Win+R，开启CMD，输入Java -version，结果确实是提示’Java不是内部或外部命令，也不是可运行的程序或批处理文件’，因为之前装nodejs时出过类似问题，第一时间想到的是版本不符，于是我去Java官网将Jdk最新版本、8u161、8u162都尝试安装，期间也尝试了Burp的各个版本，之后在52确定了Burp1.7和jdk161完全没有问题，开始在其他方面查找问题。<br><img src="/2018/03/22/BurpSuite/A.png" alt=""><br>询问大佬之后才意识到jdk的安装是有门道的，于是我开始查找教程一步步安装jdk，发现一直遗漏了关键的步骤，就是在最后手动配置Java环境变量（这玩意还真不是安装包一步到位的……）一番处理后，打开CMD，Java安装成功。<br><img src="/2018/03/22/BurpSuite/B.png" alt=""><br>接下来我重新解压了Burp，尴尬的是仍然是两个文件夹，摆在我的面前。一番尝试无果，回归懵逼状态。又是一番搜索之后，无意中了解到.jar与.zip文件之间的孽缘，原来那两个“压缩包”可以直接打开运行……安装算是成功了，按照52的教程一步步顺利的打开了BurpSuite。<br><img src="/2018/03/22/BurpSuite/E.png" alt=""><br>而配置完成后，这两天开始实践CTF时在Burp中再一次遇到了瓶颈，无论如何刷新网页，Burp都不会自己抓包，也是，虽然我设置了Burp的端口127.0.0.1：8082，但是和服务器的链接应该还是有待协调，最后在局域里添加进准备好端口，并在Firefox里设置好代理，终于，BurpSuite开始在浏览器的刷新下自动抓包。到这里差不多全部完成了。<br><img src="/2018/03/22/BurpSuite/C.png" alt=""><br><img src="/2018/03/22/BurpSuite/D.png" alt=""><br>大体而言就是这样，过程拖泥带水，不过结果还算近人意。下一次安装工具时希望能稍微顺利一些。可能我碰上的细节问题也会是很多人第一次处理的麻烦所在，虽然讨厌，但只要步骤正确，终究能够完成，这或许是计算机的魅力所在。<br>@elbadaernU 2018.3.22</p>
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="vbs"><a href="#vbs" class="headerlink" title=".vbs"></a>.vbs</h2><p>我记得初识basic语言好像要回溯到2014年以前，初中时代，当时考试的重心主要是放在读程序逻辑上，几个语句，像loop…until至今印象深刻。<br>记录几个简单的.vbs脚本，计算机可以直接执行。</p>
+<h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p>###消息框招呼脚本<br>记事本编写’msgbox “Hello，9.9”‘，将文件后缀.txt修改为.vbs即可，双击运行后弹出消息框，可以将此脚本设置为开机启动，恩，硬核自己给自己打个招呼来自娱自乐。<br>（另，在室友电脑编写后首末添加do/loop可以让程序进入死循环，讯息内容可以随意发挥，控制台关闭程序即可）<br><img src="/2019/03/20/一些-vbs脚本文件-自娱自乐向/A.png" alt="一些.vbs脚本文件(自娱自乐向)"></p>
+<h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><h3 id="语音脚本"><a href="#语音脚本" class="headerlink" title="语音脚本"></a>语音脚本</h3><p>同样的，在记事本编写’CreateObject(“SAPI.SpVoice”).Speak “Hello,9.9”‘，调整扩展名为.vbs，运行后得到系统语言提示。同样的，可以将其设置为开机启动，配合消息框食用效果更佳（假装是电脑给自己打招呼）。</p>
+<h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><h3 id="无限刷新："><a href="#无限刷新：" class="headerlink" title="无限刷新："></a>无限刷新：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set ws=createobject(&quot;wscript.shell&quot;)</span><br><span class="line">do</span><br><span class="line">ws.sendkeys&quot;&#123;f5&#125;&quot;</span><br><span class="line">loop</span><br></pre></td></tr></table></figure>
+<h3 id="无限Alt-f4"><a href="#无限Alt-f4" class="headerlink" title="无限Alt+f4"></a>无限Alt+f4</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dim WSHshell</span><br><span class="line">set WSHshell=wscript.createobject(&quot;wscript.shell&quot;)</span><br><span class="line">do</span><br><span class="line">wscript.sleep 2000</span><br><span class="line">WSHshell.SendKeys&quot;%&#123;f4&#125;&quot;</span><br><span class="line">loop</span><br></pre></td></tr></table></figure>
+<h3 id="QQ消息自动发送"><a href="#QQ消息自动发送" class="headerlink" title="QQ消息自动发送"></a>QQ消息自动发送</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">On Error Resume Next </span><br><span class="line">Dim fd,ye </span><br><span class="line">set fd=createobject(&quot;wscript.shell&quot;) </span><br><span class="line">for i=1 to 10 //循环次数</span><br><span class="line">wscript.sleep 100 //循环间隔，越大越慢</span><br><span class="line">fd.AppActivate(&quot;Name&quot;) //发送对象的昵称</span><br><span class="line">fd.sendKeys &quot;^v&quot; //打印复制的内容</span><br><span class="line">fd.sendKeys i</span><br><span class="line">fd.sendKeys &quot;%s&quot; </span><br><span class="line">next </span><br><span class="line">wscript.quit</span><br></pre></td></tr></table></figure>
+<p>（注：以上脚本慎用，玩笑适可而止。）</p>
+<h3 id="添加插曲"><a href="#添加插曲" class="headerlink" title="添加插曲"></a>添加插曲</h3><p>来自伟大的360爸爸发出的木马警告（我日我自己lol）<br><img src="/2019/03/20/一些-vbs脚本文件-自娱自乐向/B.jpg" alt="一些.vbs脚本文件(自娱自乐向)"><br><img src="/2019/03/20/一些-vbs脚本文件-自娱自乐向/C.jpg" alt="一些.vbs脚本文件(自娱自乐向)"><br><img src="/2019/03/20/一些-vbs脚本文件-自娱自乐向/D.jpg" alt="一些.vbs脚本文件(自娱自乐向)"></p>
 
       
     </div>
@@ -232,19 +238,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2018/03/22/CTF-Tests/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/04/10/DOSBox0-74-For-MASM/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Neuer</strong>
       <div class="article-nav-title">
         
-          CTF-Tests
+          DOSBox0.74 For MASM
         
       </div>
     </a>
   
   
-    <a href="/2018/03/05/Update-log/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/12/20/Just-for-joy-打地鼠小游戏/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">Update-log</div>
+      <div class="article-nav-title">Just for joy---打地鼠小游戏</div>
     </a>
   
 </nav>
@@ -258,7 +264,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Inhalt</strong>
     
-        <ol class="nav">Nichts</ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vbs"><span class="nav-number">1.</span> <span class="nav-text">.vbs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1"><span class="nav-number">2.</span> <span class="nav-text">1.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2"><span class="nav-number">3.</span> <span class="nav-text">2.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语音脚本"><span class="nav-number">3.1.</span> <span class="nav-text">语音脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3"><span class="nav-number">4.</span> <span class="nav-text">3.</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#无限刷新："><span class="nav-number">4.1.</span> <span class="nav-text">无限刷新：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#无限Alt-f4"><span class="nav-number">4.2.</span> <span class="nav-text">无限Alt+f4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QQ消息自动发送"><span class="nav-number">4.3.</span> <span class="nav-text">QQ消息自动发送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加插曲"><span class="nav-number">4.4.</span> <span class="nav-text">添加插曲</span></a></li></ol></li></ol>
     
     </div>
   </aside>
