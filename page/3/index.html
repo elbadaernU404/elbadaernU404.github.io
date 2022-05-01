@@ -258,6 +258,139 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-CTF-Tests-2"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/03/29/CTF-Tests-2/">CTF-Tests(2)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/29/CTF-Tests-2/" class="article-date">
+	  <time datetime="2018-03-29T13:34:58.000Z" itemprop="datePublished">2018-03-29</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>仍然是5道普通的CTF。</p>
+<h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p><img src="/2018/03/29/CTF-Tests-2/A.png" alt=""><br>页面会不断弹出”FLAG就在这里”、”来找找吧”这样的信息。在强行关闭弹窗后，审查元素，得到如下的编码，弄清后在网站[<a href="http://tool.chinaz.com/tools/urlencode.aspx" target="_blank" rel="noopener">http://tool.chinaz.com/tools/urlencode.aspx</a>] Unicode解码得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/B.png" alt=""></p>
+<h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><p><img src="/2018/03/29/CTF-Tests-2/C.png" alt=""><br>根据提示打开源代码，找到之后同样按照提示进行解码后便得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/D.png" alt=""><br><img src="/2018/03/29/CTF-Tests-2/E.png" alt=""></p>
+<h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><p><img src="/2018/03/29/CTF-Tests-2/F.png" alt=""><br>了解到同样是一个编码后，根据提示JSFuck(呃…)解码，会得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/G.png" alt=""><br><img src="/2018/03/29/CTF-Tests-2/H.png" alt=""></p>
+<h2 id="4"><a href="#4" class="headerlink" title="4."></a>4.</h2><p><img src="/2018/03/29/CTF-Tests-2/I.png" alt=""><br><img src="/2018/03/29/CTF-Tests-2/J.png" alt=""><br>题目叫头等舱，而打开后提示什么都没有，审查元素以及查看源后无果，用Burpsuite抓包，得到Flag。<br><img src="/2018/03/29/CTF-Tests-2/K.png" alt=""></p>
+<h2 id="5"><a href="#5" class="headerlink" title="5."></a>5.</h2><p><img src="/2018/03/29/CTF-Tests-2/L.png" alt=""><br>只有这些内容，尝试从语法入手后添加链接，回车后会得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/M.png" alt=""><br><img src="/2018/03/29/CTF-Tests-2/N.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-CTF-Tests"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/03/22/CTF-Tests/">CTF-Tests</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/22/CTF-Tests/" class="article-date">
+	  <time datetime="2018-03-22T12:30:54.000Z" itemprop="datePublished">2018-03-22</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>Burpsuite、IDA、OD等工具安装完成后，我开始尝试在百度等教程下去做简单的CTF。这里是5个简单的例子。</p>
+<h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p><img src="/2018/03/22/CTF-Tests/A.png" alt=""><br>第一个是叫hello的程序，使用OD打开后，利用搜索功能查找字符串，直接得到了key：WelcomeToKanXueCtf2017，输入，完成。<br><img src="/2018/03/22/CTF-Tests/B.png" alt=""><br><img src="/2018/03/22/CTF-Tests/C.png" alt=""></p>
+<h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><p><img src="/2018/03/22/CTF-Tests/D.png" alt=""><br>这是一个关于网页验证码的问题，很简单的两位数相加求和，但尝试输入时发现了问题所在：只能输入一个字符。F12开启审查元素，找到maxlength=”1”，很明显问题出在这里，在1后面加上两个0之后，输入结果，得到Flag。<br><img src="/2018/03/22/CTF-Tests/E.png" alt=""><br><img src="/2018/03/22/CTF-Tests/F.png" alt=""></p>
+<h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><p><img src="/2018/03/22/CTF-Tests/G.png" alt=""><br>宽带信息泄露，好厉害的样子，下一个…Ummmmm，找到.bin的文件，用RouterPassView工具打开它，然后得到username，也就是提示的Flag，输入通过。<br><img src="/2018/03/22/CTF-Tests/H.png" alt=""></p>
+<h2 id="4"><a href="#4" class="headerlink" title="4."></a>4.</h2><p><img src="/2018/03/22/CTF-Tests/I.png" alt=""><br>审题名字叫做停不下来…恩确实停不下来，页面不断自动有规律的刷新，刷出不同的结果，打开Burpsuite，放进Repeater之后开始按照题目刷新的规律多次发送访问包，得到了Flag。<br><img src="/2018/03/22/CTF-Tests/J.png" alt=""></p>
+<h2 id="5"><a href="#5" class="headerlink" title="5."></a>5.</h2><p>要求提交一个.php文件，我在Wamp里拿出之前的HelloWorld，提交进去之后提示不是图片文件，emmmm，将后缀改为.png，再次提交时丢进BurpSuite，在其中再将.png改作.php后，上传至Repeater得到Flag。<br><img src="/2018/03/22/CTF-Tests/K.png" alt=""><br><img src="/2018/03/22/CTF-Tests/L.png" alt=""><br><img src="/2018/03/22/CTF-Tests/M.png" alt=""><br>ps，实际上尝试去解这些CTF时，基本每一道题都会在审查元素里无获后，尝试各种工具，遇到各种障碍以及看不懂的情况，懵逼良久。也有很多题目完成一部分后开始一知半解，始终得不到Flag，想解出某些密码，在审查元素中找到一些线索后却不能开展下去。时间很短，路还很长。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-BurpSuite"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/03/22/BurpSuite/">BurpSuite</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/22/BurpSuite/" class="article-date">
+	  <time datetime="2018-03-22T12:25:03.000Z" itemprop="datePublished">2018-03-22</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>最近开始弄CTF。学习信息安全，自我意识到仅仅只靠php这些语言和编译器是远远不足的，各式各样的工具同样发挥着非常重要的作用。之前就听说过打嗝，但是实装BurpSuite则是不久前再度被安利才进行，过程仍然一波三折。我发现很多所谓的教程更多完全只是提供了完整的具体思路，完全没有考虑过真正初次接触者的感受，很多细节是非常令人头痛的，我觉得探索更多应该放在实践之中，而不是在初学之中。<br>BurpSuite是一款基于Java环境下的Java程序，那么在安装Burp之前需要先配置Java环境，正巧我还没有接触过Java，所以先搭载了jdk，安装完毕，之后下载了52破解平台的Burp专业版（之前在官网还下载过直装普通版，专业版花费有些高），习惯性解压，得到两个文件夹。然后晕了，恩？Burp怎么打开？虽然没有应用程序，但也应该有可执行的部分，将文件夹逐个打开后是许许多多.Class文件。初步推测Java环境未能搭建成功，Win+R，开启CMD，输入Java -version，结果确实是提示’Java不是内部或外部命令，也不是可运行的程序或批处理文件’，因为之前装nodejs时出过类似问题，第一时间想到的是版本不符，于是我去Java官网将Jdk最新版本、8u161、8u162都尝试安装，期间也尝试了Burp的各个版本，之后在52确定了Burp1.7和jdk161完全没有问题，开始在其他方面查找问题。<br><img src="/2018/03/22/BurpSuite/A.png" alt=""><br>询问大佬之后才意识到jdk的安装是有门道的，于是我开始查找教程一步步安装jdk，发现一直遗漏了关键的步骤，就是在最后手动配置Java环境变量（这玩意还真不是安装包一步到位的……）一番处理后，打开CMD，Java安装成功。<br><img src="/2018/03/22/BurpSuite/B.png" alt=""><br>接下来我重新解压了Burp，尴尬的是仍然是两个文件夹，摆在我的面前。一番尝试无果，回归懵逼状态。又是一番搜索之后，无意中了解到.jar与.zip文件之间的孽缘，原来那两个“压缩包”可以直接打开运行……安装算是成功了，按照52的教程一步步顺利的打开了BurpSuite。<br><img src="/2018/03/22/BurpSuite/E.png" alt=""><br>而配置完成后，这两天开始实践CTF时在Burp中再一次遇到了瓶颈，无论如何刷新网页，Burp都不会自己抓包，也是，虽然我设置了Burp的端口127.0.0.1：8082，但是和服务器的链接应该还是有待协调，最后在局域里添加进准备好端口，并在Firefox里设置好代理，终于，BurpSuite开始在浏览器的刷新下自动抓包。到这里差不多全部完成了。<br><img src="/2018/03/22/BurpSuite/C.png" alt=""><br><img src="/2018/03/22/BurpSuite/D.png" alt=""><br>大体而言就是这样，过程拖泥带水，不过结果还算近人意。下一次安装工具时希望能稍微顺利一些。可能我碰上的细节问题也会是很多人第一次处理的麻烦所在，虽然讨厌，但只要步骤正确，终究能够完成，这或许是计算机的魅力所在。<br>@elbadaernU 2018.3.22</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Update-log"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
