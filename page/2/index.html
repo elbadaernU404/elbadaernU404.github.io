@@ -258,6 +258,93 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Python的图片与字符画转换"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/04/10/Python的图片与字符画转换/">Python的图片与字符画转换</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/04/10/Python的图片与字符画转换/" class="article-date">
+	  <time datetime="2019-04-10T11:27:27.000Z" itemprop="datePublished">2019-04-10</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>总体思想为：将图片转换为灰度图片后,利用字符的“复杂程度”替换掉图片的内容，字符数组的“复杂程度”由大到小排列即可。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="（需要pip安装PIL库）"><a href="#（需要pip安装PIL库）" class="headerlink" title="（需要pip安装PIL库）"></a>（需要pip安装PIL库）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image </span><br><span class="line"><span class="keyword">import</span> argparse </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 命令行输入参数处理 </span></span><br><span class="line">parser = argparse.ArgumentParser() </span><br><span class="line">  </span><br><span class="line">parser.add_argument(<span class="string">'file'</span>)   <span class="comment"># 输入文件 </span></span><br><span class="line">parser.add_argument(<span class="string">'-o'</span>, <span class="string">'--output'</span>)  <span class="comment"># 输出文件 </span></span><br><span class="line">parser.add_argument(<span class="string">'--width'</span>, type=int, default=<span class="number">80</span>) <span class="comment"># 输出字符画宽 </span></span><br><span class="line">parser.add_argument(<span class="string">'--height'</span>, type=int, default=<span class="number">80</span>) <span class="comment"># 输出字符画高 </span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 获取参数 </span></span><br><span class="line">args = parser.parse_args() </span><br><span class="line">  </span><br><span class="line">IMG = args.file</span><br><span class="line">WIDTH = args.width </span><br><span class="line">HEIGHT = args.height </span><br><span class="line">OUTPUT = args.output </span><br><span class="line">  </span><br><span class="line">ascii_char = list(<span class="string">"$@B%8&amp;WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1&#123;&#125;[]?-_+~&lt;&gt;i!lI;:,\"^`'. "</span>) </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 将256灰度映射到70个字符上 </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_char</span><span class="params">(r, b, g, alpha=<span class="number">256</span>)</span>:</span> </span><br><span class="line">  <span class="keyword">if</span> alpha == <span class="number">0</span>: </span><br><span class="line">    <span class="keyword">return</span> <span class="string">' '</span></span><br><span class="line">  length = len(ascii_char) </span><br><span class="line">  gray = int(<span class="number">0.2126</span> * r + <span class="number">0.7152</span> * g + <span class="number">0.0722</span> * b) </span><br><span class="line">  </span><br><span class="line">  unit = (<span class="number">256.0</span> + <span class="number">1</span>)/length </span><br><span class="line">  <span class="keyword">return</span> ascii_char[int(gray/unit)] </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>: </span><br><span class="line">  </span><br><span class="line">  im = Image.open(IMG) </span><br><span class="line">  im = im.resize((WIDTH, HEIGHT), Image.NEAREST) </span><br><span class="line">  </span><br><span class="line">  txt = <span class="string">""</span> </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> range(HEIGHT): </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(WIDTH): </span><br><span class="line">      txt += get_char(*im.getpixel((j, i))) </span><br><span class="line">    txt += <span class="string">'\n'</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">print</span> (txt) </span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 字符画输出到文件 </span></span><br><span class="line">  <span class="keyword">if</span> OUTPUT: </span><br><span class="line">    <span class="keyword">with</span> open(OUTPUT,<span class="string">'w'</span>) <span class="keyword">as</span> f: </span><br><span class="line">      f.write(txt) </span><br><span class="line">  <span class="keyword">else</span>: </span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">"output.txt"</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f: </span><br><span class="line">      f.write(txt)</span><br></pre></td></tr></table></figure>
+<p>（稿）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-DOSBox0-74-For-MASM"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/04/10/DOSBox0-74-For-MASM/">DOSBox0.74 For MASM</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/04/10/DOSBox0-74-For-MASM/" class="article-date">
+	  <time datetime="2019-04-10T11:26:12.000Z" itemprop="datePublished">2019-04-10</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>由于汇编的MASM是在32位环境下使用的，要在64位Windows环境下使用需要借助工具DOSBox。</p>
+<h2 id="DOSBox-0-74下载"><a href="#DOSBox-0-74下载" class="headerlink" title="DOSBox-0.74下载"></a>DOSBox-0.74下载</h2><p>地址：[<a href="https://pan.baidu.com/s/1wiAv0pwUhRavkM51pmdJCQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1wiAv0pwUhRavkM51pmdJCQ</a>]<br>（提取码：m0kx）</p>
+<h2 id="MASM下载"><a href="#MASM下载" class="headerlink" title="MASM下载"></a>MASM下载</h2><p>MASM文件夹内至少要包含debug/exe2bin/link/masm四个.exe文件。<br>地址：[<a href="https://pan.baidu.com/s/1MC75x01gKBxZwxmBuYq6fA" target="_blank" rel="noopener">https://pan.baidu.com/s/1MC75x01gKBxZwxmBuYq6fA</a>]<br>（提取码：4zu0）</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>将DOSBox-0.74放进MASM文件夹内，找到DOSBox.exe文件双击打开，输入mount d d:\path,path可以为你的masm目录。<br>如果MASM文件夹下有编写好的.asm汇编指令，可以直接通过命令d:进入MASM，再输入masm，进入调试，输入.asm文件名称（可不写扩展名），依次link，debug完成。<br>效果如图：<br><img src="/2019/04/10/DOSBox0-74-For-MASM/A.png" alt=""><br><img src="/2019/04/10/DOSBox0-74-For-MASM/B.png" alt=""><br><img src="/2019/04/10/DOSBox0-74-For-MASM/C.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-一些-vbs脚本文件-自娱自乐向"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -644,97 +731,6 @@
     <div class="article-entry" itemprop="articleBody">
       
         <script src="\assets\js\APlayer.min.js"> </script><p>这个问题在4月2日晚上七点左右已经被修复，存在时间不长。随着被修复的问题还有很多，墨水不多，这里不多说。<br>首先通过<a href="https://ti.qq.com/cgi-node/honest-say/receive/mine" target="_blank" rel="noopener">https://ti.qq.com/cgi-node/honest-say/receive/mine</a> ，可以打开自己的坦白说JSON源，然后发现EncodeUin后的加密代码，如图：<br><img src="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/B.png" alt=""><br>有大佬破解出了：<br><img src="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/A.png" alt=""><br>对照解码后便可以得到发送者的QQ号码……恩 ，很可怕。<br>当然问题很严重，修复也很快，现在只能被开发者调侃。怎么说呢，就当愚人节菜单吧，在匿名的世界里皮一下也得适当一些233。<br><img src="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/C.png" alt=""></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-CTF-Tests-3"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/03/31/CTF-Tests-3/">CTF-Tests(3)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/03/31/CTF-Tests-3/" class="article-date">
-	  <time datetime="2018-03-31T13:02:45.000Z" itemprop="datePublished">2018-03-31</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p>2018年0ctf签到题<br><img src="/2018/03/31/CTF-Tests-3/A.png" alt=""><br>根据提示要求加入freenode网站的IRC(Internet Relay Chat)0ctf2018聊天室来获取flag。初次进入chat.freenode.net，网页没有反应，推测端口问题或者是网络节点问题。之后我在进入freenode.net后，按照说明使用了6667~6669的端口，均不能成功，于是打开手机VPN，等待之后成功进入聊天页面，输入给定的#0ctf2018进入聊天室，得到flag。<br><img src="/2018/03/31/CTF-Tests-3/B.png" alt=""><br><img src="/2018/03/31/CTF-Tests-3/C.png" alt=""><br><img src="/2018/03/31/CTF-Tests-3/D.png" alt=""><br><img src="/2018/03/31/CTF-Tests-3/E.png" alt=""></p>
-<h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><p><img src="/2018/03/31/CTF-Tests-3/F.png" alt=""><br>进入后尝试admin登陆，用BP字典Passworld爆破密码，结果长度均一致，转用注册功能注册admin，提示已经被注册，所以还是要用admin登陆来获得flag。根据提示创建admin,在其后增加若干空格后进入，得到flag。<br><img src="/2018/03/31/CTF-Tests-3/G.png" alt=""></p>
-<h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><p><img src="/2018/03/31/CTF-Tests-3/H.png" alt=""><br>要求2秒内进行计算。用PY脚本：<br>import requests<br>import re<br>url = ‘<a href="http://120.24.86.145:8002/qiumingshan/" target="_blank" rel="noopener">http://120.24.86.145:8002/qiumingshan/</a>‘<br>s = requests.Session()<br>source = s.get(url)<br>expression = re.search(r’(\d+[+-*])+(\d+)’, source.text).group()<br>result = eval(expression)<br>post = {‘value’: result}<br>print(s.post(url, data = post).text)<br>运行后可得到flag。<br><img src="/2018/03/31/CTF-Tests-3/I.png" alt=""></p>
-<h2 id="4"><a href="#4" class="headerlink" title="4."></a>4.</h2><p><img src="/2018/03/31/CTF-Tests-3/J.png" alt=""><br>用BP抓包后得到flag的信息，从末尾的“=”得知应该是一个base64编码，解码后得到的结果继续解码<br><img src="/2018/03/31/CTF-Tests-3/K.png" alt=""><br><img src="/2018/03/31/CTF-Tests-3/L.png" alt=""><br>用Py脚本解出flag。<br>import requests import base64<br>url =’<a href="http://120.24.86.145:8002/web6/" target="_blank" rel="noopener">http://120.24.86.145:8002/web6/</a>‘<br>r =requests.session()<br>headers = r.get(url).headers<br>key = base64.b64decode(base64.b64decode(headers[‘flag’]).split(‘:’)[1])<br>data={‘margin’:key}<br>print r.post(url=url,data=data).content</p>
-<h2 id="5"><a href="#5" class="headerlink" title="5."></a>5.</h2><p><img src="/2018/03/31/CTF-Tests-3/M.png" alt=""><br>CTF故事汇……BP抓包后发现文本中的链接是个真的链接，打开后发现是php中md5()函数漏洞和strcmp()函数漏洞的利用，MD5不能处理数组，有时也可以用数组绕过。同时strcmp（）函数也可用数组绕过，构造payload，进入<a href="http://47.93.190.246:49162/?v1[]=1&amp;v2[]=2&amp;v3[]=1" target="_blank" rel="noopener">http://47.93.190.246:49162/?v1[]=1&amp;v2[]=2&amp;v3[]=1</a> ，出现flag。<br><img src="/2018/03/31/CTF-Tests-3/N.png" alt=""><br><img src="/2018/03/31/CTF-Tests-3/O.png" alt=""></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-一些密码学解密网站"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/03/29/一些密码学解密网站/">一些密码学解密网站</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/03/29/一些密码学解密网站/" class="article-date">
-	  <time datetime="2018-03-29T14:53:00.000Z" itemprop="datePublished">2018-03-29</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>资料来源网络，持续更新。<br>URL[<a href="http://tool.chinaz.com/tools/urlencode.aspx" target="_blank" rel="noopener">http://tool.chinaz.com/tools/urlencode.aspx</a>];</p>
-<p>JSFuck[<a href="http://discogscounter.getfreehosting.co.uk/js-noalnum.php?i=1" target="_blank" rel="noopener">http://discogscounter.getfreehosting.co.uk/js-noalnum.php?i=1</a>];</p>
-<p>Base64[<a href="http://www1.tc711.com/tool/BASE64.htm" target="_blank" rel="noopener">http://www1.tc711.com/tool/BASE64.htm</a>];</p>
-<p>Base64(img)[<a href="http://www.vgot.net/test/image2base64.php" target="_blank" rel="noopener">http://www.vgot.net/test/image2base64.php</a>];</p>
-<p>Base32[<a href="https://tools.deamwork.com/crypt/decrypt/base32decode.html" target="_blank" rel="noopener">https://tools.deamwork.com/crypt/decrypt/base32decode.html</a>];</p>
-<p>String[<a href="http://www.5ixuexiwang.com/str/" target="_blank" rel="noopener">http://www.5ixuexiwang.com/str/</a>];</p>
 
       
     </div>

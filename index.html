@@ -676,6 +676,209 @@
 <!-- Table of Contents -->
 
   
+    <article id="post-基于卷积神经网络的面部年龄识别"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/05/26/基于卷积神经网络的面部年龄识别/">基于卷积神经网络的面部年龄识别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/05/26/基于卷积神经网络的面部年龄识别/" class="article-date">
+	  <time datetime="2021-05-26T15:13:00.000Z" itemprop="datePublished">2021-05-26</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="1-训练模型和框架"><a href="#1-训练模型和框架" class="headerlink" title="1.训练模型和框架"></a>1.训练模型和框架</h2><h3 id="1-1-Adience数据集"><a href="#1-1-Adience数据集" class="headerlink" title="1.1 Adience数据集"></a>1.1 Adience数据集</h3><p>Adience图片集包括Flickr等相册，通过从iPhone5（或更高版本）的智能手机等移动设备自动上传并进行组装，由其作者根据知识共享（CC）许可向公众发布。数据集提供了共计26580张面部照片的数据和基准，旨在尽可能真实地应对实际成像并做出判断。数据的标签有年龄组、性别、户外等，可用于监督学习的人脸识别对年龄的研究。Adience收录的数据信息包括主体外观、动作、噪点、光线等实际情况中进行图像采集时包含的动态变化，具有环境适应性强、应用范围广的特点。</p>
+<h3 id="1-2-Caffe框架"><a href="#1-2-Caffe框架" class="headerlink" title="1.2 Caffe框架"></a>1.2 Caffe框架</h3><p>Caffe（Convolutional Architecture for Fast Feature Embedding）采用CUDA架构，可在CPU和GPU上进行高速运算，是一个兼具了效率、表达和思维模块化的卷积神经网络框架。</p>
+<p>Caffe的数据结构以Blobs-Layers-Net的形式存在。</p>
+<p>Blobs是Caffe的核心数据格式，提供了统一的内存接口，并且可以在CPU与GPU之间进行数据同步。主要通过四维张量（Number<em>Channel</em>weight*high）的形式，按照C-contiguous方式（数组的行存储连续且不间断）来存储和交流网络中的权重、激活值、正反向数据。</p>
+<p>Layers是Caffe模型的关键内容，是组成神经网络和进行相关计算的基础。所有的Layer层都可以接收底层输入的Blobs，并向高层输出Blobs。Layers每一层都定义三种重要的计算：初始化（Setup）、向前传播（Forward）、向后传播（Backward）。</p>
+<p>其包含的运算有：</p>
+<p><strong>·</strong> 1.<font color="orange">load data</font>：数据载入</p>
+<p><strong>·</strong> 2.<font color="orange">Convolve filters</font>：卷积层，进行卷积。</p>
+<p><strong>·</strong> 3.<font color="orange">Pooling</font>：池化层，进行池化。</p>
+<p><strong>·</strong> 4.<font color="orange">Nonlinearities</font>：非线性映射运算，即激活函数。</p>
+<p><strong>·</strong> 5.<font color="orange">Inner Products</font>：内积运算。</p>
+<p><strong>·</strong> 6.<font color="orange">Normalize</font>：归一化</p>
+<p><strong>·</strong> 7.<font color="orange">Compute losses</font>：损失函数计算，如softmax、hinge。</p>
+<p>Net是一个由一系列连接的Layer层组成的有向无环图（Directed Acyclic Graph，DAG）。caffe会在向前传播或向后传播时，对DAG中的所有层进行记录，确保其准确性。</p>
+<h2 id="2-基于卷积神经网络的人脸识别"><a href="#2-基于卷积神经网络的人脸识别" class="headerlink" title="2.基于卷积神经网络的人脸识别"></a>2.基于卷积神经网络的人脸识别</h2><h3 id="2-1-卷积神经网络架构"><a href="#2-1-卷积神经网络架构" class="headerlink" title="2.1 卷积神经网络架构"></a>2.1 卷积神经网络架构</h3><p>使用的架构包括3个卷积层、2个全连接层和1个最终输出层。具体定义卷积层如下：</p>
+<p>1.Conv1：将内核大小为3<em>3</em>7的共计96个像素节点的过滤应用于输入第一卷积层中，经过修正线性单元ReLU（激活函数）处理后，池化层采用保留最大值（max-pooling）的规则，选择一个两像素跨度的3*3区域中最大值，进行池化，再经过局部响应归一化层（Local Response Normalization，LRN）。</p>
+<p>2.Conv2：上一层的输出（96×28×28）由第二个卷积层进行处理，包括对256个大小为96<em>5</em>5的像素过滤。同样的，经过一个修正线性单元ReLU，最大池化层，和一个与之前参数相同的局部响应归一化层。</p>
+<p>3.Conv3：第三层卷积层通过对一组384个大小为256<em>3</em>3的像素过滤来对256×14×14的 Blob进行处理，接着经过修正线性单元ReLU和一个最大池化层。</p>
+<p>再通过下列方式定义完全连接层：</p>
+<p>1.第一个完全连接层包含了512个人工神经元，用于接收第三卷积层的输出结果。接着再通过修正线性单元ReLU和Dropout层（防止CNN过拟合）。</p>
+<p>2.第二个完全连接层接收第一个完全连接层的512个人工神经元空间大小的输出（同样包含512个人工神经元），再通过修正线性单元ReLU和Dropout层。</p>
+<p>3.第三层完全连接层映射最终的分类结果。</p>
+<p>最终，最后一个完全连接层的输出会被反馈到为每个类别分配概率的Softmax层，预测其本身通过给定的测试图像的最大概率。</p>
+<p><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/A.png" alt=""></p>
+<h3 id="2-2-年龄预测"><a href="#2-2-年龄预测" class="headerlink" title="2.2 年龄预测"></a>2.2 年龄预测</h3><p>人的面部特征无时不刻发生着微妙变化反映出其年龄的不断增长，在最理想的情况之下，人的面部特征随着人的成长应该表现出正相关的关系，那么年龄估计就是一个广义上的回归问题。然而实际上仅通过回归的方法来判断一个人的年龄是靠不住的，即便一个正常的自然人也很难推断出观察对象的准确实际年龄。</p>
+<p>但是人眼可以对观察对象做出一个大致判断，较为准确的预测出对方的年龄所在区间。这样，就对对方的年龄有了初步估计。这样，就可以对年龄区间进行一个分类，以进一步研究人脸和年龄的关系。</p>
+<p>Adience数据集将人的年龄划分为了八个类别，分别为：[0-2]、[4-6]、[8-13]、[15-20]、[25-32]、[38-43]、[48-53]、[60 -]。因此，深度神经网络在最终的Softmax层中有8个节点，分别对各年龄段进行分类。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MODEL_MEAN_VALUES = (<span class="number">78.4263377603</span>, <span class="number">87.7689143744</span>, <span class="number">114.895847746</span>)</span><br><span class="line">ageList = [<span class="string">'(0-2)'</span>, <span class="string">'(4-6)'</span>, <span class="string">'(8-12)'</span>, <span class="string">'(15-20)'</span>, <span class="string">'(25-32)'</span>, <span class="string">'(38-43)'</span>, <span class="string">'(48-53)'</span>, <span class="string">'(60-100)'</span>]</span><br></pre></td></tr></table></figure></p>
+<p>Blob输入网络进行年龄的检测，并且年龄检测程序向前传播。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ageNet.setInput(blobs)</span><br><span class="line">agepredction = ageNet.forward()</span><br><span class="line">age = ageList[agepredction[<span class="number">0</span>].argmax()]</span><br></pre></td></tr></table></figure></p>
+<h2 id="3-计算机视觉技术与系统的运行测试"><a href="#3-计算机视觉技术与系统的运行测试" class="headerlink" title="3.计算机视觉技术与系统的运行测试"></a>3.计算机视觉技术与系统的运行测试</h2><h3 id="3-1-OpenCV"><a href="#3-1-OpenCV" class="headerlink" title="3.1 OpenCV"></a>3.1 OpenCV</h3><p>OpenCV是基于伯克利软件套件（Berkeley Software Distribution，BSD）许可发行的一个开源的跨平台计算机视觉库，其本身由C++语言和C函数编写，同时提供了Python、JAVA、MATLAB等语言的接口，能够运行计算机视觉的一系列算法，对图像进行处理。</p>
+<p>要在python环境下使用OpenCV视觉库，可以通过pip执行命令“pip install opencv-python“来安装OpenCV模块。</p>
+<p>安装完成以后，在Python中导入模块。</p>
+<h3 id="3-2-图像侦测"><a href="#3-2-图像侦测" class="headerlink" title="3.2 图像侦测"></a>3.2 图像侦测</h3><p>使用OpenCV中的DNN人脸侦测模块对人脸的图像进行侦测和获取，OpenCV为该检测器提供了Caffe实施的16位浮点数版本。其优点有：</p>
+<p><strong>·</strong> 1.在CPU上实时运行。</p>
+<p><strong>·</strong> 2.即使在严重遮挡下也可以工作。</p>
+<p><strong>·</strong> 3.能够检测各种比例的面部。</p>
+<p><strong>·</strong> 4.适用不同的脸部朝向，如上、下、左、右和侧面等。</p>
+<p>整个面部检测的功能使用函数“getFaceBox”完成，包含信号量参数“net“、图像参数“frame“和阈值参数“conf_threshold”。将图像转化为blob，其中“blobFromImage”函数用于减均值、图像缩放和进行通道交换（由于opencv中的图像存储都是基于BGR通道，所以需要将原本的RGB通道替换为BGR通道）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getFaceBox</span><span class="params">(net, frame, threshold_conf=<span class="number">0.7</span>)</span>:</span></span><br><span class="line">    bounding_OpencvDnn = frame.copy()</span><br><span class="line">    bounding_Height = bounding_OpencvDnn.shape[<span class="number">0</span>]</span><br><span class="line">    bounding_Width = bounding_OpencvDnn.shape[<span class="number">1</span>]</span><br><span class="line">    blobs = cv2.dnn.blobFromImage(bounding_OpencvDnn, <span class="number">1.0</span>, (<span class="number">300</span>, <span class="number">300</span>), [<span class="number">104</span>, <span class="number">117</span>, <span class="number">123</span>], <span class="keyword">True</span>, <span class="keyword">False</span>)</span><br></pre></td></tr></table></figure></p>
+<p>侦测人脸的网络向前传递。接着进行人脸识别框bounding box的绘制，设置bounding box的坐标分别为x1、y1，x2、y2。输出检测是一个4-D矩阵，其中i是面部的迭代器，第三维用于遍历检测到的面部数据，第四维包含了每个面的边界框和分数信息。由于识别框的输出坐标会在[0,1]间进行归一化，所以，为了获得正确的bounding box，需要将坐标再乘以原始图像的宽度和高度。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">net.setInput(blobs)</span><br><span class="line">detections = net.forward()</span><br><span class="line">bounding_bboxes = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(detections.shape[<span class="number">2</span>]):</span><br><span class="line">    confidence = detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">2</span>]</span><br><span class="line">    <span class="keyword">if</span> confidence &gt; threshold_conf:</span><br><span class="line">        x1 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">3</span>] * bounding_Width)</span><br><span class="line">        y1 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">4</span>] * bounding_Height)</span><br><span class="line">        x2 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">5</span>] * bounding_Width)</span><br><span class="line">        y2 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">6</span>] * bounding_Height)</span><br><span class="line">        bounding_bboxes.append([x1, y1, x2, y2])</span><br><span class="line">        cv2.rectangle(bounding_OpencvDnn, (x1, y1), (x2, y2), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), int(round(bounding_Height/<span class="number">150</span>)), <span class="number">8</span>)</span><br><span class="line"><span class="keyword">return</span> bounding_OpencvDnn, bounding_bboxes</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-3-输入"><a href="#3-3-输入" class="headerlink" title="3.3 输入"></a>3.3 输入</h3><p>将识别的源图片位置存放在字符串str当中，调用OpenCV中的函数imread()来读取图片，完成图像的输入。并截取文件的路径只保留文件名，方便后续输出。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">"C:\\Users\\elbadaernU9.9\\Desktop\\test.png"</span></span><br><span class="line">frame = cv2.imread(str)</span><br><span class="line">name = str[<span class="number">31</span>:]</span><br></pre></td></tr></table></figure></p>
+<p>使用OpenCV库，导入网络模型和预训练模型，在Caffe框架下对Adience数据集进行模型的训练。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">faceProto = <span class="string">"opencv_face_detector.pbtxt"</span></span><br><span class="line">faceModel = <span class="string">"opencv_face_detector_uint8.pb"</span></span><br><span class="line"></span><br><span class="line">ageProto = <span class="string">"age_deploy.prototxt"</span></span><br><span class="line">ageModel = <span class="string">"age_net.caffemodel"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="5-4-测试输出"><a href="#5-4-测试输出" class="headerlink" title="5.4 测试输出"></a>5.4 测试输出</h3><p>最后使用imshow()函数在输入的图像上显示网络的输出，包括识别框bounding box、分类（预测）的最终结果。为了使图像正常显示，需要添加一行代码“cv2.waitKey(1)”，并设置显示的时间为5秒。通过imwrite()函数保存输出的结果。至此，主要的年龄识别系统编写完成。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">label = <span class="string">"&#123;&#125;,&#123;&#125;"</span>.format(gender, age)</span><br><span class="line">cv2.putText(frameFace, label, (bounding_bbox[<span class="number">0</span>], bounding_bbox[<span class="number">1</span>]<span class="number">-10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.8</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>, cv2.LINE_AA)</span><br><span class="line">cv2.imshow(<span class="string">"Age &amp; Gender Prediction Demo"</span>, frameFace)</span><br><span class="line">cv2.imwrite(<span class="string">"age-gender-out-&#123;&#125;"</span>.format(args.input),frameFace)</span><br><span class="line">time.sleep(<span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/B.png" alt=""></p>
+<h3 id="5-5-拓展"><a href="#5-5-拓展" class="headerlink" title="5.5 拓展"></a>5.5 拓展</h3><p>系统初步的年龄估计功能实现以后，开始对系统进行进一步的优化和功能拓展。</p>
+<p>由于原系统的图像输入是以保存的图片形式导入的，在实际应用当中没有事先保存源图像文件的情况下就会有诸多不便。所以尝试将图像的输入形式做一个动态的拓展，由静态的图片形式补充为摄像头动态捕捉人像。</p>
+<p>通过调用OpenCV启动摄像头的函数，使系统自动捕获人脸，同时保留图片输入的功能（使用Dos命令实现）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cap = cv2.VideoCapture(args.input <span class="keyword">if</span> args.input <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">padding = <span class="number">20</span></span><br><span class="line"><span class="keyword">while</span> cv2.waitKey(<span class="number">1</span>) &lt; <span class="number">0</span>:</span><br><span class="line">    t = time.time()</span><br><span class="line">    hasFrame, frame = cap.read()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> hasFrame:</span><br><span class="line">        cv2.waitKey()</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/C.png" alt=""><br>由于Adience数据集同样包含了性别的标签，可以在年龄估计的同时为系统添加性别预测功能的代码。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">genderProto = <span class="string">"gender_deploy.prototxt"</span></span><br><span class="line">genderModel = <span class="string">"gender_net.caffemodel"</span></span><br><span class="line"></span><br><span class="line">genderList = [<span class="string">'Male'</span>, <span class="string">'Female'</span>]</span><br><span class="line">genderNet = cv2.dnn.readNet(genderModel, genderProto)</span><br><span class="line"></span><br><span class="line">genderNet.setInput(blobs)</span><br><span class="line">genderPredction = genderNet.forward()</span><br><span class="line"></span><br><span class="line">label = <span class="string">"&#123;&#125;,&#123;&#125;"</span>.format(gender, age)</span><br></pre></td></tr></table></figure></p>
+<p>完成后在Pycharm中将项目封装为.exe可执行文件。</p>
+<p><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/D.png" alt=""><br><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/E.png" alt=""><br>得到最终的运行结果如下：</p>
+<p><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/F.png" alt=""><br><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/G.png" alt=""><br>完整的人脸识别程序代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getFaceBox</span><span class="params">(net, frame, threshold_conf=<span class="number">0.7</span>)</span>:</span></span><br><span class="line">    bounding_OpencvDnn = frame.copy()</span><br><span class="line">    bounding_Height = bounding_OpencvDnn.shape[<span class="number">0</span>]</span><br><span class="line">    bounding_Width = bounding_OpencvDnn.shape[<span class="number">1</span>]</span><br><span class="line">    blobs = cv2.dnn.blobFromImage(bounding_OpencvDnn, <span class="number">1.0</span>, (<span class="number">300</span>, <span class="number">300</span>), [<span class="number">104</span>, <span class="number">117</span>, <span class="number">123</span>], <span class="keyword">True</span>, <span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">    net.setInput(blobs)</span><br><span class="line">    detections = net.forward()</span><br><span class="line">    bounding_bboxes = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(detections.shape[<span class="number">2</span>]):</span><br><span class="line">        confidence = detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">2</span>]</span><br><span class="line">        <span class="keyword">if</span> confidence &gt; threshold_conf:</span><br><span class="line">            x1 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">3</span>] * bounding_Width)</span><br><span class="line">            y1 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">4</span>] * bounding_Height)</span><br><span class="line">            x2 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">5</span>] * bounding_Width)</span><br><span class="line">            y2 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">6</span>] * bounding_Height)</span><br><span class="line">            bounding_bboxes.append([x1, y1, x2, y2])</span><br><span class="line">            cv2.rectangle(bounding_OpencvDnn, (x1, y1), (x2, y2), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), int(round(bounding_Height/<span class="number">150</span>)), <span class="number">8</span>)</span><br><span class="line">    <span class="keyword">return</span> bounding_OpencvDnn, bounding_bboxes</span><br><span class="line"></span><br><span class="line">parser = argparse.ArgumentParser(description=<span class="string">'Use this script to run age and gender recognition using OpenCV.'</span>)</span><br><span class="line">parser.add_argument(<span class="string">'--input'</span>, help=<span class="string">'Path to input image or video file. Skip this argument to capture frames from a camera.'</span>)</span><br><span class="line"></span><br><span class="line">args = parser.parse_args()</span><br><span class="line"></span><br><span class="line">faceProto = <span class="string">"opencv_face_detector.pbtxt"</span></span><br><span class="line">faceModel = <span class="string">"opencv_face_detector_uint8.pb"</span></span><br><span class="line"></span><br><span class="line">ageProto = <span class="string">"age_deploy.prototxt"</span></span><br><span class="line">ageModel = <span class="string">"age_net.caffemodel"</span></span><br><span class="line"></span><br><span class="line">genderProto = <span class="string">"gender_deploy.prototxt"</span></span><br><span class="line">genderModel = <span class="string">"gender_net.caffemodel"</span></span><br><span class="line"></span><br><span class="line">MODEL_MEAN_VALUES = (<span class="number">78.4263377603</span>, <span class="number">87.7689143744</span>, <span class="number">114.895847746</span>)</span><br><span class="line">ageList = [<span class="string">'(0-2)'</span>, <span class="string">'(4-6)'</span>, <span class="string">'(8-12)'</span>, <span class="string">'(15-20)'</span>, <span class="string">'(25-32)'</span>, <span class="string">'(38-43)'</span>, <span class="string">'(48-53)'</span>, <span class="string">'(60-100)'</span>]</span><br><span class="line">genderList = [<span class="string">'Male'</span>, <span class="string">'Female'</span>]</span><br><span class="line"><span class="comment">#genderList.decode("utf-8")</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Load network</span></span><br><span class="line">ageNet = cv2.dnn.readNet(ageModel, ageProto)</span><br><span class="line">genderNet = cv2.dnn.readNet(genderModel, genderProto)</span><br><span class="line">faceNet = cv2.dnn.readNet(faceModel, faceProto)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Open a video file or an image file or a camera stream</span></span><br><span class="line">cap = cv2.VideoCapture(args.input <span class="keyword">if</span> args.input <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">padding = <span class="number">20</span></span><br><span class="line"><span class="keyword">while</span> cv2.waitKey(<span class="number">1</span>) &lt; <span class="number">0</span>:</span><br><span class="line">    <span class="comment"># Read frame</span></span><br><span class="line">    t = time.time()</span><br><span class="line">    hasFrame, frame = cap.read()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> hasFrame:</span><br><span class="line">        cv2.waitKey()</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    frameFace, bounding_bboxes = getFaceBox(faceNet, frame)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> bounding_bboxes:</span><br><span class="line">        print(<span class="string">"No face Detected, Checking next frame"</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> bounding_bbox <span class="keyword">in</span> bounding_bboxes:</span><br><span class="line">        print(<span class="string">"=====================================Face Found====================================="</span>)</span><br><span class="line">        <span class="comment"># print(bounding_bbox)</span></span><br><span class="line">        face = frame[max(<span class="number">0</span>,bounding_bbox[<span class="number">1</span>]-padding):min(bounding_bbox[<span class="number">3</span>]+padding,frame.shape[<span class="number">0</span>]<span class="number">-1</span>),max(<span class="number">0</span>,bounding_bbox[<span class="number">0</span>]-padding):min(bounding_bbox[<span class="number">2</span>]+padding, frame.shape[<span class="number">1</span>]<span class="number">-1</span>)]</span><br><span class="line"></span><br><span class="line">        blobs = cv2.dnn.blobFromImage(face, <span class="number">1.0</span>, (<span class="number">227</span>, <span class="number">227</span>), MODEL_MEAN_VALUES, swapRB=<span class="keyword">False</span>)</span><br><span class="line">        genderNet.setInput(blobs)</span><br><span class="line">        genderPredction = genderNet.forward()</span><br><span class="line">        gender = genderList[genderPredction[<span class="number">0</span>].argmax()]</span><br><span class="line">        <span class="comment"># print("Gender Output : &#123;&#125;".format(genderPredction))</span></span><br><span class="line"></span><br><span class="line">        print(<span class="string">"Gender : &#123;&#125;, conf = &#123;:.3f&#125;"</span>.format(gender, genderPredction[<span class="number">0</span>].max()))</span><br><span class="line"></span><br><span class="line">        ageNet.setInput(blobs)</span><br><span class="line">        agepredction = ageNet.forward()</span><br><span class="line">        age = ageList[agepredction[<span class="number">0</span>].argmax()]</span><br><span class="line"></span><br><span class="line">        print(<span class="string">"Age Output : &#123;&#125;"</span>.format(agepredction))</span><br><span class="line">        print(<span class="string">"Age : &#123;&#125;, conf = &#123;:.3f&#125;"</span>.format(age, agepredction[<span class="number">0</span>].max()))</span><br><span class="line"></span><br><span class="line">        label = <span class="string">"&#123;&#125;,&#123;&#125;"</span>.format(gender, age)</span><br><span class="line">        cv2.putText(frameFace, label, (bounding_bbox[<span class="number">0</span>], bounding_bbox[<span class="number">1</span>]<span class="number">-10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.8</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>, cv2.LINE_AA)</span><br><span class="line">        cv2.imshow(<span class="string">"Age &amp; Gender Prediction Demo"</span>, frameFace)</span><br><span class="line">        <span class="comment"># cv2.imwrite("age-gender-out-&#123;&#125;".format(args.input),frameFace)</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"time : &#123;:.3f&#125;"</span>.format(time.time() - t))</span><br><span class="line">    print(<span class="string">"=====================================Round Over====================================="</span>)</span><br></pre></td></tr></table></figure></p>
+<p>(本文节选自我的毕业论文，有删改)<br>相关代码和训练集已打包至github：<a href="https://github.com/elbadaernU404/AgeGenderPredictionDemo" target="_blank" rel="noopener">https://github.com/elbadaernU404/AgeGenderPredictionDemo</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-卷积神经网络算法"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/05/25/卷积神经网络算法/">卷积神经网络算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/05/25/卷积神经网络算法/" class="article-date">
+	  <time datetime="2021-05-25T05:01:35.000Z" itemprop="datePublished">2021-05-25</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>神经网络(Neural Networks，NN)是人工智能研究领域的重要组成部分，是大数据与人工智能技术发展的重要动力。</p>
+<h2 id="1-卷积神经网络"><a href="#1-卷积神经网络" class="headerlink" title="1.卷积神经网络"></a>1.卷积神经网络</h2><p>卷积神经网络属于机器学习领域当中的深度学习技术，是一类包含了卷积计算并且具有深度结构的前馈神经网络（Feedforward Neural Networks）。由纽约大学教授Yann LeCun在1998年提出，主要应用于语音识别、计算机视觉、自然语言处理等领域。</p>
+<p>其本质上是一个采用了局部连接和权值共享方式的多层感知机，包括一般的卷积神经网络（CNN）和深度卷积神经网络（Deep Convolutional Neural Networks, DCNN），通常不做特意区分。一般的卷积神经网络存在浅层结构，但准确性和表现力相对不足，深度卷积神经网络可以自动从大规模的数据中进行特征学习，且具备将结果向同类型的未知数据泛化的能力，是目前最常用的神经网络技术。</p>
+<h2 id="2-卷积神经网络原理"><a href="#2-卷积神经网络原理" class="headerlink" title="2.卷积神经网络原理"></a>2.卷积神经网络原理</h2><h3 id="2-1-卷积原理"><a href="#2-1-卷积原理" class="headerlink" title="2.1 卷积原理"></a>2.1 卷积原理</h3><p>从数学的角度出发，分析数学中定义一种运算，称(f*g)(n)为(f，g)的卷积（Convolution）。其连续的定义为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/A.png" alt=""><br>其离散的定义为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/B.png" alt=""></p>
+<p>其连续和离散具有共同的特征：n=τ+(n-τ)，当令x=τ，y=n-τ时，有直线：x+y=n，其图像为如下图：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/C.png" alt=""><br>如果遍历这些直线，就类似于沿直线卷起毛巾的过程。</p>
+<p>下面将卷积扩展到二维，有两个R2→R的二元函数f(x，y)和g(x，y)，那么令f和g的卷积就是一个新的R2→R的二元函数c(x，y)：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/D.png" alt=""><br>其含义为将f在(s，t)上的值乘以g在(x-s，y-t)上的值，再遍历从-∞到+∞全部s和t的值，进行f和g积分意义上的加和，最终得到c在(x，y)上的值（二重积分）。</p>
+<p>可以看出这种加和是一种加权求和，即以f为权，(x，y)为中心，将f在(s，t)上的值乘以g距离中心(-s，-t)上的值再相加。</p>
+<p>其离散的表示形式为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/E.png" alt=""></p>
+<h3 id="2-2-神经元"><a href="#2-2-神经元" class="headerlink" title="2.2 神经元"></a>2.2 神经元</h3><p>神经细胞有众多的树突和一个伸长的轴突，不同神经元之间通过树突连接轴突的方式，并通过神经脉冲的传导进行细胞间交流。具体过程为神经细胞A的轴突连接到神经细胞B的树突，传导神经脉冲，神经细胞A根据其树突传递来的信号决定是否通过轴突来向下一个神经细胞C传递信息。</p>
+<p>1943年，美国心理学家W.McCulloch和数学家W.Pitts根据生物神经元、生物电和生物化学的运行机理提出了二值神经元的数学模型，即神经细胞机能的简单化的数理模型，被称作莫克罗-彼特氏神经模型（McCulloch－Pitts′Neuron Model），也叫人工神经元模型。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/F.png" alt=""><br>一个人工神经元模型就是对生物神经元的数学建模：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/G.png" alt=""><br>其中X1、X2、X3、…、Xn分别是从其他神经元传入的输入信号，Wi1、Wi2、Wi3、…、Win分别是对应X1、X2、X3、…、Xn的权重。θ表示一个阈值，或称为偏置（Bias），其设置目的是正确将样本分类。神经元当前的输入信号和偏置相加后产生当前神经元的最终处理信号Net，称为净激活或净激励（Net Activation），并作为激活函数或激励函数（Activation Function）f的输入，即f（net），最终得到对应的输出yi。形如：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/H.png" alt=""><br>激活函数<strong>f（net）</strong>的作用是通过加入非线性因素来解决线性模型的表达和分类能力不足的问题。常见的激活函数有：</p>
+<h4 id="1-Linear"><a href="#1-Linear" class="headerlink" title="1.Linear"></a>1.Linear</h4><p>Linear是一个线性激活函数：<strong>f(x)=∑i xiwi+b</strong>。本质上就是对输入的加权求和再加上偏置，所以相对简单，功能较为单一。</p>
+<p>由于多个矩阵进行连乘的结果仍是矩阵，类似的，如果一个神经网络中仅使用线性激活函数，那么就只能学习到线性函数。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/I.png" alt=""></p>
+<h4 id="2-Sigmoid"><a href="#2-Sigmoid" class="headerlink" title="2.Sigmoid"></a>2.Sigmoid</h4><p>Sigmoid是在神经网络研究的初始阶段就被投入了广泛使用的一个经典的非线性激活函数，其表达式是一种逻辑斯蒂函数（Logistic Function）：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/J.png" alt=""><br>其中<strong>x=∑i xiwi+b</strong></p>
+<p>这个函数在函数的区域内是完全可导的，输出为0到1范围内的正值（被证实不易于神经网络对收敛的学习），并且对于接近0和1的函数部分，导数无限趋近于0，存在明显的梯度衰减问题。所以现阶段对Sigmod函数的应用已经越来越少。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/K.png" alt=""></p>
+<h4 id="3-Tanh"><a href="#3-Tanh" class="headerlink" title="3.Tanh"></a>3.Tanh</h4><p>通过其图像可以看出Tanh函数旨在克服Sigmoid函数只能取正值的缺陷，将其设计为关于原点对称的双曲正切（hyperbolic tangent）形式：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/L.png" alt=""><br>其中<strong>x=∑i xiwi+b</strong>。函数的导数取值范围在0到1之间，优于sigmoid的0至1/4，在一定程度上减轻了梯度的消失。但函数的两端仍然存在梯度饱和问题，且计算变得更为复杂。</p>
+<p>Tanh的输入和输出能够保持非线性单调上升和下降的关系，符合BP算法网络的梯度求解，容错性好。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/M.png" alt=""></p>
+<h4 id="4-ReLU-（The-Rectified-Linear-Unit）"><a href="#4-ReLU-（The-Rectified-Linear-Unit）" class="headerlink" title="4.ReLU （The Rectified Linear Unit）"></a>4.ReLU （The Rectified Linear Unit）</h4><p>其公式的表达形式为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/N.png" alt=""><br>也可以表示为<strong>f(x)=max(0,x)</strong>。即当输入信号小于0时，函数的输出为0；当输入信号大于0时，函数的输出等于输入值。</p>
+<p>ReLU拥有操作简便，耗时少的优点，又具有部分线性的特性，不会出现过饱和现象、减免了梯度消失的问题（函数得到的随机梯度下降法的收敛速度比Sigmoid和Tanh都快）。并且ReLU只需要一个阈值就可以得到激活值，不用和Sigmoid一样进行复杂的指数运算。但其神经元比价脆弱容易失去作用：当神经元接收到非常大的梯度数据流以后，该神经元可能就不再对输入数据进行反馈了，所以在进行训练时要设置一个较小的学习率参数。ReLU是目前用于神经网络领域最常见的激活函数之一。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/O.png" alt=""><br>这就是单个人工神经元的定义。但是早期的单个人工神经元模型甚至无法处理异或等运算，在多个人工神经元发展为神经网络之后逐渐克服了这些问题和种种困难，成为现代人工智能的重要模型。</p>
+<h3 id="2-3-神经网络"><a href="#2-3-神经网络" class="headerlink" title="2.3 神经网络"></a>2.3 神经网络</h3><p>神经网络（NN），又叫人工神经网络（Artificial Neural Networks， ANN），是一个历史悠久的计算模型。</p>
+<p>进行上述过程的推演，将一个人工神经元的输出作为另一个人工神经元的输入，一定数量的这样的人工神经元就连接成人工神经网络。人工神经网络具有多种拓扑结构，其中“多层全连接前向神经网络”结构相对简便：将输入连接到网络第一层的每个神经元上，前一层的每个神经元的输出再连接到下一层的每个神经元的输入上，这样最后一层神经元的输出就可以作为整个神经网络的输出来使用。</p>
+<p>图例为一个3层的神经网络结构，第1层称为输入层，第2层称为隐藏层，第三层称为输出层。其包含了10个输入端（10元向量），第1、2层各有12个神经元，最后一层有6个神经元，那么该结构的神经网络最终输出的就是一个6元向量。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/P.png" alt=""><br>关于整个神经网络的计算可以通过矩阵式表出（单层神经网络的表达式）。假设神经网络拥有n个神经元的第i层收到m个输入，可以表示为下列形式：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/Q.png" alt=""><br>如果每层神经元的个数不同，那么，输入/输出的维度也不相同，但整体形式保持一致。O^i是n元的输出向量，由于神经网络的第i层共有n个神经元，那么第i层的输入（即第i-1层的输出）是一个m元向量。权值矩阵w是n x m的矩阵：n个神经元中每个神经元包含m个权值。w乘以第i - 1层输出的m向量，可以得到n向量，再加上n元偏置向量b，对结果的每一个元素施以激活函数f，最后就得到第i层的n元输出向量。</p>
+<h3 id="3-卷积神经网络结构"><a href="#3-卷积神经网络结构" class="headerlink" title="3.卷积神经网络结构"></a>3.卷积神经网络结构</h3><h4 id="3-1-图像的输入和特征提取"><a href="#3-1-图像的输入和特征提取" class="headerlink" title="3.1 图像的输入和特征提取"></a>3.1 图像的输入和特征提取</h4><p>对于一幅图像，全连接神经网络（Fully Connected Neural Network）可以通过将其平整化为数组，并把像素值作为预测图像中数值的特征。</p>
+<p>经典的神经网络模型，需要对整幅目标图像进行读取来将其作为神经网络的输入，即全连接模式。如果目标图像的尺寸非常大，那么在连接过程中的参数过多，会导致数据计算量非常大，使得网络理解图像信息变得更加困难。</p>
+<p>类比人类对外部环境的感知过程，通常是一个从局部到全部的过程，图像中的空间关系也类似这样，局部范围内像素之间的联系较为紧密，而距离较远的像素之间相关性较弱。所以，各个神经元不需要对整幅图像进行感知，只需对图像的各部分进行感知，然后在更高层将局部信息拼接完整，这样综合起来同样能够获取全局信息。这样的感知模式就是卷积神经网络模型中降低参数数目的重要方法：局部感受野（Local Receptive Fields）。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/R.png" alt=""><br>假设输入图像为字母X和O的图片，通过局部感受野来提取图像的特征。对于CNN的对比模式，CNN是通过一小块一小块的对比在图像中大致相同的位置找到一些粗略的特征进行匹配。相比较传统的整图逐一对比方式，CNN的小块匹配模式能更好的比较出图像之间的相似性。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/S.png" alt=""><br>以字母x为例，用像素值“1”表示白色，用像素值“-1”表示灰色，可以提取出三个重要的特征：1个中心交叉线，两个斜边对角线：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/T.png" alt=""></p>
+<h4 id="3-2-卷积层"><a href="#3-2-卷积层" class="headerlink" title="3.2 卷积层"></a>3.2 卷积层</h4><p>卷积神经网络中的第一层始终是卷积层（除去输入层）。当开始对一张图片进行识别时，CNN并不能立即对需要识别的部分进行准确匹配，而是首先对源文件的每个位置进行尝试性匹配，将匹配的目标特征作为一个过滤器，从而处理掉匹配度低的部分。这个操作就是卷积操作。</p>
+<p>在这个字母识别案例当中，要计算一个特征和其在字母“X”的原图上对应的某一小块的结果，可以将两个小块内对应位置的像素值进行乘法运算，再将整个小块内乘法运算的结果累加起来，除以小块内像素点总个数。</p>
+<p>这样，不论匹配的两个像素点的颜色均为白色或者灰色，它们的乘积结果1×1和(-1)×(1)都为1，说明每一对能够匹配成功的像素，其结果恒为1。类似的，不能完全匹配的结果乘积则为1×(-1)=-1。相关步骤如下：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/U.png" alt=""><br>通过卷积的计算，第一块特征完成匹配后结果为1。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/V.png" alt=""><br>类似的，将第一块特征与其他部分进行匹配，得到匹配后的结果。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/W.png" alt=""><br>以此类推，对三个特征不断重复上述步骤，通过对每个特征的卷积操作，最终得到一个称为feature map的新二维数组。其中值的含义是越接近1的值表示该对应位置和特征的匹配越完整，越接近-1的值表示该对应位置和特征的反向匹配越完整，而接近0的值表示对应位置没有明显匹配或不相关。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/X.png" alt=""><br>可以预见，当图像的尺寸增大时，每一个卷积层的大小和卷积层的数目呈线性增长的关系，其内部的加法、乘法和除法操作的次数也会随之增加，计算量也会越庞大。</p>
+<h4 id="3-3-池化层（Pooling）"><a href="#3-3-池化层（Pooling）" class="headerlink" title="3.3 池化层（Pooling）"></a>3.3 池化层（Pooling）</h4><p>由于第一层卷积操作的匹配程序计算量较大，如果遇到数据量大的情况会严重影响卷积的效率。为了有效的减少这一步骤的计算，CNN会通过池化层的结构将输入的源图像文件进行必要的简化和缩放，尽可能的减少文件的像素信息，只保留必要的数据信息，减少内存消耗。</p>
+<p>池化层通常采用2*2像素的池化区域，按照一定的算法规则保留池化区域中的最大值（max-pooling）、均值（mean-pooling）等，并将结果作为区域的像素。</p>
+<p>下图显示了左上角2×2池化区域的max-pooling结果，取该区域的最大值max(0.77,-0.11,-0.11,1.00)，作为池化后的结果。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/Y.png" alt=""><br>类似的，池化区域向左移动，取第二块区域的取大值max(0.11,0.33,-0.11,0.33)，作为池化后的结果。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/Z.png" alt=""><br>以此类推，得到最终结果如下：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/0.png" alt=""><br>以同样的方式对所有feature map执行相同操作。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/1.png" alt=""><br>最大池化（max-pooling）保留了每一区域内的最大值，也就是相当于保留了这一块区域的最佳匹配结果（值越接近1表示匹配程度越高）。池化操作不会分析区域内具体完成匹配的部分，而是关注是否有某一部分能够匹配上。</p>
+<p>通过池化操作，图像被简化，在很大程度上减少了计算量，降低计算机负载。</p>
+<h4 id="3-4-激活函数"><a href="#3-4-激活函数" class="headerlink" title="3.4 激活函数"></a>3.4 激活函数</h4><p>激活函数通过加入非线性因素将卷积层的输出结果做非线性的映射。卷积层常用的激活函数有修正线性单元ReLU函数，其收敛速度较快，且梯度计算简单。ReLU函数的一般表达式近似于max(0，x)，即当x&lt;0时，输出结果恒为0，当x≥0时，输出结果为参数本身。</p>
+<p>下图为通过ReLU对feature map的处理，首先取max(0,0.77)，结果为0.77。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/2.png" alt=""><br>类似的，第二个值取max(0,-0.11)，结果为0。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/3.png" alt=""><br>以此类推，最终得到结果如下：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/4.png" alt=""></p>
+<h4 id="3-5-深度神经网络"><a href="#3-5-深度神经网络" class="headerlink" title="3.5 深度神经网络"></a>3.5 深度神经网络</h4><p>通过将卷积、激活函数、池化进行组合，得到一层简单的神经网络解构。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/5.png" alt=""><br>将卷积、池化、激活函数经过组合和拓展以后，层数增加，得到深度神经网络的结构。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/6.png" alt=""></p>
+<h4 id="3-6-全连接层（Fully-connected-layers）"><a href="#3-6-全连接层（Fully-connected-layers）" class="headerlink" title="3.6 全连接层（Fully connected layers）"></a>3.6 全连接层（Fully connected layers）</h4><p>全连接层相当于整个神经网络当中的“分类器”，数据经过卷积、池化、激活函数等深度网络以后，再通过全连接层对结果进行分类，获取识别的结果。由于神经网络技术是对有标签数据的一种监督学习，在模型的训练过程中，得到全连接层的权重，这样再通过模型对目标进行识别时，根据卷积、池化、激活函数等深度网络操作的结果和得到的权重进行加权求和，获取对各分类结果的预测值，选择最优结果即完成预测分类的任务。全连接层可以有多个。</p>
+<p>将经过卷积、激活函数、池化后的深度网络的结果串联起来，对字母进行识别判断。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/7.png" alt=""></p>
+<h4 id="3-7-卷积神经网络"><a href="#3-7-卷积神经网络" class="headerlink" title="3.7 卷积神经网络"></a>3.7 卷积神经网络</h4><p>再完成了卷积层、池化层、激活函数、深度神经网络、全连接层一系列的操作后，就得到了一个完整的卷积神经网络的结构。整体可划分为两大步骤，步骤一是经过卷积、池化和激活函数的特征提取，步骤二是通过组成深度神经网络和全连接层的特征识别和预测分类。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/8.png" alt=""><br>卷积神经网络在本质上是一种对输入输出映射关系的学习，特点是不需要掌握输入输出之间的明确关系或具体的函数表达式，而是利用其特征提取的模式对卷积网络加以训练，最终网络会具备输入输出之间映射的能力。</p>
+<p>（本文节选自我的毕业论文）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-实习项目：CRM管理系统"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -920,93 +1123,6 @@
 <p><img src="/2019/05/01/Python爬虫：获取yuehui163用户资料/B.png" alt="程序执行"></p>
 <h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><p>以并发方式爬取了共计约10000条数据后手动中止了，效率还是比较慢的，并且没有增加异常判断(比较顺利，没有发生中断的情况)</p>
 <p><img src="/2019/05/01/Python爬虫：获取yuehui163用户资料/C.png" alt="图片和文本"><br><img src="/2019/05/01/Python爬虫：获取yuehui163用户资料/D.png" alt="csv-1"><br><img src="/2019/05/01/Python爬虫：获取yuehui163用户资料/D.png" alt="csv-2"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Python的图片与字符画转换"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/04/10/Python的图片与字符画转换/">Python的图片与字符画转换</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/04/10/Python的图片与字符画转换/" class="article-date">
-	  <time datetime="2019-04-10T11:27:27.000Z" itemprop="datePublished">2019-04-10</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>总体思想为：将图片转换为灰度图片后,利用字符的“复杂程度”替换掉图片的内容，字符数组的“复杂程度”由大到小排列即可。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="（需要pip安装PIL库）"><a href="#（需要pip安装PIL库）" class="headerlink" title="（需要pip安装PIL库）"></a>（需要pip安装PIL库）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image </span><br><span class="line"><span class="keyword">import</span> argparse </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 命令行输入参数处理 </span></span><br><span class="line">parser = argparse.ArgumentParser() </span><br><span class="line">  </span><br><span class="line">parser.add_argument(<span class="string">'file'</span>)   <span class="comment"># 输入文件 </span></span><br><span class="line">parser.add_argument(<span class="string">'-o'</span>, <span class="string">'--output'</span>)  <span class="comment"># 输出文件 </span></span><br><span class="line">parser.add_argument(<span class="string">'--width'</span>, type=int, default=<span class="number">80</span>) <span class="comment"># 输出字符画宽 </span></span><br><span class="line">parser.add_argument(<span class="string">'--height'</span>, type=int, default=<span class="number">80</span>) <span class="comment"># 输出字符画高 </span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 获取参数 </span></span><br><span class="line">args = parser.parse_args() </span><br><span class="line">  </span><br><span class="line">IMG = args.file</span><br><span class="line">WIDTH = args.width </span><br><span class="line">HEIGHT = args.height </span><br><span class="line">OUTPUT = args.output </span><br><span class="line">  </span><br><span class="line">ascii_char = list(<span class="string">"$@B%8&amp;WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1&#123;&#125;[]?-_+~&lt;&gt;i!lI;:,\"^`'. "</span>) </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 将256灰度映射到70个字符上 </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_char</span><span class="params">(r, b, g, alpha=<span class="number">256</span>)</span>:</span> </span><br><span class="line">  <span class="keyword">if</span> alpha == <span class="number">0</span>: </span><br><span class="line">    <span class="keyword">return</span> <span class="string">' '</span></span><br><span class="line">  length = len(ascii_char) </span><br><span class="line">  gray = int(<span class="number">0.2126</span> * r + <span class="number">0.7152</span> * g + <span class="number">0.0722</span> * b) </span><br><span class="line">  </span><br><span class="line">  unit = (<span class="number">256.0</span> + <span class="number">1</span>)/length </span><br><span class="line">  <span class="keyword">return</span> ascii_char[int(gray/unit)] </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>: </span><br><span class="line">  </span><br><span class="line">  im = Image.open(IMG) </span><br><span class="line">  im = im.resize((WIDTH, HEIGHT), Image.NEAREST) </span><br><span class="line">  </span><br><span class="line">  txt = <span class="string">""</span> </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> range(HEIGHT): </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(WIDTH): </span><br><span class="line">      txt += get_char(*im.getpixel((j, i))) </span><br><span class="line">    txt += <span class="string">'\n'</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">print</span> (txt) </span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 字符画输出到文件 </span></span><br><span class="line">  <span class="keyword">if</span> OUTPUT: </span><br><span class="line">    <span class="keyword">with</span> open(OUTPUT,<span class="string">'w'</span>) <span class="keyword">as</span> f: </span><br><span class="line">      f.write(txt) </span><br><span class="line">  <span class="keyword">else</span>: </span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">"output.txt"</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f: </span><br><span class="line">      f.write(txt)</span><br></pre></td></tr></table></figure>
-<p>（稿）</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-DOSBox0-74-For-MASM"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/04/10/DOSBox0-74-For-MASM/">DOSBox0.74 For MASM</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/04/10/DOSBox0-74-For-MASM/" class="article-date">
-	  <time datetime="2019-04-10T11:26:12.000Z" itemprop="datePublished">2019-04-10</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>由于汇编的MASM是在32位环境下使用的，要在64位Windows环境下使用需要借助工具DOSBox。</p>
-<h2 id="DOSBox-0-74下载"><a href="#DOSBox-0-74下载" class="headerlink" title="DOSBox-0.74下载"></a>DOSBox-0.74下载</h2><p>地址：[<a href="https://pan.baidu.com/s/1wiAv0pwUhRavkM51pmdJCQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1wiAv0pwUhRavkM51pmdJCQ</a>]<br>（提取码：m0kx）</p>
-<h2 id="MASM下载"><a href="#MASM下载" class="headerlink" title="MASM下载"></a>MASM下载</h2><p>MASM文件夹内至少要包含debug/exe2bin/link/masm四个.exe文件。<br>地址：[<a href="https://pan.baidu.com/s/1MC75x01gKBxZwxmBuYq6fA" target="_blank" rel="noopener">https://pan.baidu.com/s/1MC75x01gKBxZwxmBuYq6fA</a>]<br>（提取码：4zu0）</p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>将DOSBox-0.74放进MASM文件夹内，找到DOSBox.exe文件双击打开，输入mount d d:\path,path可以为你的masm目录。<br>如果MASM文件夹下有编写好的.asm汇编指令，可以直接通过命令d:进入MASM，再输入masm，进入调试，输入.asm文件名称（可不写扩展名），依次link，debug完成。<br>效果如图：<br><img src="/2019/04/10/DOSBox0-74-For-MASM/A.png" alt=""><br><img src="/2019/04/10/DOSBox0-74-For-MASM/B.png" alt=""><br><img src="/2019/04/10/DOSBox0-74-For-MASM/C.png" alt=""></p>
 
       
     </div>

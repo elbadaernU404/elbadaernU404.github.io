@@ -258,6 +258,97 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-CTF-Tests-3"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/03/31/CTF-Tests-3/">CTF-Tests(3)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/31/CTF-Tests-3/" class="article-date">
+	  <time datetime="2018-03-31T13:02:45.000Z" itemprop="datePublished">2018-03-31</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p>2018年0ctf签到题<br><img src="/2018/03/31/CTF-Tests-3/A.png" alt=""><br>根据提示要求加入freenode网站的IRC(Internet Relay Chat)0ctf2018聊天室来获取flag。初次进入chat.freenode.net，网页没有反应，推测端口问题或者是网络节点问题。之后我在进入freenode.net后，按照说明使用了6667~6669的端口，均不能成功，于是打开手机VPN，等待之后成功进入聊天页面，输入给定的#0ctf2018进入聊天室，得到flag。<br><img src="/2018/03/31/CTF-Tests-3/B.png" alt=""><br><img src="/2018/03/31/CTF-Tests-3/C.png" alt=""><br><img src="/2018/03/31/CTF-Tests-3/D.png" alt=""><br><img src="/2018/03/31/CTF-Tests-3/E.png" alt=""></p>
+<h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><p><img src="/2018/03/31/CTF-Tests-3/F.png" alt=""><br>进入后尝试admin登陆，用BP字典Passworld爆破密码，结果长度均一致，转用注册功能注册admin，提示已经被注册，所以还是要用admin登陆来获得flag。根据提示创建admin,在其后增加若干空格后进入，得到flag。<br><img src="/2018/03/31/CTF-Tests-3/G.png" alt=""></p>
+<h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><p><img src="/2018/03/31/CTF-Tests-3/H.png" alt=""><br>要求2秒内进行计算。用PY脚本：<br>import requests<br>import re<br>url = ‘<a href="http://120.24.86.145:8002/qiumingshan/" target="_blank" rel="noopener">http://120.24.86.145:8002/qiumingshan/</a>‘<br>s = requests.Session()<br>source = s.get(url)<br>expression = re.search(r’(\d+[+-*])+(\d+)’, source.text).group()<br>result = eval(expression)<br>post = {‘value’: result}<br>print(s.post(url, data = post).text)<br>运行后可得到flag。<br><img src="/2018/03/31/CTF-Tests-3/I.png" alt=""></p>
+<h2 id="4"><a href="#4" class="headerlink" title="4."></a>4.</h2><p><img src="/2018/03/31/CTF-Tests-3/J.png" alt=""><br>用BP抓包后得到flag的信息，从末尾的“=”得知应该是一个base64编码，解码后得到的结果继续解码<br><img src="/2018/03/31/CTF-Tests-3/K.png" alt=""><br><img src="/2018/03/31/CTF-Tests-3/L.png" alt=""><br>用Py脚本解出flag。<br>import requests import base64<br>url =’<a href="http://120.24.86.145:8002/web6/" target="_blank" rel="noopener">http://120.24.86.145:8002/web6/</a>‘<br>r =requests.session()<br>headers = r.get(url).headers<br>key = base64.b64decode(base64.b64decode(headers[‘flag’]).split(‘:’)[1])<br>data={‘margin’:key}<br>print r.post(url=url,data=data).content</p>
+<h2 id="5"><a href="#5" class="headerlink" title="5."></a>5.</h2><p><img src="/2018/03/31/CTF-Tests-3/M.png" alt=""><br>CTF故事汇……BP抓包后发现文本中的链接是个真的链接，打开后发现是php中md5()函数漏洞和strcmp()函数漏洞的利用，MD5不能处理数组，有时也可以用数组绕过。同时strcmp（）函数也可用数组绕过，构造payload，进入<a href="http://47.93.190.246:49162/?v1[]=1&amp;v2[]=2&amp;v3[]=1" target="_blank" rel="noopener">http://47.93.190.246:49162/?v1[]=1&amp;v2[]=2&amp;v3[]=1</a> ，出现flag。<br><img src="/2018/03/31/CTF-Tests-3/N.png" alt=""><br><img src="/2018/03/31/CTF-Tests-3/O.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-一些密码学解密网站"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/03/29/一些密码学解密网站/">一些密码学解密网站</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/29/一些密码学解密网站/" class="article-date">
+	  <time datetime="2018-03-29T14:53:00.000Z" itemprop="datePublished">2018-03-29</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>资料来源网络，持续更新。<br>URL[<a href="http://tool.chinaz.com/tools/urlencode.aspx" target="_blank" rel="noopener">http://tool.chinaz.com/tools/urlencode.aspx</a>];</p>
+<p>JSFuck[<a href="http://discogscounter.getfreehosting.co.uk/js-noalnum.php?i=1" target="_blank" rel="noopener">http://discogscounter.getfreehosting.co.uk/js-noalnum.php?i=1</a>];</p>
+<p>Base64[<a href="http://www1.tc711.com/tool/BASE64.htm" target="_blank" rel="noopener">http://www1.tc711.com/tool/BASE64.htm</a>];</p>
+<p>Base64(img)[<a href="http://www.vgot.net/test/image2base64.php" target="_blank" rel="noopener">http://www.vgot.net/test/image2base64.php</a>];</p>
+<p>Base32[<a href="https://tools.deamwork.com/crypt/decrypt/base32decode.html" target="_blank" rel="noopener">https://tools.deamwork.com/crypt/decrypt/base32decode.html</a>];</p>
+<p>String[<a href="http://www.5ixuexiwang.com/str/" target="_blank" rel="noopener">http://www.5ixuexiwang.com/str/</a>];</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-CTF-Tests-2"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
