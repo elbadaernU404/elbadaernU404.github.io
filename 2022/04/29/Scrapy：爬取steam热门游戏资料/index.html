@@ -38,7 +38,7 @@
 <meta property="og:image" content="http://yoursite.com/2022/04/29/Scrapy：爬取steam热门游戏资料/Q.png">
 <meta property="og:image" content="http://yoursite.com/2022/04/29/Scrapy：爬取steam热门游戏资料/R.png">
 <meta property="og:image" content="http://yoursite.com/2022/04/29/Scrapy：爬取steam热门游戏资料/S.png">
-<meta property="og:updated_time" content="2022-04-30T15:32:43.777Z">
+<meta property="og:updated_time" content="2022-05-02T06:26:12.660Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Scrapy：爬取steam热门游戏资料">
 <meta name="twitter:description" content="有段时间没有做爬虫程序了，正好想起来还没有写过scrapy框架的博客，写个scrapy爬虫进行总结和回顾。本文代码已上传至github：https://github.com/elbadaernU404/steamgames 1.Scrapy简介搜索scrapy，可以很轻松的找到Scrapy的官方网站，正如其首页所描述的那样，scrapy是一款快速且强力的多线程异步爬虫框架，适合对静态页面（不配置">
@@ -243,7 +243,7 @@
 
 <p>得到结果，测试成功：</p>
 <p><img src="/2022/04/29/Scrapy：爬取steam热门游戏资料/L.png" alt="scrapy shell测试"></p>
-<h4 id="3-5-4-制作爬虫程序test-py"><a href="#3-5-4-制作爬虫程序test-py" class="headerlink" title="3.5.4 制作爬虫程序test.py"></a>3.5.4 制作爬虫程序test.py</h4><p>进入已经生成号的test.py程序当中，程序中已存在的代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">'test'</span></span><br><span class="line">allowed_domains = [<span class="string">'store.steampowered.com'</span>]</span><br><span class="line">start_urls = [<span class="string">'https://store.steampowered.com/search/?filter=globaltopsellers&amp;os=win'</span>]</span><br></pre></td></tr></table></figure></p>
+<h4 id="3-5-4-制作爬虫程序test-py"><a href="#3-5-4-制作爬虫程序test-py" class="headerlink" title="3.5.4 制作爬虫程序test.py"></a>3.5.4 制作爬虫程序test.py</h4><p>进入已经生成好的test.py程序当中，程序中已存在的代码<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">'test'</span></span><br><span class="line">allowed_domains = [<span class="string">'store.steampowered.com'</span>]</span><br><span class="line">start_urls = [<span class="string">'https://store.steampowered.com/search/?filter=globaltopsellers&amp;os=win'</span>]</span><br></pre></td></tr></table></figure></p>
 <p>分别表示爬虫的名称、爬取的域名界限（网站内）、爬虫的起始网址</p>
 <p>爬虫程序可以有多个，爬取的网址子路由也可以有多个，但是不能超出一开始设定的范围之外</p>
 <p>在类<font color="orange">TestSpider</font>中，函数parse名称不可变，因为其类本身继承自scrapy的Spider，我们只是改写其中的方法，实现爬虫功能。</p>
