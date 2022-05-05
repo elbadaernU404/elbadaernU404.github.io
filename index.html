@@ -234,11 +234,11 @@
   <div class="intro-navigate">
       <p class="navigater-list">
         
-          <a id="beautifont" class="main-nav-link" href="/">Home</a>
+          <a id="beautifont" class="main-nav-link" href="/">Startseite</a>
         
-          <a id="beautifont" class="main-nav-link" href="/archives">Archives</a>
+          <a id="beautifont" class="main-nav-link" href="/archives">Archive</a>
         
-          <a id="beautifont" class="main-nav-link" href="/categories">Categories</a>
+          <a id="beautifont" class="main-nav-link" href="/categories">Kategorien</a>
         
           <a id="beautifont" class="main-nav-link" href="/tags">Tags</a>
         
@@ -658,7 +658,7 @@
 <p><img src="/2022/02/27/Django项目：订单管理系统/AC.png" alt="测试登陆失败"><br>继续在Django管理员后台增加新的访客用户</p>
 <p><img src="/2022/02/27/Django项目：订单管理系统/AD.png" alt="新增非管理员用户1"><br><img src="/2022/02/27/Django项目：订单管理系统/AE.png" alt="新增非管理员用户2"><br>到test文件夹里再新建测试文件<font color="orange">test_user.py</font>测试普通访客登录<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  requests,pprint</span><br><span class="line"></span><br><span class="line">payload = &#123;</span><br><span class="line">    <span class="string">'username'</span>: <span class="string">'guest'</span>,</span><br><span class="line">    <span class="string">'password'</span>: <span class="string">'rtl1312693017'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">response = requests.post(<span class="string">'http://localhost:8000/api/mgr/signin'</span>,data=payload)</span><br><span class="line"></span><br><span class="line">pprint.pprint(response.json())</span><br></pre></td></tr></table></figure></p>
 <p>系统会提示没有权限访问</p>
-<p><img src="/2022/02/27/Django项目：订单管理系统/AE.png" alt="测试非管理员用户登陆"><br>最后再通过与前端文件进行集成，得到优化后的登陆界面：</p>
+<p><img src="/2022/02/27/Django项目：订单管理系统/AF.png" alt="测试非管理员用户登陆"><br>最后再通过与前端文件进行集成，得到优化后的登陆界面：</p>
 <p><img src="/2022/02/27/Django项目：订单管理系统/AG.png" alt="系统登陆界面"><br>成功登陆后将跳转到之前的客户订单管理系统</p>
 
       
@@ -1154,7 +1154,7 @@
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">weiter &raquo;</a>
   </nav>
 
 </section>

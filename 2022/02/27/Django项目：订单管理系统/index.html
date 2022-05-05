@@ -49,9 +49,9 @@
 <meta property="og:image" content="http://yoursite.com/2022/02/27/Django项目：订单管理系统/AC.png">
 <meta property="og:image" content="http://yoursite.com/2022/02/27/Django项目：订单管理系统/AD.png">
 <meta property="og:image" content="http://yoursite.com/2022/02/27/Django项目：订单管理系统/AE.png">
-<meta property="og:image" content="http://yoursite.com/2022/02/27/Django项目：订单管理系统/AE.png">
+<meta property="og:image" content="http://yoursite.com/2022/02/27/Django项目：订单管理系统/AF.png">
 <meta property="og:image" content="http://yoursite.com/2022/02/27/Django项目：订单管理系统/AG.png">
-<meta property="og:updated_time" content="2022-05-01T14:20:34.272Z">
+<meta property="og:updated_time" content="2022-05-05T13:03:43.737Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Django项目：订单管理系统">
 <meta name="twitter:description" content="1.Django简介Django是一款开源的python web应用框架，采用MTV(Model-Template-View)模式，其中Model负责对象与数据库的映射(ORM)，Template通过接口等方式将前端页面传递给用户，View视图函数对应业务逻辑，在合适的时候调用Model或Template 除去MTV模型以外，Django还有一个URL控制器，分别将不同的URL请求传递给不同的V">
@@ -132,11 +132,11 @@
             <div class="navbar-collapse collapse">
               <ul class="hnav navbar-nav">
                 
-                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
                 
-                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
                 
                   <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
                 
@@ -152,7 +152,7 @@
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
             <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
         <div class="ins-section-wrapper">
@@ -164,11 +164,11 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
+            POSTS: 'Beiträge',
+            PAGES: 'Seiten',
+            CATEGORIES: 'Kategorien',
             TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
+            UNTITLED: '(Unbenannt)',
         },
         ROOT_URL: '/',
         CONTENT_URL: '/content.json',
@@ -328,7 +328,7 @@
 <p><img src="/2022/02/27/Django项目：订单管理系统/AC.png" alt="测试登陆失败"><br>继续在Django管理员后台增加新的访客用户</p>
 <p><img src="/2022/02/27/Django项目：订单管理系统/AD.png" alt="新增非管理员用户1"><br><img src="/2022/02/27/Django项目：订单管理系统/AE.png" alt="新增非管理员用户2"><br>到test文件夹里再新建测试文件<font color="orange">test_user.py</font>测试普通访客登录<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span>  requests,pprint</span><br><span class="line"></span><br><span class="line">payload = &#123;</span><br><span class="line">    <span class="string">'username'</span>: <span class="string">'guest'</span>,</span><br><span class="line">    <span class="string">'password'</span>: <span class="string">'rtl1312693017'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">response = requests.post(<span class="string">'http://localhost:8000/api/mgr/signin'</span>,data=payload)</span><br><span class="line"></span><br><span class="line">pprint.pprint(response.json())</span><br></pre></td></tr></table></figure></p>
 <p>系统会提示没有权限访问</p>
-<p><img src="/2022/02/27/Django项目：订单管理系统/AE.png" alt="测试非管理员用户登陆"><br>最后再通过与前端文件进行集成，得到优化后的登陆界面：</p>
+<p><img src="/2022/02/27/Django项目：订单管理系统/AF.png" alt="测试非管理员用户登陆"><br>最后再通过与前端文件进行集成，得到优化后的登陆界面：</p>
 <p><img src="/2022/02/27/Django项目：订单管理系统/AG.png" alt="系统登陆界面"><br>成功登陆后将跳转到之前的客户订单管理系统</p>
 
       
@@ -369,7 +369,7 @@
 <nav id="article-nav">
   
     <a href="/2022/03/01/Numpy-Pandas/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Neuer</strong>
       <div class="article-nav-title">
         
           Numpy &amp; Pandas
@@ -379,7 +379,7 @@
   
   
     <a href="/2021/05/26/基于卷积神经网络的面部年龄识别/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">基于卷积神经网络的面部年龄识别</div>
     </a>
   
@@ -392,7 +392,7 @@
 
   <aside id="toc-sidebar">
     <div id="toc" class="toc-article">
-    <strong class="toc-title">Contents</strong>
+    <strong class="toc-title">Inhalt</strong>
     
         <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Django简介"><span class="nav-number">1.</span> <span class="nav-text">1.Django简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Django项目：订单管理系统"><span class="nav-number">2.</span> <span class="nav-text">2.Django项目：订单管理系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Django项目的创建"><span class="nav-number">2.1.</span> <span class="nav-text">1.Django项目的创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Django生命周期"><span class="nav-number">2.2.</span> <span class="nav-text">2.Django生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Django项目启动"><span class="nav-number">2.3.</span> <span class="nav-text">3.Django项目启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-创建Django-APP"><span class="nav-number">2.4.</span> <span class="nav-text">4.创建Django APP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-编辑View视图函数和URL路由"><span class="nav-number">2.5.</span> <span class="nav-text">5.编辑View视图函数和URL路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-创建数据库"><span class="nav-number">2.6.</span> <span class="nav-text">6.创建数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-创建表单"><span class="nav-number">2.7.</span> <span class="nav-text">7.创建表单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-创建Django管理员"><span class="nav-number">2.8.</span> <span class="nav-text">8.创建Django管理员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-获取数据"><span class="nav-number">2.9.</span> <span class="nav-text">9.获取数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-使用Html展示数据"><span class="nav-number">2.10.</span> <span class="nav-text">10.使用Html展示数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-对数据的增删改查"><span class="nav-number">2.11.</span> <span class="nav-text">11.对数据的增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-创建管理应用"><span class="nav-number">2.11.1.</span> <span class="nav-text">1.创建管理应用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-设置URL路由"><span class="nav-number">2.11.2.</span> <span class="nav-text">2.设置URL路由</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-增加客户"><span class="nav-number">2.11.3.</span> <span class="nav-text">3.增加客户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-删除客户"><span class="nav-number">2.11.4.</span> <span class="nav-text">4.删除客户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-修改客户"><span class="nav-number">2.11.5.</span> <span class="nav-text">5.修改客户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-查询客户"><span class="nav-number">2.11.6.</span> <span class="nav-text">6.查询客户</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-测试"><span class="nav-number">2.12.</span> <span class="nav-text">12.测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-与前端集成"><span class="nav-number">2.13.</span> <span class="nav-text">13.与前端集成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-登陆功能"><span class="nav-number">2.14.</span> <span class="nav-text">14.登陆功能</span></a></li></ol></li></ol>
     
