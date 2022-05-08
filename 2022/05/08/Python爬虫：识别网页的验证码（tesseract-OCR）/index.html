@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python爬虫：识别网页的验证码（tesseract-ocr） | elbadaernU&#39;s</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  
+  <meta name="description" content="在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人 但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^ 获取网页验证码首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python爬虫：识别网页的验证码（tesseract-OCR）">
+<meta property="og:url" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/index.html">
+<meta property="og:site_name" content="elbadaernU&#39;s">
+<meta property="og:description" content="在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人 但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^ 获取网页验证码首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容">
+<meta property="og:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/A.png">
+<meta property="og:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/B.png">
+<meta property="og:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/C.png">
+<meta property="og:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/D.png">
+<meta property="og:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/E.png">
+<meta property="og:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/F.png">
+<meta property="og:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/G.png">
+<meta property="og:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/H.png">
+<meta property="og:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/I.png">
+<meta property="og:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/J.png">
+<meta property="og:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/K.png">
+<meta property="og:updated_time" content="2022-05-08T09:21:50.758Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python爬虫：识别网页的验证码（tesseract-OCR）">
+<meta name="twitter:description" content="在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人 但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^ 获取网页验证码首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容">
+<meta name="twitter:image" content="http://yoursite.com/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="elbadaernU&#39;s" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css" >
+  
+
+  
+  
+  
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Startseite</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archive</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Kategorien</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Schreib etwas..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Beiträge',
+            PAGES: 'Seiten',
+            CATEGORIES: 'Kategorien',
+            TAGS: 'Tags',
+            UNTITLED: '(Unbenannt)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Python爬虫：识别网页的验证码（tesseract-OCR）" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Python爬虫：识别网页的验证码（tesseract-OCR）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/" class="article-date">
+	  <time datetime="2022-05-08T07:00:29.000Z" itemprop="datePublished">2022-05-08</time>
+	</a>
+
+      
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人</p>
+<p>但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^</p>
+<h2 id="获取网页验证码"><a href="#获取网页验证码" class="headerlink" title="获取网页验证码"></a>获取网页验证码</h2><p>首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容后发现并不能得到生成验证码的对应id，以为是知网做了对爬虫头的限制，于是在headers里添加了<font color="green">“Referer”</font>和<font color="green">“Accept-Encoding”</font>等信息，但是并没有效果。抓包在Doc中发现网页HTTP请求的方法为”<font color="orange">GET</font>“方法，尝试不加id也得到了验证码图片</p>
+<p><img src="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/A.png" alt=""><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"method"</span>: <span class="string">"GET"</span>,</span><br><span class="line">    <span class="string">"Accept"</span>: <span class="string">"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Accept-Encoding"</span>: <span class="string">"gzip, deflate, br"</span>,</span><br><span class="line">    <span class="string">"Cache-Control"</span>: <span class="string">"max-age=0"</span>,</span><br><span class="line">    <span class="string">"scheme"</span>: <span class="string">"https"</span>,</span><br><span class="line">    <span class="string">"accept-language"</span>: <span class="string">"zh-CN,zh;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Cookie"</span>: <span class="string">"U:M_distinctid=1809edfcf6e8ff-088ab0a6edb385-17333273-1fa400-1809edfcf6f9fe; _pk_ref=["</span><span class="string">","</span><span class="string">",1651932918,'https://www.baidu.com/link?url=PnlS4wubLFxXVNXrTBRCZMAhA0P5TZLlCBAhBvXfLke&amp;wd=&amp;eqid=e52482a8001102070000000562767ee2']; Ecp_ClientId=1220507221503170167; Ecp_IpLoginFail=22050736.161.51.128; Ecp_ClientIp=36.161.51.128; language=chs; _pk_id=2ce0e7fb-229f-4440-a78b-57771deac2fe.1651932918.1.1651933578.1651932918.; ASP.NET_SessionId=he1no3kmgo3bwuktv1xa1lhs; SID_mycnki=020101"</span>,</span><br><span class="line">    <span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"</span>,</span><br><span class="line">    <span class="string">"Referer"</span>: <span class="string">"https://www.cnki.net/"</span></span><br><span class="line">    <span class="string">"Sec-Fetch-Dest:"</span> <span class="string">'document'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Mode"</span>: <span class="string">'navigate'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Site"</span>: <span class="string">'same-origin'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-User"</span>: <span class="string">'?1'</span>,</span><br><span class="line">    <span class="string">"Upgrade-Insecure-Requests"</span>: <span class="string">'1'</span></span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">"https://my.cnki.net/Register/CommonRegister.aspx?returnUrl=https://www.cnki.net#"</span></span><br><span class="line">r = requests.get(url, headers=headers).content.decode(<span class="string">'utf-8'</span>)</span><br><span class="line">html = etree.HTML(r)</span><br><span class="line">link=html.xpath(<span class="string">'//*[@id="commonRe"]/div[10]/div[3]/a/img/@src'</span>)[<span class="number">0</span>]</span><br><span class="line">img_url = <span class="string">"https://my.cnki.net/Register/"</span> + link</span><br><span class="line">img = requests.get(img_url, headers=headers,stream=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'checkcode.jpg'</span>,<span class="string">'wb'</span>)<span class="keyword">as</span> file:</span><br><span class="line">    file.write(img.raw.read())</span><br></pre></td></tr></table></figure></p>
+<h2 id="Tesserocr库"><a href="#Tesserocr库" class="headerlink" title="Tesserocr库"></a>Tesserocr库</h2><p>Tesserocr是python的一个OCR识别库，是通过对tesseract库做API封装来实现功能，核心仍是tesseract。所以需提前安装tesseract库来进行支持</p>
+<h3 id="安装Tesseract"><a href="#安装Tesseract" class="headerlink" title="安装Tesseract"></a>安装Tesseract</h3><p>进入官网链接<a href="https://digi.bib.uni-mannheim.de/tesseract/" target="_blank" rel="noopener">https://digi.bib.uni-mannheim.de/tesseract/</a>，找到当前合适的版本，下载安装程序</p>
+<p><img src="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/B.png" alt=""><br>安装过程中可以勾选安装额外的语言文件，添加对包括中文等多语种的支持</p>
+<p><img src="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/C.png" alt=""><br>安装完成后去系统设置中添加环境变量</p>
+<p><img src="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/D.png" alt=""><br><img src="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/E.png" alt=""><br>新增一个变量<font color="orange">TESSDATA_PREFIX</font></p>
+<p><img src="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/F.png" alt=""><br>打开CMD，输入<font size="4" color="#008080">tesseract -v</font>，此时出现版本信息，tesseract已经安装完成了</p>
+<p><img src="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/G.png" alt=""><br>如果添加后控制台仍提示”tesseract不是内部或者外部命令”，继续到系统变量的path中添加<br>“<font size="4" color="#008080">%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem</font>“<br>即可</p>
+<h3 id="安装Tesserocr"><a href="#安装Tesserocr" class="headerlink" title="安装Tesserocr"></a>安装Tesserocr</h3><p>安装完Tesseract后，继续安装python的OCR识别库,打开CMD或Pycharm<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install Pillow</span><br><span class="line">pip install pytesseract</span><br></pre></td></tr></table></figure></p>
+<p>完成后找到pytesseract文件，将tesseract.exe程序的路径添加进去（注：不同版本路径代码在程序中的位置不一定相同）</p>
+<p><img src="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/H.png" alt=""><br><img src="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/I.png" alt=""><br>最后再执行安装tesserocr</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tesserocr</span><br></pre></td></tr></table></figure>
+<p>如果报错，进入tesserocr在github的官网<a href="https://github.com/simonflueckiger/tesserocr-windows_build/releases" target="_blank" rel="noopener">https://github.com/simonflueckiger/tesserocr-windows_build/releases</a>，下载对应版本的whl文件进行手动安装</p>
+<p><img src="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/J.png" alt=""><br>进入对应路径，来到控制台执行<font size="4" color="#008080">pip install tesserocr-2.5.2-cp37-cp37m-win_amd64.whl</font></p>
+<p><img src="/2022/05/08/Python爬虫：识别网页的验证码（tesseract-OCR）/K.png" alt=""><br>最后显示tesserocr安装成功</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/04/29/更新说明/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">更新说明</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Inhalt</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取网页验证码"><span class="nav-number">1.</span> <span class="nav-text">获取网页验证码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tesserocr库"><span class="nav-number">2.</span> <span class="nav-text">Tesserocr库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Tesseract"><span class="nav-number">2.1.</span> <span class="nav-text">安装Tesseract</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Tesserocr"><span class="nav-number">2.2.</span> <span class="nav-text">安装Tesserocr</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 elbadaernU&#39;s All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            elbadaernU&#39;s
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+<div id="hexo-helper-live2d">
+  <canvas id="live2dcanvas" width="150" height="300"></canvas>
+</div>
+<style>
+  #live2dcanvas{
+    position: fixed;
+    width: 150px;
+    height: 300px;
+    opacity:0.7;
+    right: 0px;
+    z-index: 999;
+    pointer-events: none;
+    bottom: -20px;
+  }
+</style>
+<script type="text/javascript" src="/live2d/device.min.js"></script>
+<script type="text/javascript">
+const loadScript = function loadScript(c,b){var a=document.createElement("script");a.type="text/javascript";"undefined"!=typeof b&&(a.readyState?a.onreadystatechange=function(){if("loaded"==a.readyState||"complete"==a.readyState)a.onreadystatechange=null,b()}:a.onload=function(){b()});a.src=c;document.body.appendChild(a)};
+(function(){
+  if((typeof(device) != 'undefined') && (device.mobile())){
+    document.getElementById("live2dcanvas").style.width = '75px';
+    document.getElementById("live2dcanvas").style.height = '150px';
+  }else
+    if (typeof(device) === 'undefined') console.error('Cannot find current-device script.');
+  loadScript("/live2d/script.js", function(){loadlive2d("live2dcanvas", "/live2d/assets/z16.model.json", 0.5);});
+})();
+</script>
+
+</html>
