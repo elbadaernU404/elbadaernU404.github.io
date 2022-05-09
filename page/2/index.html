@@ -238,7 +238,7 @@
         
           <a id="beautifont" class="main-nav-link" href="/archives">Archives</a>
         
-          <a id="beautifont" class="main-nav-link" href="/categories">Categorías</a>
+          <a id="beautifont" class="main-nav-link" href="/categories">Categories</a>
         
           <a id="beautifont" class="main-nav-link" href="/tags">Tags</a>
         
@@ -421,6 +421,63 @@
 <!-- Table of Contents -->
 
   
+    <article id="post-HTTP请求方法"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/04/11/HTTP请求方法/">HTTP请求方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/04/11/HTTP请求方法/" class="article-date">
+	  <time datetime="2019-04-11T08:07:35.000Z" itemprop="datePublished">2019-04-11</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h2><p>请求指定的页面信息，并返回实体主体</p>
+<h2 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h2><p>向指定的资源提交数据，请求处理。数据被包含在请求体当中，重新提交页面，导致新资源的建立或已有资源的修改</p>
+<h2 id="PUT"><a href="#PUT" class="headerlink" title="PUT"></a>PUT</h2><p>从客户端向服务器传送数据来取代指定的文档内容</p>
+<h2 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h2><p>请求服务器删除指定的页面</p>
+<h2 id="HEAD"><a href="#HEAD" class="headerlink" title="HEAD"></a>HEAD</h2><p>类似GET请求，返回的响应中没有具体内容，仅获取报头</p>
+<h2 id="OPTIONS"><a href="#OPTIONS" class="headerlink" title="OPTIONS"></a>OPTIONS</h2><p>允许客户端查看服务器的内容</p>
+<h2 id="TRACE"><a href="#TRACE" class="headerlink" title="TRACE"></a>TRACE</h2><p>显示服务器收到的请求，用于测试或诊断</p>
+<h2 id="CONNECT"><a href="#CONNECT" class="headerlink" title="CONNECT"></a>CONNECT</h2><p>HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器</p>
+<h2 id="GET方法和POST方法的区别"><a href="#GET方法和POST方法的区别" class="headerlink" title="GET方法和POST方法的区别"></a>GET方法和POST方法的区别</h2><p><strong>·</strong> GET仅请求目标信息，返回/刷新是无害的，POST每次返回/刷新会重新提交数据</p>
+<p><strong>·</strong> GET可被保存在书签、缓存、历史记录当中，POST不行</p>
+<p><strong>·</strong> GET相对没有POST安全</p>
+<p><strong>·</strong> GET参数通过URL进行传递，POST参数存放在Request body当中</p>
+<p><strong>·</strong> GET请求时，浏览器会将http header和data一起发送除去，服务器响应为200；</p>
+<p>POST请求时，浏览器会先发送header，服务器响应100 continue，再发送data，服务器响应200（时间消耗相对GET要长）</p>
+<p><strong>·</strong> GET每次产生1个TCP数据包，POST产生两个</p>
+<p><strong>·</strong> GET对数据的长度有限制（2KB），POST没有限制</p>
+<p><strong>·</strong> GET仅允许ASCII字符，POST没有限制</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Python的图片与字符画转换"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -493,54 +550,6 @@
 <h2 id="DOSBox-0-74下载"><a href="#DOSBox-0-74下载" class="headerlink" title="DOSBox-0.74下载"></a>DOSBox-0.74下载</h2><p>地址：[<a href="https://pan.baidu.com/s/1wiAv0pwUhRavkM51pmdJCQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1wiAv0pwUhRavkM51pmdJCQ</a>]<br>（提取码：m0kx）</p>
 <h2 id="MASM下载"><a href="#MASM下载" class="headerlink" title="MASM下载"></a>MASM下载</h2><p>MASM文件夹内至少要包含debug/exe2bin/link/masm四个.exe文件。<br>地址：[<a href="https://pan.baidu.com/s/1MC75x01gKBxZwxmBuYq6fA" target="_blank" rel="noopener">https://pan.baidu.com/s/1MC75x01gKBxZwxmBuYq6fA</a>]<br>（提取码：4zu0）</p>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>将DOSBox-0.74放进MASM文件夹内，找到DOSBox.exe文件双击打开，输入mount d d:\path,path可以为你的masm目录。<br>如果MASM文件夹下有编写好的.asm汇编指令，可以直接通过命令d:进入MASM，再输入masm，进入调试，输入.asm文件名称（可不写扩展名），依次link，debug完成。<br>效果如图：<br><img src="/2019/04/10/DOSBox0-74-For-MASM/A.png" alt=""><br><img src="/2019/04/10/DOSBox0-74-For-MASM/B.png" alt=""><br><img src="/2019/04/10/DOSBox0-74-For-MASM/C.png" alt=""></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-一些-vbs脚本文件-自娱自乐向"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/03/20/一些-vbs脚本文件-自娱自乐向/">一些.vbs脚本文件(自娱自乐向)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/03/20/一些-vbs脚本文件-自娱自乐向/" class="article-date">
-	  <time datetime="2019-03-20T11:57:57.000Z" itemprop="datePublished">2019-03-20</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><h2 id="vbs"><a href="#vbs" class="headerlink" title=".vbs"></a>.vbs</h2><p>我记得初识basic语言好像要回溯到2014年以前，初中时代，当时考试的重心主要是放在读程序逻辑上，几个语句，像loop…until至今印象深刻。<br>记录几个简单的.vbs脚本，计算机可以直接执行。</p>
-<h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><h3 id="消息框招呼脚本"><a href="#消息框招呼脚本" class="headerlink" title="消息框招呼脚本"></a>消息框招呼脚本</h3><p>记事本编写’msgbox “Hello，9.9”‘，将文件后缀.txt修改为.vbs即可，双击运行后弹出消息框，可以将此脚本设置为开机启动，恩，硬核自己给自己打个招呼来自娱自乐。<br>（另，在室友电脑编写后首末添加do/loop可以让程序进入死循环，讯息内容可以随意发挥，控制台关闭程序即可）<br><img src="/2019/03/20/一些-vbs脚本文件-自娱自乐向/A.png" alt="一些.vbs脚本文件(自娱自乐向)"></p>
-<h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><h3 id="语音脚本"><a href="#语音脚本" class="headerlink" title="语音脚本"></a>语音脚本</h3><p>同样的，在记事本编写’CreateObject(“SAPI.SpVoice”).Speak “Hello,9.9”‘，调整扩展名为.vbs，运行后得到系统语言提示。同样的，可以将其设置为开机启动，配合消息框食用效果更佳（假装是电脑给自己打招呼）。</p>
-<h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><h3 id="无限刷新："><a href="#无限刷新：" class="headerlink" title="无限刷新："></a>无限刷新：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">set ws=createobject(&quot;wscript.shell&quot;)</span><br><span class="line">do</span><br><span class="line">ws.sendkeys&quot;&#123;f5&#125;&quot;</span><br><span class="line">loop</span><br></pre></td></tr></table></figure>
-<h3 id="无限Alt-f4"><a href="#无限Alt-f4" class="headerlink" title="无限Alt+f4"></a>无限Alt+f4</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dim WSHshell</span><br><span class="line">set WSHshell=wscript.createobject(&quot;wscript.shell&quot;)</span><br><span class="line">do</span><br><span class="line">wscript.sleep 2000</span><br><span class="line">WSHshell.SendKeys&quot;%&#123;f4&#125;&quot;</span><br><span class="line">loop</span><br></pre></td></tr></table></figure>
-<h3 id="QQ消息自动发送"><a href="#QQ消息自动发送" class="headerlink" title="QQ消息自动发送"></a>QQ消息自动发送</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">On Error Resume Next </span><br><span class="line">Dim fd,ye </span><br><span class="line">set fd=createobject(&quot;wscript.shell&quot;) </span><br><span class="line">for i=1 to 10 //循环次数</span><br><span class="line">wscript.sleep 100 //循环间隔，越大越慢</span><br><span class="line">fd.AppActivate(&quot;Name&quot;) //发送对象的昵称</span><br><span class="line">fd.sendKeys &quot;^v&quot; //打印复制的内容</span><br><span class="line">fd.sendKeys i</span><br><span class="line">fd.sendKeys &quot;%s&quot; </span><br><span class="line">next </span><br><span class="line">wscript.quit</span><br></pre></td></tr></table></figure>
-<p>（注：以上脚本慎用，玩笑适可而止。）</p>
-<h3 id="添加插曲"><a href="#添加插曲" class="headerlink" title="添加插曲"></a>添加插曲</h3><p>来自伟大的360爸爸发出的木马警告（我日我自己lol）<br><img src="/2019/03/20/一些-vbs脚本文件-自娱自乐向/B.jpg" alt="一些.vbs脚本文件(自娱自乐向)"><br><img src="/2019/03/20/一些-vbs脚本文件-自娱自乐向/C.jpg" alt="一些.vbs脚本文件(自娱自乐向)"><br><img src="/2019/03/20/一些-vbs脚本文件-自娱自乐向/D.jpg" alt="一些.vbs脚本文件(自娱自乐向)"></p>
 
       
     </div>
@@ -764,7 +773,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&laquo; Previo</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Siguiente &raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -778,7 +787,7 @@
 
   <div class="container">
       	<div class="row">
-	      <p> Construido por <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
 	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 elbadaernU&#39;s All Rights Reserved.</p>
 	      
 	      
