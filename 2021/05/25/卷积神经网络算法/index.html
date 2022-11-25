@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>卷积神经网络算法 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="CNN">
+  
+  
+  
+  
+  <meta name="description" content="神经网络(Neural Networks，NN)是人工智能研究领域的重要组成部分，是大数据与人工智能技术发展的重要动力。 1.卷积神经网络卷积神经网络属于机器学习领域当中的深度学习技术，是一类包含了卷积计算并且具有深度结构的前馈神经网络（Feedforward Neural Networks）。由纽约大学教授Yann LeCun在1998年提出，主要应用于语音识别、计算机视觉、自然语言处理等领域。">
+<meta name="keywords" content="CNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="卷积神经网络算法">
+<meta property="og:url" content="http://yoursite.com/2021/05/25/卷积神经网络算法/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="神经网络(Neural Networks，NN)是人工智能研究领域的重要组成部分，是大数据与人工智能技术发展的重要动力。 1.卷积神经网络卷积神经网络属于机器学习领域当中的深度学习技术，是一类包含了卷积计算并且具有深度结构的前馈神经网络（Feedforward Neural Networks）。由纽约大学教授Yann LeCun在1998年提出，主要应用于语音识别、计算机视觉、自然语言处理等领域。">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/A.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/B.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/C.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/D.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/E.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/F.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/G.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/H.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/I.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/J.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/K.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/L.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/M.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/N.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/O.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/P.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/Q.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/R.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/S.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/T.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/U.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/V.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/W.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/X.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/Y.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/Z.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/0.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/1.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/2.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/3.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/4.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/5.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/6.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/7.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/8.png">
+<meta property="og:updated_time" content="2022-06-27T07:41:21.970Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="卷积神经网络算法">
+<meta name="twitter:description" content="神经网络(Neural Networks，NN)是人工智能研究领域的重要组成部分，是大数据与人工智能技术发展的重要动力。 1.卷积神经网络卷积神经网络属于机器学习领域当中的深度学习技术，是一类包含了卷积计算并且具有深度结构的前馈神经网络（Feedforward Neural Networks）。由纽约大学教授Yann LeCun在1998年提出，主要应用于语音识别、计算机视觉、自然语言处理等领域。">
+<meta name="twitter:image" content="http://yoursite.com/2021/05/25/卷积神经网络算法/A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-卷积神经网络算法" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      卷积神经网络算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/05/25/卷积神经网络算法/" class="article-date">
+	  <time datetime="2021-05-25T05:01:35.000Z" itemprop="datePublished">2021-05-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>神经网络(Neural Networks，NN)是人工智能研究领域的重要组成部分，是大数据与人工智能技术发展的重要动力。</p>
+<h2 id="1-卷积神经网络"><a href="#1-卷积神经网络" class="headerlink" title="1.卷积神经网络"></a>1.卷积神经网络</h2><p>卷积神经网络属于机器学习领域当中的深度学习技术，是一类包含了卷积计算并且具有深度结构的前馈神经网络（Feedforward Neural Networks）。由纽约大学教授Yann LeCun在1998年提出，主要应用于语音识别、计算机视觉、自然语言处理等领域。</p>
+<p>其本质上是一个采用了局部连接和权值共享方式的多层感知机，包括一般的卷积神经网络（CNN）和深度卷积神经网络（Deep Convolutional Neural Networks, DCNN），通常不做特意区分。一般的卷积神经网络存在浅层结构，但准确性和表现力相对不足，深度卷积神经网络可以自动从大规模的数据中进行特征学习，且具备将结果向同类型的未知数据泛化的能力，是目前最常用的神经网络技术。</p>
+<h2 id="2-卷积神经网络原理"><a href="#2-卷积神经网络原理" class="headerlink" title="2.卷积神经网络原理"></a>2.卷积神经网络原理</h2><h3 id="2-1-卷积原理"><a href="#2-1-卷积原理" class="headerlink" title="2.1 卷积原理"></a>2.1 卷积原理</h3><p>从数学的角度出发，分析数学中定义一种运算，称(f*g)(n)为(f，g)的卷积（Convolution）。其连续的定义为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/A.png" alt><br>其离散的定义为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/B.png" alt></p>
+<p>其连续和离散具有共同的特征：n=τ+(n-τ)，当令x=τ，y=n-τ时，有直线：x+y=n，其图像为如下图：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/C.png" alt><br>如果遍历这些直线，就类似于沿直线卷起毛巾的过程。</p>
+<p>下面将卷积扩展到二维，有两个R2→R的二元函数f(x，y)和g(x，y)，那么令f和g的卷积就是一个新的R2→R的二元函数c(x，y)：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/D.png" alt><br>其含义为将f在(s，t)上的值乘以g在(x-s，y-t)上的值，再遍历从-∞到+∞全部s和t的值，进行f和g积分意义上的加和，最终得到c在(x，y)上的值（二重积分）。</p>
+<p>可以看出这种加和是一种加权求和，即以f为权，(x，y)为中心，将f在(s，t)上的值乘以g距离中心(-s，-t)上的值再相加。</p>
+<p>其离散的表示形式为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/E.png" alt></p>
+<h3 id="2-2-神经元"><a href="#2-2-神经元" class="headerlink" title="2.2 神经元"></a>2.2 神经元</h3><p>神经细胞有众多的树突和一个伸长的轴突，不同神经元之间通过树突连接轴突的方式，并通过神经脉冲的传导进行细胞间交流。具体过程为神经细胞A的轴突连接到神经细胞B的树突，传导神经脉冲，神经细胞A根据其树突传递来的信号决定是否通过轴突来向下一个神经细胞C传递信息。</p>
+<p>1943年，美国心理学家W.McCulloch和数学家W.Pitts根据生物神经元、生物电和生物化学的运行机理提出了二值神经元的数学模型，即神经细胞机能的简单化的数理模型，被称作莫克罗-彼特氏神经模型（McCulloch－Pitts′Neuron Model），也叫人工神经元模型。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/F.png" alt><br>一个人工神经元模型就是对生物神经元的数学建模：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/G.png" alt><br>其中X1、X2、X3、…、Xn分别是从其他神经元传入的输入信号，Wi1、Wi2、Wi3、…、Win分别是对应X1、X2、X3、…、Xn的权重。θ表示一个阈值，或称为偏置（Bias），其设置目的是正确将样本分类。神经元当前的输入信号和偏置相加后产生当前神经元的最终处理信号Net，称为净激活或净激励（Net Activation），并作为激活函数或激励函数（Activation Function）f的输入，即f（net），最终得到对应的输出yi。形如：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/H.png" alt><br>激活函数<strong>f（net）</strong>的作用是通过加入非线性因素来解决线性模型的表达和分类能力不足的问题。常见的激活函数有：</p>
+<h4 id="1-Linear"><a href="#1-Linear" class="headerlink" title="1.Linear"></a>1.Linear</h4><p>Linear是一个线性激活函数：<strong>f(x)=∑i xiwi+b</strong>。本质上就是对输入的加权求和再加上偏置，所以相对简单，功能较为单一。</p>
+<p>由于多个矩阵进行连乘的结果仍是矩阵，类似的，如果一个神经网络中仅使用线性激活函数，那么就只能学习到线性函数。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/I.png" alt></p>
+<h4 id="2-Sigmoid"><a href="#2-Sigmoid" class="headerlink" title="2.Sigmoid"></a>2.Sigmoid</h4><p>Sigmoid是在神经网络研究的初始阶段就被投入了广泛使用的一个经典的非线性激活函数，其表达式是一种逻辑斯蒂函数（Logistic Function）：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/J.png" alt><br>其中<strong>x=∑i xiwi+b</strong></p>
+<p>这个函数在函数的区域内是完全可导的，输出为0到1范围内的正值（被证实不易于神经网络对收敛的学习），并且对于接近0和1的函数部分，导数无限趋近于0，存在明显的梯度衰减问题。所以现阶段对Sigmod函数的应用已经越来越少。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/K.png" alt></p>
+<h4 id="3-Tanh"><a href="#3-Tanh" class="headerlink" title="3.Tanh"></a>3.Tanh</h4><p>通过其图像可以看出Tanh函数旨在克服Sigmoid函数只能取正值的缺陷，将其设计为关于原点对称的双曲正切（hyperbolic tangent）形式：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/L.png" alt><br>其中<strong>x=∑i xiwi+b</strong>。函数的导数取值范围在0到1之间，优于sigmoid的0至1/4，在一定程度上减轻了梯度的消失。但函数的两端仍然存在梯度饱和问题，且计算变得更为复杂。</p>
+<p>Tanh的输入和输出能够保持非线性单调上升和下降的关系，符合BP算法网络的梯度求解，容错性好。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/M.png" alt></p>
+<h4 id="4-ReLU-（The-Rectified-Linear-Unit）"><a href="#4-ReLU-（The-Rectified-Linear-Unit）" class="headerlink" title="4.ReLU （The Rectified Linear Unit）"></a>4.ReLU （The Rectified Linear Unit）</h4><p>其公式的表达形式为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/N.png" alt><br>也可以表示为<strong>f(x)=max(0,x)</strong>。即当输入信号小于0时，函数的输出为0；当输入信号大于0时，函数的输出等于输入值。</p>
+<p>ReLU拥有操作简便，耗时少的优点，又具有部分线性的特性，不会出现过饱和现象、减免了梯度消失的问题（函数得到的随机梯度下降法的收敛速度比Sigmoid和Tanh都快）。并且ReLU只需要一个阈值就可以得到激活值，不用和Sigmoid一样进行复杂的指数运算。但其神经元比价脆弱容易失去作用：当神经元接收到非常大的梯度数据流以后，该神经元可能就不再对输入数据进行反馈了，所以在进行训练时要设置一个较小的学习率参数。ReLU是目前用于神经网络领域最常见的激活函数之一。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/O.png" alt><br>这就是单个人工神经元的定义。但是早期的单个人工神经元模型甚至无法处理异或等运算，在多个人工神经元发展为神经网络之后逐渐克服了这些问题和种种困难，成为现代人工智能的重要模型。<br><a id="more"></a></p>
+<h3 id="2-3-神经网络"><a href="#2-3-神经网络" class="headerlink" title="2.3 神经网络"></a>2.3 神经网络</h3><p>神经网络（NN），又叫人工神经网络（Artificial Neural Networks， ANN），是一个历史悠久的计算模型。</p>
+<p>进行上述过程的推演，将一个人工神经元的输出作为另一个人工神经元的输入，一定数量的这样的人工神经元就连接成人工神经网络。人工神经网络具有多种拓扑结构，其中“多层全连接前向神经网络”结构相对简便：将输入连接到网络第一层的每个神经元上，前一层的每个神经元的输出再连接到下一层的每个神经元的输入上，这样最后一层神经元的输出就可以作为整个神经网络的输出来使用。</p>
+<p>图例为一个3层的神经网络结构，第1层称为输入层，第2层称为隐藏层，第三层称为输出层。其包含了10个输入端（10元向量），第1、2层各有12个神经元，最后一层有6个神经元，那么该结构的神经网络最终输出的就是一个6元向量。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/P.png" alt><br>关于整个神经网络的计算可以通过矩阵式表出（单层神经网络的表达式）。假设神经网络拥有n个神经元的第i层收到m个输入，可以表示为下列形式：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/Q.png" alt><br>如果每层神经元的个数不同，那么，输入/输出的维度也不相同，但整体形式保持一致。O^i是n元的输出向量，由于神经网络的第i层共有n个神经元，那么第i层的输入（即第i-1层的输出）是一个m元向量。权值矩阵w是n x m的矩阵：n个神经元中每个神经元包含m个权值。w乘以第i - 1层输出的m向量，可以得到n向量，再加上n元偏置向量b，对结果的每一个元素施以激活函数f，最后就得到第i层的n元输出向量。</p>
+<h3 id="3-卷积神经网络结构"><a href="#3-卷积神经网络结构" class="headerlink" title="3.卷积神经网络结构"></a>3.卷积神经网络结构</h3><h4 id="3-1-图像的输入和特征提取"><a href="#3-1-图像的输入和特征提取" class="headerlink" title="3.1 图像的输入和特征提取"></a>3.1 图像的输入和特征提取</h4><p>对于一幅图像，全连接神经网络（Fully Connected Neural Network）可以通过将其平整化为数组，并把像素值作为预测图像中数值的特征。</p>
+<p>经典的神经网络模型，需要对整幅目标图像进行读取来将其作为神经网络的输入，即全连接模式。如果目标图像的尺寸非常大，那么在连接过程中的参数过多，会导致数据计算量非常大，使得网络理解图像信息变得更加困难。</p>
+<p>类比人类对外部环境的感知过程，通常是一个从局部到全部的过程，图像中的空间关系也类似这样，局部范围内像素之间的联系较为紧密，而距离较远的像素之间相关性较弱。所以，各个神经元不需要对整幅图像进行感知，只需对图像的各部分进行感知，然后在更高层将局部信息拼接完整，这样综合起来同样能够获取全局信息。这样的感知模式就是卷积神经网络模型中降低参数数目的重要方法：局部感受野（Local Receptive Fields）。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/R.png" alt><br>假设输入图像为字母X和O的图片，通过局部感受野来提取图像的特征。对于CNN的对比模式，CNN是通过一小块一小块的对比在图像中大致相同的位置找到一些粗略的特征进行匹配。相比较传统的整图逐一对比方式，CNN的小块匹配模式能更好的比较出图像之间的相似性。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/S.png" alt><br>以字母x为例，用像素值“1”表示白色，用像素值“-1”表示灰色，可以提取出三个重要的特征：1个中心交叉线，两个斜边对角线：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/T.png" alt></p>
+<h4 id="3-2-卷积层"><a href="#3-2-卷积层" class="headerlink" title="3.2 卷积层"></a>3.2 卷积层</h4><p>卷积神经网络中的第一层始终是卷积层（除去输入层）。当开始对一张图片进行识别时，CNN并不能立即对需要识别的部分进行准确匹配，而是首先对源文件的每个位置进行尝试性匹配，将匹配的目标特征作为一个过滤器，从而处理掉匹配度低的部分。这个操作就是卷积操作。</p>
+<p>在这个字母识别案例当中，要计算一个特征和其在字母“X”的原图上对应的某一小块的结果，可以将两个小块内对应位置的像素值进行乘法运算，再将整个小块内乘法运算的结果累加起来，除以小块内像素点总个数。</p>
+<p>这样，不论匹配的两个像素点的颜色均为白色或者灰色，它们的乘积结果1×1和(-1)×(1)都为1，说明每一对能够匹配成功的像素，其结果恒为1。类似的，不能完全匹配的结果乘积则为1×(-1)=-1。相关步骤如下：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/U.png" alt><br>通过卷积的计算，第一块特征完成匹配后结果为1。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/V.png" alt><br>类似的，将第一块特征与其他部分进行匹配，得到匹配后的结果。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/W.png" alt><br>以此类推，对三个特征不断重复上述步骤，通过对每个特征的卷积操作，最终得到一个称为feature map的新二维数组。其中值的含义是越接近1的值表示该对应位置和特征的匹配越完整，越接近-1的值表示该对应位置和特征的反向匹配越完整，而接近0的值表示对应位置没有明显匹配或不相关。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/X.png" alt><br>可以预见，当图像的尺寸增大时，每一个卷积层的大小和卷积层的数目呈线性增长的关系，其内部的加法、乘法和除法操作的次数也会随之增加，计算量也会越庞大。</p>
+<h4 id="3-3-池化层（Pooling）"><a href="#3-3-池化层（Pooling）" class="headerlink" title="3.3 池化层（Pooling）"></a>3.3 池化层（Pooling）</h4><p>由于第一层卷积操作的匹配程序计算量较大，如果遇到数据量大的情况会严重影响卷积的效率。为了有效的减少这一步骤的计算，CNN会通过池化层的结构将输入的源图像文件进行必要的简化和缩放，尽可能的减少文件的像素信息，只保留必要的数据信息，减少内存消耗。</p>
+<p>池化层通常采用2*2像素的池化区域，按照一定的算法规则保留池化区域中的最大值（max-pooling）、均值（mean-pooling）等，并将结果作为区域的像素。</p>
+<p>下图显示了左上角2×2池化区域的max-pooling结果，取该区域的最大值max(0.77,-0.11,-0.11,1.00)，作为池化后的结果。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/Y.png" alt><br>类似的，池化区域向左移动，取第二块区域的取大值max(0.11,0.33,-0.11,0.33)，作为池化后的结果。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/Z.png" alt><br>以此类推，得到最终结果如下：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/0.png" alt><br>以同样的方式对所有feature map执行相同操作。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/1.png" alt><br>最大池化（max-pooling）保留了每一区域内的最大值，也就是相当于保留了这一块区域的最佳匹配结果（值越接近1表示匹配程度越高）。池化操作不会分析区域内具体完成匹配的部分，而是关注是否有某一部分能够匹配上。</p>
+<p>通过池化操作，图像被简化，在很大程度上减少了计算量，降低计算机负载。</p>
+<h4 id="3-4-激活函数"><a href="#3-4-激活函数" class="headerlink" title="3.4 激活函数"></a>3.4 激活函数</h4><p>激活函数通过加入非线性因素将卷积层的输出结果做非线性的映射。卷积层常用的激活函数有修正线性单元ReLU函数，其收敛速度较快，且梯度计算简单。ReLU函数的一般表达式近似于max(0，x)，即当x&lt;0时，输出结果恒为0，当x≥0时，输出结果为参数本身。</p>
+<p>下图为通过ReLU对feature map的处理，首先取max(0,0.77)，结果为0.77。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/2.png" alt><br>类似的，第二个值取max(0,-0.11)，结果为0。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/3.png" alt><br>以此类推，最终得到结果如下：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/4.png" alt></p>
+<h4 id="3-5-深度神经网络"><a href="#3-5-深度神经网络" class="headerlink" title="3.5 深度神经网络"></a>3.5 深度神经网络</h4><p>通过将卷积、激活函数、池化进行组合，得到一层简单的神经网络解构。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/5.png" alt><br>将卷积、池化、激活函数经过组合和拓展以后，层数增加，得到深度神经网络的结构。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/6.png" alt></p>
+<h4 id="3-6-全连接层（Fully-connected-layers）"><a href="#3-6-全连接层（Fully-connected-layers）" class="headerlink" title="3.6 全连接层（Fully connected layers）"></a>3.6 全连接层（Fully connected layers）</h4><p>全连接层相当于整个神经网络当中的“分类器”，数据经过卷积、池化、激活函数等深度网络以后，再通过全连接层对结果进行分类，获取识别的结果。由于神经网络技术是对有标签数据的一种监督学习，在模型的训练过程中，得到全连接层的权重，这样再通过模型对目标进行识别时，根据卷积、池化、激活函数等深度网络操作的结果和得到的权重进行加权求和，获取对各分类结果的预测值，选择最优结果即完成预测分类的任务。全连接层可以有多个。</p>
+<p>将经过卷积、激活函数、池化后的深度网络的结果串联起来，对字母进行识别判断。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/7.png" alt></p>
+<h4 id="3-7-卷积神经网络"><a href="#3-7-卷积神经网络" class="headerlink" title="3.7 卷积神经网络"></a>3.7 卷积神经网络</h4><p>再完成了卷积层、池化层、激活函数、深度神经网络、全连接层一系列的操作后，就得到了一个完整的卷积神经网络的结构。整体可划分为两大步骤，步骤一是经过卷积、池化和激活函数的特征提取，步骤二是通过组成深度神经网络和全连接层的特征识别和预测分类。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/8.png" alt><br>卷积神经网络在本质上是一种对输入输出映射关系的学习，特点是不需要掌握输入输出之间的明确关系或具体的函数表达式，而是利用其特征提取的模式对卷积网络加以训练，最终网络会具备输入输出之间映射的能力。</p>
+<p>（本文节选自我的毕业论文）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN/">CNN</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/05/26/基于卷积神经网络的面部年龄识别/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          基于卷积神经网络的面部年龄识别
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/09/09/Hadoop集群组件配置/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hadoop集群组件配置</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-卷积神经网络"><span class="nav-number">1.</span> <span class="nav-text">1.卷积神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-卷积神经网络原理"><span class="nav-number">2.</span> <span class="nav-text">2.卷积神经网络原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-卷积原理"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 卷积原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-神经元"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 神经元</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Linear"><span class="nav-number">2.2.1.</span> <span class="nav-text">1.Linear</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Sigmoid"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.Sigmoid</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Tanh"><span class="nav-number">2.2.3.</span> <span class="nav-text">3.Tanh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-ReLU-（The-Rectified-Linear-Unit）"><span class="nav-number">2.2.4.</span> <span class="nav-text">4.ReLU （The Rectified Linear Unit）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-神经网络"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 神经网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-卷积神经网络结构"><span class="nav-number">2.4.</span> <span class="nav-text">3.卷积神经网络结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-图像的输入和特征提取"><span class="nav-number">2.4.1.</span> <span class="nav-text">3.1 图像的输入和特征提取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-卷积层"><span class="nav-number">2.4.2.</span> <span class="nav-text">3.2 卷积层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-池化层（Pooling）"><span class="nav-number">2.4.3.</span> <span class="nav-text">3.3 池化层（Pooling）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-激活函数"><span class="nav-number">2.4.4.</span> <span class="nav-text">3.4 激活函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-深度神经网络"><span class="nav-number">2.4.5.</span> <span class="nav-text">3.5 深度神经网络</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-6-全连接层（Fully-connected-layers）"><span class="nav-number">2.4.6.</span> <span class="nav-text">3.6 全连接层（Fully connected layers）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-卷积神经网络"><span class="nav-number">2.4.7.</span> <span class="nav-text">3.7 卷积神经网络</span></a></li></ol></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

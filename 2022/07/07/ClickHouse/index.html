@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>clickhouse | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="databaseclickhouse">
+  
+  
+  
+  
+  <meta name="description" content="本文参考CK中文官方文档：https://clickhouse.com/docs/zh/ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS) 在传统的行式数据库系统中，数据按如下顺序存储：    ROW Title Code Note Datetime     #0 Database 0 数据库 2022-07-07 16:03:00   #1 MySQL 1 关系型">
+<meta name="keywords" content="database,clickhouse">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ClickHouse">
+<meta property="og:url" content="http://yoursite.com/2022/07/07/ClickHouse/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="本文参考CK中文官方文档：https://clickhouse.com/docs/zh/ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS) 在传统的行式数据库系统中，数据按如下顺序存储：    ROW Title Code Note Datetime     #0 Database 0 数据库 2022-07-07 16:03:00   #1 MySQL 1 关系型">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/A.gif">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/B.gif">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/1.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/5.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/6.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/2.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/3.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/4.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/7.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/8.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/9.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/10.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/07/ClickHouse/11.png">
+<meta property="og:updated_time" content="2022-09-22T03:47:24.441Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ClickHouse">
+<meta name="twitter:description" content="本文参考CK中文官方文档：https://clickhouse.com/docs/zh/ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS) 在传统的行式数据库系统中，数据按如下顺序存储：    ROW Title Code Note Datetime     #0 Database 0 数据库 2022-07-07 16:03:00   #1 MySQL 1 关系型">
+<meta name="twitter:image" content="http://yoursite.com/2022/07/07/ClickHouse/A.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-ClickHouse" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      ClickHouse
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/07/07/ClickHouse/" class="article-date">
+	  <time datetime="2022-07-07T08:02:23.000Z" itemprop="datePublished">2022-07-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>本文参考CK中文官方文档：<a href="https://clickhouse.com/docs/zh/" target="_blank" rel="noopener">https://clickhouse.com/docs/zh/</a><br>ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)</p>
+<p>在传统的行式数据库系统中，数据按如下顺序存储：</p>
+<table>
+<thead>
+<tr>
+<th>ROW</th>
+<th>Title</th>
+<th>Code</th>
+<th>Note</th>
+<th>Datetime</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#0</td>
+<td>Database</td>
+<td>0</td>
+<td>数据库</td>
+<td>2022-07-07 16:03:00</td>
+</tr>
+<tr>
+<td>#1</td>
+<td>MySQL</td>
+<td>1</td>
+<td>关系型数据库</td>
+<td>2022-07-07 16:03:10</td>
+</tr>
+<tr>
+<td>#2</td>
+<td>Nebula</td>
+<td>1</td>
+<td>图数据库</td>
+<td>2022-07-07 16:03:20</td>
+</tr>
+<tr>
+<td>#3</td>
+<td>ClickHouse</td>
+<td>1</td>
+<td>列式数据库</td>
+<td>2022-07-07 16:03:30</td>
+</tr>
+<tr>
+<td>#N</td>
+<td>…</td>
+<td>1</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>处于同一行中的数据总是被物理的存储在一起。常见的行式数据库系统有：<font color="orange">MySQL</font>、<font color="orange">Postgres</font> 和 <font color="orange">MS SQL Server</font> 等</p>
+<p>而在列式数据库系统中，数据则按如下顺序存储</p>
+<table>
+<thead>
+<tr>
+<th>ROW</th>
+<th>#0</th>
+<th>#1</th>
+<th>#2</th>
+<th>#3</th>
+<th>#4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title</strong></td>
+<td>Database</td>
+<td>MySQL</td>
+<td>Nebula</td>
+<td>ClickHouse</td>
+<td>…</td>
+</tr>
+<tr>
+<td><strong>Code</strong></td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Note</strong></td>
+<td>数据库</td>
+<td>关系型数据库</td>
+<td>图数据库</td>
+<td>列式数据库</td>
+<td>…</td>
+</tr>
+<tr>
+<td><strong>Datetime</strong></td>
+<td>2022-0707 16:03:00</td>
+<td>2022-0707 16:03:10</td>
+<td>2022-0707 16:03:20</td>
+<td>2022-07-07 16:03:30</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>这些示例只显示了数据的排列顺序，来自不同列的值被单独存储，来自同一列的数据被存储在一起。常见的列式数据库系统有：<font color="orange">Vertica</font>、<font color="orange">Paraccel</font>(Actian Matrix, Amazon Redshift)、<font color="orange">Sybase IQ</font>、<font color="orange">Exasol</font>、<font color="orange">Infobright</font>、<font color="orange">InfiniDB</font>、<font color="orange">MonetDB</font>(VectorWise, Actian Vector)、<font color="orange">LucidDB</font>、<font color="orange">SAP HANA</font>、<font color="orange">Google Dremel</font>、<font color="orange">Google PowerDrill</font>、<font color="orange">Druid</font>、<font color="orange">kdb+</font> 等</p>
+<p>不同的数据存储方式适用不同的业务场景，数据访问的场景包括：进行了何种查询、多久查询一次以及各类查询的比例；每种类型的查询(行、列和字节)读取多少数据；读取数据和更新之间的关系；使用的数据集大小以及如何使用本地的数据集；是否使用事务,以及它们是如何进行隔离的；数据的复制机制与数据的完整性要求；每种类型的查询要求的延迟与吞吐量等等</p>
+<p>系统负载越高，依据使用场景进行定制化就越重要，并且定制将会变的越精细。没有一个系统能够同时适用所有不同的业务场景。如果系统适用于广泛的场景，在负载高的情况下，要兼顾所有的场景，那么将不得不做出选择：<font color="#008080">平衡</font> OR <font color="#008080">效率</font></p>
+<h2 id="联机分析（OLAP）场景的关键特征"><a href="#联机分析（OLAP）场景的关键特征" class="headerlink" title="联机分析（OLAP）场景的关键特征"></a>联机分析（OLAP）场景的关键特征</h2><pre><code>· 绝大多数是读请求
+
+· 数据以相当大的批次(&gt; 1000行)更新，而不是单行更新;或者根本没有更新。
+
+· 已添加到数据库的数据不能修改。
+
+· 对于读取，从数据库中提取相当多的行，但只提取列的一小部分。
+
+· 宽表，即每个表包含着大量的列
+
+· 查询相对较少(通常每台服务器每秒查询数百次或更少)
+
+· 对于简单查询，允许延迟大约50毫秒
+
+· 列中的数据相对较小：数字和短字符串(例如，每个URL 60个字节)
+
+· 处理单个查询时需要高吞吐量(每台服务器每秒可达数十亿行)
+
+· 事务不是必须的
+
+· 对数据一致性要求低
+
+· 每个查询有一个大表。除了他以外，其他的都很小。
+
+· 查询结果明显小于源数据。换句话说，数据经过过滤或聚合，因此结果适合于单个服务器的RAM中
+</code></pre><p>很容易可以看出，OLAP场景与其他通常业务场景(例如,OLTP或K/V)有很大的不同， 因此想要使用OLTP或Key-Value数据库去高效的处理分析查询场景，并不是非常完美的适用方案。例如，使用OLAP数据库去处理分析请求通常要优于使用MongoDB或Redis去处理分析请求。<br><a id="more"></a></p>
+<h2 id="列式数据库更适合OLAP场景的原因"><a href="#列式数据库更适合OLAP场景的原因" class="headerlink" title="列式数据库更适合OLAP场景的原因"></a>列式数据库更适合OLAP场景的原因</h2><p>列式数据库更适合于OLAP场景(对于大多数查询而言，处理速度至少提高了100倍)<br><img src="/2022/07/07/ClickHouse/A.gif" alt><br><img src="/2022/07/07/ClickHouse/B.gif" alt></p>
+<h3 id="I-O"><a href="#I-O" class="headerlink" title="I/O"></a>I/O</h3><p><font color="orange">1.</font>针对分析类查询，通常只需要读取表的一小部分列。在列式数据库中你可以只读取你需要的数据。例如，如果只需要读取100列中的5列，这将帮助你最少减少20倍的I/O消耗。</p>
+<p><font color="orange">2.</font>由于数据总是打包成批量读取的，所以压缩是非常容易的。同时数据按列分别存储这也更容易压缩。这进一步降低了I/O的体积。</p>
+<p><font color="orange">3.</font>由于I/O的降低，这将帮助更多的数据被系统缓存。</p>
+<h3 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h3><p>由于执行一个查询需要处理大量的行，因此在整个向量上执行所有操作将比在每一行上执行所有操作更加高效。同时这将有助于实现一个几乎没有调用成本的查询引擎。如果你不这样做，使用任何一个机械硬盘，查询引擎都不可避免的停止CPU进行等待。所以，在数据按列存储并且按列执行是很有意义的。</p>
+<p>有两种方法可以做到这一点：</p>
+<p><font color="orange">1.</font>向量引擎：所有的操作都是为向量而不是为单个值编写的。这意味着多个操作之间的不再需要频繁的调用，并且调用的成本基本可以忽略不计。操作代码包含一个优化的内部循环。</p>
+<p><font color="orange">2.</font>代码生成：生成一段代码，包含查询中的所有操作。</p>
+<p>这是不应该在一个通用数据库中实现的，因为这在运行简单查询时是没有意义的。但是也有例外，例如，MemSQL使用代码生成来减少处理SQL查询的延迟(只是为了比较，分析型数据库通常需要优化的是吞吐而不是延迟)。</p>
+<p>为了提高CPU效率，查询语言必须是声明型的(SQL或MDX)， 或者至少一个向量(J，K)。 查询应该只包含隐式循环，允许进行优化。</p>
+<h2 id="安装ClickHouse"><a href="#安装ClickHouse" class="headerlink" title="安装ClickHouse"></a>安装ClickHouse</h2><p>使用CentOS基于rpm的linux发行版官方预编译rpm包，添加官方存储库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install -y yum-utils</span><br><span class="line">$ sudo yum-config-manager --add-repo https://packages.clickhouse.com/rpm/clickhouse.repo</span><br><span class="line">$ sudo yum install -y clickhouse-server clickhouse-client</span><br></pre></td></tr></table></figure></p>
+<h3 id="启动CK"><a href="#启动CK" class="headerlink" title="启动CK"></a>启动CK</h3><p>运行以下命令将在后台启动服务，日志文件将输出在<code>/var/log/clickhouse-server/</code>文件夹<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo /etc/init.d/clickhouse-server start</span><br><span class="line">$ clickhouse-client # 或执行 &quot;clickhouse-client --password&quot; 来添加密码</span><br></pre></td></tr></table></figure></p>
+<p>要手动从控制台启动服务，执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ clickhouse-server --config-file=/etc/clickhouse-server/config.xml</span><br></pre></td></tr></table></figure></p>
+<p>日志将被打印至控制台</p>
+<p>当服务成功启动后，执行<code>$ clickhouse-client</code>来连接CK数据库，默认情况下，使用<font color="orange">default用户</font>并不携带密码连接到<font color="#008080">localhost:9000</font>，还可以使用<font color="#008080">–host</font>参数连接到指定服务器。</p>
+<p>终端必须使用UTF-8编码。</p>
+<p><img src="/2022/07/07/ClickHouse/1.png" alt></p>
+<h2 id="ClickHouse数据库可视化工具Dbeaver"><a href="#ClickHouse数据库可视化工具Dbeaver" class="headerlink" title="ClickHouse数据库可视化工具Dbeaver"></a>ClickHouse数据库可视化工具Dbeaver</h2><p>目前navicat并不支持clickhouse的可视化查询，可以使用dbeaver数据库管理工具来代替navicat</p>
+<h3 id="Dbeaver安装"><a href="#Dbeaver安装" class="headerlink" title="Dbeaver安装"></a>Dbeaver安装</h3><p>下载最新版本的DBeaver RPM安装包并使用rpm/dnf或yum软件包管理器进行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://dbeaver.io/files/dbeaver-ce-latest-stable.x86_64.rpm</span><br><span class="line">$ sudo rpm -Uvh ./dbeaver-ce-latest-stable.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>完成后即可在终端执行<code>$ dbeaver</code>来启动dbeaver，再连接到CK（需要安装CK在线包）</p>
+<p><img src="/2022/07/07/ClickHouse/5.png" alt><br><img src="/2022/07/07/ClickHouse/6.png" alt></p>
+<h2 id="ClickHouse数据库操作"><a href="#ClickHouse数据库操作" class="headerlink" title="ClickHouse数据库操作"></a>ClickHouse数据库操作</h2><h3 id="创建新的数据库TEST（删除为DROP）"><a href="#创建新的数据库TEST（删除为DROP）" class="headerlink" title="创建新的数据库TEST（删除为DROP）"></a><font size="4" color="orange">创建新的数据库TEST</font><font size="4" color="black">（删除为DROP）</font></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost :) CREATE DATABASE TEST</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/07/07/ClickHouse/2.png" alt></p>
+<h3 id="查看数据库、数据表"><a href="#查看数据库、数据表" class="headerlink" title="查看数据库、数据表"></a><font size="4" color="orange">查看数据库、数据表</font></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">localhost :) SHOW DATABASES</span><br><span class="line">localhost :) SHOW TABLES IN TEST</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/07/07/ClickHouse/3.png" alt></p>
+<h3 id="创建数据表"><a href="#创建数据表" class="headerlink" title="创建数据表"></a><font size="4" color="orange">创建数据表</font></h3><p>ClickHouse有自己的数据类型，每个表都必须指定一个Engine属性来确定要创建的表的类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost :) CREATE TABLE TEST.testable (id String,time Date,name String,code FixedString(2))ENGINE=MergeTree() ORDER BY (time)</span><br></pre></td></tr></table></figure></p>
+<p>执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost :) DESCRIBE TEST.testable</span><br></pre></td></tr></table></figure></p>
+<p>来描述表</p>
+<p><img src="/2022/07/07/ClickHouse/4.png" alt></p>
+<h3 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a><font size="4" color="orange">添加数据</font></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost :) INSERT INTO TEST.testable VALUES (&apos;001&apos;,&apos;2022-07-07&apos;,&apos;MySQL&apos;,&apos;01&apos;)</span><br></pre></td></tr></table></figure>
+<p>或指定数据所在的列：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost :) INSERT INTO TEST.testable(id,time,name,code) VALUES (&apos;002&apos;,&apos;2022-07-07&apos;,&apos;SQLite&apos;,&apos;01&apos;)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/07/07/ClickHouse/7.png" alt><br><img src="/2022/07/07/ClickHouse/8.png" alt><br><img src="/2022/07/07/ClickHouse/9.png" alt><br>指定列不插入数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost :) INSERT INTO TEST.testable(* EXCEPT(code)) VALUES (&apos;0000&apos;,&apos;2022-07-07&apos;,&apos;nosql&apos;)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/07/07/ClickHouse/10.png" alt></p>
+<h3 id="SELECT"><a href="#SELECT" class="headerlink" title="SELECT"></a><font size="4" color="orange">SELECT</font></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">localhost :) SELECT * FROM TEST.testable</span><br><span class="line">localhost :) SELECT * FROM TEST.testable WHERE name=&apos;MySQL&apos;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/07/07/ClickHouse/11.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/clickhouse/">clickhouse</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/07/12/PaddleOCR/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          PaddleOCR
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/06/21/Nebula-CentOS安装与部署/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Nebula-CentOS安装与部署</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#联机分析（OLAP）场景的关键特征"><span class="nav-number">1.</span> <span class="nav-text">联机分析（OLAP）场景的关键特征</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列式数据库更适合OLAP场景的原因"><span class="nav-number">2.</span> <span class="nav-text">列式数据库更适合OLAP场景的原因</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#I-O"><span class="nav-number">2.1.</span> <span class="nav-text">I/O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CPU"><span class="nav-number">2.2.</span> <span class="nav-text">CPU</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装ClickHouse"><span class="nav-number">3.</span> <span class="nav-text">安装ClickHouse</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动CK"><span class="nav-number">3.1.</span> <span class="nav-text">启动CK</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ClickHouse数据库可视化工具Dbeaver"><span class="nav-number">4.</span> <span class="nav-text">ClickHouse数据库可视化工具Dbeaver</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dbeaver安装"><span class="nav-number">4.1.</span> <span class="nav-text">Dbeaver安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ClickHouse数据库操作"><span class="nav-number">5.</span> <span class="nav-text">ClickHouse数据库操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建新的数据库TEST（删除为DROP）"><span class="nav-number">5.1.</span> <span class="nav-text">创建新的数据库TEST（删除为DROP）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看数据库、数据表"><span class="nav-number">5.2.</span> <span class="nav-text">查看数据库、数据表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建数据表"><span class="nav-number">5.3.</span> <span class="nav-text">创建数据表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加数据"><span class="nav-number">5.4.</span> <span class="nav-text">添加数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SELECT"><span class="nav-number">5.5.</span> <span class="nav-text">SELECT</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

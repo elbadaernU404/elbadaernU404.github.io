@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>python爬虫相关 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="爬虫">
+  
+  
+  
+  
+  <meta name="description" content="进程和线程并发和并行并发是同时具有多个活动的系统，实质是一个或多个物理CPU在若干道程序（或线程）之间多路复用。并行是真正意义上的不同事件或线程在同一时刻同时执行。并行利用并发使系统运行更快，在操作系统的多个抽象层次运用。 进程程序不能自己运行，只有将程序装载进内存，由系统分配资源后才能运行。程序是指令的集合，可以视为指令的静态文本，而进程是指令的执行活动，是动态的行为。进程是操作系统对于一个运行">
+<meta name="keywords" content="爬虫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python爬虫相关">
+<meta property="og:url" content="http://yoursite.com/2018/07/29/Python爬虫相关/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="进程和线程并发和并行并发是同时具有多个活动的系统，实质是一个或多个物理CPU在若干道程序（或线程）之间多路复用。并行是真正意义上的不同事件或线程在同一时刻同时执行。并行利用并发使系统运行更快，在操作系统的多个抽象层次运用。 进程程序不能自己运行，只有将程序装载进内存，由系统分配资源后才能运行。程序是指令的集合，可以视为指令的静态文本，而进程是指令的执行活动，是动态的行为。进程是操作系统对于一个运行">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2018/07/29/Python爬虫相关/A.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/29/Python爬虫相关/B.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/29/Python爬虫相关/C.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/29/Python爬虫相关/D.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/29/Python爬虫相关/E.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/29/Python爬虫相关/F.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/29/Python爬虫相关/E1.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/29/Python爬虫相关/E2.png">
+<meta property="og:image" content="http://yoursite.com/2018/07/29/Python爬虫相关/G.png">
+<meta property="og:updated_time" content="2022-06-27T07:39:26.379Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python爬虫相关">
+<meta name="twitter:description" content="进程和线程并发和并行并发是同时具有多个活动的系统，实质是一个或多个物理CPU在若干道程序（或线程）之间多路复用。并行是真正意义上的不同事件或线程在同一时刻同时执行。并行利用并发使系统运行更快，在操作系统的多个抽象层次运用。 进程程序不能自己运行，只有将程序装载进内存，由系统分配资源后才能运行。程序是指令的集合，可以视为指令的静态文本，而进程是指令的执行活动，是动态的行为。进程是操作系统对于一个运行">
+<meta name="twitter:image" content="http://yoursite.com/2018/07/29/Python爬虫相关/A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Python爬虫相关" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Python爬虫相关
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/07/29/Python爬虫相关/" class="article-date">
+	  <time datetime="2018-07-29T11:25:10.000Z" itemprop="datePublished">2018-07-29</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h1 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h1><h2 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h2><p>并发是同时具有多个活动的系统，实质是一个或多个物理CPU在若干道程序（或线程）之间多路复用。<br><img src="/2018/07/29/Python爬虫相关/A.png" alt><br>并行是真正意义上的不同事件或线程在同一时刻同时执行。并行利用并发使系统运行更快，在操作系统的多个抽象层次运用。<br><img src="/2018/07/29/Python爬虫相关/B.png" alt></p>
+<h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><p>程序不能自己运行，只有将程序装载进内存，由系统分配资源后才能运行。程序是指令的集合，可以视为指令的静态文本，而进程是指令的执行活动，是动态的行为。<br>进程是操作系统对于一个运行中程序的抽象，是CPU、内存、IO设备的抽象。系统可以同时运行多个进程。</p>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><p>线程是操作系统进行运算调度的最小单位，被包含于进程中，是进程的实际运作单位。一个进程可以由多个线程组成，线程之间共享代码和数据。<br>由于在实际网络服务器中对并行的需求，线程成为重要的编程模型：<br>1.多线程之间比多进程之间更易共享数据。<br>2.线程一般比进程高效。<br><a id="more"></a></p>
+<h1 id="深度优先和广度优先"><a href="#深度优先和广度优先" class="headerlink" title="深度优先和广度优先"></a>深度优先和广度优先</h1><p>在爬虫系统中，待抓取URL队列是很重要的一部分，待抓取URL队列中的URL以什么样的顺序排列也是一个很重要的问题，因为这涉及到先抓取哪个页面，后抓取哪个页面。而决定这些URL排列顺序的方法，叫做抓取策略。以下是两种常用的策略：深度优先、广度优先。 </p>
+<h2 id="深度优先"><a href="#深度优先" class="headerlink" title="深度优先"></a>深度优先</h2><p>深度优先是指网络爬虫会从起始页开始，一个链接一个链接跟踪下去，处理完这条线路之后再转入下一个起始页，继续追踪链接。<br><img src="/2018/07/29/Python爬虫相关/C.png" alt><br>深度优先的爬取的顺序式：<br>A-B-D-E-I-C-F-G-H （递归）<br>算法（伪代码形式）：<br><img src="/2018/07/29/Python爬虫相关/D.png" alt></p>
+<h2 id="广度优先"><a href="#广度优先" class="headerlink" title="广度优先"></a>广度优先</h2><p>广度优先，是指将新下载网页发现的链接直接插入到待抓取URL队列的末尾，也就是指网络爬虫会先抓取起始页中的所有网页，然后在选择其中的一个连接网页，继续抓取在此网页中链接的所有网页。<br><img src="/2018/07/29/Python爬虫相关/E.png" alt><br>广度优先的爬取顺序为：<br>A-B-C-D-E-F-G-H-I (队列)<br>算法（伪代码形式）：<br><img src="/2018/07/29/Python爬虫相关/F.png" alt></p>
+<h1 id="Cookie和Session"><a href="#Cookie和Session" class="headerlink" title="Cookie和Session"></a>Cookie和Session</h1><h2 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h2><p>简单的说就是当用户通过http协议访问一个服务器的时候，这个服务器会将一些Name/Value键值对返回给客户端浏览器，并将这些数据加上一些限制条件。在条件符合时，这个用户下次再访问服务器的时候，数据又被完整的带给服务器。<br>因为http是一种无状态协议，用户首次访问web站点的时候，服务器对用户一无所知。而Cookie就像是服务器给每个来访问的用户贴的标签，而这些标签就是对来访问的客户端的独有的身份的一个标识，这里就如同每个人的身份证一样，带着你的个人信息。而当一个客户端第一次连接过来的时候，服务端就会给他打一个标签，这里就如同给你发了一个身份证，当你下载带着这个身份证来的时候，服务器就知道你是谁了。所以Cookie是存在客户端的，这里其实就是在你的浏览器中。</p>
+<h2 id="Cookie分类"><a href="#Cookie分类" class="headerlink" title="Cookie分类"></a>Cookie分类</h2><p>Cookie主要分为两种：<br>会话Cookie：不设置过期时间，保存在浏览器的内存中，关闭浏览器，Cookie便被销毁<br>普通Cookie:设置了过期时间，保存在硬盘上</p>
+<h2 id="Session"><a href="#Session" class="headerlink" title="Session"></a>Session</h2><p>上面我们知道了Cookie可以让服务器端跟踪每个客户端的访问，但是每次客户端的访问都必须传回这些 Cookie，如果 Cookie 很多，这无形地增加了客户端与服务端的数据传输量，而 Session 的出现正是为了解决这个问题。<br>同一个客户端每次和服务端交互时，不需要每次都传回所有的Cookie值，而是只要传回一个ID这个ID是客户端第一次访问服务器的时候生成的，而且每个客户端是唯一的。这样每个客户端就有了一个唯一的ID，客户端只要传回这个ID就行了，这个ID通常是NANE为JSESIONID的一个Cookie。所以Session其实是利用Cookie进行信息处理的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">resault = requests.get(&apos;http://120.24.86.145:8002/qiumingshan/&apos;)</span><br><span class="line">re = re.requests(r&apos;^&lt;div&gt;(.*)=\?;&lt;/div&gt;$&apos;, resault.text,re.S|re.M|re.I)</span><br><span class="line">value =&#123;&apos;value&apos;: eval(re.group(1))&#125;</span><br><span class="line"></span><br><span class="line">resault = requests.post(&apos;http://120.24.86.145:8002/qiumingshan/&apos;, data=value)</span><br><span class="line">print(&apos;The Resault is:&apos;,eval(re.group(1)))</span><br><span class="line">print(resault.text)</span><br></pre></td></tr></table></figure></p>
+<p>这样是错误的，会话无法维持。正确写法如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import re</span><br><span class="line">import requests</span><br><span class="line"></span><br><span class="line">search = requests.session()</span><br><span class="line">resault = search.get(&apos;http://120.24.86.145:8002/qiumingshan/&apos;)</span><br><span class="line">re = re.search(r&apos;^&lt;div&gt;(.*)=\?;&lt;/div&gt;$&apos;, resault.text,re.S|re.M|re.I)</span><br><span class="line">value =&#123;&apos;value&apos;: eval(re.group(1))&#125;</span><br><span class="line"></span><br><span class="line">resault = search.post(&apos;http://120.24.86.145:8002/qiumingshan/&apos;, data=value)</span><br><span class="line">print(&apos;The Resault is:&apos;,eval(re.group(1)))</span><br><span class="line">print(resault.text)</span><br></pre></td></tr></table></figure></p>
+<p>用HTML测试网站httpbin.org举例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">requests.get(&quot;http://httpbin.org/cookies/set/number/123456&quot;)</span><br><span class="line">response = requests.get(&quot;http://httpbin.org/cookies&quot;)</span><br><span class="line">print(response.text)</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="/2018/07/29/Python爬虫相关/E1.png" alt><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">s = requests.Session()</span><br><span class="line">s.get(&quot;http://httpbin.org/cookies/set/number/123456&quot;)</span><br><span class="line">response = s.get(&quot;http://httpbin.org/cookies&quot;)</span><br><span class="line">print(response.text)</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br><img src="/2018/07/29/Python爬虫相关/E2.png" alt><br>对于Cookie，因为人为的可分析本地Cookie进行Cookie欺骗，Session相对安全。而Session会一段时间内保持在服务器中，访问量越多越占用服务器性能。如果主要减轻服务器压力，Cookie相对合适。</p>
+<h1 id="HTML中form表单"><a href="#HTML中form表单" class="headerlink" title="HTML中form表单"></a>HTML中form表单</h1><p>登录页面会有一个form表单提交，form表单的功能是用于搜集不同类型的用户输入的内容。有了表单，网页的内容可以由用户自己创建。<br><img src="/2018/07/29/Python爬虫相关/G.png" alt><br>获取authenticity_token信息后，可以获得Cookie信息，分析登录包获取提交地址，利用Scrapy爬虫框架等一步步实现通过爬虫程序登录网站。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/08/07/D3-SVG随机树与时钟等/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          D3:SVG随机树与时钟等
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/07/20/Python正则表达式和requests爬虫/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Python正则表达式和requests爬虫</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#进程和线程"><span class="nav-number">1.</span> <span class="nav-text">进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#并发和并行"><span class="nav-number">1.1.</span> <span class="nav-text">并发和并行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">1.2.</span> <span class="nav-text">进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.3.</span> <span class="nav-text">线程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深度优先和广度优先"><span class="nav-number">2.</span> <span class="nav-text">深度优先和广度优先</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#深度优先"><span class="nav-number">2.1.</span> <span class="nav-text">深度优先</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#广度优先"><span class="nav-number">2.2.</span> <span class="nav-text">广度优先</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cookie和Session"><span class="nav-number">3.</span> <span class="nav-text">Cookie和Session</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie"><span class="nav-number">3.1.</span> <span class="nav-text">Cookie</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cookie分类"><span class="nav-number">3.2.</span> <span class="nav-text">Cookie分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session"><span class="nav-number">3.3.</span> <span class="nav-text">Session</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTML中form表单"><span class="nav-number">4.</span> <span class="nav-text">HTML中form表单</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

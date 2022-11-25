@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>nebula-centos安装与部署 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="databasenebula">
+  
+  
+  
+  
+  <meta name="description" content="本文参考、提取自Nebula Graph Database官方文档(https://docs.nebula-graph.com.cn/2.6.0) 1.前期准备环境· nebula版本：2.6.0· 主机：CentOS7 64位· 内存：8GB· 处理器数量：4· 处理器内核数：4· 处理器内核总数：16· 硬盘：30GB，SSD 硬件要求· CPU架构：x86_64· 内存：4GB· 硬盘：10">
+<meta name="keywords" content="database,nebula">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nebula-CentOS安装与部署">
+<meta property="og:url" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="本文参考、提取自Nebula Graph Database官方文档(https://docs.nebula-graph.com.cn/2.6.0) 1.前期准备环境· nebula版本：2.6.0· 主机：CentOS7 64位· 内存：8GB· 处理器数量：4· 处理器内核数：4· 处理器内核总数：16· 硬盘：30GB，SSD 硬件要求· CPU架构：x86_64· 内存：4GB· 硬盘：10">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/C.png">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/D.png">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/E.png">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/F.png">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/G.png">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/H.png">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/I.png">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/J.png">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/K.png">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/L.png">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/M.png">
+<meta property="og:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/N.png">
+<meta property="og:updated_time" content="2022-09-22T03:41:08.505Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nebula-CentOS安装与部署">
+<meta name="twitter:description" content="本文参考、提取自Nebula Graph Database官方文档(https://docs.nebula-graph.com.cn/2.6.0) 1.前期准备环境· nebula版本：2.6.0· 主机：CentOS7 64位· 内存：8GB· 处理器数量：4· 处理器内核数：4· 处理器内核总数：16· 硬盘：30GB，SSD 硬件要求· CPU架构：x86_64· 内存：4GB· 硬盘：10">
+<meta name="twitter:image" content="http://yoursite.com/2022/06/21/Nebula-CentOS安装与部署/C.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Nebula-CentOS安装与部署" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Nebula-CentOS安装与部署
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/06/21/Nebula-CentOS安装与部署/" class="article-date">
+	  <time datetime="2022-06-21T13:46:14.000Z" itemprop="datePublished">2022-06-21</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>本文参考、提取自Nebula Graph Database官方文档(<a href="https://docs.nebula-graph.com.cn/2.6.0" target="_blank" rel="noopener">https://docs.nebula-graph.com.cn/2.6.0</a>)</p>
+<h2 id="1-前期准备"><a href="#1-前期准备" class="headerlink" title="1.前期准备"></a>1.前期准备</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p><strong>·</strong> nebula版本：<font color="orange">2.6.0</font><br><strong>·</strong> 主机：<font color="orange">CentOS7 64位</font><br><strong>·</strong> 内存：<font color="orange">8GB</font><br><strong>·</strong> 处理器数量：<font color="orange">4</font><br><strong>·</strong> 处理器内核数：<font color="orange">4</font><br><strong>·</strong> 处理器内核总数：<font color="orange">16</font><br><strong>·</strong> 硬盘：<font color="orange">30GB，SSD</font></p>
+<h3 id="硬件要求"><a href="#硬件要求" class="headerlink" title="硬件要求"></a>硬件要求</h3><p><strong>·</strong> CPU架构：<font color="orange">x86_64</font><br><strong>·</strong> 内存：<font color="orange">4GB</font><br><strong>·</strong> 硬盘：<font color="orange">10GB，SSD</font></p>
+<h3 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h3><table>
+<thead>
+<tr>
+<th>软件名称</th>
+<th>版本</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>glibc</td>
+<td><font color="orange">2.17</font>及以上</td>
+<td>执行<code>ldd --version</code>检查版本</td>
+</tr>
+<tr>
+<td>make</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>m4</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>git</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>wget</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>unzip</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>xz</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>redline-devel</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>ncurses-devel</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>zlib-devel</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td><font color="orange">gcc</font></td>
+<td><font color="orange">7.5.0</font>及以上</td>
+<td>执行命令<code>gcc -v</code>检查版本</td>
+</tr>
+<tr>
+<td>gcc-c++</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td><font color="orange">cmake</font></td>
+<td><font color="orange">3.9.0</font>及以上</td>
+<td>执行命令<code>cmake --version</code>检查版本</td>
+</tr>
+<tr>
+<td>gettext</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>curl</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>redhat-lsb-core</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>libstdc++-static</td>
+<td>任意稳定版本</td>
+<td>仅在CentOS 8+、RedHat 8+、Fedora中需要</td>
+</tr>
+<tr>
+<td>libasan</td>
+<td>任意稳定版本</td>
+<td>仅在CentOS 8+、RedHat 8+、Fedora中需要</td>
+</tr>
+<tr>
+<td>bzip2</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>需要保证<font color="orange">gcc</font>和<font color="orange">cmake</font>的版本足够高，其他第三方软件将在安装（<font color="orange">cmake</font>）阶段自动下载并安装到build目录中<br><a id="more"></a></p>
+<h2 id="2-安装编译"><a href="#2-安装编译" class="headerlink" title="2.安装编译"></a>2.安装编译</h2><h3 id="1-安装依赖包"><a href="#1-安装依赖包" class="headerlink" title="1.安装依赖包"></a>1.安装依赖包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum update</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ yum install -y make \</span><br><span class="line">                 m4 \</span><br><span class="line">                 git \</span><br><span class="line">                 wget \</span><br><span class="line">                 unzip \</span><br><span class="line">                 xz \</span><br><span class="line">                 readline-devel \</span><br><span class="line">                 ncurses-devel \</span><br><span class="line">                 zlib-devel \</span><br><span class="line">                 gcc \</span><br><span class="line">                 gcc-c++ \</span><br><span class="line">                 cmake \</span><br><span class="line">                 gettext \</span><br><span class="line">                 curl \</span><br><span class="line">                 redhat-lsb-core \</span><br><span class="line">                 bzip2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum install -y libstdc++-static libasan</span><br></pre></td></tr></table></figure>
+<p>安装完成后检查主机的<font color="orange">g++</font>和<font color="orange">cmake</font>版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ g++ --version</span><br><span class="line">$ cmake --version</span><br></pre></td></tr></table></figure></p>
+<p>如果<font color="orange">cmake</font>和<font color="orange">g++</font>的版本不够，可以先到github克隆nebula仓库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git clone --branch v2.6.0 https://github.com/vesoft-inc/nebula.git</span><br><span class="line">$ cd nebula</span><br></pre></td></tr></table></figure></p>
+<p>执行命令安装<font color="orange">cmake</font>和<font color="orange">g++</font><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ./third-party/install-cmake.sh cmake-install</span><br><span class="line">$ source cmake-install/bin/enable-cmake.sh</span><br><span class="line">$ sudo mkdir /opt/vesoft &amp;&amp; sudo chmod -R a+w /opt/vesoft</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./third-party/install-gcc.sh --prefix=/opt</span><br><span class="line">$ source /opt/vesoft/toolset/gcc/7.5.0/enable</span><br></pre></td></tr></table></figure>
+<p>最后执行脚本<code>install-third-party.sh</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./third-party/install-third-party.sh</span><br></pre></td></tr></table></figure></p>
+<h3 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h3><p>在github克隆nebula仓库后，创建build目录并进入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir build &amp;&amp; cd build</span><br></pre></td></tr></table></figure></p>
+<p>使用cmake生成makefile文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cmake -DCMAKE_INSTALL_PREFIX=/usr/local/nebula -DENABLE_TESTING=OFF -DCMAKE_BUILD_TYPE=Release ..</span><br></pre></td></tr></table></figure></p>
+<p>进行编译，为了提高速度，-j参数（并行数量）为min(CPU核数，内存/2)，这里选择8/2=4<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make -j4</span><br></pre></td></tr></table></figure></p>
+<p>安装nebula graph<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo make install</span><br></pre></td></tr></table></figure></p>
+<p>一切完成以后，来到默认的/usr/local/nebula/etc目录下，将配置文件（<font color="orange">nebula-graph.conf.default</font>、<font color="orange">nebula-metad.conf.default</font>、<font color="orange">nebula-storaged.conf.default</font>）后缀的.default删除，即使用默认的配置文件</p>
+<h2 id="3-启动Nebula-Graph服务端"><a href="#3-启动Nebula-Graph服务端" class="headerlink" title="3.启动Nebula Graph服务端"></a>3.启动Nebula Graph服务端</h2><h3 id="启动Nebula-Graph"><a href="#启动Nebula-Graph" class="headerlink" title="启动Nebula Graph"></a>启动Nebula Graph</h3><p>直接进行启动、查看状态和关闭服务的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ sudo /usr/local/nebula/scripts/nebula.service start all</span><br><span class="line">$ sudo /usr/local/nebula/scripts/nebula.service status all</span><br><span class="line">$ sudo /usr/local/nebula/scripts/nebula.service stop all</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/06/21/Nebula-CentOS安装与部署/C.png" alt></p>
+<h3 id="连接Nebula-Graph"><a href="#连接Nebula-Graph" class="headerlink" title="连接Nebula Graph"></a>连接Nebula Graph</h3><p>进入nebula console下载界面<a href="https://github.com/vesoft-inc/nebula-console/releases" target="_blank" rel="noopener">https://github.com/vesoft-inc/nebula-console/releases</a>，找到对应的2.6.0版本，点击Assets找到linux版本，这里选择nebula-console-linux-amd64-v2.6.0</p>
+<p><img src="/2022/06/21/Nebula-CentOS安装与部署/D.png" alt><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://github.com/vesoft-inc/nebula-console/releases/download/v2.6.0/nebula-console-linux-amd64-v2.6.0</span><br></pre></td></tr></table></figure></p>
+<p>将下载好的nebula-console-linux-amd64-v2.6.0重命名为nebula-console</p>
+<p>为用户授予nebula-console文件的执行权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ chmod 111 nebula-console</span><br></pre></td></tr></table></figure></p>
+<p>来到nebula-console所在目录下，执行命令连接nebula graph，其中参数分别对应ip地址、服务端的端口号（9669）、nebula用户名和密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./nebula-console -addr 192.168.80.128 -port 9669 -u root -p nebula</span><br></pre></td></tr></table></figure></p>
+<p>成功后进入到nebula console控制台界面（需要提前启动nebula graph）</p>
+<p><img src="/2022/06/21/Nebula-CentOS安装与部署/E.png" alt><br>可以通过console控制台执行命令，进行数据库的查看、编辑等</p>
+<p><img src="/2022/06/21/Nebula-CentOS安装与部署/F.png" alt><br>最后通过exit或者quit命令退出nebula console控制台</p>
+<p><img src="/2022/06/21/Nebula-CentOS安装与部署/G.png" alt></p>
+<h2 id="4-Nebula-Graph-Studio客户端"><a href="#4-Nebula-Graph-Studio客户端" class="headerlink" title="4.Nebula Graph Studio客户端"></a>4.Nebula Graph Studio客户端</h2><p>nebula graph studio是一款可以通过 Web 访问的图数据库开源可视化工具，搭配 nebula graph 内核使用，能够提供构图、数据导入、编写 nGQL 查询、图探索等一站式服务</p>
+<p>nebula graph studio 版本发布节奏独立于 nebula graph 内核，其命名方式也不参照内核命名的规则，目前仅支持 x86_64 架构</p>
+<p><img src="/2022/06/21/Nebula-CentOS安装与部署/H.png" alt></p>
+<h3 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h3><p><strong>·</strong> 需要启动nebula graph服务</p>
+<p><strong>·</strong> 使用的Linux发行版为CentOS，安装有lsof和版本为v10.16.0及以上的Node.js</p>
+<p><strong>·</strong> 确保7001和8080端口处于未被占用的状态</p>
+<p>下载最新版本的node.js：</p>
+<p>进入node.js官网，选择linux下64位版本</p>
+<p><img src="/2022/06/21/Nebula-CentOS安装与部署/I.png" alt><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://nodejs.org/dist/v16.15.1/node-v16.15.1-linux-x64.tar.xz</span><br></pre></td></tr></table></figure></p>
+<p>下载到本地以后解压缩，将文件重命名为nodejs16，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tar xf  node-v16.15.1-linux-x64.tar.xz</span><br><span class="line">$ mv node-v16.15.1-linux-x64 nodejs16</span><br></pre></td></tr></table></figure></p>
+<p>配置软连接，将nodejs16映射到usr/bin下，使全局可以使用node.js<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ln -s /root/nodejs16/bin/node   /usr/bin/ </span><br><span class="line">$ ln -s /root/nodejs16/bin/npm   /usr/bin/</span><br></pre></td></tr></table></figure></p>
+<p>最后可以查看node.js的版本，确认安装完成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/bin/node -v</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装和部署nebula-graph-studio"><a href="#安装和部署nebula-graph-studio" class="headerlink" title="安装和部署nebula graph studio"></a>安装和部署nebula graph studio</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ https://oss-cdn.nebula-graph.com.cn/nebula-graph-studio/3.1.0/nebula-graph-studio-3.1.0.x86_64.rpm</span><br><span class="line">$ sudo rpm -i nebula-graph-studio-3.1.0.x86_64.rpm</span><br></pre></td></tr></table></figure>
+<p>成功后显示<code>[egg-scripts] egg started on http://0.0.0.0:7001</code>说明客户端正常启动了</p>
+<p><img src="/2022/06/21/Nebula-CentOS安装与部署/J.png" alt><br><img src="/2022/06/21/Nebula-CentOS安装与部署/K.png" alt><br>刷入前面接口要调用到的数据</p>
+<p><img src="/2022/06/21/Nebula-CentOS安装与部署/L.png" alt><br>要手动关闭和启动服务，可以执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ bash /usr/local/nebula-graph-studio/scripts/rpm/start.sh</span><br><span class="line">$ bash /usr/local/nebula-graph-studio/scripts/rpm/stop.sh</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/06/21/Nebula-CentOS安装与部署/M.png" alt></p>
+<h3 id="windows访问客户端"><a href="#windows访问客户端" class="headerlink" title="windows访问客户端"></a>windows访问客户端</h3><p>查看虚拟机状态，关闭虚拟机防火墙，禁止防火墙的开机启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ service iptables status</span><br><span class="line">$ systemctl stop firewalld.service</span><br><span class="line">$ systemctl disable firewalld.service</span><br></pre></td></tr></table></figure></p>
+<p>在浏览器中进入虚拟机本地ip，进入图库，可以检索到前面插入的数据</p>
+<p><img src="/2022/06/21/Nebula-CentOS安装与部署/N.png" alt></p>
+<h3 id="自启动"><a href="#自启动" class="headerlink" title="自启动"></a>自启动</h3><p>进入系统相关配置文件，写入自启动命令和脚本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/rc.d/rc.local</span><br></pre></td></tr></table></figure></p>
+<p>写入启动命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#nebula-graph</span><br><span class="line">sudo /usr/local/nebula/scripts/nebula.service start all</span><br><span class="line">bash /usr/local/nebula-graph-studio/scripts/rpm/start.sh</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/07/07/ClickHouse/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ClickHouse
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/05/23/FastApi/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">FastApi</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-前期准备"><span class="nav-number">1.</span> <span class="nav-text">1.前期准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境"><span class="nav-number">1.1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#硬件要求"><span class="nav-number">1.2.</span> <span class="nav-text">硬件要求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#软件"><span class="nav-number">1.3.</span> <span class="nav-text">软件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-安装编译"><span class="nav-number">2.</span> <span class="nav-text">2.安装编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-安装依赖包"><span class="nav-number">2.1.</span> <span class="nav-text">1.安装依赖包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译源码"><span class="nav-number">2.2.</span> <span class="nav-text">编译源码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-启动Nebula-Graph服务端"><span class="nav-number">3.</span> <span class="nav-text">3.启动Nebula Graph服务端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动Nebula-Graph"><span class="nav-number">3.1.</span> <span class="nav-text">启动Nebula Graph</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接Nebula-Graph"><span class="nav-number">3.2.</span> <span class="nav-text">连接Nebula Graph</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Nebula-Graph-Studio客户端"><span class="nav-number">4.</span> <span class="nav-text">4.Nebula Graph Studio客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前期准备"><span class="nav-number">4.1.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装和部署nebula-graph-studio"><span class="nav-number">4.2.</span> <span class="nav-text">安装和部署nebula graph studio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#windows访问客户端"><span class="nav-number">4.3.</span> <span class="nav-text">windows访问客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自启动"><span class="nav-number">4.4.</span> <span class="nav-text">自启动</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

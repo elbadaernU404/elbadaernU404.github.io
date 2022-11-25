@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>我的第一个php实例 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="php">
+  
+  
+  
+  
+  <meta name="description" content="开始我是本周，18年1月末到18年2月初开始入门学习PHP。原本计划先从Python开始入手学习，但是网上预定的相关书籍发货日期较迟，又实在不喜欢电子书的阅览方式，身边正好有PHP的工具书，索性开始尝试。 首先作为第一步当然是配置相关软件，PHP相关的编译工具有Dreamweaver、ZendStudio、PhpStorm、Notepad++、EditPlus等多种。我的系统为Win10，于Wi">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的第一个PHP实例">
+<meta property="og:url" content="http://yoursite.com/2018/02/03/我的第一个PHP实例/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="开始我是本周，18年1月末到18年2月初开始入门学习PHP。原本计划先从Python开始入手学习，但是网上预定的相关书籍发货日期较迟，又实在不喜欢电子书的阅览方式，身边正好有PHP的工具书，索性开始尝试。 首先作为第一步当然是配置相关软件，PHP相关的编译工具有Dreamweaver、ZendStudio、PhpStorm、Notepad++、EditPlus等多种。我的系统为Win10，于Wi">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2018/02/03/我的第一个PHP实例/A.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/03/我的第一个PHP实例/B.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/03/我的第一个PHP实例/C.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/03/我的第一个PHP实例/D.png">
+<meta property="og:image" content="http://yoursite.com/2018/02/03/我的第一个PHP实例/E.png">
+<meta property="og:updated_time" content="2022-06-27T07:42:01.072Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我的第一个PHP实例">
+<meta name="twitter:description" content="开始我是本周，18年1月末到18年2月初开始入门学习PHP。原本计划先从Python开始入手学习，但是网上预定的相关书籍发货日期较迟，又实在不喜欢电子书的阅览方式，身边正好有PHP的工具书，索性开始尝试。 首先作为第一步当然是配置相关软件，PHP相关的编译工具有Dreamweaver、ZendStudio、PhpStorm、Notepad++、EditPlus等多种。我的系统为Win10，于Wi">
+<meta name="twitter:image" content="http://yoursite.com/2018/02/03/我的第一个PHP实例/A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-我的第一个PHP实例" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      我的第一个PHP实例
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/02/03/我的第一个PHP实例/" class="article-date">
+	  <time datetime="2018-02-03T09:51:38.000Z" itemprop="datePublished">2018-02-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/个人笔记/">个人笔记</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><pre><code>我是本周，18年1月末到18年2月初开始入门学习PHP。原本计划先从Python开始入手学习，但是网上预定的相关书籍发货日期较迟，又实在不喜欢电子书的阅览方式，身边正好有PHP的工具书，索性开始尝试。
+首先作为第一步当然是配置相关软件，PHP相关的编译工具有Dreamweaver、ZendStudio、PhpStorm、Notepad++、EditPlus等多种。我的系统为Win10，于Windows环境下首先安装了Adobe的Dreamweaver CC。
+相关编译器布置完成后，我开始在Windows环境下配置WampServer。
+</code></pre><p><img src="/2018/02/03/我的第一个PHP实例/A.png" alt></p>
+<h2 id="一点问题"><a href="#一点问题" class="headerlink" title="一点问题"></a>一点问题</h2><h3 id="Wamp运行失败的第一次尝试解决"><a href="#Wamp运行失败的第一次尝试解决" class="headerlink" title="Wamp运行失败的第一次尝试解决"></a>Wamp运行失败的第一次尝试解决</h3><pre><code>相关安装完成后，打开Wamp，图标显示橙色，第一次使用没有在意。我将浏览器打开输入了localhost，结果是无法访问。工具书并没有给出相关解释，于是我首先猜想这个localhost的默认端口可能与某个软件的端口发生了冲突。百度之后找到了httpd.conf和wampmanager两个文件，将默认端口80修改为82。但结果仍旧是无法打开localhost。
+</code></pre><h3 id="Wamp运行失败的第二次尝试解决"><a href="#Wamp运行失败的第二次尝试解决" class="headerlink" title="Wamp运行失败的第二次尝试解决"></a>Wamp运行失败的第二次尝试解决</h3><pre><code>于是我怀疑这些常规端口可能都被占用了。搜索到了一名博主的类似解决方案，他将端口修改为Allow from all，解决了问题，于是我按照他的修改打开了.conf文件，Ctrl+f却搜索不到他的文件内容。经过对比后我发现可能是基于软件版本的不同文件内容已被修改过。我手动补全他的文件再打开Wamp，仍然是橙色。
+</code></pre><h3 id="Wamp运行失败的第三次尝试解决"><a href="#Wamp运行失败的第三次尝试解决" class="headerlink" title="Wamp运行失败的第三次尝试解决"></a>Wamp运行失败的第三次尝试解决</h3><pre><code>我开始确信不是大多数人“端口被占用”的问题。百度到控制台指令netstat -ano后我查看了每个被应用的端口，80并没有被占用，开始尝试在其他角度解决问题。这时我发现了Wamp的提示：服务器离线，2/3个进程再运行。于是我猜想会不会Wamp在安装时发生错误，有部分未被安装上。于是在卸载Wamp之后我重新安装了一次，结果仍然是橙色，服务器离线，2/3个服务在运行。但是会不会是文件修改错误，反思了一下是才安装的软件，仅仅修改了端口又重新修改回去，不可能是软件自身的问题。此时此刻我仍旧一头雾水。
+</code></pre><h3 id="Wamp运行失败的第四次尝试解决"><a href="#Wamp运行失败的第四次尝试解决" class="headerlink" title="Wamp运行失败的第四次尝试解决"></a>Wamp运行失败的第四次尝试解决</h3><pre><code>不甘心的打开了电脑管理中的服务，开始着手去查到底是哪项服务没有被打开。这回终于发现了，是Apache没有开启服务。我尝试手动打开，但被提示Windows无法打开这项服务，于是我终于意识到问题出在Apache的故障。我开始思考会不会是Apache的版本不兼容，想着要不要重新安装另一个版本来替换时，我在百度里发现了一条线索，路径问题。因为我的Wamp安装在路径cd /d/编译器/PHP/WampSever中，我在想会不会是“编译器”这个中文路径的锅。因为MySQL也在同一路径但是没有出任何问题，于是我想可能性应该很小。但抱着破罐子破摔的心态我还是将组件又全部卸载安装了一次，并将路径中的“编译器”修改为了“Compiler”。这一次，出乎意料而令人哭笑不得的是，打开Wamp服务后它终于从红色变成橙色，即刻转为绿色。打开localhost，成功进入，大功告成。
+</code></pre><p><img src="/2018/02/03/我的第一个PHP实例/B.png" alt></p>
+<h2 id="我的第一个PHP实例"><a href="#我的第一个PHP实例" class="headerlink" title="我的第一个PHP实例"></a>我的第一个PHP实例</h2><pre><code>之后我顺利的打开Dreamweaver，用最基本的php语法写下了和初学C语言时一样的那句我很喜欢的话：echo &quot;Hello World&quot;;
+</code></pre><p><img src="/2018/02/03/我的第一个PHP实例/C.png" alt><br><img src="/2018/02/03/我的第一个PHP实例/D.png" alt><br>    保存进提前设定好的文件夹路径后，我回到Wamp，在localhost后添加了.php文件的路径，并打开。至此完成。<br><img src="/2018/02/03/我的第一个PHP实例/E.png" alt></p>
+<h2 id="感想"><a href="#感想" class="headerlink" title="感想"></a>感想</h2><h3 id="A"><a href="#A" class="headerlink" title="A."></a>A.</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">或许在问题中挣扎确实很累，但是解决掉它之后人总会体验到名为执着的幸福。</span><br><span class="line">往往很多问题实际上是出在细节，平静下来，细嗅蔷薇，要拆掉的不一定是高楼大厦，只是底层被掰弯的一根螺丝钉。</span><br></pre></td></tr></table></figure>
+<h3 id="B"><a href="#B" class="headerlink" title="B."></a>B.</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">既然选择计算机这条道路，那么遇问题就应该及时明确问题、找出原因、对症下药，不忘举一反三，使人感到快乐。</span><br></pre></td></tr></table></figure>
+<pre><code>就到这里结束吧。实际上这也算作是我的第一条正式写成的博客。感谢浏览。
+@elbadaernU --2018.2.3.
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/">php</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/05/Update-log/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Update-log
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/25/Start-test/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Start test</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#开始"><span class="nav-number">1.</span> <span class="nav-text">开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一点问题"><span class="nav-number">2.</span> <span class="nav-text">一点问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Wamp运行失败的第一次尝试解决"><span class="nav-number">2.1.</span> <span class="nav-text">Wamp运行失败的第一次尝试解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Wamp运行失败的第二次尝试解决"><span class="nav-number">2.2.</span> <span class="nav-text">Wamp运行失败的第二次尝试解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Wamp运行失败的第三次尝试解决"><span class="nav-number">2.3.</span> <span class="nav-text">Wamp运行失败的第三次尝试解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Wamp运行失败的第四次尝试解决"><span class="nav-number">2.4.</span> <span class="nav-text">Wamp运行失败的第四次尝试解决</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我的第一个PHP实例"><span class="nav-number">3.</span> <span class="nav-text">我的第一个PHP实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#感想"><span class="nav-number">4.</span> <span class="nav-text">感想</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A"><span class="nav-number">4.1.</span> <span class="nav-text">A.</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B"><span class="nav-number">4.2.</span> <span class="nav-text">B.</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

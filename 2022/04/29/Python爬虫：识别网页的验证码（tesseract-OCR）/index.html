@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>python爬虫：识别网页的验证码（tesseract-ocr） | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="OCR">
+  
+  
+  
+  
+  <meta name="description" content="在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人 但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^  获取网页验证码首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容">
+<meta name="keywords" content="OCR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python爬虫：识别网页的验证码（tesseract-OCR）">
+<meta property="og:url" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人 但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^  获取网页验证码首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/0.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/A.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/1.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/B.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/C.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/D.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/E.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/F.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/G.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/H.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/I.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/J.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/K.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/2.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/3.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/4.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/5.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/6.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/6.5.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/7.png">
+<meta property="og:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/8.png">
+<meta property="og:updated_time" content="2022-06-27T07:39:04.522Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python爬虫：识别网页的验证码（tesseract-OCR）">
+<meta name="twitter:description" content="在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人 但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^  获取网页验证码首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容">
+<meta name="twitter:image" content="http://yoursite.com/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/0.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Python爬虫：识别网页的验证码（tesseract-OCR）" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Python爬虫：识别网页的验证码（tesseract-OCR）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/" class="article-date">
+	  <time datetime="2022-04-29T07:00:29.000Z" itemprop="datePublished">2022-04-29</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人</p>
+<p>但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/0.png" alt></p>
+<h2 id="获取网页验证码"><a href="#获取网页验证码" class="headerlink" title="获取网页验证码"></a>获取网页验证码</h2><p>首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容后发现并不能得到生成验证码的对应id，以为是知网做了对爬虫头的限制，于是在headers里添加了<font color="green">“Referer”</font>和<font color="green">“Accept-Encoding”</font>等信息，但是并没有效果。抓包在Doc中发现网页HTTP请求的方法为”<font color="orange">GET</font>“方法，尝试不加id也得到了验证码图片</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/A.png" alt><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"method"</span>: <span class="string">"GET"</span>,</span><br><span class="line">    <span class="string">"Accept"</span>: <span class="string">"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Accept-Encoding"</span>: <span class="string">"gzip, deflate, br"</span>,</span><br><span class="line">    <span class="string">"Cache-Control"</span>: <span class="string">"max-age=0"</span>,</span><br><span class="line">    <span class="string">"scheme"</span>: <span class="string">"https"</span>,</span><br><span class="line">    <span class="string">"accept-language"</span>: <span class="string">"zh-CN,zh;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Cookie"</span>: <span class="string">"U:M_distinctid=1809edfcf6e8ff-088ab0a6edb385-17333273-1fa400-1809edfcf6f9fe; _pk_ref=["</span><span class="string">","</span><span class="string">",1651932918,'https://www.baidu.com/link?url=PnlS4wubLFxXVNXrTBRCZMAhA0P5TZLlCBAhBvXfLke&amp;wd=&amp;eqid=e52482a8001102070000000562767ee2']; Ecp_ClientId=1220507221503170167; Ecp_IpLoginFail=22050736.161.51.128; Ecp_ClientIp=36.161.51.128; language=chs; _pk_id=2ce0e7fb-229f-4440-a78b-57771deac2fe.1651932918.1.1651933578.1651932918.; ASP.NET_SessionId=he1no3kmgo3bwuktv1xa1lhs; SID_mycnki=020101"</span>,</span><br><span class="line">    <span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"</span>,</span><br><span class="line">    <span class="string">"Referer"</span>: <span class="string">"https://www.cnki.net/"</span></span><br><span class="line">    <span class="string">"Sec-Fetch-Dest:"</span> <span class="string">'document'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Mode"</span>: <span class="string">'navigate'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Site"</span>: <span class="string">'same-origin'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-User"</span>: <span class="string">'?1'</span>,</span><br><span class="line">    <span class="string">"Upgrade-Insecure-Requests"</span>: <span class="string">'1'</span></span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">"https://my.cnki.net/Register/CommonRegister.aspx?returnUrl=https://www.cnki.net#"</span></span><br><span class="line">r = requests.get(url, headers=headers).content.decode(<span class="string">'utf-8'</span>)</span><br><span class="line">html = etree.HTML(r)</span><br><span class="line">link=html.xpath(<span class="string">'//*[@id="commonRe"]/div[10]/div[3]/a/img/@src'</span>)[<span class="number">0</span>]</span><br><span class="line">img_url = <span class="string">"https://my.cnki.net/Register/"</span> + link</span><br><span class="line">img = requests.get(img_url, headers=headers,stream=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'checkcode.jpg'</span>,<span class="string">'wb'</span>)<span class="keyword">as</span> file:</span><br><span class="line">    file.write(img.raw.read())</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/1.png" alt><br><a id="more"></a></p>
+<h2 id="Tesserocr库"><a href="#Tesserocr库" class="headerlink" title="Tesserocr库"></a>Tesserocr库</h2><p>Tesserocr是python的一个OCR识别库，是通过对tesseract库做API封装来实现功能，核心仍是tesseract。所以需提前安装tesseract库来进行支持</p>
+<h3 id="安装Tesseract"><a href="#安装Tesseract" class="headerlink" title="安装Tesseract"></a>安装Tesseract</h3><p>进入官网链接<a href="https://digi.bib.uni-mannheim.de/tesseract/" target="_blank" rel="noopener">https://digi.bib.uni-mannheim.de/tesseract/</a>，找到当前合适的版本，下载安装程序</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/B.png" alt><br>安装过程中可以勾选安装额外的语言文件，添加对包括中文等多语种的支持</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/C.png" alt><br>安装完成后去系统设置中添加环境变量</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/D.png" alt><br><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/E.png" alt><br>新增一个变量<font color="orange">TESSDATA_PREFIX</font></p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/F.png" alt><br>打开CMD，输入<font size="4" color="#008080">tesseract -v</font>，此时出现版本信息，tesseract已经安装完成了</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/G.png" alt><br>如果添加后控制台仍提示”tesseract不是内部或者外部命令”，继续到系统变量的path中添加<br>“<font size="4" color="#008080">%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem</font>“<br>即可</p>
+<h3 id="安装Tesserocr"><a href="#安装Tesserocr" class="headerlink" title="安装Tesserocr"></a>安装Tesserocr</h3><p>安装完Tesseract后，继续安装python的OCR识别库,打开CMD或Pycharm<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install Pillow</span><br><span class="line">pip install pytesseract</span><br></pre></td></tr></table></figure></p>
+<p>完成后找到pytesseract文件，将tesseract.exe程序的路径添加进去（注：不同版本路径代码在程序中的位置不一定相同）</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/H.png" alt><br><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/I.png" alt><br>最后再执行安装tesserocr</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tesserocr</span><br></pre></td></tr></table></figure>
+<p>如果报错，进入tesserocr在github的官网<a href="https://github.com/simonflueckiger/tesserocr-windows_build/releases" target="_blank" rel="noopener">https://github.com/simonflueckiger/tesserocr-windows_build/releases</a>，下载对应版本的whl文件进行手动安装</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/J.png" alt><br>进入对应路径，来到控制台执行<font size="4" color="#008080">pip install tesserocr-2.5.2-cp37-cp37m-win_amd64.whl</font></p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/K.png" alt><br>最后显示tesserocr安装成功</p>
+<h2 id="图像处理"><a href="#图像处理" class="headerlink" title="图像处理"></a>图像处理</h2><h3 id="灰度图"><a href="#灰度图" class="headerlink" title="灰度图"></a>灰度图</h3><p>使用Image的open方法将下载的checkcode.jpg打开，得到一个PIL.Image.Image对象，可以通过convert方法来将RGB彩色图片转换为灰度图<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> tesserocr</span><br><span class="line"></span><br><span class="line">img = Image.open(<span class="string">"checkcode.jpg"</span>)</span><br><span class="line">img.show()</span><br><span class="line">img_grey = img.convert(<span class="string">"L"</span>)</span><br><span class="line">img_grey.show()</span><br></pre></td></tr></table></figure></p>
+<p>得到原始图片和灰度图像，使用tesserocr库进行识别，由于图像的干绕因素和噪点还比较多，目前还不能识别出准确结果<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> tesserocr</span><br><span class="line"></span><br><span class="line">img = Image.open(<span class="string">"checkcode.jpg"</span>)</span><br><span class="line">img.show()</span><br><span class="line">img_grey = img.convert(<span class="string">"L"</span>)</span><br><span class="line">img_grey.show()</span><br><span class="line">img_grey.save(<span class="string">'checkcode_grey.jpg'</span>)</span><br><span class="line">checkcode = tesserocr.image_to_text(img)</span><br><span class="line">checkcode_grey = tesserocr.image_to_text(img_grey)</span><br><span class="line">print(<span class="string">f"checkcode:<span class="subst">&#123;checkcode&#125;</span>"</span>)</span><br><span class="line">print(<span class="string">f"checkcode_grey:<span class="subst">&#123;checkcode_grey&#125;</span>"</span>)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/2.png" alt><br><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/3.png" alt></p>
+<h3 id="二值化灰度"><a href="#二值化灰度" class="headerlink" title="二值化灰度"></a>二值化灰度</h3><p>从得到的灰度图结果来看，需要识别的数字和字母（主体部分）明显要比干绕部分清晰的，灰度也更重，所以接下来可对灰度图进行二值化，即设定一个阈值，每个像素的灰度将依照和阈值的关系修改为黑色或白色，这样就可以很好的凸显出主体部分<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bin_table</span><span class="params">(threshold=<span class="number">125</span>)</span>:</span></span><br><span class="line">    table = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">256</span>):</span><br><span class="line">        <span class="keyword">if</span> i &lt; threshold:</span><br><span class="line">            table.append(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            table.append(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> table</span><br><span class="line"></span><br><span class="line">img = Image.open(<span class="string">'checkcode_grey.jpg'</span>)</span><br><span class="line">table = bin_table()</span><br><span class="line">bin = img.point(table, <span class="string">'1'</span>)</span><br><span class="line">bin.save(<span class="string">'checkcode_bin.jpg'</span>)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/4.png" alt><br>此时再对图像进行识别，得到的结果为”g4YS”,已经很接近了，但是问题出在哪里呢？</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/5.png" alt><br>将图像放大：</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/6.png" alt><br>可以发现图像中还要很多噪点</p>
+<h3 id="图像降噪"><a href="#图像降噪" class="headerlink" title="图像降噪"></a>图像降噪</h3><p>py中降噪的方法有很多，像椒盐降噪、高斯降噪、均值滤波降噪等，需要找到合适的降噪方法。这里根据图片，使用8邻域降噪的方法，代码如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_9_region_new</span><span class="params">(img, x, y)</span>:</span></span><br><span class="line">    <span class="string">'''确定噪点 '''</span></span><br><span class="line">    cur_pixel = img.getpixel((x, y))  <span class="comment"># 当前像素点的值</span></span><br><span class="line">    width = img.width</span><br><span class="line">    height = img.height</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> cur_pixel == <span class="number">1</span>:  <span class="comment"># 如果当前点为白色区域,则不统计邻域值</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 因当前图片的四周都有黑点，所以周围的黑点可以去除</span></span><br><span class="line">    <span class="keyword">if</span> y &lt; <span class="number">3</span>:  <span class="comment"># 本例中，前两行的黑点都可以去除</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> y &gt; height - <span class="number">3</span>:  <span class="comment"># 最下面两行</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:  <span class="comment"># y不在边界</span></span><br><span class="line">        <span class="keyword">if</span> x &lt; <span class="number">3</span>:  <span class="comment"># 前两列</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> x == width - <span class="number">1</span>:  <span class="comment"># 右边非顶点</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment"># 具备9领域条件的</span></span><br><span class="line">            sum = img.getpixel((x - <span class="number">1</span>, y - <span class="number">1</span>)) \</span><br><span class="line">                  + img.getpixel((x - <span class="number">1</span>, y)) \</span><br><span class="line">                  + img.getpixel((x - <span class="number">1</span>, y + <span class="number">1</span>)) \</span><br><span class="line">                  + img.getpixel((x, y - <span class="number">1</span>)) \</span><br><span class="line">                  + cur_pixel \</span><br><span class="line">                  + img.getpixel((x, y + <span class="number">1</span>)) \</span><br><span class="line">                  + img.getpixel((x + <span class="number">1</span>, y - <span class="number">1</span>)) \</span><br><span class="line">                  + img.getpixel((x + <span class="number">1</span>, y)) \</span><br><span class="line">                  + img.getpixel((x + <span class="number">1</span>, y + <span class="number">1</span>))</span><br><span class="line">            <span class="keyword">return</span> <span class="number">9</span> - sum</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">collect_noise_point</span><span class="params">(img)</span>:</span></span><br><span class="line">    <span class="string">'''收集所有的噪点'''</span></span><br><span class="line">    noise_point_list = []</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(img.width):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(img.height):</span><br><span class="line">            res_9 = sum_9_region_new(img, x, y)</span><br><span class="line">            <span class="keyword">if</span> (<span class="number">0</span> &lt; res_9 &lt; <span class="number">3</span>) <span class="keyword">and</span> img.getpixel((x, y)) == <span class="number">0</span>:  <span class="comment"># 找到孤立点</span></span><br><span class="line">                pos = (x, y)</span><br><span class="line">                noise_point_list.append(pos)</span><br><span class="line">    <span class="keyword">return</span> noise_point_list</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_noise_pixel</span><span class="params">(img, noise_point_list)</span>:</span></span><br><span class="line">    <span class="string">'''根据噪点的位置信息，消除二值图片的黑点噪声'''</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> noise_point_list:</span><br><span class="line">        img.putpixel((item[<span class="number">0</span>], item[<span class="number">1</span>]), <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">bin = Image.open(<span class="string">'checkcode_bin.jpg'</span>)</span><br><span class="line">noise_point_list = collect_noise_point(bin)</span><br><span class="line">remove_noise_pixel(bin, noise_point_list)</span><br><span class="line">bin.save(<span class="string">'checkcode_fin.jpg'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>不过运行完成后任然带噪点，我才反应过来是保存的.jpg格式对图像进行了压缩造成的，不过整体思路没有问题。将代码整合到一起，再保存为.png格式，完整代码如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sum_9_region_new</span><span class="params">(img, x, y)</span>:</span></span><br><span class="line">    <span class="string">'''确定噪点 '''</span></span><br><span class="line">    cur_pixel = img.getpixel((x, y))  <span class="comment"># 当前像素点的值</span></span><br><span class="line">    width = img.width</span><br><span class="line">    height = img.height</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> cur_pixel == <span class="number">1</span>:  <span class="comment"># 如果当前点为白色区域,则不统计邻域值</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 因当前图片的四周都有黑点，所以周围的黑点可以去除</span></span><br><span class="line">    <span class="keyword">if</span> y &lt; <span class="number">3</span>:  <span class="comment"># 本例中，前两行的黑点都可以去除</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> y &gt; height - <span class="number">3</span>:  <span class="comment"># 最下面两行</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:  <span class="comment"># y不在边界</span></span><br><span class="line">        <span class="keyword">if</span> x &lt; <span class="number">3</span>:  <span class="comment"># 前两列</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> x == width - <span class="number">1</span>:  <span class="comment"># 右边非顶点</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:  <span class="comment"># 具备9领域条件的</span></span><br><span class="line">            sum = img.getpixel((x - <span class="number">1</span>, y - <span class="number">1</span>)) \</span><br><span class="line">                  + img.getpixel((x - <span class="number">1</span>, y)) \</span><br><span class="line">                  + img.getpixel((x - <span class="number">1</span>, y + <span class="number">1</span>)) \</span><br><span class="line">                  + img.getpixel((x, y - <span class="number">1</span>)) \</span><br><span class="line">                  + cur_pixel \</span><br><span class="line">                  + img.getpixel((x, y + <span class="number">1</span>)) \</span><br><span class="line">                  + img.getpixel((x + <span class="number">1</span>, y - <span class="number">1</span>)) \</span><br><span class="line">                  + img.getpixel((x + <span class="number">1</span>, y)) \</span><br><span class="line">                  + img.getpixel((x + <span class="number">1</span>, y + <span class="number">1</span>))</span><br><span class="line">            <span class="keyword">return</span> <span class="number">9</span> - sum</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">collect_noise_point</span><span class="params">(img)</span>:</span></span><br><span class="line">    <span class="string">'''收集所有的噪点'''</span></span><br><span class="line">    noise_point_list = []</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(img.width):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(img.height):</span><br><span class="line">            res_9 = sum_9_region_new(img, x, y)</span><br><span class="line">            <span class="keyword">if</span> (<span class="number">0</span> &lt; res_9 &lt; <span class="number">3</span>) <span class="keyword">and</span> img.getpixel((x, y)) == <span class="number">0</span>:  <span class="comment"># 找到孤立点</span></span><br><span class="line">                pos = (x, y)</span><br><span class="line">                noise_point_list.append(pos)</span><br><span class="line">    <span class="keyword">return</span> noise_point_list</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">remove_noise_pixel</span><span class="params">(img, noise_point_list)</span>:</span></span><br><span class="line">    <span class="string">'''根据噪点的位置信息，消除二值图片的黑点噪声'''</span></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> noise_point_list:</span><br><span class="line">        img.putpixel((item[<span class="number">0</span>], item[<span class="number">1</span>]), <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bin_table</span><span class="params">(threshold=<span class="number">125</span>)</span>:</span></span><br><span class="line">    <span class="string">'''获取灰度转二值的映射table,0表示黑色,1表示白色'''</span></span><br><span class="line">    table = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">256</span>):</span><br><span class="line">        <span class="keyword">if</span> i &lt; threshold:</span><br><span class="line">            table.append(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            table.append(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> table</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    img = Image.open(<span class="string">'checkcode.jpg'</span>)</span><br><span class="line">    img_grey = img.convert(<span class="string">'L'</span>)</span><br><span class="line">    table = bin_table()</span><br><span class="line">    bin = img_grey.point(table, <span class="string">'1'</span>)</span><br><span class="line">    noise_point_list = collect_noise_point(bin)</span><br><span class="line">    remove_noise_pixel(bin, noise_point_list)</span><br><span class="line">    bin.save(<span class="string">'checkcode_fin.png'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/6.5.png" alt><br>放大以后没有干扰：</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/7.png" alt></p>
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pytesseract</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line">im = Image.open(<span class="string">'checkcode_bin.png'</span>)</span><br><span class="line">string = pytesseract.image_to_string(im)</span><br><span class="line"></span><br><span class="line">print(string)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/8.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/05/01/Scrapy：爬取steam热门游戏资料/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Scrapy：爬取steam热门游戏资料
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/03/01/Numpy-Pandas/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Numpy &amp; Pandas</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#获取网页验证码"><span class="nav-number">1.</span> <span class="nav-text">获取网页验证码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tesserocr库"><span class="nav-number">2.</span> <span class="nav-text">Tesserocr库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Tesseract"><span class="nav-number">2.1.</span> <span class="nav-text">安装Tesseract</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Tesserocr"><span class="nav-number">2.2.</span> <span class="nav-text">安装Tesserocr</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图像处理"><span class="nav-number">3.</span> <span class="nav-text">图像处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#灰度图"><span class="nav-number">3.1.</span> <span class="nav-text">灰度图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二值化灰度"><span class="nav-number">3.2.</span> <span class="nav-text">二值化灰度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像降噪"><span class="nav-number">3.3.</span> <span class="nav-text">图像降噪</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果"><span class="nav-number">4.</span> <span class="nav-text">结果</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

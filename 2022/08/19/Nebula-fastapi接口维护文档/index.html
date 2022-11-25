@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>nebula-fastapi接口维护文档 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="nebulafastapi">
+  
+  
+  
+  
+  <meta name="description" content="1.导入fastapi、连接nebula连接池123456789101112131415161718192021222324from fastapi import FastAPIfrom nebula2.gclient.net import ConnectionPoolfrom nebula2.Config import Config# 关闭在线文档，防止攻击app_router = FastAP">
+<meta name="keywords" content="nebula,fastapi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nebula-fastapi接口维护文档">
+<meta property="og:url" content="http://yoursite.com/2022/08/19/Nebula-fastapi接口维护文档/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="1.导入fastapi、连接nebula连接池123456789101112131415161718192021222324from fastapi import FastAPIfrom nebula2.gclient.net import ConnectionPoolfrom nebula2.Config import Config# 关闭在线文档，防止攻击app_router = FastAP">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-09-16T03:30:13.012Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nebula-fastapi接口维护文档">
+<meta name="twitter:description" content="1.导入fastapi、连接nebula连接池123456789101112131415161718192021222324from fastapi import FastAPIfrom nebula2.gclient.net import ConnectionPoolfrom nebula2.Config import Config# 关闭在线文档，防止攻击app_router = FastAP">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Nebula-fastapi接口维护文档" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Nebula-fastapi接口维护文档
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/08/19/Nebula-fastapi接口维护文档/" class="article-date">
+	  <time datetime="2022-08-19T09:40:40.000Z" itemprop="datePublished">2022-08-19</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="1-导入fastapi、连接nebula连接池"><a href="#1-导入fastapi、连接nebula连接池" class="headerlink" title="1.导入fastapi、连接nebula连接池"></a>1.导入fastapi、连接nebula连接池</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"><span class="keyword">from</span> nebula2.gclient.net <span class="keyword">import</span> ConnectionPool</span><br><span class="line"><span class="keyword">from</span> nebula2.Config <span class="keyword">import</span> Config</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭在线文档，防止攻击</span></span><br><span class="line">app_router = FastAPI(docs_url=<span class="literal">None</span>, redoc_url=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">config = Config()</span><br><span class="line">config.max_connection_pool_size = <span class="number">10</span></span><br><span class="line"><span class="comment"># 连接超时时间</span></span><br><span class="line">config.timeout = <span class="number">60000</span></span><br><span class="line"><span class="comment"># 关闭空闲连接时间</span></span><br><span class="line">config.idle_time = <span class="number">0</span></span><br><span class="line"><span class="comment"># 检查空闲连接时间间隔</span></span><br><span class="line">config.interval_check = <span class="number">-1</span></span><br><span class="line"><span class="comment"># 初始化连接池</span></span><br><span class="line">connection_pool = ConnectionPool()</span><br><span class="line"><span class="comment"># 如果给定的服务器正常，则返回true，否则返回false</span></span><br><span class="line">ok = connection_pool.init([(<span class="string">'host'</span>, <span class="number">9669</span>)], config)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">import</span> uvicorn</span><br><span class="line">    uvicorn.run(app=<span class="string">"nebula_api:app_router"</span>, reload=<span class="literal">True</span>, debug=<span class="literal">True</span>, host=host, port=port)</span><br></pre></td></tr></table></figure>
+<h2 id="2-CORS跨域访问设置"><a href="#2-CORS跨域访问设置" class="headerlink" title="2.CORS跨域访问设置"></a>2.CORS跨域访问设置</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi.middleware.cors <span class="keyword">import</span> CORSMiddleware</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># CORS</span></span><br><span class="line">origins = [</span><br><span class="line">    <span class="string">"*"</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">app_router.add_middleware(</span><br><span class="line">    CORSMiddleware,</span><br><span class="line">    allow_origins=origins,</span><br><span class="line">    allow_credentials=<span class="literal">True</span>,</span><br><span class="line">    allow_methods=[<span class="string">"*"</span>],</span><br><span class="line">    allow_headers=[<span class="string">"*"</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="3-一般查询接口"><a href="#3-一般查询接口" class="headerlink" title="3.一般查询接口"></a>3.一般查询接口</h2><h3 id="1-单点查询"><a href="#1-单点查询" class="headerlink" title="1.单点查询"></a>1.单点查询</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 从连接池中获取会话</span></span><br><span class="line">session = connection_pool.get_session(<span class="string">'root'</span>, <span class="string">'nebula'</span>)</span><br><span class="line">session.execute(<span class="string">'USE ai_project'</span>)</span><br><span class="line"></span><br><span class="line">data_final = []</span><br><span class="line">errorcode = <span class="number">0</span></span><br><span class="line">result = &#123;</span><br><span class="line">    <span class="string">"data"</span>: data_final,</span><br><span class="line">    <span class="string">"errorcode"</span>: errorcode</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 举例，查询标签example</span></span><br><span class="line">data_select = session.execute(</span><br><span class="line">    str(<span class="string">f'match (v:example) return id(v),v.name;'</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询出错，错误代码1</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> data_select.is_succeeded():</span><br><span class="line">    session.release()</span><br><span class="line">    result[<span class="string">"errorcode"</span>] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询结果不为空，显示数据</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> data_select.is_empty():</span><br><span class="line">    size = data_select.row_size()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(size):</span><br><span class="line">        data1 = data_select.row_values(index)[<span class="number">0</span>].as_string()</span><br><span class="line">        data2 = data_select.row_values(index)[<span class="number">1</span>].as_string()</span><br><span class="line">        data_dict = &#123;</span><br><span class="line">            <span class="string">"entity_id"</span>: data1,</span><br><span class="line">            <span class="string">"name"</span>: data2,</span><br><span class="line">        &#125;</span><br><span class="line">        data_final.append(data_dict)</span><br><span class="line"></span><br><span class="line">    session.release()</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询类型下实体为空，错误代码2</span></span><br><span class="line">session.release()</span><br><span class="line">result[<span class="string">"errorcode"</span>] = <span class="number">2</span></span><br><span class="line"><span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<h3 id="2-树型查询"><a href="#2-树型查询" class="headerlink" title="2.树型查询"></a>2.树型查询</h3><p>主函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自定义类和函数</span></span><br><span class="line"><span class="keyword">from</span> api_class <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">session = connection_pool.get_session(<span class="string">'root'</span>, <span class="string">'nebula'</span>)</span><br><span class="line">session.execute(<span class="string">'USE ai_project'</span>)</span><br><span class="line"></span><br><span class="line">data_final = []</span><br><span class="line">errorcode = <span class="number">0</span></span><br><span class="line">result = &#123;</span><br><span class="line">    <span class="string">"data"</span>: data_final,</span><br><span class="line">    <span class="string">"errorcode"</span>: errorcode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以example_id为根节点</span></span><br><span class="line">data_select = session.execute(</span><br><span class="line">    str(<span class="string">f'match Ret=(v)-[e:edge_example*0..15]-&gt;(p) where id(v)=="<span class="subst">&#123;example_id&#125;</span>" return nodes(Ret);'</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询出错，错误代码1</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> data_select.is_succeeded():</span><br><span class="line">    session.release()</span><br><span class="line">    result[<span class="string">"errorcode"</span>] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查询不为空，显示数据</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> data_select.is_empty():</span><br><span class="line"></span><br><span class="line">    size = data_select.row_size()</span><br><span class="line">    data_list = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> range(size):</span><br><span class="line">        data1 = data_select.row_values(index)[<span class="number">0</span>].as_list()</span><br><span class="line">        item = re.finditer(<span class="string">r'\(\"(.*?)\" :(.*?)\&#123;(.*?)\&#125;\)'</span>, str(data1))</span><br><span class="line"></span><br><span class="line">        parent_id = <span class="string">'0'</span></span><br><span class="line">        <span class="keyword">for</span> match <span class="keyword">in</span> item:</span><br><span class="line">            kv_dict = &#123;</span><br><span class="line">                <span class="string">'parent_id'</span>: parent_id,</span><br><span class="line">                <span class="string">'entity_id'</span>: match.group(<span class="number">1</span>).strip(),</span><br><span class="line">                <span class="string">'entity_type'</span>: match.group(<span class="number">2</span>).strip()</span><br><span class="line">            &#125;</span><br><span class="line">            kvs = match.group(<span class="number">3</span>).replace(<span class="string">" "</span>, <span class="string">""</span>).split(<span class="string">","</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> kv <span class="keyword">in</span> kvs:</span><br><span class="line">                kv_dict[kv.strip().split(<span class="string">':'</span>)[<span class="number">0</span>]] = kv.split(<span class="string">':'</span>)[<span class="number">1</span>][<span class="number">1</span>:<span class="number">-1</span>]</span><br><span class="line">            <span class="keyword">if</span> kv_dict <span class="keyword">not</span> <span class="keyword">in</span> data_list:</span><br><span class="line">                data_list.append(kv_dict)</span><br><span class="line"></span><br><span class="line">            parent_id = match.group(<span class="number">1</span>).strip()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># json对象列表转换为树形json对象</span></span><br><span class="line">    data_final = ApiFuncs.list_to_tree(data_list)</span><br><span class="line">    <span class="comment"># 树形json对象按参数排序</span></span><br><span class="line">    ApiFuncs.data_sort(data_final)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> data_final:</span><br><span class="line">        <span class="keyword">del</span> item[<span class="string">"parent_id"</span>]</span><br><span class="line"></span><br><span class="line">    session.release()</span><br><span class="line">    result[<span class="string">"data"</span>] = data_final</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">session.release()</span><br><span class="line">result[<span class="string">"errorcode"</span>] = <span class="number">2</span></span><br><span class="line"><span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>将json对象列表转换为树形json对象的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApiFuncs</span>:</span></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">list_to_tree</span><span class="params">(data)</span>:</span></span><br><span class="line">        root = []</span><br><span class="line">        node = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> d <span class="keyword">in</span> data:</span><br><span class="line">            <span class="keyword">if</span> d.get(<span class="string">"parent_id"</span>) == <span class="string">'0'</span>:</span><br><span class="line">                root.append(d)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                node.append(d)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> p <span class="keyword">in</span> root:</span><br><span class="line">            ApiFuncs.add_node(p, node)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> len(root) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> root</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_node</span><span class="params">(p, node)</span>:</span></span><br><span class="line">        p[<span class="string">"children"</span>] = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> node:</span><br><span class="line">            <span class="keyword">if</span> n.get(<span class="string">"parent_id"</span>) == p.get(<span class="string">"entity_id"</span>):</span><br><span class="line">                p[<span class="string">"children"</span>].append(n)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> p[<span class="string">"children"</span>]:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> t.get(<span class="string">"children"</span>):</span><br><span class="line">                t[<span class="string">"children"</span>] = []</span><br><span class="line"></span><br><span class="line">            t[<span class="string">"children"</span>].append(ApiFuncs.add_node(t, node))</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> t[<span class="string">"children"</span>]:</span><br><span class="line">                <span class="keyword">del</span> t[<span class="string">"children"</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> len(p[<span class="string">"children"</span>]) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+<p>将树形json对象按参数排序的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SerialNameError</span><span class="params">(Exception)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, message)</span>:</span></span><br><span class="line">        self.message = message</span><br><span class="line">...</span><br><span class="line"><span class="meta">	@staticmethod</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">data_sort</span><span class="params">(data)</span>:</span></span><br><span class="line">    	<span class="keyword">for</span> elem <span class="keyword">in</span> data:</span><br><span class="line">        	<span class="keyword">if</span> elem[<span class="string">"serial"</span>] == <span class="string">"_NULL_"</span>:</span><br><span class="line">            	elem[<span class="string">"serial"</span>] = <span class="string">"0"</span></span><br><span class="line">    	<span class="keyword">try</span>:</span><br><span class="line">        	data.sort(key=<span class="keyword">lambda</span> x: int(x[<span class="string">"serial"</span>]))</span><br><span class="line">    	<span class="keyword">except</span> ValueError:</span><br><span class="line">        	<span class="keyword">raise</span> SerialNameError(<span class="string">"序号似乎无效"</span>)</span><br><span class="line">    	<span class="keyword">for</span> item <span class="keyword">in</span> data:</span><br><span class="line">        	<span class="keyword">if</span> <span class="string">"children"</span> <span class="keyword">in</span> item.keys():</span><br><span class="line">            	ApiFuncs.data_sort(item[<span class="string">"children"</span>])</span><br><span class="line">    	<span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-一般编辑接口"><a href="#4-一般编辑接口" class="headerlink" title="4.一般编辑接口"></a>4.一般编辑接口</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 继承BaseModel类的参数</span></span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> List</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SampleEdit</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    example_kv: List[dict]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">session = connection_pool.get_session(<span class="string">'root'</span>, <span class="string">'nebula'</span>)</span><br><span class="line">session.execute(<span class="string">'USE ai_project'</span>)</span><br><span class="line"></span><br><span class="line">result = &#123;</span><br><span class="line">    <span class="string">"msg"</span>: <span class="literal">True</span>,</span><br><span class="line">    <span class="string">"errorcode"</span>: <span class="number">0</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> eg.example_kv:</span><br><span class="line">    <span class="comment"># 新增</span></span><br><span class="line">    <span class="keyword">if</span> item[<span class="string">"type_operation"</span>] == <span class="string">'add'</span>:</span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        ==========增==========</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        temp_id = item[<span class="string">"name"</span>] + <span class="string">"_"</span> + ApiFuncs.create_time()</span><br><span class="line">        temp_md5 = ApiFuncs.create_md5(temp_id)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 检索当前编号，创建实体时对编号自增</span></span><br><span class="line">        serial_list = session.execute(</span><br><span class="line">            str(<span class="string">f'match (v:example) return v.seq;'</span>)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        data = []</span><br><span class="line">        size = serial_list.row_size()</span><br><span class="line">        <span class="keyword">for</span> index <span class="keyword">in</span> range(size):</span><br><span class="line">            <span class="keyword">if</span> serial_list.row_values(index)[<span class="number">0</span>].is_string():</span><br><span class="line">                data1 = serial_list.row_values(index)[<span class="number">0</span>].as_string()</span><br><span class="line">                data.append(int(data1))</span><br><span class="line">        <span class="keyword">if</span> data:</span><br><span class="line">            count = max(data)</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            count = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        session.execute(</span><br><span class="line">            str(<span class="string">f'INSERT VERTEX example ( name,seq ) VALUES "<span class="subst">&#123;temp_md5&#125;</span>":("<span class="subst">&#123;item[<span class="string">"name"</span>]&#125;</span>", "<span class="subst">&#123;count&#125;</span>");'</span>)</span><br><span class="line">        )</span><br><span class="line">	</span><br><span class="line">    <span class="comment"># 删除</span></span><br><span class="line">    <span class="keyword">elif</span> item[<span class="string">"type_operation"</span>] == <span class="string">'delete'</span>:</span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        ==========删==========</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        session.execute(str(<span class="string">f'DELETE VERTEX "<span class="subst">&#123;item[<span class="string">"id"</span>]&#125;</span>";'</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 修改</span></span><br><span class="line">    <span class="keyword">elif</span> item[<span class="string">"type_operation"</span>] == <span class="string">'update'</span>:</span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        ==========改==========</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        temp_md5 = item[<span class="string">"id"</span>]</span><br><span class="line"></span><br><span class="line">        session.execute(</span><br><span class="line">            str(<span class="string">f'UPDATE VERTEX ON example "<span class="subst">&#123;temp_md5&#125;</span>" SET name = "<span class="subst">&#123;item[<span class="string">"name"</span>]&#125;</span>";'</span>)</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭连接池</span></span><br><span class="line">session.release()</span><br><span class="line"><span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>测试接口：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">data = &#123;</span><br><span class="line">        <span class="string">'example_kv'</span>: [</span><br><span class="line">                &#123;<span class="string">"type_operation"</span>: <span class="string">"add"</span>, <span class="string">"name"</span>: <span class="string">"test"</span>&#125;,</span><br><span class="line">            	&#123;...&#125;,</span><br><span class="line">            	...</span><br><span class="line">        ],</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">body = json.dumps(data)</span><br><span class="line">response = requests.post(<span class="string">'http://127.0.0.1:8888/example'</span>, data=body)</span><br><span class="line">print(response.text)</span><br></pre></td></tr></table></figure>
+<h2 id="5-功能函数"><a href="#5-功能函数" class="headerlink" title="5.功能函数"></a>5.功能函数</h2><p>查找树型json结构中关键字</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">find_name</span><span class="params">(json_data, e)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> element <span class="keyword">in</span> json_data:</span><br><span class="line">        match = re.search(e, element[<span class="string">"name"</span>])</span><br><span class="line">        <span class="keyword">if</span> match:</span><br><span class="line">            id_collect.append(element[<span class="string">"entity_id"</span>])</span><br><span class="line">        <span class="keyword">if</span> <span class="string">"children"</span> <span class="keyword">in</span> element.keys():</span><br><span class="line">            find_name(element[<span class="string">"children"</span>], e)</span><br><span class="line">    <span class="keyword">return</span> id_collect</span><br></pre></td></tr></table></figure>
+<p>分页</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> annotations</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, Depends</span><br><span class="line"><span class="keyword">from</span> fastapi_pagination <span class="keyword">import</span> paginate, add_pagination</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> TypeVar, Generic, Sequence</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> Query</span><br><span class="line"><span class="keyword">from</span> fastapi_pagination.bases <span class="keyword">import</span> AbstractPage, AbstractParams, RawParams</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> BaseModel</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">T = TypeVar(<span class="string">"T"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Params</span><span class="params">(BaseModel, AbstractParams)</span>:</span></span><br><span class="line">    page: int = Query(<span class="number">1</span>, ge=<span class="number">1</span>, description=<span class="string">"Page number"</span>)</span><br><span class="line">    size: int = Query(<span class="number">17</span>, gt=<span class="number">0</span>, le=<span class="number">100</span>, description=<span class="string">"Page size"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">to_raw_params</span><span class="params">(self)</span> -&gt; RawParams:</span></span><br><span class="line">        <span class="keyword">return</span> RawParams(</span><br><span class="line">            limit=self.size,</span><br><span class="line">            offset=self.size * (self.page - <span class="number">1</span>),</span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Page</span><span class="params">(AbstractPage[T], Generic[T])</span>:</span></span><br><span class="line">    results: Sequence[T]</span><br><span class="line">    total: int</span><br><span class="line">    page: int</span><br><span class="line">    size: int</span><br><span class="line">    next: str</span><br><span class="line">    previous: str</span><br><span class="line">    total_pages: int</span><br><span class="line"></span><br><span class="line">    __params_type__ = Params</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">            cls,</span></span></span><br><span class="line"><span class="function"><span class="params">            results: results,</span></span></span><br><span class="line"><span class="function"><span class="params">            total: int,</span></span></span><br><span class="line"><span class="function"><span class="params">            params: Params,</span></span></span><br><span class="line"><span class="function"><span class="params">    )</span> -&gt; Page[T]:</span></span><br><span class="line">        page = params.page</span><br><span class="line">        size = params.size</span><br><span class="line">        total_pages = math.ceil(total / params.size)</span><br><span class="line">        next = <span class="string">f"?page=<span class="subst">&#123;page + <span class="number">1</span>&#125;</span>&amp;size=<span class="subst">&#123;size&#125;</span>"</span> <span class="keyword">if</span> (page + <span class="number">1</span>) &lt;= total_pages <span class="keyword">else</span> <span class="string">"null"</span></span><br><span class="line">        previous = <span class="string">f"?page=<span class="subst">&#123;page - <span class="number">1</span>&#125;</span>&amp;size=<span class="subst">&#123;size&#125;</span>"</span> <span class="keyword">if</span> (page - <span class="number">1</span>) &gt;= <span class="number">1</span> <span class="keyword">else</span> <span class="string">"null"</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> cls(results=results, total=total, page=params.page,</span><br><span class="line">                   size=params.size,</span><br><span class="line">                   next=next,</span><br><span class="line">                   previous=previous,</span><br><span class="line">                   total_pages=total_pages)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(BaseModel)</span>:</span></span><br><span class="line">    sample_id: str</span><br><span class="line">    sample_name: str</span><br><span class="line">    time: str</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sample_data = [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"sample_id"</span>: <span class="string">"000001"</span>,</span><br><span class="line">      <span class="string">"sample_name"</span>: <span class="string">"test1"</span>,</span><br><span class="line">      <span class="string">"time"</span>: <span class="string">"2022-08-11 21:15:33"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"sample_id"</span>: <span class="string">"000002"</span>,</span><br><span class="line">      <span class="string">"sample_name"</span>: <span class="string">"test2"</span>,</span><br><span class="line">      <span class="string">"time"</span>: <span class="string">"2022-08-12 13:45:56"</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"sample_id"</span>: <span class="string">"000003"</span>,</span><br><span class="line">      <span class="string">"sample_name"</span>: <span class="string">"test3"</span>,</span><br><span class="line">      <span class="string">"time"</span>: <span class="string">"2022-08-12 13:45:59"</span></span><br><span class="line">    &#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get('/sample', response_model=Page[User])</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_users</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> paginate(sample_data)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">add_pagination(app)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">import</span> uvicorn</span><br><span class="line">    uvicorn.run(app=<span class="string">"1:app"</span>, reload=<span class="literal">True</span>, host=<span class="string">'127.0.0.1'</span>, port=<span class="number">9999</span>)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fastapi/">fastapi</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/09/16/Docker/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Docker
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/07/21/PaddleOCR表格识别/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">PaddleOCR表格识别</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-导入fastapi、连接nebula连接池"><span class="nav-number">1.</span> <span class="nav-text">1.导入fastapi、连接nebula连接池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-CORS跨域访问设置"><span class="nav-number">2.</span> <span class="nav-text">2.CORS跨域访问设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-一般查询接口"><span class="nav-number">3.</span> <span class="nav-text">3.一般查询接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-单点查询"><span class="nav-number">3.1.</span> <span class="nav-text">1.单点查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-树型查询"><span class="nav-number">3.2.</span> <span class="nav-text">2.树型查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-一般编辑接口"><span class="nav-number">4.</span> <span class="nav-text">4.一般编辑接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-功能函数"><span class="nav-number">5.</span> <span class="nav-text">5.功能函数</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

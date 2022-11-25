@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>基于卷积神经网络的面部年龄识别 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="CNN">
+  
+  
+  
+  
+  <meta name="description" content="1.训练模型和框架1.1 Adience数据集Adience图片集包括Flickr等相册，通过从iPhone5（或更高版本）的智能手机等移动设备自动上传并进行组装，由其作者根据知识共享（CC）许可向公众发布。数据集提供了共计26580张面部照片的数据和基准，旨在尽可能真实地应对实际成像并做出判断。数据的标签有年龄组、性别、户外等，可用于监督学习的人脸识别对年龄的研究。Adience收录的数据信息包">
+<meta name="keywords" content="CNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于卷积神经网络的面部年龄识别">
+<meta property="og:url" content="http://yoursite.com/2021/05/26/基于卷积神经网络的面部年龄识别/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="1.训练模型和框架1.1 Adience数据集Adience图片集包括Flickr等相册，通过从iPhone5（或更高版本）的智能手机等移动设备自动上传并进行组装，由其作者根据知识共享（CC）许可向公众发布。数据集提供了共计26580张面部照片的数据和基准，旨在尽可能真实地应对实际成像并做出判断。数据的标签有年龄组、性别、户外等，可用于监督学习的人脸识别对年龄的研究。Adience收录的数据信息包">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2021/05/26/基于卷积神经网络的面部年龄识别/A.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/26/基于卷积神经网络的面部年龄识别/B.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/26/基于卷积神经网络的面部年龄识别/D.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/26/基于卷积神经网络的面部年龄识别/E.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/26/基于卷积神经网络的面部年龄识别/F.png">
+<meta property="og:image" content="http://yoursite.com/2021/05/26/基于卷积神经网络的面部年龄识别/G.png">
+<meta property="og:updated_time" content="2022-06-27T07:41:11.298Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于卷积神经网络的面部年龄识别">
+<meta name="twitter:description" content="1.训练模型和框架1.1 Adience数据集Adience图片集包括Flickr等相册，通过从iPhone5（或更高版本）的智能手机等移动设备自动上传并进行组装，由其作者根据知识共享（CC）许可向公众发布。数据集提供了共计26580张面部照片的数据和基准，旨在尽可能真实地应对实际成像并做出判断。数据的标签有年龄组、性别、户外等，可用于监督学习的人脸识别对年龄的研究。Adience收录的数据信息包">
+<meta name="twitter:image" content="http://yoursite.com/2021/05/26/基于卷积神经网络的面部年龄识别/A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-基于卷积神经网络的面部年龄识别" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      基于卷积神经网络的面部年龄识别
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/05/26/基于卷积神经网络的面部年龄识别/" class="article-date">
+	  <time datetime="2021-05-26T15:13:00.000Z" itemprop="datePublished">2021-05-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="1-训练模型和框架"><a href="#1-训练模型和框架" class="headerlink" title="1.训练模型和框架"></a>1.训练模型和框架</h2><h3 id="1-1-Adience数据集"><a href="#1-1-Adience数据集" class="headerlink" title="1.1 Adience数据集"></a>1.1 Adience数据集</h3><p>Adience图片集包括Flickr等相册，通过从iPhone5（或更高版本）的智能手机等移动设备自动上传并进行组装，由其作者根据知识共享（CC）许可向公众发布。数据集提供了共计26580张面部照片的数据和基准，旨在尽可能真实地应对实际成像并做出判断。数据的标签有年龄组、性别、户外等，可用于监督学习的人脸识别对年龄的研究。Adience收录的数据信息包括主体外观、动作、噪点、光线等实际情况中进行图像采集时包含的动态变化，具有环境适应性强、应用范围广的特点。</p>
+<h3 id="1-2-Caffe框架"><a href="#1-2-Caffe框架" class="headerlink" title="1.2 Caffe框架"></a>1.2 Caffe框架</h3><p>Caffe（Convolutional Architecture for Fast Feature Embedding）采用CUDA架构，可在CPU和GPU上进行高速运算，是一个兼具了效率、表达和思维模块化的卷积神经网络框架。</p>
+<p>Caffe的数据结构以Blobs-Layers-Net的形式存在。</p>
+<p>Blobs是Caffe的核心数据格式，提供了统一的内存接口，并且可以在CPU与GPU之间进行数据同步。主要通过四维张量（Number<em>Channel</em>weight*high）的形式，按照C-contiguous方式（数组的行存储连续且不间断）来存储和交流网络中的权重、激活值、正反向数据。</p>
+<p>Layers是Caffe模型的关键内容，是组成神经网络和进行相关计算的基础。所有的Layer层都可以接收底层输入的Blobs，并向高层输出Blobs。Layers每一层都定义三种重要的计算：初始化（Setup）、向前传播（Forward）、向后传播（Backward）。</p>
+<p>其包含的运算有：</p>
+<p><strong>·</strong> 1.<font color="orange">load data</font>：数据载入</p>
+<p><strong>·</strong> 2.<font color="orange">Convolve filters</font>：卷积层，进行卷积。</p>
+<p><strong>·</strong> 3.<font color="orange">Pooling</font>：池化层，进行池化。</p>
+<p><strong>·</strong> 4.<font color="orange">Nonlinearities</font>：非线性映射运算，即激活函数。</p>
+<p><strong>·</strong> 5.<font color="orange">Inner Products</font>：内积运算。</p>
+<p><strong>·</strong> 6.<font color="orange">Normalize</font>：归一化</p>
+<p><strong>·</strong> 7.<font color="orange">Compute losses</font>：损失函数计算，如softmax、hinge。</p>
+<p>Net是一个由一系列连接的Layer层组成的有向无环图（Directed Acyclic Graph，DAG）。caffe会在向前传播或向后传播时，对DAG中的所有层进行记录，确保其准确性。</p>
+<h2 id="2-基于卷积神经网络的人脸识别"><a href="#2-基于卷积神经网络的人脸识别" class="headerlink" title="2.基于卷积神经网络的人脸识别"></a>2.基于卷积神经网络的人脸识别</h2><h3 id="2-1-卷积神经网络架构"><a href="#2-1-卷积神经网络架构" class="headerlink" title="2.1 卷积神经网络架构"></a>2.1 卷积神经网络架构</h3><p>使用的架构包括3个卷积层、2个全连接层和1个最终输出层。具体定义卷积层如下：</p>
+<p>1.Conv1：将内核大小为3<em>3</em>7的共计96个像素节点的过滤应用于输入第一卷积层中，经过修正线性单元ReLU（激活函数）处理后，池化层采用保留最大值（max-pooling）的规则，选择一个两像素跨度的3*3区域中最大值，进行池化，再经过局部响应归一化层（Local Response Normalization，LRN）。</p>
+<p>2.Conv2：上一层的输出（96×28×28）由第二个卷积层进行处理，包括对256个大小为96<em>5</em>5的像素过滤。同样的，经过一个修正线性单元ReLU，最大池化层，和一个与之前参数相同的局部响应归一化层。</p>
+<p>3.Conv3：第三层卷积层通过对一组384个大小为256<em>3</em>3的像素过滤来对256×14×14的 Blob进行处理，接着经过修正线性单元ReLU和一个最大池化层。</p>
+<p>再通过下列方式定义完全连接层：</p>
+<p>1.第一个完全连接层包含了512个人工神经元，用于接收第三卷积层的输出结果。接着再通过修正线性单元ReLU和Dropout层（防止CNN过拟合）。</p>
+<p>2.第二个完全连接层接收第一个完全连接层的512个人工神经元空间大小的输出（同样包含512个人工神经元），再通过修正线性单元ReLU和Dropout层。</p>
+<p>3.第三层完全连接层映射最终的分类结果。</p>
+<p>最终，最后一个完全连接层的输出会被反馈到为每个类别分配概率的Softmax层，预测其本身通过给定的测试图像的最大概率。</p>
+<p><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/A.png" alt></p>
+<h3 id="2-2-年龄预测"><a href="#2-2-年龄预测" class="headerlink" title="2.2 年龄预测"></a>2.2 年龄预测</h3><p>人的面部特征无时不刻发生着微妙变化反映出其年龄的不断增长，在最理想的情况之下，人的面部特征随着人的成长应该表现出正相关的关系，那么年龄估计就是一个广义上的回归问题。然而实际上仅通过回归的方法来判断一个人的年龄是靠不住的，即便一个正常的自然人也很难推断出观察对象的准确实际年龄。</p>
+<p>但是人眼可以对观察对象做出一个大致判断，较为准确的预测出对方的年龄所在区间。这样，就对对方的年龄有了初步估计。这样，就可以对年龄区间进行一个分类，以进一步研究人脸和年龄的关系。</p>
+<p>Adience数据集将人的年龄划分为了八个类别，分别为：[0-2]、[4-6]、[8-13]、[15-20]、[25-32]、[38-43]、[48-53]、[60 -]。因此，深度神经网络在最终的Softmax层中有8个节点，分别对各年龄段进行分类。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MODEL_MEAN_VALUES = (<span class="number">78.4263377603</span>, <span class="number">87.7689143744</span>, <span class="number">114.895847746</span>)</span><br><span class="line">ageList = [<span class="string">'(0-2)'</span>, <span class="string">'(4-6)'</span>, <span class="string">'(8-12)'</span>, <span class="string">'(15-20)'</span>, <span class="string">'(25-32)'</span>, <span class="string">'(38-43)'</span>, <span class="string">'(48-53)'</span>, <span class="string">'(60-100)'</span>]</span><br></pre></td></tr></table></figure></p>
+<p>Blob输入网络进行年龄的检测，并且年龄检测程序向前传播。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ageNet.setInput(blobs)</span><br><span class="line">agepredction = ageNet.forward()</span><br><span class="line">age = ageList[agepredction[<span class="number">0</span>].argmax()]</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h2 id="3-计算机视觉技术与系统的运行测试"><a href="#3-计算机视觉技术与系统的运行测试" class="headerlink" title="3.计算机视觉技术与系统的运行测试"></a>3.计算机视觉技术与系统的运行测试</h2><h3 id="3-1-OpenCV"><a href="#3-1-OpenCV" class="headerlink" title="3.1 OpenCV"></a>3.1 OpenCV</h3><p>OpenCV是基于伯克利软件套件（Berkeley Software Distribution，BSD）许可发行的一个开源的跨平台计算机视觉库，其本身由C++语言和C函数编写，同时提供了Python、JAVA、MATLAB等语言的接口，能够运行计算机视觉的一系列算法，对图像进行处理。</p>
+<p>要在python环境下使用OpenCV视觉库，可以通过pip执行命令“pip install opencv-python“来安装OpenCV模块。</p>
+<p>安装完成以后，在Python中导入模块。</p>
+<h3 id="3-2-图像侦测"><a href="#3-2-图像侦测" class="headerlink" title="3.2 图像侦测"></a>3.2 图像侦测</h3><p>使用OpenCV中的DNN人脸侦测模块对人脸的图像进行侦测和获取，OpenCV为该检测器提供了Caffe实施的16位浮点数版本。其优点有：</p>
+<p><strong>·</strong> 1.在CPU上实时运行。</p>
+<p><strong>·</strong> 2.即使在严重遮挡下也可以工作。</p>
+<p><strong>·</strong> 3.能够检测各种比例的面部。</p>
+<p><strong>·</strong> 4.适用不同的脸部朝向，如上、下、左、右和侧面等。</p>
+<p>整个面部检测的功能使用函数“getFaceBox”完成，包含信号量参数“net“、图像参数“frame“和阈值参数“conf_threshold”。将图像转化为blob，其中“blobFromImage”函数用于减均值、图像缩放和进行通道交换（由于opencv中的图像存储都是基于BGR通道，所以需要将原本的RGB通道替换为BGR通道）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getFaceBox</span><span class="params">(net, frame, threshold_conf=<span class="number">0.7</span>)</span>:</span></span><br><span class="line">    bounding_OpencvDnn = frame.copy()</span><br><span class="line">    bounding_Height = bounding_OpencvDnn.shape[<span class="number">0</span>]</span><br><span class="line">    bounding_Width = bounding_OpencvDnn.shape[<span class="number">1</span>]</span><br><span class="line">    blobs = cv2.dnn.blobFromImage(bounding_OpencvDnn, <span class="number">1.0</span>, (<span class="number">300</span>, <span class="number">300</span>), [<span class="number">104</span>, <span class="number">117</span>, <span class="number">123</span>], <span class="literal">True</span>, <span class="literal">False</span>)</span><br></pre></td></tr></table></figure></p>
+<p>侦测人脸的网络向前传递。接着进行人脸识别框bounding box的绘制，设置bounding box的坐标分别为x1、y1，x2、y2。输出检测是一个4-D矩阵，其中i是面部的迭代器，第三维用于遍历检测到的面部数据，第四维包含了每个面的边界框和分数信息。由于识别框的输出坐标会在[0,1]间进行归一化，所以，为了获得正确的bounding box，需要将坐标再乘以原始图像的宽度和高度。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">net.setInput(blobs)</span><br><span class="line">detections = net.forward()</span><br><span class="line">bounding_bboxes = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(detections.shape[<span class="number">2</span>]):</span><br><span class="line">    confidence = detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">2</span>]</span><br><span class="line">    <span class="keyword">if</span> confidence &gt; threshold_conf:</span><br><span class="line">        x1 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">3</span>] * bounding_Width)</span><br><span class="line">        y1 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">4</span>] * bounding_Height)</span><br><span class="line">        x2 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">5</span>] * bounding_Width)</span><br><span class="line">        y2 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">6</span>] * bounding_Height)</span><br><span class="line">        bounding_bboxes.append([x1, y1, x2, y2])</span><br><span class="line">        cv2.rectangle(bounding_OpencvDnn, (x1, y1), (x2, y2), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), int(round(bounding_Height/<span class="number">150</span>)), <span class="number">8</span>)</span><br><span class="line"><span class="keyword">return</span> bounding_OpencvDnn, bounding_bboxes</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-3-输入"><a href="#3-3-输入" class="headerlink" title="3.3 输入"></a>3.3 输入</h3><p>将识别的源图片位置存放在字符串str当中，调用OpenCV中的函数imread()来读取图片，完成图像的输入。并截取文件的路径只保留文件名，方便后续输出。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">str = <span class="string">"C:\\Users\\elbadaernU9.9\\Desktop\\test.png"</span></span><br><span class="line">frame = cv2.imread(str)</span><br><span class="line">name = str[<span class="number">31</span>:]</span><br></pre></td></tr></table></figure></p>
+<p>使用OpenCV库，导入网络模型和预训练模型，在Caffe框架下对Adience数据集进行模型的训练。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">faceProto = <span class="string">"opencv_face_detector.pbtxt"</span></span><br><span class="line">faceModel = <span class="string">"opencv_face_detector_uint8.pb"</span></span><br><span class="line"></span><br><span class="line">ageProto = <span class="string">"age_deploy.prototxt"</span></span><br><span class="line">ageModel = <span class="string">"age_net.caffemodel"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="5-4-测试输出"><a href="#5-4-测试输出" class="headerlink" title="5.4 测试输出"></a>5.4 测试输出</h3><p>最后使用imshow()函数在输入的图像上显示网络的输出，包括识别框bounding box、分类（预测）的最终结果。为了使图像正常显示，需要添加一行代码“cv2.waitKey(1)”，并设置显示的时间为5秒。通过imwrite()函数保存输出的结果。至此，主要的年龄识别系统编写完成。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">label = <span class="string">"&#123;&#125;,&#123;&#125;"</span>.format(gender, age)</span><br><span class="line">cv2.putText(frameFace, label, (bounding_bbox[<span class="number">0</span>], bounding_bbox[<span class="number">1</span>]<span class="number">-10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.8</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>, cv2.LINE_AA)</span><br><span class="line">cv2.imshow(<span class="string">"Age &amp; Gender Prediction Demo"</span>, frameFace)</span><br><span class="line">cv2.imwrite(<span class="string">"age-gender-out-&#123;&#125;"</span>.format(args.input),frameFace)</span><br><span class="line">time.sleep(<span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/B.png" alt></p>
+<h3 id="5-5-拓展"><a href="#5-5-拓展" class="headerlink" title="5.5 拓展"></a>5.5 拓展</h3><p>系统初步的年龄估计功能实现以后，开始对系统进行进一步的优化和功能拓展。</p>
+<p>由于原系统的图像输入是以保存的图片形式导入的，在实际应用当中没有事先保存源图像文件的情况下就会有诸多不便。所以尝试将图像的输入形式做一个动态的拓展，由静态的图片形式补充为摄像头动态捕捉人像。</p>
+<p>通过调用OpenCV启动摄像头的函数，使系统自动捕获人脸，同时保留图片输入的功能（使用Dos命令实现）。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cap = cv2.VideoCapture(args.input <span class="keyword">if</span> args.input <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">padding = <span class="number">20</span></span><br><span class="line"><span class="keyword">while</span> cv2.waitKey(<span class="number">1</span>) &lt; <span class="number">0</span>:</span><br><span class="line">    t = time.time()</span><br><span class="line">    hasFrame, frame = cap.read()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> hasFrame:</span><br><span class="line">        cv2.waitKey()</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+<p>由于Adience数据集同样包含了性别的标签，可以在年龄估计的同时为系统添加性别预测功能的代码。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">genderProto = <span class="string">"gender_deploy.prototxt"</span></span><br><span class="line">genderModel = <span class="string">"gender_net.caffemodel"</span></span><br><span class="line"></span><br><span class="line">genderList = [<span class="string">'Male'</span>, <span class="string">'Female'</span>]</span><br><span class="line">genderNet = cv2.dnn.readNet(genderModel, genderProto)</span><br><span class="line"></span><br><span class="line">genderNet.setInput(blobs)</span><br><span class="line">genderPredction = genderNet.forward()</span><br><span class="line"></span><br><span class="line">label = <span class="string">"&#123;&#125;,&#123;&#125;"</span>.format(gender, age)</span><br></pre></td></tr></table></figure></p>
+<p>完成后在Pycharm中将项目封装为.exe可执行文件。</p>
+<p><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/D.png" alt><br><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/E.png" alt><br>得到最终的运行结果如下：</p>
+<p><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/F.png" alt><br><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/G.png" alt><br>完整的人脸识别程序代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getFaceBox</span><span class="params">(net, frame, threshold_conf=<span class="number">0.7</span>)</span>:</span></span><br><span class="line">    bounding_OpencvDnn = frame.copy()</span><br><span class="line">    bounding_Height = bounding_OpencvDnn.shape[<span class="number">0</span>]</span><br><span class="line">    bounding_Width = bounding_OpencvDnn.shape[<span class="number">1</span>]</span><br><span class="line">    blobs = cv2.dnn.blobFromImage(bounding_OpencvDnn, <span class="number">1.0</span>, (<span class="number">300</span>, <span class="number">300</span>), [<span class="number">104</span>, <span class="number">117</span>, <span class="number">123</span>], <span class="literal">True</span>, <span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    net.setInput(blobs)</span><br><span class="line">    detections = net.forward()</span><br><span class="line">    bounding_bboxes = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(detections.shape[<span class="number">2</span>]):</span><br><span class="line">        confidence = detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">2</span>]</span><br><span class="line">        <span class="keyword">if</span> confidence &gt; threshold_conf:</span><br><span class="line">            x1 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">3</span>] * bounding_Width)</span><br><span class="line">            y1 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">4</span>] * bounding_Height)</span><br><span class="line">            x2 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">5</span>] * bounding_Width)</span><br><span class="line">            y2 = int(detections[<span class="number">0</span>, <span class="number">0</span>, i, <span class="number">6</span>] * bounding_Height)</span><br><span class="line">            bounding_bboxes.append([x1, y1, x2, y2])</span><br><span class="line">            cv2.rectangle(bounding_OpencvDnn, (x1, y1), (x2, y2), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), int(round(bounding_Height/<span class="number">150</span>)), <span class="number">8</span>)</span><br><span class="line">    <span class="keyword">return</span> bounding_OpencvDnn, bounding_bboxes</span><br><span class="line"></span><br><span class="line">parser = argparse.ArgumentParser(description=<span class="string">'Use this script to run age and gender recognition using OpenCV.'</span>)</span><br><span class="line">parser.add_argument(<span class="string">'--input'</span>, help=<span class="string">'Path to input image or video file. Skip this argument to capture frames from a camera.'</span>)</span><br><span class="line"></span><br><span class="line">args = parser.parse_args()</span><br><span class="line"></span><br><span class="line">faceProto = <span class="string">"opencv_face_detector.pbtxt"</span></span><br><span class="line">faceModel = <span class="string">"opencv_face_detector_uint8.pb"</span></span><br><span class="line"></span><br><span class="line">ageProto = <span class="string">"age_deploy.prototxt"</span></span><br><span class="line">ageModel = <span class="string">"age_net.caffemodel"</span></span><br><span class="line"></span><br><span class="line">genderProto = <span class="string">"gender_deploy.prototxt"</span></span><br><span class="line">genderModel = <span class="string">"gender_net.caffemodel"</span></span><br><span class="line"></span><br><span class="line">MODEL_MEAN_VALUES = (<span class="number">78.4263377603</span>, <span class="number">87.7689143744</span>, <span class="number">114.895847746</span>)</span><br><span class="line">ageList = [<span class="string">'(0-2)'</span>, <span class="string">'(4-6)'</span>, <span class="string">'(8-12)'</span>, <span class="string">'(15-20)'</span>, <span class="string">'(25-32)'</span>, <span class="string">'(38-43)'</span>, <span class="string">'(48-53)'</span>, <span class="string">'(60-100)'</span>]</span><br><span class="line">genderList = [<span class="string">'Male'</span>, <span class="string">'Female'</span>]</span><br><span class="line"><span class="comment">#genderList.decode("utf-8")</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Load network</span></span><br><span class="line">ageNet = cv2.dnn.readNet(ageModel, ageProto)</span><br><span class="line">genderNet = cv2.dnn.readNet(genderModel, genderProto)</span><br><span class="line">faceNet = cv2.dnn.readNet(faceModel, faceProto)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Open a video file or an image file or a camera stream</span></span><br><span class="line">cap = cv2.VideoCapture(args.input <span class="keyword">if</span> args.input <span class="keyword">else</span> <span class="number">0</span>)</span><br><span class="line">padding = <span class="number">20</span></span><br><span class="line"><span class="keyword">while</span> cv2.waitKey(<span class="number">1</span>) &lt; <span class="number">0</span>:</span><br><span class="line">    <span class="comment"># Read frame</span></span><br><span class="line">    t = time.time()</span><br><span class="line">    hasFrame, frame = cap.read()</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> hasFrame:</span><br><span class="line">        cv2.waitKey()</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    frameFace, bounding_bboxes = getFaceBox(faceNet, frame)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> bounding_bboxes:</span><br><span class="line">        print(<span class="string">"No face Detected, Checking next frame"</span>)</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> bounding_bbox <span class="keyword">in</span> bounding_bboxes:</span><br><span class="line">        print(<span class="string">"=====================================Face Found====================================="</span>)</span><br><span class="line">        <span class="comment"># print(bounding_bbox)</span></span><br><span class="line">        face = frame[max(<span class="number">0</span>,bounding_bbox[<span class="number">1</span>]-padding):min(bounding_bbox[<span class="number">3</span>]+padding,frame.shape[<span class="number">0</span>]<span class="number">-1</span>),max(<span class="number">0</span>,bounding_bbox[<span class="number">0</span>]-padding):min(bounding_bbox[<span class="number">2</span>]+padding, frame.shape[<span class="number">1</span>]<span class="number">-1</span>)]</span><br><span class="line"></span><br><span class="line">        blobs = cv2.dnn.blobFromImage(face, <span class="number">1.0</span>, (<span class="number">227</span>, <span class="number">227</span>), MODEL_MEAN_VALUES, swapRB=<span class="literal">False</span>)</span><br><span class="line">        genderNet.setInput(blobs)</span><br><span class="line">        genderPredction = genderNet.forward()</span><br><span class="line">        gender = genderList[genderPredction[<span class="number">0</span>].argmax()]</span><br><span class="line">        <span class="comment"># print("Gender Output : &#123;&#125;".format(genderPredction))</span></span><br><span class="line"></span><br><span class="line">        print(<span class="string">"Gender : &#123;&#125;, conf = &#123;:.3f&#125;"</span>.format(gender, genderPredction[<span class="number">0</span>].max()))</span><br><span class="line"></span><br><span class="line">        ageNet.setInput(blobs)</span><br><span class="line">        agepredction = ageNet.forward()</span><br><span class="line">        age = ageList[agepredction[<span class="number">0</span>].argmax()]</span><br><span class="line"></span><br><span class="line">        print(<span class="string">"Age Output : &#123;&#125;"</span>.format(agepredction))</span><br><span class="line">        print(<span class="string">"Age : &#123;&#125;, conf = &#123;:.3f&#125;"</span>.format(age, agepredction[<span class="number">0</span>].max()))</span><br><span class="line"></span><br><span class="line">        label = <span class="string">"&#123;&#125;,&#123;&#125;"</span>.format(gender, age)</span><br><span class="line">        cv2.putText(frameFace, label, (bounding_bbox[<span class="number">0</span>], bounding_bbox[<span class="number">1</span>]<span class="number">-10</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="number">0.8</span>, (<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>), <span class="number">2</span>, cv2.LINE_AA)</span><br><span class="line">        cv2.imshow(<span class="string">"Age &amp; Gender Prediction Demo"</span>, frameFace)</span><br><span class="line">        <span class="comment"># cv2.imwrite("age-gender-out-&#123;&#125;".format(args.input),frameFace)</span></span><br><span class="line"></span><br><span class="line">    print(<span class="string">"time : &#123;:.3f&#125;"</span>.format(time.time() - t))</span><br><span class="line">    print(<span class="string">"=====================================Round Over====================================="</span>)</span><br></pre></td></tr></table></figure></p>
+<p>(本文节选自我的毕业论文，有删改)<br>相关代码和训练集已打包至github：<a href="https://github.com/elbadaernU404/AgeGenderPredictionDemo" target="_blank" rel="noopener">https://github.com/elbadaernU404/AgeGenderPredictionDemo</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN/">CNN</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/27/Django项目：订单管理系统/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Django项目：订单管理系统
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/05/25/卷积神经网络算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">卷积神经网络算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-训练模型和框架"><span class="nav-number">1.</span> <span class="nav-text">1.训练模型和框架</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Adience数据集"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 Adience数据集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Caffe框架"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 Caffe框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-基于卷积神经网络的人脸识别"><span class="nav-number">2.</span> <span class="nav-text">2.基于卷积神经网络的人脸识别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-卷积神经网络架构"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 卷积神经网络架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-年龄预测"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 年龄预测</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-计算机视觉技术与系统的运行测试"><span class="nav-number">3.</span> <span class="nav-text">3.计算机视觉技术与系统的运行测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-OpenCV"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 OpenCV</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-图像侦测"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 图像侦测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-输入"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-测试输出"><span class="nav-number">3.4.</span> <span class="nav-text">5.4 测试输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-拓展"><span class="nav-number">3.5.</span> <span class="nav-text">5.5 拓展</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

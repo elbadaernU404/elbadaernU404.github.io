@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>paddleocr表格识别 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="OCR">
+  
+  
+  
+  
+  <meta name="description" content="PaddleOCR2.5根目录下的ppstructure文件模块是PaddleOCR提供的一个可用于复杂文档结构分析处理的OCR工具包github文档页面：https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/ppstructure/README_ch.md 安装依赖· 安装paddleocr version&amp;gt;=2.51pip">
+<meta name="keywords" content="OCR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PaddleOCR表格识别">
+<meta property="og:url" content="http://yoursite.com/2022/07/21/PaddleOCR表格识别/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="PaddleOCR2.5根目录下的ppstructure文件模块是PaddleOCR提供的一个可用于复杂文档结构分析处理的OCR工具包github文档页面：https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/ppstructure/README_ch.md 安装依赖· 安装paddleocr version&amp;gt;=2.51pip">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2022/07/21/PaddleOCR表格识别/A.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/21/PaddleOCR表格识别/B.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/21/PaddleOCR表格识别/C.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/21/PaddleOCR表格识别/D.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/21/PaddleOCR表格识别/E.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/21/PaddleOCR表格识别/F.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/21/PaddleOCR表格识别/G.png">
+<meta property="og:updated_time" content="2022-09-22T03:43:56.275Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PaddleOCR表格识别">
+<meta name="twitter:description" content="PaddleOCR2.5根目录下的ppstructure文件模块是PaddleOCR提供的一个可用于复杂文档结构分析处理的OCR工具包github文档页面：https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/ppstructure/README_ch.md 安装依赖· 安装paddleocr version&amp;gt;=2.51pip">
+<meta name="twitter:image" content="http://yoursite.com/2022/07/21/PaddleOCR表格识别/A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-PaddleOCR表格识别" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      PaddleOCR表格识别
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/07/21/PaddleOCR表格识别/" class="article-date">
+	  <time datetime="2022-07-21T06:15:22.000Z" itemprop="datePublished">2022-07-21</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>PaddleOCR2.5根目录下的ppstructure文件模块是PaddleOCR提供的一个可用于复杂文档结构分析处理的OCR工具包<br>github文档页面：<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/ppstructure/README_ch.md" target="_blank" rel="noopener">https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/ppstructure/README_ch.md</a></p>
+<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p><strong><font size="4" color="orange">·</font></strong> 安装paddleocr version&gt;=2.5<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install &quot;paddleocr&gt;=2.5&quot;</span><br></pre></td></tr></table></figure></p>
+<p><strong><font size="4" color="orange">·</font></strong> 安装版面分析依赖包layoutparser<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl</span><br></pre></td></tr></table></figure></p>
+<p><strong><font size="4" color="orange">·</font></strong> 安装DocVQA依赖包paddlenlp（DocVQA功能，选装）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install paddlenlp</span><br></pre></td></tr></table></figure></p>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><p>在PaddleOCR/ppstructure目录下进入CMD命令行，或者创建python脚本启动<br><strong><font size="4" color="orange">·</font></strong> 表格识别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paddleocr --image_dir=docs/table/table.jpg --type=structure --layout=false</span><br></pre></td></tr></table></figure>
+<p>python脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PPStructure,save_structure_res</span><br><span class="line"></span><br><span class="line">table_engine = PPStructure(layout=<span class="literal">False</span>, show_log=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">save_folder = <span class="string">'./output'</span></span><br><span class="line">img_path = <span class="string">'PaddleOCR/ppstructure/docs/table/table.jpg'</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">result = table_engine(img)</span><br><span class="line">save_structure_res(result, save_folder, os.path.basename(img_path).split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> result:</span><br><span class="line">    line.pop(<span class="string">'img'</span>)</span><br><span class="line">    print(line)</span><br></pre></td></tr></table></figure>
+<p><strong><font size="4" color="orange">·</font></strong> 版面分析</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paddleocr --image_dir=docs/table/1.png --type=structure --table=false --ocr=false</span><br></pre></td></tr></table></figure>
+<p>python脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PPStructure,save_structure_res</span><br><span class="line"></span><br><span class="line">table_engine = PPStructure(table=<span class="literal">False</span>, ocr=<span class="literal">False</span>, show_log=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">save_folder = <span class="string">'./output'</span></span><br><span class="line">img_path = <span class="string">'PaddleOCR/ppstructure/docs/table/1.png'</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">result = table_engine(img)</span><br><span class="line">save_structure_res(result, save_folder, os.path.basename(img_path).split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> result:</span><br><span class="line">    line.pop(<span class="string">'img'</span>)</span><br><span class="line">    print(line)</span><br></pre></td></tr></table></figure>
+<p><strong><font size="4" color="orange">·</font></strong> 版面分析+表格识别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paddleocr --image_dir=docs/table/1.png --type=structure</span><br></pre></td></tr></table></figure>
+<p>python脚本：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PPStructure, draw_structure_result, save_structure_res</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line">table_engine = PPStructure(show_log=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">save_folder = <span class="string">'./output'</span></span><br><span class="line">img_path = <span class="string">'./ppstructure/docs/table/table.jpg'</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">result = table_engine(img)</span><br><span class="line">save_structure_res(result, save_folder, os.path.basename(img_path).split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> result:</span><br><span class="line">    line.pop(<span class="string">'img'</span>)</span><br><span class="line">    print(line)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">font_path = <span class="string">'./doc/fonts/simfang.ttf'</span></span><br><span class="line">image = Image.open(img_path).convert(<span class="string">'RGB'</span>)</span><br><span class="line">im_show = draw_structure_result(image, result, font_path=font_path)</span><br><span class="line">im_show = Image.fromarray(im_show)</span><br><span class="line">im_show.save(<span class="string">'result.jpg'</span>)</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>参数说明</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>output</td>
+<td>excel和识别结果保存的地址</td>
+<td>./output/table</td>
+</tr>
+<tr>
+<td>table_max_len</td>
+<td>表格结构模型预测时，图像的长边resize尺度</td>
+<td>488</td>
+</tr>
+<tr>
+<td>table_model_dir</td>
+<td>表格结构模型 inference 模型地址</td>
+<td>None</td>
+</tr>
+<tr>
+<td>table_char_dict_path</td>
+<td>表格结构模型所用字典地址</td>
+<td>../ppocr/utils/dict/table_structure_dict.txt</td>
+</tr>
+<tr>
+<td>layout_path_model</td>
+<td>版面分析模型模型地址，可以为在线地址或者本地地址，当为本地地址时，需要指定 layout_label_map, 命令行模式下可通过–layout_label_map=’{0: “Text”, 1: “Title”, 2: “List”, 3:”Table”, 4:”Figure”}’ 指定</td>
+<td>lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config</td>
+</tr>
+<tr>
+<td>layout_label_map</td>
+<td>版面分析模型模型label映射字典</td>
+<td>None</td>
+</tr>
+<tr>
+<td>model_name_or_path</td>
+<td>VQA SER模型地址</td>
+<td>None</td>
+</tr>
+<tr>
+<td>max_seq_length</td>
+<td>VQA SER模型最大支持token长度</td>
+<td>512</td>
+</tr>
+<tr>
+<td>label_map_path</td>
+<td>VQA SER 标签文件地址</td>
+<td>./vqa/labels/labels_ser.txt</td>
+</tr>
+<tr>
+<td>layout</td>
+<td>前向中是否执行版面分析</td>
+<td>True</td>
+</tr>
+<tr>
+<td>table</td>
+<td>前向中是否执行表格识别</td>
+<td>True</td>
+</tr>
+<tr>
+<td>ocr</td>
+<td>对于版面分析中的非表格区域，是否执行ocr。当layout为False时会被自动设置为False</td>
+<td>True</td>
+</tr>
+<tr>
+<td>structure_version</td>
+<td>表格结构化模型版本，可选 PP-STRUCTURE。PP-STRUCTURE支持表格结构化模型</td>
+<td>pp-structure</td>
+</tr>
+</tbody>
+</table>
+<h2 id="模型下载"><a href="#模型下载" class="headerlink" title="模型下载"></a>模型下载</h2><table>
+<thead>
+<tr>
+<th>模型类型</th>
+<th>模型名称</th>
+<th>模型简介</th>
+<th>下载地址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>版面分析模型</td>
+<td>ppyolov2_r50vd_dcn_365e_publaynet</td>
+<td>PubLayNet 数据集训练的版面分析模型，可以划分文字、标题、表格、图片以及列表5类区域</td>
+<td><a href="https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet.tar" target="_blank" rel="noopener">推理模型</a>/<a href="https://paddle-model-ecology.bj.bcebos.com/model/layout-parser/ppyolov2_r50vd_dcn_365e_publaynet_pretrained.pdparams" target="_blank" rel="noopener">训练模型</a></td>
+</tr>
+<tr>
+<td>OCR模型</td>
+<td>ch_PP-OCRv3_det_infer</td>
+<td>PubLayNet数据集训练的中英文超轻量PP-OCRv3模型</td>
+<td><a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_infer.tar" target="_blank" rel="noopener">推理模型</a>/<a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_det_distill_train.tar" target="_blank" rel="noopener">训练模型</a></td>
+</tr>
+<tr>
+<td>OCR模型</td>
+<td>en_ppocr_mobile_v2.0_table_rec</td>
+<td>PubLayNet数据集训练的中英文超轻量PP-OCRv3模型</td>
+<td><a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_infer.tar" target="_blank" rel="noopener">推理模型</a>/<a href="https://paddleocr.bj.bcebos.com/PP-OCRv3/chinese/ch_PP-OCRv3_rec_train.tar" target="_blank" rel="noopener">训练模型</a></td>
+</tr>
+<tr>
+<td>表格识别模型</td>
+<td>en_ppocr_mobile_v2.0_table_structure</td>
+<td>PubLayNet数据集训练的英文表格场景的表格结构预测</td>
+<td><a href="https://paddleocr.bj.bcebos.com/dygraph_v2.0/table/en_ppocr_mobile_v2.0_table_structure_infer.tar" target="_blank" rel="noopener">推理模型</a>/<a href="https://paddleocr.bj.bcebos.com/dygraph_v2.1/table/en_ppocr_mobile_v2.0_table_structure_train.tar" target="_blank" rel="noopener">训练模型</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="预测示例（以版面分析-表格为例）"><a href="#预测示例（以版面分析-表格为例）" class="headerlink" title="预测示例（以版面分析+表格为例）"></a>预测示例（以版面分析+表格为例）</h2><h3 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paddleocr --image_dir=docs/table/table.jpg --type=structure --layout=false</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/07/21/PaddleOCR表格识别/A.png" alt></p>
+<h3 id="Python脚本"><a href="#Python脚本" class="headerlink" title="Python脚本"></a>Python脚本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PPStructure, draw_structure_result, save_structure_res</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line">table_engine = PPStructure(show_log=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">save_folder = <span class="string">'./output'</span></span><br><span class="line">img_path = <span class="string">'./ppstructure/docs/table/table.jpg'</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">result = table_engine(img)</span><br><span class="line">save_structure_res(result, save_folder, os.path.basename(img_path).split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> result:</span><br><span class="line">    line.pop(<span class="string">'img'</span>)</span><br><span class="line">    print(line)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">font_path = <span class="string">'./doc/fonts/simfang.ttf'</span></span><br><span class="line">image = Image.open(img_path).convert(<span class="string">'RGB'</span>)</span><br><span class="line">im_show = draw_structure_result(image, result, font_path=font_path)</span><br><span class="line">im_show = Image.fromarray(im_show)</span><br><span class="line">im_show.save(<span class="string">'result.jpg'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/07/21/PaddleOCR表格识别/B.png" alt></p>
+<h3 id="服务部署"><a href="#服务部署" class="headerlink" title="服务部署"></a>服务部署</h3><p>安装structure_system</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hub install deploy\hubserving\structure_system\</span><br></pre></td></tr></table></figure>
+<p>修改<font color="#00BFFF">config.json</font>，不使用GPU</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"modules_info"</span>: &#123;</span><br><span class="line">        <span class="attr">"structure_system"</span>: &#123;</span><br><span class="line">            <span class="attr">"init_args"</span>: &#123;</span><br><span class="line">                <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">                <span class="attr">"use_gpu"</span>: <span class="literal">false</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"predict_args"</span>: &#123;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"port"</span>: <span class="number">8870</span>,</span><br><span class="line">    <span class="attr">"use_multiprocess"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"workers"</span>: <span class="number">2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>启动服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hub serving start -c ./deploy/hubserving/structure_system/config.json</span><br></pre></td></tr></table></figure>
+<p>版面分析+表格识别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python tools/test_hubserving.py --server_url http://127.0.0.1:8870/predict/structure_system --image_dir ppstructure/docs/table/table.jpg</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/07/21/PaddleOCR表格识别/C.png" alt></p>
+<p>将识别得到的html标签内容复制另存为.html文件进行对比得到如下结果：</p>
+<p><img src="/2022/07/21/PaddleOCR表格识别/D.png" alt></p>
+<h3 id="在Pycharm中部署服务并识别"><a href="#在Pycharm中部署服务并识别" class="headerlink" title="在Pycharm中部署服务并识别"></a>在Pycharm中部署服务并识别</h3><p>进入<font color="#008080">deploy/hubserving/structure_system/</font><font color="orange">params.py</font>，修改默认模型位置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">from</span> deploy.hubserving.structure_table.params <span class="keyword">import</span> read_params <span class="keyword">as</span> table_read_params</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_params</span><span class="params">()</span>:</span></span><br><span class="line">    cfg = table_read_params()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># params for layout parser model</span></span><br><span class="line">    cfg.layout_path_model = <span class="string">'lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config'</span></span><br><span class="line">    cfg.layout_label_map = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    cfg.mode = <span class="string">'structure'</span></span><br><span class="line">    cfg.output = <span class="string">'./output'</span></span><br><span class="line">    <span class="keyword">return</span> cfg</span><br></pre></td></tr></table></figure>
+<p>可以看到，<font color="#008080">structure_system</font>/<font color="orange">params.py</font>引用了<font color="#008080">structure_table</font>/<font color="orange">params.py</font>下的<font color="orange">read_params</font>参数，再进入到<font color="#008080">structure_table</font>/<font color="orange">params.py</font>文件中，该文件则是引用了<font color="#008080">ocr_system</font>/<font color="orange">params.py</font>下的<font color="orange">read_params</font>参数，这些参数主要用作OCR识别，所以，如果在不同场景下要使用不同模型时，最好将各个<font color="orange">params.py</font>重写。修改后的文件如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># structure_system/params.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> absolute_import</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Config</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_params</span><span class="params">()</span>:</span></span><br><span class="line">    cfg = Config()</span><br><span class="line"></span><br><span class="line">    <span class="comment">#params for text detector</span></span><br><span class="line">    cfg.det_algorithm = <span class="string">"DB"</span></span><br><span class="line">    cfg.det_model_dir = <span class="string">"C:/Users/9.9/.paddleocr/whl/det/ch/ch_PP-OCRv3_det_infer"</span></span><br><span class="line">    cfg.det_limit_side_len = <span class="number">960</span></span><br><span class="line">    cfg.det_limit_type = <span class="string">'max'</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#DB parmas</span></span><br><span class="line">    cfg.det_db_thresh = <span class="number">0.3</span></span><br><span class="line">    cfg.det_db_box_thresh = <span class="number">0.5</span></span><br><span class="line">    cfg.det_db_unclip_ratio = <span class="number">1.6</span></span><br><span class="line">    cfg.use_dilation = <span class="literal">False</span></span><br><span class="line">    cfg.det_db_score_mode = <span class="string">"fast"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#EAST parmas</span></span><br><span class="line">    cfg.det_east_score_thresh = <span class="number">0.8</span></span><br><span class="line">    cfg.det_east_cover_thresh = <span class="number">0.1</span></span><br><span class="line">    cfg.det_east_nms_thresh = <span class="number">0.2</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#params for text recognizer</span></span><br><span class="line">    cfg.rec_algorithm = <span class="string">"CRNN"</span></span><br><span class="line">    cfg.rec_model_dir = <span class="string">r"C:/Users/9.9/.paddleocr/whl/rec/ch/ch_PP-OCRv3_rec_infer/"</span></span><br><span class="line"></span><br><span class="line">    cfg.rec_image_shape = <span class="string">"3, 48, 320"</span></span><br><span class="line">    cfg.rec_batch_num = <span class="number">6</span></span><br><span class="line">    cfg.max_text_length = <span class="number">25</span></span><br><span class="line"></span><br><span class="line">    cfg.rec_char_dict_path = <span class="string">r"C:/Users/9.9/software/PaddleOCR-release-2.5/ppocr/utils/ppocr_keys_v1.txt"</span></span><br><span class="line">    cfg.use_space_char = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#params for text classifier</span></span><br><span class="line">    cfg.use_angle_cls = <span class="literal">True</span></span><br><span class="line">    cfg.cls_model_dir = <span class="string">r"C:/Users/9.9/software/PaddleOCR-release-2.5/inference/ch_ppocr_mobile_v2.0_cls_infer/"</span></span><br><span class="line">    cfg.cls_image_shape = <span class="string">"3, 48, 192"</span></span><br><span class="line">    cfg.label_list = [<span class="string">'0'</span>, <span class="string">'180'</span>]</span><br><span class="line">    cfg.cls_batch_num = <span class="number">30</span></span><br><span class="line">    cfg.cls_thresh = <span class="number">0.9</span></span><br><span class="line"></span><br><span class="line">    cfg.use_pdserving = <span class="literal">False</span></span><br><span class="line">    cfg.use_tensorrt = <span class="literal">False</span></span><br><span class="line">    cfg.drop_score = <span class="number">0.5</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># params for table structure model</span></span><br><span class="line">    cfg.table_max_len = <span class="number">488</span></span><br><span class="line">    cfg.table_model_dir = <span class="string">r'C:\Users\9.9\.paddleocr\whl\table\en_ppocr_mobile_v2.0_table_structure_infer/'</span></span><br><span class="line">    cfg.table_char_dict_path = <span class="string">'C:/Users/9.9/software/PaddleOCR-release-2.5/ppocr/utils/dict/table_structure_dict.txt'</span></span><br><span class="line">    cfg.show_log = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># params for layout parser model</span></span><br><span class="line">    cfg.layout_path_model = <span class="string">'lp://PubLayNet/ppyolov2_r50vd_dcn_365e_publaynet/config'</span></span><br><span class="line">    <span class="comment"># cfg.layout_path_model = './inference/ppyolov2_r50vd_dcn_365e_publaynet'</span></span><br><span class="line">    cfg.layout_label_map = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    cfg.mode = <span class="string">'structure'</span></span><br><span class="line">    cfg.output = <span class="string">'./output'</span></span><br><span class="line">    <span class="keyword">return</span> cfg</span><br></pre></td></tr></table></figure>
+<p>再新建python文件用于提取具体内容，通过pandas分析得到结构</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exec_ocr</span><span class="params">(cmd: str)</span>:</span></span><br><span class="line">    pip = os.popen(cmd)</span><br><span class="line">    <span class="keyword">return</span> pip.buffer.read().decode(encoding=<span class="string">'utf8'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">img_dir = <span class="string">r"C:\Users\9.9\software\PaddleOCR-release-2.5\ppstructure\docs\table\table.jpg"</span></span><br><span class="line">ocr_dir = <span class="string">r"python C:\Users\9.9\software\PaddleOCR-release-2.5\tools\test_hubserving.py"</span></span><br><span class="line">res = exec_ocr(<span class="string">fr"<span class="subst">&#123;ocr_dir&#125;</span> --server_url http://127.0.0.1:8870/predict/structure_system --image_dir <span class="subst">&#123;img_dir&#125;</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"system_res.txt"</span>, <span class="string">"w"</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(res)</span><br><span class="line"></span><br><span class="line">ocr_file = open(<span class="string">"system_res.txt"</span>, <span class="string">"r"</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">alldata_res = ocr_file.read()</span><br><span class="line">system_res = re.search(<span class="string">r"'html': '(.*)'&#125;, 'type': 'Table'&#125;"</span>, alldata_res)</span><br><span class="line">print(system_res.group(<span class="number">1</span>))</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"system_res.html"</span>, <span class="string">"w"</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(system_res.group(<span class="number">1</span>))</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"system_res.html"</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    df = pd.read_html(f.read(), encoding=<span class="string">'utf-8'</span>, index_col=<span class="number">0</span>)[<span class="number">0</span>]</span><br><span class="line">    df = df.loc[:, ~df.columns.str.contains(<span class="string">"^Unnamed"</span>)]</span><br><span class="line"></span><br><span class="line">print(df)</span><br><span class="line">df.to_csv(<span class="string">'system_res.csv'</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/07/21/PaddleOCR表格识别/E.png" alt></p>
+<p><img src="/2022/07/21/PaddleOCR表格识别/F.png" alt></p>
+<p><img src="/2022/07/21/PaddleOCR表格识别/G.png" alt></p>
+<h2 id="PP-Structure表格模型训练"><a href="#PP-Structure表格模型训练" class="headerlink" title="PP-Structure表格模型训练"></a>PP-Structure表格模型训练</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>前往Paddle的github主页下载安装PaddleDetection：<a href="https://github.com/PaddlePaddle/PaddleDetection" target="_blank" rel="noopener">https://github.com/PaddlePaddle/PaddleDetection</a>，并执行<code>pip install -r requirements.txt</code>安装其他依赖</p>
+<h3 id="准备数据"><a href="#准备数据" class="headerlink" title="准备数据"></a>准备数据</h3><p>下载<a href="https://github.com/ibm-aur-nlp/PubLayNet" target="_blank" rel="noopener">PubLayNet</a>数据集，可通过链接（<a href="https://dax-cdn.cdn.appdomain.cloud/dax-publaynet/1.0.0/publaynet.tar.gz?_ga=2.104193024.1076900768.1622560733-649911202.1622560733" target="_blank" rel="noopener">https://dax-cdn.cdn.appdomain.cloud/dax-publaynet/1.0.0/publaynet.tar.gz?_ga=2.104193024.1076900768.1622560733-649911202.1622560733</a>）直接下载（约<font color="red">95GB</font>）</p>
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><p>修改<font color="#008080">configs/ppyolo/</font><font color="#CCCCFF">ppyolov2_r50vd_dcn_365e_coco.yml</font>文件的配置进行训练：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">_BASE_:</span> <span class="string">[</span></span><br><span class="line">  <span class="string">'../datasets/coco_detection.yml'</span><span class="string">,</span>   <span class="comment"># 主要说明了训练数据和验证数据的路径</span></span><br><span class="line">  <span class="string">'../runtime.yml'</span><span class="string">,</span>                   <span class="comment"># 主要说明了公共的运行参数，比如是否使用GPU、每多少个epoch存储checkpoint等</span></span><br><span class="line">  <span class="string">'./_base_/ppyolov2_r50vd_dcn.yml'</span><span class="string">,</span>  <span class="comment"># 主要说明了学习率和优化器的配置</span></span><br><span class="line">  <span class="string">'./_base_/optimizer_365e.yml'</span><span class="string">,</span>      <span class="comment"># 主要说明模型和主干网络的情况</span></span><br><span class="line">  <span class="string">'./_base_/ppyolov2_reader.yml'</span><span class="string">,</span>     <span class="comment"># 主要说明数据读取器配置，如batch size，并发加载子进程数等，同时包含读取后预处理操作，如resize、数据增强等等</span></span><br><span class="line"><span class="string">]</span></span><br><span class="line"></span><br><span class="line"><span class="attr">snapshot_epoch:</span> <span class="number">8</span></span><br><span class="line"><span class="attr">weights:</span> <span class="string">output/ppyolov2_r50vd_dcn_365e_coco/model_final</span></span><br></pre></td></tr></table></figure>
+<p>来到<font color="#008080">datasets/</font><font color="#CCCCFF">coco_detection.yml</font>文件中，修改下载好的训练集的位置</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">metric:</span> <span class="string">COCO</span></span><br><span class="line"><span class="attr">num_classes:</span> <span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="attr">TrainDataset:</span></span><br><span class="line">  <span class="type">!COCODataSet</span></span><br><span class="line">    <span class="attr">image_dir:</span> <span class="string">C:/Users/9.9/software/publaynet/train</span></span><br><span class="line">    <span class="attr">anno_path:</span> <span class="string">C:/Users/9.9/software/publaynet/train.json</span></span><br><span class="line">    <span class="attr">dataset_dir:</span> <span class="string">dataset/coco</span></span><br><span class="line">    <span class="attr">data_fields:</span> <span class="string">['image',</span> <span class="string">'gt_bbox'</span><span class="string">,</span> <span class="string">'gt_class'</span><span class="string">,</span> <span class="string">'is_crowd'</span><span class="string">]</span></span><br><span class="line"></span><br><span class="line"><span class="attr">EvalDataset:</span></span><br><span class="line">  <span class="type">!COCODataSet</span></span><br><span class="line">    <span class="attr">image_dir:</span> <span class="string">C:/Users/9.9/software/publaynet/val</span></span><br><span class="line">    <span class="attr">anno_path:</span> <span class="string">C:/Users/9.9/software/publaynet/val.json</span></span><br><span class="line">    <span class="attr">dataset_dir:</span> <span class="string">dataset/coco</span></span><br><span class="line"></span><br><span class="line"><span class="attr">TestDataset:</span></span><br><span class="line">  <span class="type">!ImageFolder</span></span><br><span class="line">    <span class="attr">anno_path:</span> <span class="string">C:/Users/9.9/software/publaynet/val.json</span> <span class="comment"># also support txt (like VOC's label_list.txt)</span></span><br><span class="line">    <span class="attr">dataset_dir:</span> <span class="string">dataset/coco</span> <span class="comment"># if set, anno_path will be 'dataset_dir/anno_path'</span></span><br></pre></td></tr></table></figure>
+<h3 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python tools/train.py -c configs/ppyolo/ppyolov2_r50vd_dcn_365e_coco.yml</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/19/Nebula-fastapi接口维护文档/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nebula-fastapi接口维护文档
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/07/12/PaddleOCR/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">PaddleOCR</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装依赖"><span class="nav-number">1.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#快速开始"><span class="nav-number">2.</span> <span class="nav-text">快速开始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型下载"><span class="nav-number">3.</span> <span class="nav-text">模型下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预测示例（以版面分析-表格为例）"><span class="nav-number">4.</span> <span class="nav-text">预测示例（以版面分析+表格为例）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行"><span class="nav-number">4.1.</span> <span class="nav-text">命令行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python脚本"><span class="nav-number">4.2.</span> <span class="nav-text">Python脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务部署"><span class="nav-number">4.3.</span> <span class="nav-text">服务部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在Pycharm中部署服务并识别"><span class="nav-number">4.4.</span> <span class="nav-text">在Pycharm中部署服务并识别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PP-Structure表格模型训练"><span class="nav-number">5.</span> <span class="nav-text">PP-Structure表格模型训练</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">5.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备数据"><span class="nav-number">5.2.</span> <span class="nav-text">准备数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件"><span class="nav-number">5.3.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#训练"><span class="nav-number">5.4.</span> <span class="nav-text">训练</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>paddleocr | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="OCR">
+  
+  
+  
+  
+  <meta name="description" content="安装进入PaddleOCR的github页面（https://github.com/PaddlePaddle/PaddleOCR），进行下载和解压 使用pip进行安装，这里因为速度很慢推荐使用百度源1pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple 安装shapely（https://www.lfd.uci.edu/~">
+<meta name="keywords" content="OCR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PaddleOCR">
+<meta property="og:url" content="http://yoursite.com/2022/07/12/PaddleOCR/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="安装进入PaddleOCR的github页面（https://github.com/PaddlePaddle/PaddleOCR），进行下载和解压 使用pip进行安装，这里因为速度很慢推荐使用百度源1pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple 安装shapely（https://www.lfd.uci.edu/~">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2022/07/12/PaddleOCR/1.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/12/PaddleOCR/2.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/12/PaddleOCR/3.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/12/PaddleOCR/4.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/12/PaddleOCR/5.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/12/PaddleOCR/6.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/12/PaddleOCR/7.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/12/PaddleOCR/8.png">
+<meta property="og:image" content="http://yoursite.com/2022/07/12/PaddleOCR/9.png">
+<meta property="og:updated_time" content="2022-09-22T03:43:08.898Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PaddleOCR">
+<meta name="twitter:description" content="安装进入PaddleOCR的github页面（https://github.com/PaddlePaddle/PaddleOCR），进行下载和解压 使用pip进行安装，这里因为速度很慢推荐使用百度源1pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple 安装shapely（https://www.lfd.uci.edu/~">
+<meta name="twitter:image" content="http://yoursite.com/2022/07/12/PaddleOCR/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-PaddleOCR" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      PaddleOCR
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/07/12/PaddleOCR/" class="article-date">
+	  <time datetime="2022-07-12T06:20:14.000Z" itemprop="datePublished">2022-07-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>进入PaddleOCR的github页面（<a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener">https://github.com/PaddlePaddle/PaddleOCR</a>），进行下载和解压</p>
+<p>使用pip进行安装，这里因为速度很慢推荐使用百度源<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure></p>
+<p>安装shapely（<a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/" target="_blank" rel="noopener">https://www.lfd.uci.edu/~gohlke/pythonlibs/</a>），下载shapely对应python和系统版本的安装包（我使用的是py39，windows_64），python版本目前不能超过3.9</p>
+<p>将下载好的Shapely-1.8.2-cp39-cp39-win_amd64.whl放进python根目录下的libs文件夹内，通过cmd或pycharm终端使用pip执行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Shapely-1.8.2-cp39-cp39-win_amd64.whl</span><br></pre></td></tr></table></figure></p>
+<p>完成以后接着来到PaddleOCR目录下，通过终端安装依赖，这里同样推荐使用百度源<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure></p>
+<p>到这里，PaddleOCR的安装完成了</p>
+<p>如果再执行<code>pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</code>到安装opencv4.4.0.46包时报错：</p>
+<font size="4" color="red">error: subprocess-exited-with-error</font>
+
+<p>说明python的版本可能存在问题，需要切换虚拟环境或回退python版本，因为opencv-python目前仅支持py3.6-3.9版本</p>
+<p>opencv-python镜像：<a href="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/opencv-python/" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/opencv-python/</a><br><a id="more"></a></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="官方模型"><a href="#官方模型" class="headerlink" title="官方模型"></a>官方模型</h3><p>先使用官方模型对数据进行测试（v2.0）：<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/README_ch.md" target="_blank" rel="noopener">https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.0/README_ch.md</a></p>
+<p><img src="/2022/07/12/PaddleOCR/1.png" alt><br>其中推理模型（inference model）相当于已训练完成的模型，可以直接拿来预测，而预训练模型（trained model)属于半成品，在使用本地的数据训练模型时需要用到</p>
+<p>将推理模型下载后，来到PaddleOCR目录下新建inference文件夹，用来存放模型</p>
+<p><img src="/2022/07/12/PaddleOCR/2.png" alt><br><img src="/2022/07/12/PaddleOCR/3.png" alt></p>
+<p>检查每个文件夹下是否存在<font color="orange">inference.pdiparams</font>、<font color="orange">inference.pdiparams.info</font>、<font color="orange">inference.pdmodel</font>三个文件，如果出现不和谐的文件夹是官方打包时出错，将文件夹内的内容提取出来即可</p>
+<p>如果直接使用可能会报错：</p>
+<font color="red">raise Exception(“not found any img file in {}”.format(img_file))<br>Exception: not found any img file in ./doc/imgs/test.jpg</font>
+
+<h3 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h3><p>官方的快速开始教程：<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/quickstart.md" target="_blank" rel="noopener">https://github.com/PaddlePaddle/PaddleOCR/blob/develop/doc/doc_ch/quickstart.md</a></p>
+<p>首先将测试目标test.jpg存放进PaddleOCR/doc/imgs/目录下，到cmd或pycharm终端里执行：<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">python tools/infer/predict_system.py --image_dir="./doc/imgs/test.jpg" \</span><br><span class="line">			         --det_model_dir="./inference/ch_ppocr_server_v2.<span class="number">0</span>_det_infer/" \</span><br><span class="line">			         --rec_model_dir="./inference/ch_ppocr_server_v2.<span class="number">0</span>_rec_infer/" \</span><br><span class="line">			         --cls_model_dir="./inference/ch_ppocr_mobile_v2.<span class="number">0</span>_cls_infer/" \</span><br><span class="line">		                 --use_angle_cls=True \</span><br><span class="line">			         --use_space_char=True</span><br></pre></td></tr></table></figure></p>
+<p>（windows下使用官方文档里中的”python3 tools/…”会出不来结果，linux下没有问题）</p>
+<p><img src="/2022/07/12/PaddleOCR/4.png" alt></p>
+<h3 id="使用pycharm预测"><a href="#使用pycharm预测" class="headerlink" title="使用pycharm预测"></a>使用pycharm预测</h3><p>需要修改的代码位于根目录下/tools/infer文件夹下，其中<font color="orange">predict_det.py</font>用于检测文本，<font color="orange">predict_rec.py</font>用于识别文本，<font color="orange">predict_system.py</font>可用于检测和识别，这3个.py文件共用同一个配置文件<font color="orange">utility.py</font>，需要到其中定位并修改：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否使用gpu</span></span><br><span class="line">parser.add_argument(<span class="string">"--use_gpu"</span>, type=str2bool, default=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 图片文件位置</span></span><br><span class="line">parser.add_argument(<span class="string">"--image_dir"</span>, type=str, default=<span class="string">"../../demo/test.jpg"</span>)</span><br><span class="line"><span class="comment"># 检测模型路径</span></span><br><span class="line">parser.add_argument(<span class="string">"--det_model_dir"</span>, type=str, default=<span class="string">"../../inference/ch_ppocr_server_v2.0_det_infer/"</span>)</span><br><span class="line"><span class="comment"># 识别模型路径</span></span><br><span class="line">parser.add_argument(<span class="string">"--rec_model_dir"</span>, type=str, default=<span class="string">"../../inference/ch_ppocr_server_v2.0_rec_infer"</span>)</span><br><span class="line"><span class="comment"># 分类模型路径</span></span><br><span class="line">parser.add_argument(<span class="string">"--cls_model_dir"</span>, type=str, default=<span class="string">"../../inference/ch_ppocr_mobile_v2.0_cls_infer"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 字典路径（ic15_dict.txt是英文字典，ppocr_keys_v1.txt是中文字典，检测一般不区分中英文，但是识别需要区分中英文）</span></span><br><span class="line">parser.add_argument(</span><br><span class="line">    <span class="string">"--rec_char_dict_path"</span>,</span><br><span class="line">    type=str,</span><br><span class="line">    default=<span class="string">"../../ppocr/utils/ic15_dict.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 字体路径，2处</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw_ocr_box_txt</span><span class="params">(image,</span></span></span><br><span class="line"><span class="function"><span class="params">                     boxes,</span></span></span><br><span class="line"><span class="function"><span class="params">                     txts,</span></span></span><br><span class="line"><span class="function"><span class="params">                     scores=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                     drop_score=<span class="number">0.5</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                     font_path=<span class="string">"./doc/simfang.ttf"</span>)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">text_visual</span><span class="params">(texts,</span></span></span><br><span class="line"><span class="function"><span class="params">                scores,</span></span></span><br><span class="line"><span class="function"><span class="params">                img_h=<span class="number">400</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                img_w=<span class="number">600</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                threshold=<span class="number">0.</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                font_path=<span class="string">"./doc/simfang.ttf"</span>)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 程序输出路径</span></span><br><span class="line">parser.add_argument(</span><br><span class="line">    <span class="string">"--draw_img_save_dir"</span>, type=str, default=<span class="string">"./inference_results"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>接着运行<font color="orange">predict_system.py</font></p>
+<h2 id="服务部署（基于PaddleHub-Serving）"><a href="#服务部署（基于PaddleHub-Serving）" class="headerlink" title="服务部署（基于PaddleHub Serving）"></a>服务部署（基于PaddleHub Serving）</h2><p>deploy/hubserving服务部署目录下包括检测（<font color="orange">ocr_det</font>）、识别（<font color="orange">ocr_rec</font>）、2阶段串联（<font color="orange">ocr_system</font>）三种服务包和分类模块服务包（<font color="orange">ocr_cls</font>），可以根据需求选择相应的服务包进行安装和启动。每个服务包下包括3个.py文件和一个config.json配置文件：<br><strong>-</strong> <font color="orange">__init__.py</font><br><strong>-</strong> <font color="#00BFFF">config.json</font>：配置文件<br><strong>-</strong> <font color="orange">module.py</font>：主模块，必选，包含服务的完整逻辑<br><strong>-</strong> <font color="orange">params.py</font>：参数文件，必选，包含模型路径、前后处理参数等参数</p>
+<h3 id="准备环境"><a href="#准备环境" class="headerlink" title="准备环境"></a>准备环境</h3><p><font color="orange"><strong>1.</strong></font>使用pip安装paddlehub，python版本需要高于3.6.2<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install paddlehub==2.1.0 --upgrade -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure></p>
+<p><font color="orange"><strong>2.</strong></font>配置模型文件，将之前下载的模型路径修改到<font color="orange">params.py</font>当中<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cfg.det_model_dir = <span class="string">"./inference/ch_ppocr_server_v2.0_det_infer/"</span></span><br><span class="line">cfg.rec_model_dir = <span class="string">"./inference/ch_ppocr_server_v2.0_rec_infer/"</span></span><br><span class="line">cfg.cls_model_dir = <span class="string">"./inference/ch_ppocr_mobile_v2.0_cls_infer/"</span></span><br></pre></td></tr></table></figure></p>
+<p><font color="orange"><strong>3.</strong></font>安装服务模块，进入paddleOCR根目录，执行：<br><strong>Linux</strong>环境<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 安装检测服务模块：  </span><br><span class="line">$ hub install deploy/hubserving/ocr_det/</span><br><span class="line"></span><br><span class="line"># 或，安装分类服务模块：  </span><br><span class="line">$ hub install deploy/hubserving/ocr_cls/</span><br><span class="line"></span><br><span class="line"># 或，安装识别服务模块：  </span><br><span class="line">$ hub install deploy/hubserving/ocr_rec/</span><br><span class="line"></span><br><span class="line"># 或，安装检测+识别串联服务模块：  </span><br><span class="line">$ hub install deploy/hubserving/ocr_system/</span><br></pre></td></tr></table></figure></p>
+<p><strong>windows</strong>环境<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 安装检测服务模块：  </span><br><span class="line">hub install deploy\hubserving\ocr_det\</span><br><span class="line"></span><br><span class="line"># 或，安装分类服务模块：  </span><br><span class="line">hub install deploy\hubserving\ocr_cls\</span><br><span class="line"></span><br><span class="line"># 或，安装识别服务模块：  </span><br><span class="line">hub install deploy\hubserving\ocr_rec\</span><br><span class="line"></span><br><span class="line"># 或，安装检测+识别串联服务模块：</span><br><span class="line">hub install deploy\hubserving\ocr_system\</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/07/12/PaddleOCR/5.png" alt><br>执行<code>hub list</code>可以查看已安装的模块：<br><img src="/2022/07/12/PaddleOCR/6.png" alt></p>
+<h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><h4 id="方式1-命令行启动（仅支持CPU）"><a href="#方式1-命令行启动（仅支持CPU）" class="headerlink" title="方式1.命令行启动（仅支持CPU）"></a>方式1.命令行启动（仅支持CPU）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hub serving start --modules [Module1==Version1, Module2==Version2, ...] \</span><br><span class="line">                    --port XXXX \</span><br><span class="line">                    --use_multiprocess \</span><br><span class="line">                    --workers \</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>–modules/-m</td>
+<td style="text-align:left">PaddleHub Serving预安装模型，以多个Module==Version键值对的形式列出<code>当不指定Version时，默认选择最新版本</code></td>
+</tr>
+<tr>
+<td>–port/-p</td>
+<td style="text-align:left">服务端口，默认为8866</td>
+</tr>
+<tr>
+<td>–use_multiprocess</td>
+<td style="text-align:left">是否启用并发方式，默认为单进程方式，推荐多核CPU机器使用此方式<code>Windows操作系统只支持单进程方式</code></td>
+</tr>
+<tr>
+<td>–workers</td>
+<td style="text-align:left">在并发方式下指定的并发任务数，默认为<code>2*cpu_count-1</code>，其中<code>cpu_count</code>为CPU核数</td>
+</tr>
+</tbody>
+</table>
+<p>例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hub serving start -m ocr_system</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/07/12/PaddleOCR/7.png" alt></p>
+<h4 id="方式2-通过配置文件config-json启动（支持CPU、GPU）"><a href="#方式2-通过配置文件config-json启动（支持CPU、GPU）" class="headerlink" title="方式2.通过配置文件config.json启动（支持CPU、GPU）"></a>方式2.通过配置文件config.json启动（支持CPU、GPU）</h4><p><font color="#00BFFF">config.json</font>内容格式如下：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"modules_info"</span>: &#123;</span><br><span class="line">        <span class="attr">"ocr_system"</span>: &#123;</span><br><span class="line">            <span class="attr">"init_args"</span>: &#123;</span><br><span class="line">                <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">                <span class="attr">"use_gpu"</span>: <span class="literal">false</span></span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="attr">"predict_args"</span>: &#123;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"port"</span>: <span class="number">8868</span>,</span><br><span class="line">    <span class="attr">"use_multiprocess"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">"workers"</span>: <span class="number">2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>·</strong> <code>init_args</code>中的可配参数与<font color="orange">module.py</font>中的<font color="#008080">_initialize</font>函数接口保持一致，当<code>use_gpu</code>的值为<font color="orange">true</font>时，表示使用GPU启动服务</p>
+<p><strong>·</strong> <code>predict_args</code>中的可配参数与<font color="orange">module.py</font>中的<font color="#008080">predict</font>函数接口保持一致</p>
+<p><strong>·</strong> 使用配置文件启动服务时，其他参数会被忽略</p>
+<p><strong>·</strong> 如果使用GPU预测(即，<code>use_gpu</code>置为<font color="orange">true</font>)，则需要在启动服务之前，设置<font color="#008080">CUDA_VISIBLE_DEVICES</font>环境变量，如：<font color="#008080">export CUDA_VISIBLE_DEVICES=0</font>，否则不用设置</p>
+<p><strong>·</strong> <code>use_gpu</code>不可与<code>use_multiprocess</code>同时为true</p>
+<p>例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hub serving start -c ./deploy/hubserving/ocr_system/config.json</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/07/12/PaddleOCR/8.png" alt></p>
+<h3 id="发送预测请求"><a href="#发送预测请求" class="headerlink" title="发送预测请求"></a>发送预测请求</h3><p>需要通过POST方法传递2个参数：server_url 和 image_path<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python tools/test_hubserving.py --server_url http://127.0.0.1:8868/predict/ocr_system --image_dir ./demo/</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/07/12/PaddleOCR/9.png" alt><br>如果在启动时遇到警告：</p>
+<p><font color="gold">C:\Python39\lib\site-packages\attrdict\mapping.py:4: DeprecationWarning: Using or importing the ABCs from ‘collections’ instead of from ‘collections.abc’ is deprecated since Python 3.3, and in 3.10 it will stop working<br>    from collections import Mapping</font><br>需要到对应的Python\lib\site-packages\attrdict\目录下修改<font color="orange">default.py</font>、<font color="orange">mapping.py</font>、<font color="orange">merge.py</font> 和 <font color="orange">mixins.py</font>文件中<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> ...</span><br></pre></td></tr></table></figure></p>
+<p>修改为<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections.abc <span class="keyword">import</span> ...</span><br></pre></td></tr></table></figure></p>
+<h3 id="返回结构"><a href="#返回结构" class="headerlink" title="返回结构"></a>返回结构</h3><p>返回的结果为列表，其中每一项为一个字典，字典一共可能包含下列三种字段：</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>数据类型</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>text</td>
+<td>str</td>
+<td>文本内容</td>
+</tr>
+<tr>
+<td>confidence</td>
+<td>float</td>
+<td>文本识别置信度</td>
+</tr>
+<tr>
+<td>text_region</td>
+<td>list</td>
+<td>文本位置坐标</td>
+</tr>
+</tbody>
+</table>
+<p>不同模块返回的字段不同，如，文本识别服务模块返回结果不含text_region字段</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>ocr_det</th>
+<th>ocr_cls</th>
+<th>ocr_rec</th>
+<th>ocr_system</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>text</td>
+<td></td>
+<td></td>
+<td><font color="orange">√</font></td>
+<td><font color="orange">√</font></td>
+</tr>
+<tr>
+<td>confidence</td>
+<td></td>
+<td><font color="orange">√</font></td>
+<td><font color="orange">√</font></td>
+<td><font color="orange">√</font></td>
+</tr>
+<tr>
+<td>text_region</td>
+<td><font color="orange">√</font></td>
+<td></td>
+<td></td>
+<td><font color="orange">√</font></td>
+</tr>
+</tbody>
+</table>
+<h3 id="自定义修改服务模块"><a href="#自定义修改服务模块" class="headerlink" title="自定义修改服务模块"></a>自定义修改服务模块</h3><p><strong>·</strong> 停止服务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hub serving stop --port/-p XXXX</span><br></pre></td></tr></table></figure></p>
+<p><strong>·</strong> 到相应的<font color="orange">module.py</font> 和 <font color="orange">params.py</font>等文件中根据实际需求修改代码<br>例如，如果需要替换部署服务所用模型，则需要到<font color="orange">params.py</font>中修改模型路径参数<font color="#008080">det_model_dir</font> 和 <font color="#008080">rec_model_dir</font>，如果需要关闭文本方向分类器，则将参数<font color="#008080">use_angle_cls</font>置为<font color="orange">False</font>，当然，同时可能还需要修改其他相关参数，强烈建议修改后先直接运行<font color="orange">module.py</font>调试，能正确运行预测后再启动服务测试</p>
+<p><strong>·</strong> 卸载旧服务包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hub uninstall ocr_system</span><br></pre></td></tr></table></figure></p>
+<p><strong>·</strong> 安装修改后的新服务包<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hub install deploy/hubserving/ocr_system/</span><br></pre></td></tr></table></figure></p>
+<p><strong>·</strong> 重新启动服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hub serving start -m ocr_system</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/07/21/PaddleOCR表格识别/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          PaddleOCR表格识别
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/07/07/ClickHouse/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ClickHouse</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#官方模型"><span class="nav-number">2.1.</span> <span class="nav-text">官方模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预测"><span class="nav-number">2.2.</span> <span class="nav-text">预测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用pycharm预测"><span class="nav-number">2.3.</span> <span class="nav-text">使用pycharm预测</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务部署（基于PaddleHub-Serving）"><span class="nav-number">3.</span> <span class="nav-text">服务部署（基于PaddleHub Serving）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备环境"><span class="nav-number">3.1.</span> <span class="nav-text">准备环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动服务"><span class="nav-number">3.2.</span> <span class="nav-text">启动服务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方式1-命令行启动（仅支持CPU）"><span class="nav-number">3.2.1.</span> <span class="nav-text">方式1.命令行启动（仅支持CPU）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方式2-通过配置文件config-json启动（支持CPU、GPU）"><span class="nav-number">3.2.2.</span> <span class="nav-text">方式2.通过配置文件config.json启动（支持CPU、GPU）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发送预测请求"><span class="nav-number">3.3.</span> <span class="nav-text">发送预测请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回结构"><span class="nav-number">3.4.</span> <span class="nav-text">返回结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义修改服务模块"><span class="nav-number">3.5.</span> <span class="nav-text">自定义修改服务模块</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

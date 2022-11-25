@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>nebula-全文检索 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="-database -nebula">
+  
+  
+  
+  
+  <meta name="description" content="连接ES添加Nebula全文索引模板文件http://localhost:5601/app/dev_tools#/console 1234567891011121314151617curl -H &quot;Content-Type: application/json; charset=utf-8&quot; -XPUT http://localhost:9200/_template/nebula_index_tem">
+<meta name="keywords" content="-database -nebula">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nebula-全文检索">
+<meta property="og:url" content="http://yoursite.com/2022/11/25/Nebula-全文检索/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="连接ES添加Nebula全文索引模板文件http://localhost:5601/app/dev_tools#/console 1234567891011121314151617curl -H &quot;Content-Type: application/json; charset=utf-8&quot; -XPUT http://localhost:9200/_template/nebula_index_tem">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-11-25T08:35:41.947Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nebula-全文检索">
+<meta name="twitter:description" content="连接ES添加Nebula全文索引模板文件http://localhost:5601/app/dev_tools#/console 1234567891011121314151617curl -H &quot;Content-Type: application/json; charset=utf-8&quot; -XPUT http://localhost:9200/_template/nebula_index_tem">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Nebula-全文检索" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Nebula-全文检索
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/11/25/Nebula-全文检索/" class="article-date">
+	  <time datetime="2022-11-25T06:17:41.000Z" itemprop="datePublished">2022-11-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="连接ES"><a href="#连接ES" class="headerlink" title="连接ES"></a>连接ES</h2><h3 id="添加Nebula全文索引模板文件"><a href="#添加Nebula全文索引模板文件" class="headerlink" title="添加Nebula全文索引模板文件"></a>添加Nebula全文索引模板文件</h3><p><code>http://localhost:5601/app/dev_tools#/console</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">curl -H "Content-Type: application/json; charset=utf-8" -XPUT http://localhost:9200/_template/nebula_index_template -d '</span><br><span class="line">&#123;</span><br><span class="line"> <span class="attr">"template"</span>: <span class="string">"nebula*"</span>,</span><br><span class="line">  <span class="attr">"settings"</span>: &#123;</span><br><span class="line">    <span class="attr">"index"</span>: &#123;</span><br><span class="line">      <span class="attr">"number_of_shards"</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="attr">"number_of_replicas"</span>: <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"mappings"</span>: &#123;</span><br><span class="line">    <span class="attr">"properties"</span> : &#123;</span><br><span class="line">            <span class="attr">"tag_id"</span> : &#123; <span class="attr">"type"</span> : <span class="string">"long"</span> &#125;,</span><br><span class="line">            <span class="attr">"column_id"</span> : &#123; <span class="attr">"type"</span> : <span class="string">"text"</span> &#125;,</span><br><span class="line">            <span class="attr">"value"</span> :&#123; <span class="attr">"type"</span> : <span class="string">"keyword"</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;'</span><br></pre></td></tr></table></figure>
+<h3 id="登录ES客户端"><a href="#登录ES客户端" class="headerlink" title="登录ES客户端"></a>登录ES客户端</h3><p><code>SIGN IN TEXT SERVICE (localhost:9200,&quot;admin&quot;,&quot;123456&quot;)</code></p>
+<h3 id="查看ES客户端详情"><a href="#查看ES客户端详情" class="headerlink" title="查看ES客户端详情"></a>查看ES客户端详情</h3><p><code>SHOW TEXT SEARCH CLIENTS;</code></p>
+<h3 id="退出ES客户端"><a href="#退出ES客户端" class="headerlink" title="退出ES客户端"></a>退出ES客户端</h3><p><code>SIGN OUT TEXT SERVICE</code></p>
+<h2 id="配置Nebula"><a href="#配置Nebula" class="headerlink" title="配置Nebula"></a>配置Nebula</h2><h3 id="安装storage服务"><a href="#安装storage服务" class="headerlink" title="安装storage服务"></a>安装storage服务</h3><p>进入/usr/local/nebula根目录下，进入/etc子目录，找到nebula-storaged-listener.conf.production文件，复制一份并去除.production后缀。将文件中的listenr地址改为真实地址。</p>
+<p>随后启动listener：<code>./bin/nebula-storaged --flagfile etc/nebula-storaged-listener.conf</code></p>
+<h3 id="添加listener"><a href="#添加listener" class="headerlink" title="添加listener"></a>添加listener</h3><p><code>ADD LISTENER ELASTICSEARCH 192.168.100.1:9789,192.168.100.2:9789;</code>(<font color="gold">注：如果有多台图库集群，都要配置</font>)</p>
+<p>进入nebula-console，执行<code>SHOW LISTENER</code>可以查看图空间的所有listener。</p>
+<p>要删除所有listener，执行：<code>REMOVE LISTENER ELASTICSEARCH</code>(<font color="gold">注：一个图空间仅可执行一次</font>)</p>
+<a id="more"></a>
+<h2 id="刷表"><a href="#刷表" class="headerlink" title="刷表"></a>刷表</h2><h3 id="创建图空间"><a href="#创建图空间" class="headerlink" title="创建图空间"></a>创建图空间</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">SPACE</span> nebula_graph (partition_num = <span class="number">20</span>, replica_factor = <span class="number">2</span>, vid_type = FIXED_STRING(<span class="number">128</span>))</span><br></pre></td></tr></table></figure>
+<h3 id="Tag"><a href="#Tag" class="headerlink" title="Tag"></a>Tag</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> TAG <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> player(<span class="keyword">name</span> <span class="keyword">string</span>, age <span class="keyword">string</span>);</span><br><span class="line"><span class="keyword">CREATE</span> TAG <span class="keyword">INDEX</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="keyword">name</span> <span class="keyword">ON</span> player(<span class="keyword">name</span>(<span class="number">20</span>),age(<span class="number">10</span>));</span><br><span class="line"><span class="keyword">CREATE</span> FULLTEXT TAG <span class="keyword">INDEX</span> nebula_index_1 <span class="keyword">ON</span> player(<span class="keyword">name</span>,age);</span><br></pre></td></tr></table></figure>
+<h3 id="Edge-Type"><a href="#Edge-Type" class="headerlink" title="Edge Type"></a>Edge Type</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> EDGE <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> edge_player(created_time <span class="built_in">TIMESTAMP</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="keyword">now</span>());</span><br></pre></td></tr></table></figure>
+<h3 id="全文索引"><a href="#全文索引" class="headerlink" title="全文索引"></a>全文索引</h3><p><font color="gold">注：</font>1.要将图库索引同步到es中去，需要在创建索引时将索引以nebula为开头命名。</p>
+<p>2.执行<code>REBUILD FULLTEXT INDEX</code>将索引同步到es，此时es中还未完成索引的创建，需要在图库录入数据后自动同步到es（可能存在延迟，时间不定）</p>
+<p>3.仅可使用<code>LOOKUP</code>语句进行模糊检索</p>
+<p>4.删除图空间，全文索引不会自动删除，需要手动执行：<code>DROP FULLTEXT INDEX &lt;nebula_index*&gt;</code></p>
+<h3 id="查看全文索引"><a href="#查看全文索引" class="headerlink" title="查看全文索引"></a>查看全文索引</h3><p><code>SHOW FULLTEXT INDEXES</code></p>
+<h2 id="数据测试"><a href="#数据测试" class="headerlink" title="数据测试"></a>数据测试</h2><h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> VERTEX player(<span class="keyword">name</span>, age) <span class="keyword">VALUES</span> \</span><br><span class="line">  <span class="string">"Russell Westbrook"</span>: (<span class="string">"Russell Westbrook"</span>, <span class="number">30</span>), \</span><br><span class="line">  <span class="string">"Chris Paul"</span>: (<span class="string">"Chris Paul"</span>, <span class="number">33</span>),\</span><br><span class="line">  <span class="string">"Boris Diaw"</span>: (<span class="string">"Boris Diaw"</span>, <span class="number">36</span>),\</span><br><span class="line">  <span class="string">"David West"</span>: (<span class="string">"David West"</span>, <span class="number">38</span>),\</span><br><span class="line">  <span class="string">"Danny Green"</span>: (<span class="string">"Danny Green"</span>, <span class="number">31</span>),\</span><br><span class="line">  <span class="string">"Tim Duncan"</span>: (<span class="string">"Tim Duncan"</span>, <span class="number">42</span>),\</span><br><span class="line">  <span class="string">"James Harden"</span>: (<span class="string">"James Harden"</span>, <span class="number">29</span>),\</span><br><span class="line">  <span class="string">"Tony Parker"</span>: (<span class="string">"Tony Parker"</span>, <span class="number">36</span>),\</span><br><span class="line">  <span class="string">"Aron Baynes"</span>: (<span class="string">"Aron Baynes"</span>, <span class="number">32</span>),\</span><br><span class="line">  <span class="string">"Ben Simmons"</span>: (<span class="string">"Ben Simmons"</span>, <span class="number">22</span>),\</span><br><span class="line">  <span class="string">"Blake Griffin"</span>: (<span class="string">"Blake Griffin"</span>, <span class="number">30</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="模糊检索"><a href="#模糊检索" class="headerlink" title="模糊检索"></a>模糊检索</h3><p><code>LOOKUP ON player WHERE PREFIX(player.name, &quot;B&quot;);</code></p>
+<p><code>LOOKUP ON player WHERE WILDCARD(player.name, &quot;*ri*&quot;) YIELD player.name, player.age;</code></p>
+<p><code>LOOKUP ON player WHERE WILDCARD(player.name, &quot;*ri*&quot;) | YIELD count(*);</code></p>
+<p><code>LOOKUP ON player WHERE REGEXP(player.name, &quot;R.*&quot;) YIELD player.name, player.age;</code></p>
+<p><code>LOOKUP ON player WHERE REGEXP(player.name, &quot;.*&quot;);</code></p>
+<p><code>LOOKUP ON player WHERE FUZZY(player.name, &quot;Tim Dunncan&quot;, AUTO, OR, 100) YIELD player.name;</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database-nebula/">-database -nebula</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/09/16/Docker/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Docker</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#连接ES"><span class="nav-number">1.</span> <span class="nav-text">连接ES</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加Nebula全文索引模板文件"><span class="nav-number">1.1.</span> <span class="nav-text">添加Nebula全文索引模板文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#登录ES客户端"><span class="nav-number">1.2.</span> <span class="nav-text">登录ES客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看ES客户端详情"><span class="nav-number">1.3.</span> <span class="nav-text">查看ES客户端详情</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#退出ES客户端"><span class="nav-number">1.4.</span> <span class="nav-text">退出ES客户端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Nebula"><span class="nav-number">2.</span> <span class="nav-text">配置Nebula</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装storage服务"><span class="nav-number">2.1.</span> <span class="nav-text">安装storage服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加listener"><span class="nav-number">2.2.</span> <span class="nav-text">添加listener</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#刷表"><span class="nav-number">3.</span> <span class="nav-text">刷表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建图空间"><span class="nav-number">3.1.</span> <span class="nav-text">创建图空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tag"><span class="nav-number">3.2.</span> <span class="nav-text">Tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Edge-Type"><span class="nav-number">3.3.</span> <span class="nav-text">Edge Type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#全文索引"><span class="nav-number">3.4.</span> <span class="nav-text">全文索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看全文索引"><span class="nav-number">3.5.</span> <span class="nav-text">查看全文索引</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据测试"><span class="nav-number">4.</span> <span class="nav-text">数据测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#插入数据"><span class="nav-number">4.1.</span> <span class="nav-text">插入数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模糊检索"><span class="nav-number">4.2.</span> <span class="nav-text">模糊检索</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
