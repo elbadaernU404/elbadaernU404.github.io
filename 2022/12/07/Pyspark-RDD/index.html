@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>pyspark-rdd | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="sparkpyspark">
+  
+  
+  
+  
+  <meta name="description" content="RDDRDD（Resilient Distributed Dataset）弹性分布式数据集，是spark中最基本的数据抽象，代表一个不可变、可分区、其中元素可并行计算的集合  Resilient：RDD中的数据可存储再内存或磁盘中 Distributed：分布式存储数据（跨机器/跨进程），用于分布式计算 Dataset：一个用于存放数据的数据集合  特性分区RDD分区是RDD数据存储的最小单位，一">
+<meta name="keywords" content="spark,pyspark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pyspark-RDD">
+<meta property="og:url" content="http://yoursite.com/2022/12/07/Pyspark-RDD/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="RDDRDD（Resilient Distributed Dataset）弹性分布式数据集，是spark中最基本的数据抽象，代表一个不可变、可分区、其中元素可并行计算的集合  Resilient：RDD中的数据可存储再内存或磁盘中 Distributed：分布式存储数据（跨机器/跨进程），用于分布式计算 Dataset：一个用于存放数据的数据集合  特性分区RDD分区是RDD数据存储的最小单位，一">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2022-12-08T06:09:52.881Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pyspark-RDD">
+<meta name="twitter:description" content="RDDRDD（Resilient Distributed Dataset）弹性分布式数据集，是spark中最基本的数据抽象，代表一个不可变、可分区、其中元素可并行计算的集合  Resilient：RDD中的数据可存储再内存或磁盘中 Distributed：分布式存储数据（跨机器/跨进程），用于分布式计算 Dataset：一个用于存放数据的数据集合  特性分区RDD分区是RDD数据存储的最小单位，一">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Pyspark-RDD" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Pyspark-RDD
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/12/07/Pyspark-RDD/" class="article-date">
+	  <time datetime="2022-12-07T05:45:49.000Z" itemprop="datePublished">2022-12-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h2><p>RDD（Resilient Distributed Dataset）弹性分布式数据集，是spark中最基本的数据抽象，代表一个不可变、可分区、其中元素可并行计算的集合</p>
+<ul>
+<li>Resilient：RDD中的数据可存储再内存或磁盘中</li>
+<li>Distributed：分布式存储数据（跨机器/跨进程），用于分布式计算</li>
+<li>Dataset：一个用于存放数据的数据集合</li>
+</ul>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><h4 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h4><p>RDD分区是RDD数据存储的最小单位，一份RDD数据本质上分隔成了多个分区</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 存储9个数字，设立三个分区</span></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>], <span class="number">3</span>)</span><br><span class="line">rdd.glom().collect()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[1,2,3],[4,5,6],[7,8,9]]</span><br></pre></td></tr></table></figure>
+<h4 id="RDD方法会作用在其所有方法上"><a href="#RDD方法会作用在其所有方法上" class="headerlink" title="RDD方法会作用在其所有方法上"></a>RDD方法会作用在其所有方法上</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.map(<span class="keyword">lambda</span> x: x * <span class="number">10</span>).collect()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[10,20,30,40,50,60,70,80,90]</span><br></pre></td></tr></table></figure>
+<h4 id="RDD之间具有依赖关系"><a href="#RDD之间具有依赖关系" class="headerlink" title="RDD之间具有依赖关系"></a>RDD之间具有依赖关系</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line">rdd1 = sc.textFile(<span class="string">"../test.text"</span>)</span><br><span class="line">rdd2 = rdd1.flatMap(<span class="keyword">lambda</span> x: x.split(<span class="string">' '</span>))</span><br><span class="line">rdd3 = rdd2.map(<span class="keyword">lambda</span> x: (x, <span class="number">1</span>))</span><br><span class="line">rdd4 = rdd3.reduceByKey(<span class="keyword">lambda</span> a, b: a+b)</span><br><span class="line">print(rdd4.collect())</span><br></pre></td></tr></table></figure>
+<h4 id="Key-Value型RDD可以有分区器"><a href="#Key-Value型RDD可以有分区器" class="headerlink" title="Key-Value型RDD可以有分区器"></a>Key-Value型RDD可以有分区器</h4><p>KV型RDD：RDD内存储的数据是只有两个元素的二元元组</p>
+<p>默认分区器：Hash分区规则，也可手动设置分区器：rdd.partitionBy()方法</p>
+<p><font color="gold">注</font>：不是所有RDD都是KV型</p>
+<h4 id="RDD的分区规划：会尽量靠近数据所在的服务器"><a href="#RDD的分区规划：会尽量靠近数据所在的服务器" class="headerlink" title="RDD的分区规划：会尽量靠近数据所在的服务器"></a>RDD的分区规划：会尽量靠近数据所在的服务器</h4><p>在初始RDD读取数据规划阶段，分区会尽量规划到存储数据所在服务器，直接读取本地数据，避免从网络读取数据</p>
+<p>Spark会在确保并行计算能力的前提下，尽量确保本地读取</p>
+<h3 id="RDD创建"><a href="#RDD创建" class="headerlink" title="RDD创建"></a>RDD创建</h3><ul>
+<li>通过并行化集合创建（本地对象转化为分布式RDD）</li>
+<li>读取外部数据源（读文件）</li>
+</ul>
+<h4 id="并行化创建"><a href="#并行化创建" class="headerlink" title="并行化创建"></a>并行化创建</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1: 集合对象，如：list</span></span><br><span class="line"><span class="comment"># arg2：可选，指定分区数量</span></span><br><span class="line">rdd = SparkContext.parallelize(arg1, arg2)</span><br></pre></td></tr></table></figure>
+<h4 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h4><p>通过textFile API来读取本地或者hdfs的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1: 文件路径</span></span><br><span class="line"><span class="comment"># arg2：可选，最小分区数量</span></span><br><span class="line"><span class="comment"># 当arg2超出spark允许范围，参数失效</span></span><br><span class="line">SparkContext.textFile(arg1, arg2)</span><br></pre></td></tr></table></figure>
+<p>通过wholeTextFile API来读取小文件，这个api偏向于少量分区读取数据，是pyspark基于小文件的优化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1：文件路径</span></span><br><span class="line"><span class="comment"># arg2：可选，最小分区数量</span></span><br><span class="line"><span class="comment"># 当arg2超出spark允许范围，参数失效</span></span><br><span class="line">SparkContext.wholeTextFiles(arg1, arg2)</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="RDD算子"><a href="#RDD算子" class="headerlink" title="RDD算子"></a>RDD算子</h3><p>方法、函数：本地对象的API</p>
+<p>算子：分布式集合对象的API</p>
+<p>RDD的算子分为两类：</p>
+<ul>
+<li><p>Transformation：转换算子</p>
+<p>返回值仍旧是RDD的算子，构建执行计划</p>
+</li>
+<li><p>Action：行动算子</p>
+<p>返回值不再是RDD，使执行计划开始工作</p>
+</li>
+</ul>
+<h3 id="Transformation算子"><a href="#Transformation算子" class="headerlink" title="Transformation算子"></a>Transformation算子</h3><h4 id="map"><a href="#map" class="headerlink" title="map"></a>map</h4><p>将RDD的数据一条条处理（处理逻辑基于map算子接收的处理函数），返回新的RDD</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.map(func)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"TEST"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(data)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> data * <span class="number">10</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(rdd.map(add).collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[10, 20, 30, 40, 50, 60]</span><br></pre></td></tr></table></figure>
+<h4 id="flatMap"><a href="#flatMap" class="headerlink" title="flatMap"></a>flatMap</h4><p>对RDD执行map操作，接着进行解除嵌套：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 嵌套</span></span><br><span class="line">lst = [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]]</span><br><span class="line"><span class="comment"># 解除嵌套</span></span><br><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="string">"hadoop spark hadoop"</span>, <span class="string">"spark hadoop hadoop"</span>, <span class="string">"hadoop flink spark"</span>])</span><br><span class="line"><span class="comment"># 得到所有的单词, 组成RDD, flatMap的传入参数 和map一致, 就是给map逻辑用的, 解除嵌套无需逻辑(传参)</span></span><br><span class="line">rdd2 = rdd.flatMap(<span class="keyword">lambda</span> line: line.split(<span class="string">" "</span>))</span><br><span class="line">print(rdd2.collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&apos;hadoop&apos;, &apos;spark&apos;, &apos;hadoop&apos;, &apos;spark&apos;, &apos;hadoop&apos;, &apos;hadoop&apos;, &apos;hadoop&apos;, &apos;flink&apos;, &apos;spark&apos;]</span><br></pre></td></tr></table></figure>
+<h4 id="reduceByKey"><a href="#reduceByKey" class="headerlink" title="reduceByKey"></a>reduceByKey</h4><p>针对KV型RDD自动按照key进行分组，然后根据提供的聚合逻辑完成组内数据（value）聚合操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 接受两个类型一致的传入参数，返回聚合值</span></span><br><span class="line">rdd.reduceByKey(func)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([(<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">1</span>), (<span class="string">'a'</span>, <span class="number">1</span>)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># reduceByKey 对相同key 的数据执行聚合相加</span></span><br><span class="line">print(rdd.reduceByKey(<span class="keyword">lambda</span> a, b: a + b).collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(&apos;b&apos;, 2), (&apos;a&apos;, 3)]</span><br></pre></td></tr></table></figure>
+<h4 id="mapValues"><a href="#mapValues" class="headerlink" title="mapValues"></a>mapValues</h4><p>针对二元元组RDD，对其内部的二元元组value值进行map</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 传入二元元组的value值，func只对value进行处理</span></span><br><span class="line">rdd.mapValues(func)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([(<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">1</span>), (<span class="string">'a'</span>, <span class="number">1</span>)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># reduceByKey 对相同key 的数据执行聚合相加</span></span><br><span class="line">print(rdd.mapValues(<span class="keyword">lambda</span> x: x * <span class="number">10</span>).collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(&apos;a&apos;, 10), (&apos;a&apos;, 10), (&apos;b&apos;, 10), (&apos;b&apos;, 10), (&apos;a&apos;, 10)]</span><br></pre></td></tr></table></figure>
+<h4 id="groupBy"><a href="#groupBy" class="headerlink" title="groupBy"></a>groupBy</h4><p>将RDD的数据进行分组</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># func要求传入一个参数，返回一个值，类型不做要求。相同的返回值将被放入同一个组中。</span></span><br><span class="line"><span class="comment"># 分组完成后，每一个组是一个二元元组，key就是返回值，所有同组数据放入一个迭代器对象中作为value</span></span><br><span class="line">rdd.groupBy(func)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([(<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">2</span>), (<span class="string">'b'</span>, <span class="number">3</span>)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过groupBy对数据进行分组</span></span><br><span class="line"><span class="comment"># groupBy传入的函数的 意思是: 通过这个函数, 确定按照谁来分组(返回谁即可)</span></span><br><span class="line"><span class="comment"># 分组规则 和SQL是一致的, 也就是相同的在一个组(Hash分组)</span></span><br><span class="line">result = rdd.groupBy(<span class="keyword">lambda</span> t: t[<span class="number">0</span>])</span><br><span class="line">print(result.map(<span class="keyword">lambda</span> t:(t[<span class="number">0</span>], list(t[<span class="number">1</span>]))).collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(&apos;b&apos;, [(&apos;b&apos;, 1), (&apos;b&apos;, 2), (&apos;b&apos;, 3)]), (&apos;a&apos;, [(&apos;a&apos;, 1), (&apos;a&apos;, 1)])]</span><br></pre></td></tr></table></figure>
+<h4 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h4><p>过滤数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># func返回值为True的参数保留，False丢弃</span></span><br><span class="line">rdd.filter(func)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过Filter算子, 过滤奇数</span></span><br><span class="line">result = rdd.filter(<span class="keyword">lambda</span> x: x % <span class="number">2</span> == <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">print(result.collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[1, 3, 5]</span><br></pre></td></tr></table></figure>
+<h4 id="distinct"><a href="#distinct" class="headerlink" title="distinct"></a>distinct</h4><p>对RDD数据进行去重</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg：去重分区数量，一般省略</span></span><br><span class="line">rdd.distinct(arg)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># distinct 进行RDD数据去重操作</span></span><br><span class="line">print(rdd.distinct().collect())</span><br><span class="line"></span><br><span class="line">rdd2 = sc.parallelize([(<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'a'</span>, <span class="number">3</span>)])</span><br><span class="line">print(rdd2.distinct().collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[2, 1, 3]</span><br><span class="line">[(&apos;a&apos;, 1), (&apos;a&apos;, 3)]</span><br></pre></td></tr></table></figure>
+<h4 id="union"><a href="#union" class="headerlink" title="union"></a>union</h4><p>将两个RDD合并成一个RDD返回</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 仅合并，不会去重</span></span><br><span class="line"><span class="comment"># 可以合并不同类型的RDD</span></span><br><span class="line">rdd.union(other_rdd)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd1 = sc.parallelize([<span class="number">1</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">3</span>])</span><br><span class="line">rdd2 = sc.parallelize([<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"a"</span>])</span><br><span class="line"></span><br><span class="line">rdd3 = rdd1.union(rdd2)</span><br><span class="line">print(rdd3.collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[1, 1, 3, 3, &apos;a&apos;, &apos;b&apos;, &apos;a&apos;]</span><br></pre></td></tr></table></figure>
+<h4 id="join"><a href="#join" class="headerlink" title="join"></a>join</h4><p>对两个RDD执行JOIN操作（可实现SQL的内/外连接）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># jion算子只能用于二元元组</span></span><br><span class="line">rdd.join(other_rdd)            <span class="comment"># 内连接</span></span><br><span class="line">rdd.leftOuterJoin(other_rdd)   <span class="comment"># 左外连接</span></span><br><span class="line">rdd.rightOuterJoin(other_rdd)  <span class="comment"># 右外连接</span></span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd1 = sc.parallelize([ (<span class="number">1001</span>, <span class="string">"zhangsan"</span>), (<span class="number">1002</span>, <span class="string">"lisi"</span>), (<span class="number">1003</span>, <span class="string">"wangwu"</span>), (<span class="number">1004</span>, <span class="string">"zhaoliu"</span>) ])</span><br><span class="line">rdd2 = sc.parallelize([ (<span class="number">1001</span>, <span class="string">"销售部"</span>), (<span class="number">1002</span>, <span class="string">"科技部"</span>)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过join算子来进行rdd之间的关联</span></span><br><span class="line"><span class="comment"># 对于join算子来说 关联条件 按照二元元组的key来进行关联</span></span><br><span class="line">print(rdd1.join(rdd2).collect())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 左外连接, 右外连接 可以更换一下rdd的顺序 或者调用rightOuterJoin即可</span></span><br><span class="line">print(rdd1.leftOuterJoin(rdd2).collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[(1001, (&apos;zhangsan&apos;, &apos;销售部&apos;)), (1002, (&apos;lisi&apos;, &apos;科技部&apos;))]</span><br><span class="line">[(1004, (&apos;zhaoliu&apos;, None)), (1001, (&apos;zhangsan&apos;, &apos;销售部&apos;)), (1002, (&apos;lisi&apos;, &apos;科技部&apos;)), (1003, (&apos;wangwu&apos;, None))]</span><br></pre></td></tr></table></figure>
+<h4 id="intersection"><a href="#intersection" class="headerlink" title="intersection"></a>intersection</h4><p>求两个RDD的交集，返回一个新RDD</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.intersection(other_rdd)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd1 = sc.parallelize([(<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'a'</span>, <span class="number">3</span>)])</span><br><span class="line">rdd2 = sc.parallelize([(<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">3</span>)])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过intersection算子求RDD之间的交集, 将交集取出 返回新RDD</span></span><br><span class="line">rdd3 = rdd1.intersection(rdd2)</span><br><span class="line"></span><br><span class="line">print(rdd3.collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(&apos;a&apos;, 1)]</span><br></pre></td></tr></table></figure>
+<h4 id="glom"><a href="#glom" class="headerlink" title="glom"></a>glom</h4><p>将RDD的数据按照分区加上嵌套</p>
+<p>例如RDD数据[1,2,3,4,5]有两个分区，经过glom处理后变成：[[1,2,3]],[4,5]]</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.glom()</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>], <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">print(rdd.glom().collect())</span><br><span class="line">print(rdd.glom().flatMap(<span class="keyword">lambda</span> x: x).collect()) <span class="comment"># tips：解嵌套</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[1, 2, 3, 4], [5, 6, 7, 8, 9]]</span><br><span class="line">[1, 2, 3, 4, 5, 6, 7, 8, 9]</span><br></pre></td></tr></table></figure>
+<h4 id="groupByKey"><a href="#groupByKey" class="headerlink" title="groupByKey"></a>groupByKey</h4><p>针对KV型RDD自动按key分组</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.groupByKey()</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([(<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">1</span>)])</span><br><span class="line"></span><br><span class="line">rdd2 = rdd.groupByKey()</span><br><span class="line"></span><br><span class="line">print(rdd2.map(<span class="keyword">lambda</span> x: (x[<span class="number">0</span>], list(x[<span class="number">1</span>]))).collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(&apos;b&apos;, [1, 1, 1]), (&apos;a&apos;, [1, 1])]</span><br></pre></td></tr></table></figure>
+<h4 id="sortBy"><a href="#sortBy" class="headerlink" title="sortBy"></a>sortBy</h4><p>基于指定的排序函数对RDD数据进行排序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ascending：True-升序，False-降序</span></span><br><span class="line"><span class="comment"># numPartitions：用于排序的分区数量，要进行全局排序，设置为1</span></span><br><span class="line">rdd.sortBy(func, ascending=<span class="literal">False</span>, numPartitions=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([(<span class="string">'c'</span>, <span class="number">3</span>), (<span class="string">'f'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">11</span>), (<span class="string">'c'</span>, <span class="number">3</span>), (<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'c'</span>, <span class="number">5</span>), (<span class="string">'e'</span>, <span class="number">1</span>), (<span class="string">'n'</span>, <span class="number">9</span>), (<span class="string">'a'</span>, <span class="number">1</span>)], <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用sortBy对rdd执行排序</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照value 数字进行排序</span></span><br><span class="line"><span class="comment"># 参数1函数，告知Spark 按照数据的哪个列进行排序</span></span><br><span class="line"><span class="comment"># 参数2: True表示升序 False表示降序</span></span><br><span class="line"><span class="comment"># 参数3: 排序的分区数</span></span><br><span class="line"><span class="string">"""注意: 如果要全局有序, 排序分区数需设置为1"""</span></span><br><span class="line">print(rdd.sortBy(<span class="keyword">lambda</span> x: x[<span class="number">1</span>], ascending=<span class="literal">True</span>, numPartitions=<span class="number">1</span>).collect())</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按照key来进行排序</span></span><br><span class="line">print(rdd.sortBy(<span class="keyword">lambda</span> x: x[<span class="number">0</span>], ascending=<span class="literal">False</span>, numPartitions=<span class="number">1</span>).collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[(&apos;f&apos;, 1), (&apos;a&apos;, 1), (&apos;e&apos;, 1), (&apos;a&apos;, 1), (&apos;c&apos;, 3), (&apos;c&apos;, 3), (&apos;c&apos;, 5), (&apos;n&apos;, 9), (&apos;b&apos;, 11)]</span><br><span class="line">[(&apos;n&apos;, 9), (&apos;f&apos;, 1), (&apos;e&apos;, 1), (&apos;c&apos;, 3), (&apos;c&apos;, 3), (&apos;c&apos;, 5), (&apos;b&apos;, 11), (&apos;a&apos;, 1), (&apos;a&apos;, 1)]</span><br></pre></td></tr></table></figure>
+<h4 id="sortByKey"><a href="#sortByKey" class="headerlink" title="sortByKey"></a>sortByKey</h4><p>针对KV型RDD按照key进行排序</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ascending：True-升序，False-降序</span></span><br><span class="line"><span class="comment"># numPartitions：用于排序的分区数量，要进行全局排序，设置为1</span></span><br><span class="line"><span class="comment"># keyfunc：在排序前对key进行的处理</span></span><br><span class="line">rdd.sortByKey(ascending=<span class="literal">True</span>, numPartitions=<span class="literal">None</span>, keyfunc=&lt;function RDD.&lt;<span class="keyword">lambda</span>&gt;&gt;)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([(<span class="string">'a'</span>, <span class="number">1</span>), (<span class="string">'E'</span>, <span class="number">1</span>), (<span class="string">'C'</span>, <span class="number">1</span>), (<span class="string">'D'</span>, <span class="number">1</span>), (<span class="string">'b'</span>, <span class="number">1</span>), (<span class="string">'g'</span>, <span class="number">1</span>), (<span class="string">'f'</span>, <span class="number">1</span>),</span><br><span class="line">                      (<span class="string">'y'</span>, <span class="number">1</span>), (<span class="string">'u'</span>, <span class="number">1</span>), (<span class="string">'i'</span>, <span class="number">1</span>), (<span class="string">'o'</span>, <span class="number">1</span>), (<span class="string">'p'</span>, <span class="number">1</span>),</span><br><span class="line">                      (<span class="string">'m'</span>, <span class="number">1</span>), (<span class="string">'n'</span>, <span class="number">1</span>), (<span class="string">'j'</span>, <span class="number">1</span>), (<span class="string">'k'</span>, <span class="number">1</span>), (<span class="string">'l'</span>, <span class="number">1</span>)], <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">print(rdd.sortByKey(ascending=<span class="literal">True</span>, numPartitions=<span class="number">1</span>, keyfunc=<span class="keyword">lambda</span> key: str(key).lower()).collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(&apos;a&apos;, 1), (&apos;b&apos;, 1), (&apos;C&apos;, 1), (&apos;D&apos;, 1), (&apos;E&apos;, 1), (&apos;f&apos;, 1), (&apos;g&apos;, 1), (&apos;i&apos;, 1), (&apos;j&apos;, 1), (&apos;k&apos;, 1), (&apos;l&apos;, 1), (&apos;m&apos;, 1), (&apos;n&apos;, 1), (&apos;o&apos;, 1), (&apos;p&apos;, 1), (&apos;u&apos;, 1), (&apos;y&apos;, 1)]</span><br></pre></td></tr></table></figure>
+<h4 id="repartition-amp-coalesce"><a href="#repartition-amp-coalesce" class="headerlink" title="repartition &amp; coalesce"></a>repartition &amp; coalesce</h4><p>对RDD的分区执行重新分区（仅数量）</p>
+<p><font color="gold">注</font>：尽量避免使用，影响并行计算性能。在合并到1个分区进行全局排序等场景下使用，尽可能避免增加分区，可能破坏内存迭代的计算管道</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># n：决定新的分区数量</span></span><br><span class="line"><span class="comment"># coalesce中增加分区必须指定shuffle=True</span></span><br><span class="line">rdd.repartition(n)</span><br><span class="line">rdd.coalesce(n, shuffle)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>], <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># repartition 修改分区</span></span><br><span class="line">print(rdd.repartition(<span class="number">1</span>).getNumPartitions())</span><br><span class="line"></span><br><span class="line">print(rdd.repartition(<span class="number">5</span>).getNumPartitions())</span><br><span class="line"></span><br><span class="line"><span class="comment"># coalesce 修改分区</span></span><br><span class="line">print(rdd.coalesce(<span class="number">1</span>).getNumPartitions())</span><br><span class="line"></span><br><span class="line">print(rdd.coalesce(<span class="number">5</span>, shuffle=<span class="literal">True</span>).getNumPartitions())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">5</span><br><span class="line">1</span><br><span class="line">5</span><br></pre></td></tr></table></figure>
+<h3 id="Action算子"><a href="#Action算子" class="headerlink" title="Action算子"></a>Action算子</h3><h4 id="countByKey"><a href="#countByKey" class="headerlink" title="countByKey"></a>countByKey</h4><p>用于统计key出现的次数（一般适用于KV型RDD）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.countByKey()</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.textFile(<span class="string">"hdfs://master:8020/input/words.txt"</span>)</span><br><span class="line">rdd2 = rdd.flatMap(<span class="keyword">lambda</span> x: x.split(<span class="string">" "</span>)).map(<span class="keyword">lambda</span> x: (x, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过countByKey来对key进行计数, 这是一个Action算子</span></span><br><span class="line">result = rdd2.countByKey()</span><br><span class="line"></span><br><span class="line">print(result)</span><br><span class="line">print(type(result))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">defaultdict(&lt;class &apos;int&apos;&gt;, &#123;&apos;hadoop&apos;: 7, &apos;spark&apos;: 5, &apos;flink&apos;: 3&#125;)</span><br><span class="line">&lt;class &apos;collections.defaultdict&apos;&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="collect"><a href="#collect" class="headerlink" title="collect"></a>collect</h4><p>将RDD各个分区内的数据统一收集到Driver中，形成一个list对象</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.collect()</span><br></pre></td></tr></table></figure>
+<p><font color="gold">注</font>：数据集大小不能超过Driver内存</p>
+<h4 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a>reduce</h4><p>对RDD数据集按照func逻辑进行聚合</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对func：传入2个参数得到1个返回值，要求返回值和参数的类型保持一致</span></span><br><span class="line">rdd.reduce(func)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</span><br><span class="line"></span><br><span class="line">print(rdd.reduce(<span class="keyword">lambda</span> a, b: a + b))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">15</span><br></pre></td></tr></table></figure>
+<h4 id="fold"><a href="#fold" class="headerlink" title="fold"></a>fold</h4><p>同reduce，接受传入逻辑进行聚合，但是聚合是带有初始值的。这个初始值的聚合作用在：</p>
+<ul>
+<li>分区内聚合</li>
+<li>分区间聚合</li>
+</ul>
+<p>例如：[[1, 2, 3], [4, 5, 6], [7, 8, 9]]</p>
+<p>数据分布在三个<strong>分区</strong>上</p>
+<p><strong><font color="orange">分区1</font></strong>：123聚合时带上10作为初始值得到16</p>
+<p><strong><font color="orange">分区2</font></strong>：456聚合时带上10作为初始值得到25</p>
+<p><strong><font color="orange">分区3</font></strong>：789聚合时带上10作为初始值得到34</p>
+<p>最后再做3个分区间的聚合：16+25+34得到85</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.fold(src, func)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>], <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">print(rdd.fold(<span class="number">10</span>, <span class="keyword">lambda</span> a, b: a + b))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">85</span><br></pre></td></tr></table></figure>
+<h4 id="first·take·count·top"><a href="#first·take·count·top" class="headerlink" title="first·take·count·top"></a>first·take·count·top</h4><p><strong><font color="orange">first</font></strong></p>
+<p>取出RDD的第一个元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;sc.parallelize([<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]).first()</span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p><strong><font color="orange">take</font></strong></p>
+<p>取出RDD的前n个元素，组合成list返回</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]).take(<span class="number">5</span>)</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+<p> <strong><font color="orange">count</font></strong></p>
+<p>计算RDD有多少条数据，返回值是一个数字</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;sc.parallelize([<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]).count()</span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p><strong><font color="orange">top</font></strong></p>
+<p>对RDD数据集进行降序排序，取结果前n个</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;sc.parallelize([<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]).top(<span class="number">3</span>)</span><br><span class="line">[<span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="takeSample"><a href="#takeSample" class="headerlink" title="takeSample"></a>takeSample</h4><p>随机抽样RDD数据，可用于数据检查</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1：True表示运行取同一个数据，False表示不允许取同一个数据（和数据内容无关，是否重复表示的是同一个位置的数据）</span></span><br><span class="line"><span class="comment"># arg2：抽样数目</span></span><br><span class="line"><span class="comment"># arg3：可选，随机数种子，随意传进一个数字</span></span><br><span class="line">takeSample(arg1：<span class="literal">True</span>/<span class="literal">False</span>, arg2:采样数, arg3:随机数种子)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">6</span>], <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">print(rdd.takeSample(<span class="literal">False</span>, <span class="number">5</span>, <span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[2, 7, 6, 6, 3]</span><br></pre></td></tr></table></figure>
+<h4 id="takeOrdered"><a href="#takeOrdered" class="headerlink" title="takeOrdered"></a>takeOrdered</h4><p>对RDD进行排序，取结果前n个</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1：需要几个数据</span></span><br><span class="line"><span class="comment"># arg2：对排序的数据进行更改（不会更改数据本身，仅在排序时使用）</span></span><br><span class="line">rdd.takeOrdered(arg1, arg2)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">6</span>], <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">print(rdd.takeOrdered(<span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">print(rdd.takeOrdered(<span class="number">3</span>, <span class="keyword">lambda</span> x: -x))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1, 2, 3]</span><br><span class="line">[9, 7, 6]</span><br></pre></td></tr></table></figure>
+<h4 id="foreach"><a href="#foreach" class="headerlink" title="foreach"></a>foreach</h4><p>对RDD的每一个元素执行提供的逻辑操作（同map），无返回值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.foreach(func)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">6</span>], <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">result = rdd.foreach(<span class="keyword">lambda</span> x: print(x * <span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">10</span><br><span class="line">30</span><br><span class="line">20</span><br><span class="line">40</span><br><span class="line">70</span><br><span class="line">90</span><br><span class="line">60</span><br></pre></td></tr></table></figure>
+<p>特性：由Executor直接输出</p>
+<h4 id="saveAsTextFile"><a href="#saveAsTextFile" class="headerlink" title="saveAsTextFile"></a>saveAsTextFile</h4><p>将RDD数据写入文本文件</p>
+<p>支持：本地写出或hdfs等文件系统</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.saveAsTextFile()</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">6</span>], <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">rdd.saveAsTextFile(<span class="string">"hdfs://master:8020/output/out_test1"</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -ls /output/out_test1</span><br><span class="line">hadoop fs -cat /output/out_test1/*</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Found 4 items</span><br><span class="line">-rw-r--r--   3 root supergroup          0 2022-12-06 17:44 /output/out_test1/_SUCCESS</span><br><span class="line">-rw-r--r--   3 root supergroup          4 2022-12-06 17:44 /output/out_test1/part-00000</span><br><span class="line">-rw-r--r--   3 root supergroup          4 2022-12-06 17:44 /output/out_test1/part-00001</span><br><span class="line">-rw-r--r--   3 root supergroup          6 2022-12-06 17:44 /output/out_test1/part-00002</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">3</span><br><span class="line">2</span><br><span class="line">4</span><br><span class="line">7</span><br><span class="line">9</span><br><span class="line">6</span><br></pre></td></tr></table></figure>
+<p>特性：由Executor直接写入文件</p>
+<h4 id="mapPartitions"><a href="#mapPartitions" class="headerlink" title="mapPartitions"></a>mapPartitions</h4><p>不同于map每次操作一个分区的单一对象，mapPartitions一次操作一整个分区的数据，作为一个迭代器对象传入进来</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.mapPartitions(func)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">6</span>], <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process</span><span class="params">(iter)</span>:</span></span><br><span class="line">    result = list()</span><br><span class="line">    <span class="keyword">for</span> it <span class="keyword">in</span> iter:</span><br><span class="line">        result.append(it * <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">print(rdd.mapPartitions(process).collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[10, 20, 70]</span><br></pre></td></tr></table></figure>
+<h4 id="foreachPartition"><a href="#foreachPartition" class="headerlink" title="foreachPartition"></a>foreachPartition</h4><p>和foreach一致，foreach一条条处理，而foreachPartition一次处理一整个分区的数据，类似于没有返回值的mapPartitions</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.foreachPartition(func)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>, <span class="number">9</span>, <span class="number">6</span>], <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process</span><span class="params">(iter)</span>:</span></span><br><span class="line">    result = list()</span><br><span class="line">    <span class="keyword">for</span> it <span class="keyword">in</span> iter:</span><br><span class="line">        result.append(it * <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">        print(result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rdd.foreachPartition(process)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[20]</span><br><span class="line">[20, 40]</span><br><span class="line">[10]</span><br><span class="line">[10, 30]</span><br><span class="line">[70]</span><br><span class="line">[70, 90]</span><br><span class="line">[70, 90, 60]</span><br></pre></td></tr></table></figure>
+<h4 id="partitionBy"><a href="#partitionBy" class="headerlink" title="partitionBy"></a>partitionBy</h4><p>对RDD进行自定义分区操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1：重新分区后的分区数量</span></span><br><span class="line"><span class="comment"># arg2：自定义分区规则，通过函数传入，函数返回值必须位int型（分区编号从0开始，不得超过分区数-1）</span></span><br><span class="line">rdd.partitionBy(arg1, arg2)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd = sc.parallelize([(<span class="string">'hadoop'</span>, <span class="number">1</span>), (<span class="string">'spark'</span>, <span class="number">1</span>), (<span class="string">'hello'</span>, <span class="number">1</span>), (<span class="string">'flink'</span>, <span class="number">1</span>), (<span class="string">'hadoop'</span>, <span class="number">1</span>), (<span class="string">'spark'</span>, <span class="number">1</span>)])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用partitionBy 自定义 分区</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process</span><span class="params">(k)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="string">'hadoop'</span> == k <span class="keyword">or</span> <span class="string">'hello'</span> == k: <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	<span class="keyword">if</span> <span class="string">'spark'</span> == k: <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(rdd.partitionBy(<span class="number">3</span>, process).glom().collect())</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[(&apos;hadoop&apos;, 1), (&apos;hello&apos;, 1), (&apos;hadoop&apos;, 1)], [(&apos;spark&apos;, 1), (&apos;spark&apos;, 1)], [(&apos;flink&apos;, 1)]]</span><br></pre></td></tr></table></figure>
+<h2 id="RDD的数据是过程数据"><a href="#RDD的数据是过程数据" class="headerlink" title="RDD的数据是过程数据"></a>RDD的数据是过程数据</h2><p>RDD之间进行相互迭代计算（Transformation的转换），当执行开启以后，新RDD生成，旧RDD消失。所以RDD的数据是过程数据，仅在处理的过程中存在，一旦处理完成便会被释放，旨在最大化的合理利用系统资源</p>
+<p>当RDD被释放后需要被重新使用，会从头开始执行</p>
+<h3 id="RDD缓存"><a href="#RDD缓存" class="headerlink" title="RDD缓存"></a>RDD缓存</h3><p>防止当RDD被释放而又要被重新调用的情况下，避免从头执行代码，使用RDD缓存API</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">rdd.cache()                                  <span class="comment"># 缓存到内存中</span></span><br><span class="line">rdd.persist(StorageLevel.MEMORY_ONLY)        <span class="comment"># 仅在内存缓存</span></span><br><span class="line">rdd.persist(StorageLevel.MEMORY_ONLY_2)      <span class="comment"># 仅在内存缓存，生成2个副本</span></span><br><span class="line">rdd.persist(StorageLevel.DISK_ONLY)          <span class="comment"># 仅缓存到硬盘</span></span><br><span class="line">rdd.persist(StorageLevel.DISK_ONLY_2)        <span class="comment"># 仅缓存到硬盘，生成2个副本</span></span><br><span class="line">rdd.persist(StorageLevel.DISK_ONLY_3)        <span class="comment"># 仅缓存到硬盘，生成3个副本</span></span><br><span class="line">rdd.persist(StorageLevel.MEMORY_AND_DISK)    <span class="comment"># 先在内存缓存，内存不够缓存到硬盘</span></span><br><span class="line">rdd.persist(StorageLevel.MEMORY_AND_DISK_2)  <span class="comment"># 先在内存缓存，内存不够缓存到硬盘，生成2个副本</span></span><br><span class="line">rdd.persist(StorageLevel.OFF_HEAP)           <span class="comment"># 堆外内存</span></span><br><span class="line">rdd.unpersist()                              <span class="comment"># 主动清理缓存</span></span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"><span class="keyword">from</span> pyspark.storagelevel <span class="keyword">import</span> StorageLevel</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">rdd1 = sc.textFile(<span class="string">"hdfs://master:8020/input/words.txt"</span>)</span><br><span class="line">rdd2 = rdd1.flatMap(<span class="keyword">lambda</span> x: x.split(<span class="string">" "</span>))</span><br><span class="line">rdd3 = rdd2.map(<span class="keyword">lambda</span> x: (x, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">rdd3.cache()</span><br><span class="line">rdd3.persist(StorageLevel.MEMORY_AND_DISK_2)</span><br><span class="line"></span><br><span class="line">rdd4 = rdd3.reduceByKey(<span class="keyword">lambda</span> a, b: a + b)</span><br><span class="line">print(rdd4.collect())</span><br><span class="line"></span><br><span class="line">rdd5 = rdd3.groupByKey()</span><br><span class="line">rdd6 = rdd5.mapValues(<span class="keyword">lambda</span> x: sum(x))</span><br><span class="line">print(rdd6.collect())</span><br><span class="line"></span><br><span class="line">rdd3.unpersist()</span><br><span class="line">time.sleep(<span class="number">100000</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[(&apos;hadoop&apos;, 1), (&apos;hello&apos;, 3), (&apos;spark&apos;, 1), (&apos;flink&apos;, 1)]</span><br><span class="line">[(&apos;hadoop&apos;, 1), (&apos;hello&apos;, 3), (&apos;spark&apos;, 1), (&apos;flink&apos;, 1)]</span><br></pre></td></tr></table></figure>
+<p><font color="gold">注</font>：缓存分散存储在各Executor所在服务器中。缓存从设计上来说是不安全的，缓存一旦丢失，需要重新计算缓存，必须保留被缓存RDD的前置血缘关系</p>
+<h3 id="RDD-CheckPoint"><a href="#RDD-CheckPoint" class="headerlink" title="RDD CheckPoint"></a>RDD CheckPoint</h3><p>用于保存RDD数据，仅支持硬盘存储，且可以写入HDFS（cache不行），从设计上来说是安全的，不保留RDD的前置血缘关系</p>
+<p>ChickPoint集中收集各个分区的数据进行存储，而非cache的分散存储</p>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"><span class="keyword">from</span> pyspark.storagelevel <span class="keyword">import</span> StorageLevel</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 告知spark, 开启CheckPoint功能</span></span><br><span class="line">sc.setCheckpointDir(<span class="string">"hdfs://master:8020/output/ckp"</span>)</span><br><span class="line">rdd1 = sc.textFile(<span class="string">"hdfs://master:8020/input/words.txt"</span>)</span><br><span class="line">rdd2 = rdd1.flatMap(<span class="keyword">lambda</span> x: x.split(<span class="string">" "</span>))</span><br><span class="line">rdd3 = rdd2.map(<span class="keyword">lambda</span> x: (x, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用checkpoint API 保存数据即可</span></span><br><span class="line">rdd3.checkpoint()</span><br><span class="line"></span><br><span class="line">rdd4 = rdd3.reduceByKey(<span class="keyword">lambda</span> a, b: a + b)</span><br><span class="line">print(rdd4.collect())</span><br><span class="line"></span><br><span class="line">rdd5 = rdd3.groupByKey()</span><br><span class="line">rdd6 = rdd5.mapValues(<span class="keyword">lambda</span> x: sum(x))</span><br><span class="line">print(rdd6.collect())</span><br><span class="line"></span><br><span class="line">rdd3.unpersist()</span><br><span class="line">time.sleep(<span class="number">100000</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[(&apos;hadoop&apos;, 1), (&apos;hello&apos;, 3), (&apos;spark&apos;, 1), (&apos;flink&apos;, 1)]</span><br><span class="line">[(&apos;hadoop&apos;, 1), (&apos;hello&apos;, 3), (&apos;spark&apos;, 1), (&apos;flink&apos;, 1)]</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pyspark/">pyspark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/12/07/Spark-Core/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Spark-Core
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/12/05/Pyspark/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Pyspark</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RDD"><span class="nav-number">1.</span> <span class="nav-text">RDD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特性"><span class="nav-number">1.1.</span> <span class="nav-text">特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分区"><span class="nav-number">1.1.1.</span> <span class="nav-text">分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDD方法会作用在其所有方法上"><span class="nav-number">1.1.2.</span> <span class="nav-text">RDD方法会作用在其所有方法上</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDD之间具有依赖关系"><span class="nav-number">1.1.3.</span> <span class="nav-text">RDD之间具有依赖关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Key-Value型RDD可以有分区器"><span class="nav-number">1.1.4.</span> <span class="nav-text">Key-Value型RDD可以有分区器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RDD的分区规划：会尽量靠近数据所在的服务器"><span class="nav-number">1.1.5.</span> <span class="nav-text">RDD的分区规划：会尽量靠近数据所在的服务器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RDD创建"><span class="nav-number">1.2.</span> <span class="nav-text">RDD创建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#并行化创建"><span class="nav-number">1.2.1.</span> <span class="nav-text">并行化创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读取文件"><span class="nav-number">1.2.2.</span> <span class="nav-text">读取文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RDD算子"><span class="nav-number">1.3.</span> <span class="nav-text">RDD算子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transformation算子"><span class="nav-number">1.4.</span> <span class="nav-text">Transformation算子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#map"><span class="nav-number">1.4.1.</span> <span class="nav-text">map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flatMap"><span class="nav-number">1.4.2.</span> <span class="nav-text">flatMap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reduceByKey"><span class="nav-number">1.4.3.</span> <span class="nav-text">reduceByKey</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mapValues"><span class="nav-number">1.4.4.</span> <span class="nav-text">mapValues</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#groupBy"><span class="nav-number">1.4.5.</span> <span class="nav-text">groupBy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Filter"><span class="nav-number">1.4.6.</span> <span class="nav-text">Filter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#distinct"><span class="nav-number">1.4.7.</span> <span class="nav-text">distinct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#union"><span class="nav-number">1.4.8.</span> <span class="nav-text">union</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#join"><span class="nav-number">1.4.9.</span> <span class="nav-text">join</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#intersection"><span class="nav-number">1.4.10.</span> <span class="nav-text">intersection</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#glom"><span class="nav-number">1.4.11.</span> <span class="nav-text">glom</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#groupByKey"><span class="nav-number">1.4.12.</span> <span class="nav-text">groupByKey</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sortBy"><span class="nav-number">1.4.13.</span> <span class="nav-text">sortBy</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sortByKey"><span class="nav-number">1.4.14.</span> <span class="nav-text">sortByKey</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#repartition-amp-coalesce"><span class="nav-number">1.4.15.</span> <span class="nav-text">repartition &amp; coalesce</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Action算子"><span class="nav-number">1.5.</span> <span class="nav-text">Action算子</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#countByKey"><span class="nav-number">1.5.1.</span> <span class="nav-text">countByKey</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#collect"><span class="nav-number">1.5.2.</span> <span class="nav-text">collect</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#reduce"><span class="nav-number">1.5.3.</span> <span class="nav-text">reduce</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fold"><span class="nav-number">1.5.4.</span> <span class="nav-text">fold</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#first·take·count·top"><span class="nav-number">1.5.5.</span> <span class="nav-text">first·take·count·top</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#takeSample"><span class="nav-number">1.5.6.</span> <span class="nav-text">takeSample</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#takeOrdered"><span class="nav-number">1.5.7.</span> <span class="nav-text">takeOrdered</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#foreach"><span class="nav-number">1.5.8.</span> <span class="nav-text">foreach</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#saveAsTextFile"><span class="nav-number">1.5.9.</span> <span class="nav-text">saveAsTextFile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mapPartitions"><span class="nav-number">1.5.10.</span> <span class="nav-text">mapPartitions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#foreachPartition"><span class="nav-number">1.5.11.</span> <span class="nav-text">foreachPartition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#partitionBy"><span class="nav-number">1.5.12.</span> <span class="nav-text">partitionBy</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDD的数据是过程数据"><span class="nav-number">2.</span> <span class="nav-text">RDD的数据是过程数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RDD缓存"><span class="nav-number">2.1.</span> <span class="nav-text">RDD缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RDD-CheckPoint"><span class="nav-number">2.2.</span> <span class="nav-text">RDD CheckPoint</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

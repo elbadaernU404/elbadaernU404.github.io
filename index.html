@@ -258,6 +258,148 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Spark-Core"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/12/07/Spark-Core/">Spark-Core</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/12/07/Spark-Core/" class="article-date">
+	  <time datetime="2022-12-07T08:58:49.000Z" itemprop="datePublished">2022-12-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="广播变量"><a href="#广播变量" class="headerlink" title="广播变量"></a>广播变量</h2><p>本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费</p>
+<p><strong>解决方案</strong>：将本地对象设置为广播变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.将本地对象标记为广播变量</span></span><br><span class="line">broadcast = sc.broadcast(var)</span><br><span class="line"><span class="comment"># 2.使用广播变量，从broadcast对象中取出本地对象</span></span><br><span class="line">value = broadcast.value</span><br><span class="line"><span class="comment"># 当传输的是广播对象时，spark会只给每个Executor分发一份数据</span></span><br></pre></td></tr></table></figure>
+<p>当本地集合对象和分布式集合对象（RDD）进行关联时，需要将本地集合对象封装为广播变量</p>
+<ul>
+<li>节省网络IO次数</li>
+<li>降低Executor内存占用</li>
+</ul>
+<h2 id="累加器"><a href="#累加器" class="headerlink" title="累加器"></a>累加器</h2><p>当执行累加操作时，各个分区累加自身的内容</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># spark提供累加器变量，参数是初始值</span></span><br><span class="line">acmlt = sc.accumulator(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">acmlt = sc.accumulator(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">counts</span><span class="params">(data)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> acmlt</span><br><span class="line">    acmlt += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rdd1 = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">3</span>)</span><br><span class="line">rdd2 = rdd1.map(counts)</span><br><span class="line">print(rdd2.collect())</span><br><span class="line">print(acmlt)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1, 2, 3]</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<p><font color="gold">注</font>：累加器可能因血缘关系导致重复的累加，例如一个RDD被释放后累加已经完成，此时再使用该RDD将会导致重复累加。可通过cache缓存机制来解决</p>
+        <!--  广播变量本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费
+解决方案：将本地对象设置为广播变量
+12345# 1.将本地对象标记为广播变量broadcast = sc.broadcast(var)# 2.使用广播变量，从broadcast对象中取出本......  -->
+        <p class="article-more-link">
+          <a href="/2022/12/07/Spark-Core/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pyspark/">pyspark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Pyspark-RDD"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/12/07/Pyspark-RDD/">Pyspark-RDD</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/12/07/Pyspark-RDD/" class="article-date">
+	  <time datetime="2022-12-07T05:45:49.000Z" itemprop="datePublished">2022-12-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h2><p>RDD（Resilient Distributed Dataset）弹性分布式数据集，是spark中最基本的数据抽象，代表一个不可变、可分区、其中元素可并行计算的集合</p>
+<ul>
+<li>Resilient：RDD中的数据可存储再内存或磁盘中</li>
+<li>Distributed：分布式存储数据（跨机器/跨进程），用于分布式计算</li>
+<li>Dataset：一个用于存放数据的数据集合</li>
+</ul>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><h4 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h4><p>RDD分区是RDD数据存储的最小单位，一份RDD数据本质上分隔成了多个分区</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 存储9个数字，设立三个分区</span></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>], <span class="number">3</span>)</span><br><span class="line">rdd.glom().collect()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[1,2,3],[4,5,6],[7,8,9]]</span><br></pre></td></tr></table></figure>
+<h4 id="RDD方法会作用在其所有方法上"><a href="#RDD方法会作用在其所有方法上" class="headerlink" title="RDD方法会作用在其所有方法上"></a>RDD方法会作用在其所有方法上</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.map(<span class="keyword">lambda</span> x: x * <span class="number">10</span>).collect()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[10,20,30,40,50,60,70,80,90]</span><br></pre></td></tr></table></figure>
+<h4 id="RDD之间具有依赖关系"><a href="#RDD之间具有依赖关系" class="headerlink" title="RDD之间具有依赖关系"></a>RDD之间具有依赖关系</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line">rdd1 = sc.textFile(<span class="string">"../test.text"</span>)</span><br><span class="line">rdd2 = rdd1.flatMap(<span class="keyword">lambda</span> x: x.split(<span class="string">' '</span>))</span><br><span class="line">rdd3 = rdd2.map(<span class="keyword">lambda</span> x: (x, <span class="number">1</span>))</span><br><span class="line">rdd4 = rdd3.reduceByKey(<span class="keyword">lambda</span> a, b: a+b)</span><br><span class="line">print(rdd4.collect())</span><br></pre></td></tr></table></figure>
+<h4 id="Key-Value型RDD可以有分区器"><a href="#Key-Value型RDD可以有分区器" class="headerlink" title="Key-Value型RDD可以有分区器"></a>Key-Value型RDD可以有分区器</h4><p>KV型RDD：RDD内存储的数据是只有两个元素的二元元组</p>
+<p>默认分区器：Hash分区规则，也可手动设置分区器：rdd.partitionBy()方法</p>
+<p><font color="gold">注</font>：不是所有RDD都是KV型</p>
+<h4 id="RDD的分区规划：会尽量靠近数据所在的服务器"><a href="#RDD的分区规划：会尽量靠近数据所在的服务器" class="headerlink" title="RDD的分区规划：会尽量靠近数据所在的服务器"></a>RDD的分区规划：会尽量靠近数据所在的服务器</h4><p>在初始RDD读取数据规划阶段，分区会尽量规划到存储数据所在服务器，直接读取本地数据，避免从网络读取数据</p>
+<p>Spark会在确保并行计算能力的前提下，尽量确保本地读取</p>
+<h3 id="RDD创建"><a href="#RDD创建" class="headerlink" title="RDD创建"></a>RDD创建</h3><ul>
+<li>通过并行化集合创建（本地对象转化为分布式RDD）</li>
+<li>读取外部数据源（读文件）</li>
+</ul>
+<h4 id="并行化创建"><a href="#并行化创建" class="headerlink" title="并行化创建"></a>并行化创建</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1: 集合对象，如：list</span></span><br><span class="line"><span class="comment"># arg2：可选，指定分区数量</span></span><br><span class="line">rdd = SparkContext.parallelize(arg1, arg2)</span><br></pre></td></tr></table></figure>
+<h4 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h4><p>通过textFile API来读取本地或者hdfs的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1: 文件路径</span></span><br><span class="line"><span class="comment"># arg2：可选，最小分区数量</span></span><br><span class="line"><span class="comment"># 当arg2超出spark允许范围，参数失效</span></span><br><span class="line">SparkContext.textFile(arg1, arg2)</span><br></pre></td></tr></table></figure>
+<p>通过wholeTextFile API来读取小文件，这个api偏向于少量分区读取数据，是pyspark基于小文件的优化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1：文件路径</span></span><br><span class="line"><span class="comment"># arg2：可选，最小分区数量</span></span><br><span class="line"><span class="comment"># 当arg2超出spark允许范围，参数失效</span></span><br><span class="line">SparkContext.wholeTextFiles(arg1, arg2)</span><br></pre></td></tr></table></figure>
+        <!--  RDDRDD（Resilient Distributed Dataset）弹性分布式数据集，是spark中最基本的数据抽象，代表一个不可变、可分区、其中元素可并行计算的集合
+
+Resilient：RDD中的数据可存储再内存或磁盘中
+Distributed：分布式存储数据（跨机器/跨进程），用于分布式计算
+Dataset：一个用于存放数据的数据集合
+
+特性分区RDD分区是RDD数据存储的最小......  -->
+        <p class="article-more-link">
+          <a href="/2022/12/07/Pyspark-RDD/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pyspark/">pyspark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Pyspark"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -866,221 +1008,6 @@ MySQL
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/clickhouse/">clickhouse</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Nebula-CentOS安装与部署"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/06/21/Nebula-CentOS安装与部署/">Nebula-CentOS安装与部署</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/06/21/Nebula-CentOS安装与部署/" class="article-date">
-	  <time datetime="2022-06-21T13:46:14.000Z" itemprop="datePublished">2022-06-21</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文参考、提取自Nebula Graph Database官方文档(<a href="https://docs.nebula-graph.com.cn/2.6.0" target="_blank" rel="noopener">https://docs.nebula-graph.com.cn/2.6.0</a>)</p>
-<h2 id="1-前期准备"><a href="#1-前期准备" class="headerlink" title="1.前期准备"></a>1.前期准备</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p><strong>·</strong> nebula版本：<font color="orange">2.6.0</font><br><strong>·</strong> 主机：<font color="orange">CentOS7 64位</font><br><strong>·</strong> 内存：<font color="orange">8GB</font><br><strong>·</strong> 处理器数量：<font color="orange">4</font><br><strong>·</strong> 处理器内核数：<font color="orange">4</font><br><strong>·</strong> 处理器内核总数：<font color="orange">16</font><br><strong>·</strong> 硬盘：<font color="orange">30GB，SSD</font></p>
-<h3 id="硬件要求"><a href="#硬件要求" class="headerlink" title="硬件要求"></a>硬件要求</h3><p><strong>·</strong> CPU架构：<font color="orange">x86_64</font><br><strong>·</strong> 内存：<font color="orange">4GB</font><br><strong>·</strong> 硬盘：<font color="orange">10GB，SSD</font></p>
-<h3 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h3><table>
-<thead>
-<tr>
-<th>软件名称</th>
-<th>版本</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>glibc</td>
-<td><font color="orange">2.17</font>及以上</td>
-<td>执行<code>ldd --version</code>检查版本</td>
-</tr>
-<tr>
-<td>make</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>m4</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>git</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>wget</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>unzip</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>xz</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>redline-devel</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>ncurses-devel</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>zlib-devel</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td><font color="orange">gcc</font></td>
-<td><font color="orange">7.5.0</font>及以上</td>
-<td>执行命令<code>gcc -v</code>检查版本</td>
-</tr>
-<tr>
-<td>gcc-c++</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td><font color="orange">cmake</font></td>
-<td><font color="orange">3.9.0</font>及以上</td>
-<td>执行命令<code>cmake --version</code>检查版本</td>
-</tr>
-<tr>
-<td>gettext</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>curl</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>redhat-lsb-core</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>libstdc++-static</td>
-<td>任意稳定版本</td>
-<td>仅在CentOS 8+、RedHat 8+、Fedora中需要</td>
-</tr>
-<tr>
-<td>libasan</td>
-<td>任意稳定版本</td>
-<td>仅在CentOS 8+、RedHat 8+、Fedora中需要</td>
-</tr>
-<tr>
-<td>bzip2</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-</tbody>
-</table>
-<p>需要保证<font color="orange">gcc</font>和<font color="orange">cmake</font>的版本足够高，其他第三方软件将在安装（<font color="orange">cmake</font>）阶段自动下载并安装到build目录中<br></p>
-        <!--  本文参考、提取自Nebula Graph Database官方文档(https://docs.nebula-graph.com.cn/2.6.0)
-1.前期准备环境· nebula版本：2.6.0· 主机：CentOS7 64位· 内存：8GB· 处理器数量：4· 处理器内核数：4· 处理器内核总数：16· 硬盘：30GB，SSD
-硬件要求· CPU架构：x86_64· 内存：4GB· 硬......  -->
-        <p class="article-more-link">
-          <a href="/2022/06/21/Nebula-CentOS安装与部署/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-FastApi"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/05/23/FastApi/">FastApi</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/05/23/FastApi/" class="article-date">
-	  <time datetime="2022-05-23T03:49:29.000Z" itemprop="datePublished">2022-05-23</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>FastAPI 是一个基于Python3.6+版本用于构建API的高性能web框架</p>
-<p>官方文档链接：<a href="https://fastapi.tiangolo.com" target="_blank" rel="noopener">https://fastapi.tiangolo.com</a></p>
-<p><img src="/2022/05/23/FastApi/A.png" alt></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>执行<code>pip install fastapi[all]</code>来安装fastapi所需要的全部python包和模块</p>
-<p>也可以分开来安装来将应用程序部署到成产环境，其中uvicorn可以用作运行代码的服务器<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install fastapi</span><br><span class="line">pip install uvicorn[standard]</span><br></pre></td></tr></table></figure></p>
-        <!--  FastAPI 是一个基于Python3.6+版本用于构建API的高性能web框架
-官方文档链接：https://fastapi.tiangolo.com
-
-安装执行pip install fastapi[all]来安装fastapi所需要的全部python包和模块
-也可以分开来安装来将应用程序部署到成产环境，其中uvicorn可以用作运行代码的服务器12pip install fasta......  -->
-        <p class="article-more-link">
-          <a href="/2022/05/23/FastApi/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FastApi/">FastApi</a></li></ul>
 
     </footer>
   </div>

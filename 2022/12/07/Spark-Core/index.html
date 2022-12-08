@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>spark-core | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="sparkpyspark">
+  
+  
+  
+  
+  <meta name="description" content="广播变量本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费 解决方案：将本地对象设置为广播变量 12345# 1.将本地对象标记为广播变量broadcast = sc.broadcast(var)# 2.使用广播变量，从broadcast对象中取出本地对象v">
+<meta name="keywords" content="spark,pyspark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark-Core">
+<meta property="og:url" content="http://yoursite.com/2022/12/07/Spark-Core/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="广播变量本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费 解决方案：将本地对象设置为广播变量 12345# 1.将本地对象标记为广播变量broadcast = sc.broadcast(var)# 2.使用广播变量，从broadcast对象中取出本地对象v">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2022/12/07/Spark-Core/A.png">
+<meta property="og:updated_time" content="2022-12-08T08:49:19.366Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spark-Core">
+<meta name="twitter:description" content="广播变量本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费 解决方案：将本地对象设置为广播变量 12345# 1.将本地对象标记为广播变量broadcast = sc.broadcast(var)# 2.使用广播变量，从broadcast对象中取出本地对象v">
+<meta name="twitter:image" content="http://yoursite.com/2022/12/07/Spark-Core/A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Spark-Core" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Spark-Core
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/12/07/Spark-Core/" class="article-date">
+	  <time datetime="2022-12-07T08:58:49.000Z" itemprop="datePublished">2022-12-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="广播变量"><a href="#广播变量" class="headerlink" title="广播变量"></a>广播变量</h2><p>本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费</p>
+<p><strong>解决方案</strong>：将本地对象设置为广播变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.将本地对象标记为广播变量</span></span><br><span class="line">broadcast = sc.broadcast(var)</span><br><span class="line"><span class="comment"># 2.使用广播变量，从broadcast对象中取出本地对象</span></span><br><span class="line">value = broadcast.value</span><br><span class="line"><span class="comment"># 当传输的是广播对象时，spark会只给每个Executor分发一份数据</span></span><br></pre></td></tr></table></figure>
+<p>当本地集合对象和分布式集合对象（RDD）进行关联时，需要将本地集合对象封装为广播变量</p>
+<ul>
+<li>节省网络IO次数</li>
+<li>降低Executor内存占用</li>
+</ul>
+<h2 id="累加器"><a href="#累加器" class="headerlink" title="累加器"></a>累加器</h2><p>当执行累加操作时，各个分区累加自身的内容</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># spark提供累加器变量，参数是初始值</span></span><br><span class="line">acmlt = sc.accumulator(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">acmlt = sc.accumulator(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">counts</span><span class="params">(data)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> acmlt</span><br><span class="line">    acmlt += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rdd1 = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">3</span>)</span><br><span class="line">rdd2 = rdd1.map(counts)</span><br><span class="line">print(rdd2.collect())</span><br><span class="line">print(acmlt)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1, 2, 3]</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<p><font color="gold">注</font>：累加器可能因血缘关系导致重复的累加，例如一个RDD被释放后累加已经完成，此时再使用该RDD将会导致重复累加。可通过cache缓存机制来解决</p>
+<a id="more"></a> 
+<h2 id="DAG"><a href="#DAG" class="headerlink" title="DAG"></a>DAG</h2><p>Spark的核心是根据RDD来实现的，Spark Scheduler（spark任务调度）是spark核心实现的重要一环，其功能是组织处理RDD中每个分区的数据，根据RDD的依赖关系构建DAG有向无环图，再基于DAG划分Stage，将每个Stage中的任务发送到指定节点运行，合理规划资源的利用</p>
+<h3 id="DAG标准定义"><a href="#DAG标准定义" class="headerlink" title="DAG标准定义"></a>DAG标准定义</h3><p>有向无环图：有方向而没有形成闭环的执行流程图</p>
+<ul>
+<li>有向：具有执行方向</li>
+<li>无环：没有闭环</li>
+</ul>
+<h3 id="Action算子和Job"><a href="#Action算子和Job" class="headerlink" title="Action算子和Job"></a>Action算子和Job</h3><p>一个Action会产生一个DAG，如果代码中存在3个Action则会产生3个DAG；</p>
+<p>每个DAG在应用程序运行时产生一个Job（应用程序内的子任务）</p>
+<p><strong><font color="orange">1个Action = 1个DAG = 1个Job</font></strong></p>
+<p>这样的代码运行起来在spark中被称为<strong><font color="orange">Application</font></strong></p>
+<h3 id="DAG和分区"><a href="#DAG和分区" class="headerlink" title="DAG和分区"></a>DAG和分区</h3><p>DAG的最终作用是为了构建spark详细执行的物理计划，由于spark是分布式多分区的，所以DAG和分区间也具有关联</p>
+<h3 id="DAG的宽窄依赖和阶段划分"><a href="#DAG的宽窄依赖和阶段划分" class="headerlink" title="DAG的宽窄依赖和阶段划分"></a>DAG的宽窄依赖和阶段划分</h3><p>在Spark RDD前后之间的血缘关系，分为：</p>
+<ul>
+<li>窄依赖：父RDD的一个分区，将全部数据发送给子RDD的一个分区；</li>
+<li>宽依赖：父RDD的一个分区，将数据发送给子RDD的多个分区，别名：shuffle</li>
+</ul>
+<p>对于spark，会根据DAG，按照宽依赖划分不同的DAG阶段。划分依据：从后向前，每遇到宽依赖就划分出一个阶段，称之为stage。在stage内部，一定是窄依赖</p>
+<p><img src="/2022/12/07/Spark-Core/A.png" alt></p>
+<h2 id="Spark的内存迭代计算"><a href="#Spark的内存迭代计算" class="headerlink" title="Spark的内存迭代计算"></a>Spark的内存迭代计算</h2><p>窄依赖同一线程内走管道交互，进入宽依赖走网络IO交互</p>
+<p>Spark默认收到全局并行度的限制，除了个别算子有特殊分区的情况，大部分算子都会遵循全局并行度的要求来划分自己的分区数。例如全局并行度是3，大部分算子的默认分区都是3-&gt;不建议再独立通过arg来指定分区数</p>
+<h2 id="Spark并行度"><a href="#Spark并行度" class="headerlink" title="Spark并行度"></a>Spark并行度</h2><p>Spark的并行：在同一时间内，有多少task在同时运行</p>
+<p>Spark的并行度：并行能力，当设置为6，即共有6个task在并行运行，RDD的分区被规划为6个分区</p>
+<p>Spark并行度设置（优先级由高到低）：</p>
+<ul>
+<li>代码</li>
+<li>客户端参数</li>
+<li>配置文件</li>
+<li>默认值（1），并不会全部以1来运行，多数情况下基于读取文件的分片数量来作为默认并行度</li>
+</ul>
+<p>全局并行度配置参数：</p>
+<p><code>spark.default.parallelism</code></p>
+<ul>
+<li>代码中设置：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conf = SparkConf()</span><br><span class="line">conf.set(<span class="string">"spark.default.parallelism"</span>, <span class="string">"100"</span>)</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>客户端提交参数中设置<code>bin/spark-submit --conf &quot;spark.default.parallelism=100&quot;</code></p>
+</li>
+<li><p>配置文件<font color="#008080">conf/spark-defaults.conf</font>中设置<code>spark.default.parallelism 100</code></p>
+</li>
+</ul>
+<p><font color="gold">注</font>：全局并行度是推荐设置，不要针对RDD更改分区，可能会影响内存迭代管道的构建，或者产生额外的shuffle</p>
+<p>针对RDD并行度的设置（不推荐）：</p>
+<p><strong><font color="orange">·</font></strong> repartition算子</p>
+<p><strong><font color="orange">·</font></strong> coalesce算子</p>
+<p><strong><font color="orange">·</font></strong> partitionBy算子</p>
+<h3 id="规划Spark集群并行度"><a href="#规划Spark集群并行度" class="headerlink" title="规划Spark集群并行度"></a>规划Spark集群并行度</h3><p>设置为CPU总核心的<strong><font color="orange">2~10倍</font></strong>（或更高）* </p>
+<p>比如集群可用的CPU核心数量为100个，建议并行度200~1000（确保是CPU核心的整数倍）</p>
+<ul>
+<li><p>设置为最少2倍：</p>
+<p>CPU的一个核心同一时间只能做一件事，当拥有100个核心的情况下，设置100并行度，能利用全部的CPU，但task的压力不均衡，一旦某个task先执行完毕，会导致某个CPU核心的空闲。所以将task并行分配的数量增多，例如设置1000并行度，同一时间内有100个task在运行，900个在等待，但可以确保某个task运行完毕后会不断有task补上，不让CPU处于空闲状态，最大程度利用集群的资源</p>
+</li>
+</ul>
+<h2 id="Spark任务调度"><a href="#Spark任务调度" class="headerlink" title="Spark任务调度"></a>Spark任务调度</h2><h3 id="Spark任务由Driver进行调度"><a href="#Spark任务由Driver进行调度" class="headerlink" title="Spark任务由Driver进行调度"></a>Spark任务由Driver进行调度</h3><p>包括：</p>
+<ul>
+<li>逻辑DAG产生</li>
+<li>分区DAG产生</li>
+<li>基于分区DAG构建线程task并划分</li>
+<li>将task分配给Executor并监控其工作</li>
+</ul>
+<h3 id="Spark程序调度流程"><a href="#Spark程序调度流程" class="headerlink" title="Spark程序调度流程"></a>Spark程序调度流程</h3><ul>
+<li>构建Driver（<font color="orange">Driver</font>）</li>
+<li>构建SparkContext执行环境入口对象（<font color="orange">Driver</font>）</li>
+<li>基于DAG scheduler调度器构建逻辑task分配（<font color="orange">Driver</font>）</li>
+<li>基于task scheduler调度器将逻辑task分配到各个Executor上执行并监控（<font color="orange">Driver</font>）</li>
+<li>Worker（Executor）被task scheduler管理监控，遵从指令干活并汇报进度（<font color="orange">Worker</font>）</li>
+</ul>
+<h3 id="Driver内部组件"><a href="#Driver内部组件" class="headerlink" title="Driver内部组件"></a>Driver内部组件</h3><ul>
+<li><p><strong>DAG调度器</strong></p>
+<p>将逻辑DAG进行处理，最终得到逻辑上的task划分</p>
+</li>
+<li><p><strong>Task调度器</strong></p>
+<p>基于DAG调度器的产出，来规划这些逻辑的task应该在哪些物理的Executor上运行，以及监控它们</p>
+</li>
+</ul>
+<h3 id="层级关系梳理"><a href="#层级关系梳理" class="headerlink" title="层级关系梳理"></a>层级关系梳理</h3><ul>
+<li>1个spark环境可运行多个Application；</li>
+<li>1个代码成功运行生成一个Application；</li>
+<li>1个Application内部有多个Job；</li>
+<li>1个Action算子产生1个Job，每个Job有自己的DAG执行图；</li>
+<li>1个Job的DAG基于宽窄依赖划分不同的阶段；</li>
+<li>1个阶段里基于分区数量形成多个并行的内存迭代管道；</li>
+<li>1个内存迭代管道形成1个task（DAG调度器划分将Job内划分出具体的task任务，1个Job被划分出的task在逻辑上被称为这个job的taskset）</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pyspark/">pyspark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/12/07/Pyspark-RDD/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Pyspark-RDD</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#广播变量"><span class="nav-number">1.</span> <span class="nav-text">广播变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#累加器"><span class="nav-number">2.</span> <span class="nav-text">累加器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DAG"><span class="nav-number">3.</span> <span class="nav-text">DAG</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DAG标准定义"><span class="nav-number">3.1.</span> <span class="nav-text">DAG标准定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Action算子和Job"><span class="nav-number">3.2.</span> <span class="nav-text">Action算子和Job</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DAG和分区"><span class="nav-number">3.3.</span> <span class="nav-text">DAG和分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DAG的宽窄依赖和阶段划分"><span class="nav-number">3.4.</span> <span class="nav-text">DAG的宽窄依赖和阶段划分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark的内存迭代计算"><span class="nav-number">4.</span> <span class="nav-text">Spark的内存迭代计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark并行度"><span class="nav-number">5.</span> <span class="nav-text">Spark并行度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#规划Spark集群并行度"><span class="nav-number">5.1.</span> <span class="nav-text">规划Spark集群并行度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark任务调度"><span class="nav-number">6.</span> <span class="nav-text">Spark任务调度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark任务由Driver进行调度"><span class="nav-number">6.1.</span> <span class="nav-text">Spark任务由Driver进行调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spark程序调度流程"><span class="nav-number">6.2.</span> <span class="nav-text">Spark程序调度流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Driver内部组件"><span class="nav-number">6.3.</span> <span class="nav-text">Driver内部组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#层级关系梳理"><span class="nav-number">6.4.</span> <span class="nav-text">层级关系梳理</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2022 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
