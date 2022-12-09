@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://yoursite.com/2022/12/01/Spark基础/H.png">
 <meta property="og:image" content="http://yoursite.com/2022/12/01/Spark基础/I.png">
 <meta property="og:image" content="http://yoursite.com/2022/12/01/Spark基础/J.png">
-<meta property="og:updated_time" content="2022-12-05T08:48:33.271Z">
+<meta property="og:updated_time" content="2022-12-08T11:11:13.439Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark基础">
 <meta name="twitter:description" content="定义：Apache Spark是用于大规模数据处理的统一分析引擎。其核心数据结构：弹性分布式数据集（RDD）能够在大规模集群中做内存运算，且具有一定容错方式。 Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、Scala、R语言的API和Spark的核心功能，是Spark运行的基础； · SparkSQL：基于SparkCore，提供机构化数据处理模块，支">
@@ -339,6 +339,7 @@
 <p>配置环境变量</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br></pre></td></tr></table></figure>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export SPARK_HOME=/usr/local/spark</span><br><span class="line">export PYSPARK_PYTHON=/usr/local/anaconda3/envs/pyspark/bin/python3.8</span><br><span class="line">export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
 <p><font color="gold">注</font>：查找pyspark虚拟环境位置：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/anaconda3/envs/pyspark/bin</span><br></pre></td></tr></table></figure>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.bashrc</span><br></pre></td></tr></table></figure>

@@ -258,6 +258,106 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Spark-SQL"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/12/08/Spark-SQL/">Spark-SQL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/12/08/Spark-SQL/" class="article-date">
+	  <time datetime="2022-12-08T08:50:52.000Z" itemprop="datePublished">2022-12-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="SparkSQL"><a href="#SparkSQL" class="headerlink" title="SparkSQL"></a>SparkSQL</h2><p><strong>SparkSQL</strong>是spark的一个用于处理海量<strong>结构化数据</strong>的模块</p>
+<ul>
+<li>支持SQL语言</li>
+<li>自动优化</li>
+<li>性能强</li>
+<li>兼容HIVE</li>
+<li>API流程简单</li>
+<li>支持标准化JDBC和ODBC连接</li>
+<li>…</li>
+</ul>
+<h3 id="SparkSQL数据抽象"><a href="#SparkSQL数据抽象" class="headerlink" title="SparkSQL数据抽象"></a>SparkSQL数据抽象</h3><ul>
+<li><p><strong><font color="orange">Pandas · DataFrame</font></strong></p>
+<p><strong><font color="orange">·</font></strong> 二维表数据结构</p>
+<p><strong><font color="orange">·</font></strong> 单机（本地）集合</p>
+</li>
+<li><p><strong><font color="orange">SparkCore · RDD</font></strong></p>
+<p><strong><font color="orange">·</font></strong> 无标准数据结构</p>
+<p><strong><font color="orange">·</font></strong> 分布式（分区）集合</p>
+</li>
+<li><p><strong><font color="orange">SparkSQL · DataFrame</font></strong></p>
+<p><strong><font color="orange">·</font></strong> 二维表数据结构</p>
+<p><strong><font color="orange">·</font></strong> 分布式（分区）集合</p>
+</li>
+</ul>
+<h3 id="SparkSession对象"><a href="#SparkSession对象" class="headerlink" title="SparkSession对象"></a>SparkSession对象</h3><p>RDD程序的执行入口对象：<strong>SparkContext</strong></p>
+<p>在Spark2.0以后，推出了<strong>SparkSession</strong>对象，来作为Spark编码的统一入口对象。<strong>SparkSession</strong>：</p>
+<ul>
+<li>用于SparkSQL编程，作为入口对象</li>
+<li>用于SparkCore编程，通过SparkSession对象获取SparkContext</li>
+</ul>
+<p>构建SparkSession对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过builder方法来构建SparkSession对象</span></span><br><span class="line"><span class="comment"># appName：设置程序名称</span></span><br><span class="line"><span class="comment"># config：配置常用属性</span></span><br><span class="line"><span class="comment"># getOrCreate：完成创建SparkSession对象</span></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"test"</span>).master(<span class="string">"local[*]"</span>).config(<span class="string">"spark.sql.shuffle.partitions"</span>, <span class="string">"4"</span>).getOrCreate()</span><br></pre></td></tr></table></figure>
+<p>通过SparkSesion对象获取SparkContext对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"test"</span>).master(<span class="string">"local[*]"</span>).config(<span class="string">"spark.sql.shuffle.partitions"</span>, <span class="string">"4"</span>).getOrCreate()</span><br><span class="line"></span><br><span class="line">sc = spark.sparkContext</span><br></pre></td></tr></table></figure>
+        <!--  SparkSQLSparkSQL是spark的一个用于处理海量结构化数据的模块
+
+支持SQL语言
+自动优化
+性能强
+兼容HIVE
+API流程简单
+支持标准化JDBC和ODBC连接
+…
+
+SparkSQL数据抽象
+Pandas · DataFrame
+· 二维表数据结构
+· 单机（本地）集合
+
+SparkCore · RDD
+· 无标准数据结构
+· 分布式（分区）集合
+
+SparkSQL ·......  -->
+        <p class="article-more-link">
+          <a href="/2022/12/08/Spark-SQL/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Spark-Core"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -311,7 +411,7 @@
       
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pyspark/">pyspark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
 
     </footer>
   </div>
@@ -811,203 +911,6 @@ Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、S
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-ClickHouse"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/07/07/ClickHouse/">ClickHouse</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/07/07/ClickHouse/" class="article-date">
-	  <time datetime="2022-07-07T08:02:23.000Z" itemprop="datePublished">2022-07-07</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文参考CK中文官方文档：<a href="https://clickhouse.com/docs/zh/" target="_blank" rel="noopener">https://clickhouse.com/docs/zh/</a><br>ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)</p>
-<p>在传统的行式数据库系统中，数据按如下顺序存储：</p>
-<table>
-<thead>
-<tr>
-<th>ROW</th>
-<th>Title</th>
-<th>Code</th>
-<th>Note</th>
-<th>Datetime</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>#0</td>
-<td>Database</td>
-<td>0</td>
-<td>数据库</td>
-<td>2022-07-07 16:03:00</td>
-</tr>
-<tr>
-<td>#1</td>
-<td>MySQL</td>
-<td>1</td>
-<td>关系型数据库</td>
-<td>2022-07-07 16:03:10</td>
-</tr>
-<tr>
-<td>#2</td>
-<td>Nebula</td>
-<td>1</td>
-<td>图数据库</td>
-<td>2022-07-07 16:03:20</td>
-</tr>
-<tr>
-<td>#3</td>
-<td>ClickHouse</td>
-<td>1</td>
-<td>列式数据库</td>
-<td>2022-07-07 16:03:30</td>
-</tr>
-<tr>
-<td>#N</td>
-<td>…</td>
-<td>1</td>
-<td>…</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<p>处于同一行中的数据总是被物理的存储在一起。常见的行式数据库系统有：<font color="orange">MySQL</font>、<font color="orange">Postgres</font> 和 <font color="orange">MS SQL Server</font> 等</p>
-<p>而在列式数据库系统中，数据则按如下顺序存储</p>
-<table>
-<thead>
-<tr>
-<th>ROW</th>
-<th>#0</th>
-<th>#1</th>
-<th>#2</th>
-<th>#3</th>
-<th>#4</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Title</strong></td>
-<td>Database</td>
-<td>MySQL</td>
-<td>Nebula</td>
-<td>ClickHouse</td>
-<td>…</td>
-</tr>
-<tr>
-<td><strong>Code</strong></td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td><strong>Note</strong></td>
-<td>数据库</td>
-<td>关系型数据库</td>
-<td>图数据库</td>
-<td>列式数据库</td>
-<td>…</td>
-</tr>
-<tr>
-<td><strong>Datetime</strong></td>
-<td>2022-0707 16:03:00</td>
-<td>2022-0707 16:03:10</td>
-<td>2022-0707 16:03:20</td>
-<td>2022-07-07 16:03:30</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<p>这些示例只显示了数据的排列顺序，来自不同列的值被单独存储，来自同一列的数据被存储在一起。常见的列式数据库系统有：<font color="orange">Vertica</font>、<font color="orange">Paraccel</font>(Actian Matrix, Amazon Redshift)、<font color="orange">Sybase IQ</font>、<font color="orange">Exasol</font>、<font color="orange">Infobright</font>、<font color="orange">InfiniDB</font>、<font color="orange">MonetDB</font>(VectorWise, Actian Vector)、<font color="orange">LucidDB</font>、<font color="orange">SAP HANA</font>、<font color="orange">Google Dremel</font>、<font color="orange">Google PowerDrill</font>、<font color="orange">Druid</font>、<font color="orange">kdb+</font> 等</p>
-<p>不同的数据存储方式适用不同的业务场景，数据访问的场景包括：进行了何种查询、多久查询一次以及各类查询的比例；每种类型的查询(行、列和字节)读取多少数据；读取数据和更新之间的关系；使用的数据集大小以及如何使用本地的数据集；是否使用事务,以及它们是如何进行隔离的；数据的复制机制与数据的完整性要求；每种类型的查询要求的延迟与吞吐量等等</p>
-<p>系统负载越高，依据使用场景进行定制化就越重要，并且定制将会变的越精细。没有一个系统能够同时适用所有不同的业务场景。如果系统适用于广泛的场景，在负载高的情况下，要兼顾所有的场景，那么将不得不做出选择：<font color="#008080">平衡</font> OR <font color="#008080">效率</font></p>
-<h2 id="联机分析（OLAP）场景的关键特征"><a href="#联机分析（OLAP）场景的关键特征" class="headerlink" title="联机分析（OLAP）场景的关键特征"></a>联机分析（OLAP）场景的关键特征</h2><pre><code>· 绝大多数是读请求
-
-· 数据以相当大的批次(&gt; 1000行)更新，而不是单行更新;或者根本没有更新。
-
-· 已添加到数据库的数据不能修改。
-
-· 对于读取，从数据库中提取相当多的行，但只提取列的一小部分。
-
-· 宽表，即每个表包含着大量的列
-
-· 查询相对较少(通常每台服务器每秒查询数百次或更少)
-
-· 对于简单查询，允许延迟大约50毫秒
-
-· 列中的数据相对较小：数字和短字符串(例如，每个URL 60个字节)
-
-· 处理单个查询时需要高吞吐量(每台服务器每秒可达数十亿行)
-
-· 事务不是必须的
-
-· 对数据一致性要求低
-
-· 每个查询有一个大表。除了他以外，其他的都很小。
-
-· 查询结果明显小于源数据。换句话说，数据经过过滤或聚合，因此结果适合于单个服务器的RAM中
-</code></pre><p>很容易可以看出，OLAP场景与其他通常业务场景(例如,OLTP或K/V)有很大的不同， 因此想要使用OLTP或Key-Value数据库去高效的处理分析查询场景，并不是非常完美的适用方案。例如，使用OLAP数据库去处理分析请求通常要优于使用MongoDB或Redis去处理分析请求。<br></p>
-        <!--  本文参考CK中文官方文档：https://clickhouse.com/docs/zh/ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)
-在传统的行式数据库系统中，数据按如下顺序存储：
-
-
-
-ROW
-Title
-Code
-Note
-Datetime
-
-
-
-
-#0
-Database
-0
-数据库
-2022-07-07 16:03:00
-
-
-#1
-MySQL
-1......  -->
-        <p class="article-more-link">
-          <a href="/2022/07/07/ClickHouse/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/clickhouse/">clickhouse</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li></ul>
 
     </footer>
   </div>

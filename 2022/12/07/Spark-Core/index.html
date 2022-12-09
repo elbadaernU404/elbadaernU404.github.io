@@ -6,13 +6,13 @@
   <title>spark-core | 青域</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="sparkpyspark">
+  <meta name="keywords" content="spark">
   
   
   
   
   <meta name="description" content="广播变量本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费 解决方案：将本地对象设置为广播变量 12345# 1.将本地对象标记为广播变量broadcast = sc.broadcast(var)# 2.使用广播变量，从broadcast对象中取出本地对象v">
-<meta name="keywords" content="spark,pyspark">
+<meta name="keywords" content="spark">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spark-Core">
 <meta property="og:url" content="http://yoursite.com/2022/12/07/Spark-Core/index.html">
@@ -20,7 +20,7 @@
 <meta property="og:description" content="广播变量本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费 解决方案：将本地对象设置为广播变量 12345# 1.将本地对象标记为广播变量broadcast = sc.broadcast(var)# 2.使用广播变量，从broadcast对象中取出本地对象v">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2022/12/07/Spark-Core/A.png">
-<meta property="og:updated_time" content="2022-12-08T08:49:19.366Z">
+<meta property="og:updated_time" content="2022-12-08T09:05:29.171Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark-Core">
 <meta name="twitter:description" content="广播变量本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费 解决方案：将本地对象设置为广播变量 12345# 1.将本地对象标记为广播变量broadcast = sc.broadcast(var)# 2.使用广播变量，从broadcast对象中取出本地对象v">
@@ -325,13 +325,22 @@
 
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pyspark/">pyspark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
 
     </footer>
   </div>
   
     
 <nav id="article-nav">
+  
+    <a href="/2022/12/08/Spark-SQL/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Spark-SQL
+        
+      </div>
+    </a>
   
   
     <a href="/2022/12/07/Pyspark-RDD/" id="article-nav-older" class="article-nav-link-wrap">
