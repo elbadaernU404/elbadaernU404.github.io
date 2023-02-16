@@ -258,6 +258,66 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-PaddleOCR"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/07/12/PaddleOCR/">PaddleOCR</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/07/12/PaddleOCR/" class="article-date">
+	  <time datetime="2022-07-12T06:20:14.000Z" itemprop="datePublished">2022-07-12</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>进入PaddleOCR的github页面（<a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener">https://github.com/PaddlePaddle/PaddleOCR</a>），进行下载和解压</p>
+<p>使用pip进行安装，这里因为速度很慢推荐使用百度源<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure></p>
+<p>安装shapely（<a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/" target="_blank" rel="noopener">https://www.lfd.uci.edu/~gohlke/pythonlibs/</a>），下载shapely对应python和系统版本的安装包（我使用的是py39，windows_64），python版本目前不能超过3.9</p>
+<p>将下载好的Shapely-1.8.2-cp39-cp39-win_amd64.whl放进python根目录下的libs文件夹内，通过cmd或pycharm终端使用pip执行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Shapely-1.8.2-cp39-cp39-win_amd64.whl</span><br></pre></td></tr></table></figure></p>
+<p>完成以后接着来到PaddleOCR目录下，通过终端安装依赖，这里同样推荐使用百度源<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure></p>
+<p>到这里，PaddleOCR的安装完成了</p>
+<p>如果再执行<code>pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</code>到安装opencv4.4.0.46包时报错：</p>
+<font size="4" color="red">error: subprocess-exited-with-error</font>
+
+<p>说明python的版本可能存在问题，需要切换虚拟环境或回退python版本，因为opencv-python目前仅支持py3.6-3.9版本</p>
+<p>opencv-python镜像：<a href="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/opencv-python/" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/opencv-python/</a><br></p>
+        <!--  安装进入PaddleOCR的github页面（https://github.com/PaddlePaddle/PaddleOCR），进行下载和解压
+使用pip进行安装，这里因为速度很慢推荐使用百度源1pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
+安装shapely（https://www.lfd.uci.e......  -->
+        <p class="article-more-link">
+          <a href="/2022/07/12/PaddleOCR/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-ClickHouse"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -1073,64 +1133,6 @@ Numpy1.惯用写法：1import numpy as np
 <!-- Table of Contents -->
 
   
-    <article id="post-Hadoop集群组件配置"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/09/09/Hadoop集群组件配置/">Hadoop集群组件配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/09/09/Hadoop集群组件配置/" class="article-date">
-	  <time datetime="2019-09-08T18:35:33.000Z" itemprop="datePublished">2019-09-09</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Spark集群搭建"><a href="#Spark集群搭建" class="headerlink" title="Spark集群搭建"></a>Spark集群搭建</h2><p>首先在scala官网（<a href="http://www.scala-lang.org/files/archive/scala-2.10.4.tgz" target="_blank" rel="noopener">http://www.scala-lang.org/files/archive/scala-2.10.4.tgz</a>）下载scala语言并解压缩，配置/etc/profile下scala的环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SCALA_HOME=/usr/local/scala</span><br><span class="line">export PATH=$PATH:$&#123;SCALA_HOME&#125;/bin</span><br></pre></td></tr></table></figure></p>
-<p>环境变量成功生效后进行测试，输入15*15,返回225，成功</p>
-<p><img src="/2019/09/09/Hadoop集群组件配置/A.png" alt><br>接下来到spark官网（<a href="http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz</a>）下载Spark包，继续配置环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SPARK_HOME=/usr/local/soft/spark-1.6.0-bin-hadoop2.6</span><br><span class="line">export PATH=$PATH:$&#123;SPARK_HOME&#125;/bin</span><br></pre></td></tr></table></figure></p>
-<p>完成后继续配置<font color="orange">${SPARK_HOME}/conf/spark-env.sh</font></p>
-<p><img src="/2019/09/09/Hadoop集群组件配置/B.png" alt><br>配置<font color="orange">{SPARK_HOME}/conf/ slaves</font>，在vi编辑器中添加node节点,在将程序分发给node节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node1:/usr/local/soft/</span><br><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node2:/usr/local/soft/</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2019/09/09/Hadoop集群组件配置/C.png" alt><br>可以通过<font color="#008080">./start-all.sh</font>命令来启动spark集群</p>
-<p><img src="/2019/09/09/Hadoop集群组件配置/D.png" alt><br>可也有通过节点来启动：</p>
-<p><strong>·</strong> 通过<font color="#008080">sbin/start-master.sh</font>启动主节点<br><strong>·</strong> 通过<font color="#008080">sbin/start-slave.sh 192.168.218.141:8070</font>等启动node节点</p>
-<p><img src="/2019/09/09/Hadoop集群组件配置/E.png" alt><br>可以执行<font color="#008080">/bin/run-example SparkPi 10 &gt; Sparkpilog.txt</font>运行spark示例程序</p>
-<p><img src="/2019/09/09/Hadoop集群组件配置/F.png" alt><br>通过<font color="orange">jps</font>命令查看启动的java服务，进行验证</p>
-<p><img src="/2019/09/09/Hadoop集群组件配置/G.png" alt><br></p>
-        <!--  Spark集群搭建首先在scala官网（http://www.scala-lang.org/files/archive/scala-2.10.4.tgz）下载scala语言并解压缩，配置/etc/profile下scala的环境变量12export SCALA_HOME=/usr/local/scalaexport PATH=$PATH:$&#123;SCALA_HOME&#125;/bi......  -->
-        <p class="article-more-link">
-          <a href="/2019/09/09/Hadoop集群组件配置/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -1150,7 +1152,7 @@ Numpy1.惯用写法：1import numpy as np
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2022 青域 All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2023 青域 All Rights Reserved.</p>
 
 	      
     		<p class="busuanzi_uv">
@@ -1303,7 +1305,7 @@ Numpy1.惯用写法：1import numpy as np
             青域
           </div>
           <div class="panel-body">
-            Copyright © 2022 tianL.R All Rights Reserved.
+            Copyright © 2023 tianL.R All Rights Reserved.
           </div>
         </div>
       </div>
