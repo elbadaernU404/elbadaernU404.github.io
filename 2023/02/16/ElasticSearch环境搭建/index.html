@@ -6,22 +6,25 @@
   <title>elasticsearch环境搭建 | 青域</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
+  <meta name="keywords" content="elastic search">
   
   
   
-  <meta name="description" content="* 配合nebula全文检索测试环境而搭建的es单机环境 安装下载地址[https://www.elastic.co/cn/downloads/elasticsearch#ga-release]  选择linux版本   安装ES 解压缩  1$ tar xf elasticsearch-7.14.2-linux-x86_64.tar.gz  创建es用户  1$ useradd es &amp;amp">
+  
+  <meta name="description" content="* 配合nebula全文检索测试环境而搭建的es单机环境 安装下载地址【https://www.elastic.co/cn/downloads/elasticsearch#ga-release】 (或前往elastic中文社区下载中心【https://elasticsearch.cn/download/】)  选择linux版本   安装ES 解压缩  1$ tar xf elasticsearc">
+<meta name="keywords" content="elastic search">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ElasticSearch环境搭建">
 <meta property="og:url" content="http://yoursite.com/2023/02/16/ElasticSearch环境搭建/index.html">
 <meta property="og:site_name" content="青域">
-<meta property="og:description" content="* 配合nebula全文检索测试环境而搭建的es单机环境 安装下载地址[https://www.elastic.co/cn/downloads/elasticsearch#ga-release]  选择linux版本   安装ES 解压缩  1$ tar xf elasticsearch-7.14.2-linux-x86_64.tar.gz  创建es用户  1$ useradd es &amp;amp">
+<meta property="og:description" content="* 配合nebula全文检索测试环境而搭建的es单机环境 安装下载地址【https://www.elastic.co/cn/downloads/elasticsearch#ga-release】 (或前往elastic中文社区下载中心【https://elasticsearch.cn/download/】)  选择linux版本   安装ES 解压缩  1$ tar xf elasticsearc">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2023/02/16/ElasticSearch环境搭建/A.png">
 <meta property="og:image" content="http://yoursite.com/2023/02/16/ElasticSearch环境搭建/B.png">
-<meta property="og:updated_time" content="2023-02-16T08:39:10.830Z">
+<meta property="og:updated_time" content="2023-03-24T06:52:51.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ElasticSearch环境搭建">
-<meta name="twitter:description" content="* 配合nebula全文检索测试环境而搭建的es单机环境 安装下载地址[https://www.elastic.co/cn/downloads/elasticsearch#ga-release]  选择linux版本   安装ES 解压缩  1$ tar xf elasticsearch-7.14.2-linux-x86_64.tar.gz  创建es用户  1$ useradd es &amp;amp">
+<meta name="twitter:description" content="* 配合nebula全文检索测试环境而搭建的es单机环境 安装下载地址【https://www.elastic.co/cn/downloads/elasticsearch#ga-release】 (或前往elastic中文社区下载中心【https://elasticsearch.cn/download/】)  选择linux版本   安装ES 解压缩  1$ tar xf elasticsearc">
 <meta name="twitter:image" content="http://yoursite.com/2023/02/16/ElasticSearch环境搭建/A.png">
   
     <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
@@ -180,6 +183,8 @@
 	</a>
 
       
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
       
 	<a class="article-views">
 	<span id="busuanzi_container_page_pv">
@@ -191,7 +196,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <script src="\assets\js\APlayer.min.js"> </script><p>* 配合nebula全文检索测试环境而搭建的es单机环境</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><p>[<a href="https://www.elastic.co/cn/downloads/elasticsearch#ga-release]" target="_blank" rel="noopener">https://www.elastic.co/cn/downloads/elasticsearch#ga-release]</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><p>【<a href="https://www.elastic.co/cn/downloads/elasticsearch#ga-release" target="_blank" rel="noopener">https://www.elastic.co/cn/downloads/elasticsearch#ga-release</a>】 (或前往elastic中文社区下载中心【<a href="https://elasticsearch.cn/download/" target="_blank" rel="noopener">https://elasticsearch.cn/download/</a>】)</p>
 <ul>
 <li>选择linux版本</li>
 </ul>
@@ -212,19 +217,27 @@
 <li>赋予es用户权限</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> chown -R es:es elasticsearch</span><br></pre></td></tr></table></figure>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> cd elasticsearch/config</span><br><span class="line"><span class="meta">$</span> vim elasticsearch.yml</span><br></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><pre><code>* 可使用es自带的java环境：ES_JAVA_HOME
+</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> vim /etc/profile</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ES_JAVA_HOME</span></span><br><span class="line"><span class="built_in">export</span> ES_JAVA_HOME=/data/elasticsearch/jdk/</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$ES_JAVA_HOME</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> /etc/profile</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>elasticsearch config</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> elasticsearch/config</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> vim elasticsearch.yml</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span>                          <span class="comment">##节点名称</span></span><br><span class="line"><span class="attr">path.data:</span> <span class="string">/usr/local/elasticsearch/data</span>        <span class="comment">##数据存放路径</span></span><br><span class="line"><span class="attr">path.logs:</span> <span class="string">/usr/local/elasticsearch/logs</span>        <span class="comment">##日志存放路径 </span></span><br><span class="line"><span class="attr">bootstrap.memory_lock:</span> <span class="literal">true</span>                <span class="comment">##避免es使用swap交换分区</span></span><br><span class="line"><span class="attr">indices.requests.cache.size:</span> <span class="number">5</span><span class="string">%</span>            <span class="comment">##缓存配置</span></span><br><span class="line"><span class="attr">indices.queries.cache.size:</span> <span class="number">10</span><span class="string">%</span>            <span class="comment">##缓存配置</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">192.168</span><span class="number">.80</span><span class="number">.128</span>               <span class="comment">##本机IP</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span>                            <span class="comment">##默认端口</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["node-1"]</span>   <span class="comment">##设置符合主节点条件的节点的主机名或 IP 地址来引导启动集群</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span>                    <span class="comment">##跨域</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>将当前用户软硬限制调大</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> vim /etc/security/limits.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /etc/security/limits.conf</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">es</span> <span class="string">soft</span> <span class="string">nofile</span> <span class="number">65535</span></span><br><span class="line"><span class="string">es</span> <span class="string">hard</span> <span class="string">nofile</span> <span class="number">65537</span></span><br><span class="line"><span class="string">es</span> <span class="string">soft</span> <span class="string">memlock</span> <span class="string">unlimited</span></span><br><span class="line"><span class="string">es</span> <span class="string">hard</span> <span class="string">memlock</span> <span class="string">unlimited</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>修改vm.max_map_count内存</li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">vm.max_map_count=655360</span></span><br></pre></td></tr></table></figure>
-<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> su es</span><br><span class="line"><span class="meta">$</span> cd ../bin</span><br><span class="line"><span class="meta">$</span> ./elasticsearch -d</span><br></pre></td></tr></table></figure>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> su es</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ../bin</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./elasticsearch -d</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><h3 id="下载地址-1"><a href="#下载地址-1" class="headerlink" title="下载地址"></a>下载地址</h3><p>[<a href="https://elasticsearch.cn/download/]" target="_blank" rel="noopener">https://elasticsearch.cn/download/]</a></p>
 <ul>
 <li>选择和es相同版本</li>
@@ -232,14 +245,14 @@
 <h3 id="安装kibana"><a href="#安装kibana" class="headerlink" title="安装kibana"></a>安装kibana</h3><ul>
 <li>解压缩</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> tar -zxvf kibana-7.14.2-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> tar -zxvf kibana-7.14.2-linux-x86_64.tar.gz</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>更名</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> mv kibana-7.14.2-linux-x86_64 kibana</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mv kibana-7.14.2-linux-x86_64 kibana</span></span><br></pre></td></tr></table></figure>
 <h3 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd kibana</span><br><span class="line">vim config/kibana.yml</span><br></pre></td></tr></table></figure>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server.port:</span> <span class="number">5601</span></span><br><span class="line"><span class="attr">server.host:</span> <span class="string">"0.0.0.0"</span></span><br><span class="line"><span class="attr">elasticsearch.hosts:</span> <span class="string">"http://192.168.80.128:9200"</span></span><br><span class="line"><span class="attr">kibana.index:</span> <span class="string">".kibana"</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 修改/etc/sudoers文件，进入超级用户, 给予es用户写权限</span><br><span class="line">(base) [root@localhost kibana]# chmod u+w /etc/sudoers</span><br><span class="line"><span class="meta">#</span> 编辑/etc/sudoers文件</span><br><span class="line">(base) [root@localhost kibana]# vim /etc/sudoers</span><br><span class="line"><span class="meta">#</span> 赋予es用户权限</span><br><span class="line">es    ALL=(ALL)       ALL</span><br><span class="line">(base) [root@localhost kibana]# chmod u-w /etc/sudoers</span><br><span class="line"><span class="meta">#</span> 撤销es用户文件写权限</span><br><span class="line">(base) [root@localhost kibana]# sudo chown -R es:es /usr/local/kibana</span><br><span class="line">(base) [root@localhost kibana]# su es</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 修改/etc/sudoers文件，进入超级用户, 给予es用户写权限</span></span><br><span class="line">(base) [root@localhost kibana]# chmod u+w /etc/sudoers</span><br><span class="line"><span class="meta">#</span><span class="bash"> 编辑/etc/sudoers文件</span></span><br><span class="line">(base) [root@localhost kibana]# vim /etc/sudoers</span><br><span class="line"><span class="meta">#</span><span class="bash"> 赋予es用户权限</span></span><br><span class="line">es    ALL=(ALL)       ALL</span><br><span class="line">(base) [root@localhost kibana]# chmod u-w /etc/sudoers</span><br><span class="line"><span class="meta">#</span><span class="bash"> 撤销es用户文件写权限</span></span><br><span class="line">(base) [root@localhost kibana]# sudo chown -R es:es /usr/local/kibana</span><br><span class="line">(base) [root@localhost kibana]# su es</span><br></pre></td></tr></table></figure>
 <h3 id="启动-1"><a href="#启动-1" class="headerlink" title="启动"></a>启动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[es@localhost kibana]$ cd bin</span><br><span class="line">[es@localhost bin]$ ./kibana</span><br></pre></td></tr></table></figure>
 <ul>
 <li>进入kibana</li>
@@ -278,11 +291,22 @@
 
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elastic-search/">elastic search</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
+  
+    <a href="/2023/03/24/Nebula-Spark/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nebula-Spark和图算法
+        
+      </div>
+    </a>
   
   
     <a href="/2022/12/08/Spark-SQL/" id="article-nav-older" class="article-nav-link-wrap">

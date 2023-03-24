@@ -258,6 +258,69 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-PaddleOCR表格识别"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/07/21/PaddleOCR表格识别/">PaddleOCR表格识别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/07/21/PaddleOCR表格识别/" class="article-date">
+	  <time datetime="2022-07-21T06:15:22.000Z" itemprop="datePublished">2022-07-21</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>PaddleOCR2.5根目录下的ppstructure文件模块是PaddleOCR提供的一个可用于复杂文档结构分析处理的OCR工具包<br>github文档页面：<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/ppstructure/README_ch.md" target="_blank" rel="noopener">https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/ppstructure/README_ch.md</a></p>
+<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p><strong><font size="4" color="orange">·</font></strong> 安装paddleocr version&gt;=2.5<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install &quot;paddleocr&gt;=2.5&quot;</span><br></pre></td></tr></table></figure></p>
+<p><strong><font size="4" color="orange">·</font></strong> 安装版面分析依赖包layoutparser<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl</span><br></pre></td></tr></table></figure></p>
+<p><strong><font size="4" color="orange">·</font></strong> 安装DocVQA依赖包paddlenlp（DocVQA功能，选装）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install paddlenlp</span><br></pre></td></tr></table></figure></p>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><p>在PaddleOCR/ppstructure目录下进入CMD命令行，或者创建python脚本启动<br><strong><font size="4" color="orange">·</font></strong> 表格识别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paddleocr --image_dir=docs/table/table.jpg --type=structure --layout=false</span><br></pre></td></tr></table></figure>
+<p>python脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PPStructure,save_structure_res</span><br><span class="line"></span><br><span class="line">table_engine = PPStructure(layout=<span class="literal">False</span>, show_log=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">save_folder = <span class="string">'./output'</span></span><br><span class="line">img_path = <span class="string">'PaddleOCR/ppstructure/docs/table/table.jpg'</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">result = table_engine(img)</span><br><span class="line">save_structure_res(result, save_folder, os.path.basename(img_path).split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> result:</span><br><span class="line">    line.pop(<span class="string">'img'</span>)</span><br><span class="line">    print(line)</span><br></pre></td></tr></table></figure>
+<p><strong><font size="4" color="orange">·</font></strong> 版面分析</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paddleocr --image_dir=docs/table/1.png --type=structure --table=false --ocr=false</span><br></pre></td></tr></table></figure>
+<p>python脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PPStructure,save_structure_res</span><br><span class="line"></span><br><span class="line">table_engine = PPStructure(table=<span class="literal">False</span>, ocr=<span class="literal">False</span>, show_log=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">save_folder = <span class="string">'./output'</span></span><br><span class="line">img_path = <span class="string">'PaddleOCR/ppstructure/docs/table/1.png'</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">result = table_engine(img)</span><br><span class="line">save_structure_res(result, save_folder, os.path.basename(img_path).split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> result:</span><br><span class="line">    line.pop(<span class="string">'img'</span>)</span><br><span class="line">    print(line)</span><br></pre></td></tr></table></figure>
+<p><strong><font size="4" color="orange">·</font></strong> 版面分析+表格识别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paddleocr --image_dir=docs/table/1.png --type=structure</span><br></pre></td></tr></table></figure>
+<p>python脚本：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PPStructure, draw_structure_result, save_structure_res</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line">table_engine = PPStructure(show_log=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">save_folder = <span class="string">'./output'</span></span><br><span class="line">img_path = <span class="string">'./ppstructure/docs/table/table.jpg'</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">result = table_engine(img)</span><br><span class="line">save_structure_res(result, save_folder, os.path.basename(img_path).split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> result:</span><br><span class="line">    line.pop(<span class="string">'img'</span>)</span><br><span class="line">    print(line)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">font_path = <span class="string">'./doc/fonts/simfang.ttf'</span></span><br><span class="line">image = Image.open(img_path).convert(<span class="string">'RGB'</span>)</span><br><span class="line">im_show = draw_structure_result(image, result, font_path=font_path)</span><br><span class="line">im_show = Image.fromarray(im_show)</span><br><span class="line">im_show.save(<span class="string">'result.jpg'</span>)</span><br></pre></td></tr></table></figure></p>
+        <!--  PaddleOCR2.5根目录下的ppstructure文件模块是PaddleOCR提供的一个可用于复杂文档结构分析处理的OCR工具包github文档页面：https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/ppstructure/README_ch.md
+安装依赖· 安装paddleocr version&gt;=2.51......  -->
+        <p class="article-more-link">
+          <a href="/2022/07/21/PaddleOCR表格识别/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-PaddleOCR"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -1035,87 +1098,6 @@ Numpy1.惯用写法：1import numpy as np
         <!--  1.训练模型和框架1.1 Adience数据集Adience图片集包括Flickr等相册，通过从iPhone5（或更高版本）的智能手机等移动设备自动上传并进行组装，由其作者根据知识共享（CC）许可向公众发布。数据集提供了共计26580张面部照片的数据和基准，旨在尽可能真实地应对实际成像并做出判断。数据的标签有年龄组、性别、户外等，可用于监督学习的人脸识别对年龄的研究。Adience收录的数......  -->
         <p class="article-more-link">
           <a href="/2021/05/26/基于卷积神经网络的面部年龄识别/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN/">CNN</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-卷积神经网络算法"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2021/05/25/卷积神经网络算法/">卷积神经网络算法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2021/05/25/卷积神经网络算法/" class="article-date">
-	  <time datetime="2021-05-25T05:01:35.000Z" itemprop="datePublished">2021-05-25</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>神经网络(Neural Networks，NN)是人工智能研究领域的重要组成部分，是大数据与人工智能技术发展的重要动力。</p>
-<h2 id="1-卷积神经网络"><a href="#1-卷积神经网络" class="headerlink" title="1.卷积神经网络"></a>1.卷积神经网络</h2><p>卷积神经网络属于机器学习领域当中的深度学习技术，是一类包含了卷积计算并且具有深度结构的前馈神经网络（Feedforward Neural Networks）。由纽约大学教授Yann LeCun在1998年提出，主要应用于语音识别、计算机视觉、自然语言处理等领域。</p>
-<p>其本质上是一个采用了局部连接和权值共享方式的多层感知机，包括一般的卷积神经网络（CNN）和深度卷积神经网络（Deep Convolutional Neural Networks, DCNN），通常不做特意区分。一般的卷积神经网络存在浅层结构，但准确性和表现力相对不足，深度卷积神经网络可以自动从大规模的数据中进行特征学习，且具备将结果向同类型的未知数据泛化的能力，是目前最常用的神经网络技术。</p>
-<h2 id="2-卷积神经网络原理"><a href="#2-卷积神经网络原理" class="headerlink" title="2.卷积神经网络原理"></a>2.卷积神经网络原理</h2><h3 id="2-1-卷积原理"><a href="#2-1-卷积原理" class="headerlink" title="2.1 卷积原理"></a>2.1 卷积原理</h3><p>从数学的角度出发，分析数学中定义一种运算，称(f*g)(n)为(f，g)的卷积（Convolution）。其连续的定义为：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/A.png" alt><br>其离散的定义为：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/B.png" alt></p>
-<p>其连续和离散具有共同的特征：n=τ+(n-τ)，当令x=τ，y=n-τ时，有直线：x+y=n，其图像为如下图：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/C.png" alt><br>如果遍历这些直线，就类似于沿直线卷起毛巾的过程。</p>
-<p>下面将卷积扩展到二维，有两个R2→R的二元函数f(x，y)和g(x，y)，那么令f和g的卷积就是一个新的R2→R的二元函数c(x，y)：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/D.png" alt><br>其含义为将f在(s，t)上的值乘以g在(x-s，y-t)上的值，再遍历从-∞到+∞全部s和t的值，进行f和g积分意义上的加和，最终得到c在(x，y)上的值（二重积分）。</p>
-<p>可以看出这种加和是一种加权求和，即以f为权，(x，y)为中心，将f在(s，t)上的值乘以g距离中心(-s，-t)上的值再相加。</p>
-<p>其离散的表示形式为：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/E.png" alt></p>
-<h3 id="2-2-神经元"><a href="#2-2-神经元" class="headerlink" title="2.2 神经元"></a>2.2 神经元</h3><p>神经细胞有众多的树突和一个伸长的轴突，不同神经元之间通过树突连接轴突的方式，并通过神经脉冲的传导进行细胞间交流。具体过程为神经细胞A的轴突连接到神经细胞B的树突，传导神经脉冲，神经细胞A根据其树突传递来的信号决定是否通过轴突来向下一个神经细胞C传递信息。</p>
-<p>1943年，美国心理学家W.McCulloch和数学家W.Pitts根据生物神经元、生物电和生物化学的运行机理提出了二值神经元的数学模型，即神经细胞机能的简单化的数理模型，被称作莫克罗-彼特氏神经模型（McCulloch－Pitts′Neuron Model），也叫人工神经元模型。</p>
-<p><img src="/2021/05/25/卷积神经网络算法/F.png" alt><br>一个人工神经元模型就是对生物神经元的数学建模：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/G.png" alt><br>其中X1、X2、X3、…、Xn分别是从其他神经元传入的输入信号，Wi1、Wi2、Wi3、…、Win分别是对应X1、X2、X3、…、Xn的权重。θ表示一个阈值，或称为偏置（Bias），其设置目的是正确将样本分类。神经元当前的输入信号和偏置相加后产生当前神经元的最终处理信号Net，称为净激活或净激励（Net Activation），并作为激活函数或激励函数（Activation Function）f的输入，即f（net），最终得到对应的输出yi。形如：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/H.png" alt><br>激活函数<strong>f（net）</strong>的作用是通过加入非线性因素来解决线性模型的表达和分类能力不足的问题。常见的激活函数有：</p>
-<h4 id="1-Linear"><a href="#1-Linear" class="headerlink" title="1.Linear"></a>1.Linear</h4><p>Linear是一个线性激活函数：<strong>f(x)=∑i xiwi+b</strong>。本质上就是对输入的加权求和再加上偏置，所以相对简单，功能较为单一。</p>
-<p>由于多个矩阵进行连乘的结果仍是矩阵，类似的，如果一个神经网络中仅使用线性激活函数，那么就只能学习到线性函数。</p>
-<p><img src="/2021/05/25/卷积神经网络算法/I.png" alt></p>
-<h4 id="2-Sigmoid"><a href="#2-Sigmoid" class="headerlink" title="2.Sigmoid"></a>2.Sigmoid</h4><p>Sigmoid是在神经网络研究的初始阶段就被投入了广泛使用的一个经典的非线性激活函数，其表达式是一种逻辑斯蒂函数（Logistic Function）：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/J.png" alt><br>其中<strong>x=∑i xiwi+b</strong></p>
-<p>这个函数在函数的区域内是完全可导的，输出为0到1范围内的正值（被证实不易于神经网络对收敛的学习），并且对于接近0和1的函数部分，导数无限趋近于0，存在明显的梯度衰减问题。所以现阶段对Sigmod函数的应用已经越来越少。</p>
-<p><img src="/2021/05/25/卷积神经网络算法/K.png" alt></p>
-<h4 id="3-Tanh"><a href="#3-Tanh" class="headerlink" title="3.Tanh"></a>3.Tanh</h4><p>通过其图像可以看出Tanh函数旨在克服Sigmoid函数只能取正值的缺陷，将其设计为关于原点对称的双曲正切（hyperbolic tangent）形式：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/L.png" alt><br>其中<strong>x=∑i xiwi+b</strong>。函数的导数取值范围在0到1之间，优于sigmoid的0至1/4，在一定程度上减轻了梯度的消失。但函数的两端仍然存在梯度饱和问题，且计算变得更为复杂。</p>
-<p>Tanh的输入和输出能够保持非线性单调上升和下降的关系，符合BP算法网络的梯度求解，容错性好。</p>
-<p><img src="/2021/05/25/卷积神经网络算法/M.png" alt></p>
-<h4 id="4-ReLU-（The-Rectified-Linear-Unit）"><a href="#4-ReLU-（The-Rectified-Linear-Unit）" class="headerlink" title="4.ReLU （The Rectified Linear Unit）"></a>4.ReLU （The Rectified Linear Unit）</h4><p>其公式的表达形式为：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/N.png" alt><br>也可以表示为<strong>f(x)=max(0,x)</strong>。即当输入信号小于0时，函数的输出为0；当输入信号大于0时，函数的输出等于输入值。</p>
-<p>ReLU拥有操作简便，耗时少的优点，又具有部分线性的特性，不会出现过饱和现象、减免了梯度消失的问题（函数得到的随机梯度下降法的收敛速度比Sigmoid和Tanh都快）。并且ReLU只需要一个阈值就可以得到激活值，不用和Sigmoid一样进行复杂的指数运算。但其神经元比价脆弱容易失去作用：当神经元接收到非常大的梯度数据流以后，该神经元可能就不再对输入数据进行反馈了，所以在进行训练时要设置一个较小的学习率参数。ReLU是目前用于神经网络领域最常见的激活函数之一。</p>
-<p><img src="/2021/05/25/卷积神经网络算法/O.png" alt><br>这就是单个人工神经元的定义。但是早期的单个人工神经元模型甚至无法处理异或等运算，在多个人工神经元发展为神经网络之后逐渐克服了这些问题和种种困难，成为现代人工智能的重要模型。<br></p>
-        <!--  神经网络(Neural Networks，NN)是人工智能研究领域的重要组成部分，是大数据与人工智能技术发展的重要动力。
-1.卷积神经网络卷积神经网络属于机器学习领域当中的深度学习技术，是一类包含了卷积计算并且具有深度结构的前馈神经网络（Feedforward Neural Networks）。由纽约大学教授Yann LeCun在1998年提出，主要应用于语音识别、计算机视觉、自然语言处理......  -->
-        <p class="article-more-link">
-          <a href="/2021/05/25/卷积神经网络算法/#more">Read More</a>
         </p>
       
     </div>
