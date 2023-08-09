@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2023/08/08/arcface-paddle/</loc>
+    
+    <lastmod>2023-08-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2023/08/07/paddleDetection/</loc>
+    
+    <lastmod>2023-08-09</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2023/08/09/paddleDetection-OpenCV%E6%A3%80%E6%B5%8B%E6%A1%86%E8%BD%AC%E4%B8%AD%E6%96%87/</loc>
     
     <lastmod>2023-08-09</lastmod>
@@ -11,16 +29,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2023/08/09/arcface-paddle/</loc>
-    
-    <lastmod>2023-08-09</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2023/08/09/paddleDetection/</loc>
+    <loc>http://yoursite.com/2021/05/25/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95/</loc>
     
     <lastmod>2023-08-09</lastmod>
     
@@ -192,15 +201,6 @@
   
   <url>
     <loc>http://yoursite.com/2019/06/06/%E5%AE%9E%E4%B9%A0%E9%A1%B9%E7%9B%AE%EF%BC%9ACRM%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/</loc>
-    
-    <lastmod>2022-06-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2021/05/25/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95/</loc>
     
     <lastmod>2022-06-27</lastmod>
     
@@ -504,14 +504,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/ctf/</loc>
+    <loc>http://yoursite.com/tags/BurpSuite/</loc>
     <lastmod>2023-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/BurpSuite/</loc>
+    <loc>http://yoursite.com/tags/ctf/</loc>
     <lastmod>2023-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -588,13 +588,6 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/QT/</loc>
-    <lastmod>2023-08-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/tags/nebula/</loc>
     <lastmod>2023-08-09</lastmod>
     <changefreq>weekly</changefreq>
@@ -602,7 +595,21 @@
   </url>
   
   <url>
+    <loc>http://yoursite.com/tags/QT/</loc>
+    <lastmod>2023-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/tags/spark/</loc>
+    <lastmod>2023-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/fastapi/</loc>
     <lastmod>2023-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -630,13 +637,6 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/fastapi/</loc>
-    <lastmod>2023-08-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/tags/pyspark/</loc>
     <lastmod>2023-08-09</lastmod>
     <changefreq>weekly</changefreq>
@@ -658,14 +658,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/xpath/</loc>
+    <loc>http://yoursite.com/tags/beautifulsoup/</loc>
     <lastmod>2023-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/beautifulsoup/</loc>
+    <loc>http://yoursite.com/tags/xpath/</loc>
     <lastmod>2023-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -700,7 +700,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/%E5%B7%A5%E5%85%B7%E7%AB%99/</loc>
+    <loc>http://yoursite.com/tags/paddlepaddle/</loc>
     <lastmod>2023-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -708,6 +708,13 @@
   
   <url>
     <loc>http://yoursite.com/tags/QQ%E5%9D%A6%E7%99%BD%E8%AF%B4/</loc>
+    <lastmod>2023-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/%E5%B7%A5%E5%85%B7%E7%AB%99/</loc>
     <lastmod>2023-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -736,6 +743,20 @@
   
   <url>
     <loc>http://yoursite.com/tags/%E6%B5%B7%E9%BE%9F%E7%BB%98%E5%9B%BE/</loc>
+    <lastmod>2023-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/paddlepaddle-opencv/</loc>
+    <lastmod>2023-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/opencv/</loc>
     <lastmod>2023-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -808,6 +829,13 @@
   
   <url>
     <loc>http://yoursite.com/categories/%E8%84%9A%E6%9C%AC/</loc>
+    <lastmod>2023-08-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2023-08-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
