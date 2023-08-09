@@ -258,6 +258,155 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-2018年上实训记录"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/06/04/2018年上实训记录/">2018年上实训记录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/06/04/2018年上实训记录/" class="article-date">
+	  <time datetime="2018-06-04T08:59:38.000Z" itemprop="datePublished">2018-06-04</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/个人笔记/">个人笔记</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>（持续更新ing…）</p>
+<h2 id="Day1"><a href="#Day1" class="headerlink" title="Day1."></a>Day1.</h2><p>所谓实训的大目标只有一个俄罗斯方块的设计，工具为Codeblocks。<br>实际上挺无聊，上午上机的环境之前都有配置过，简单调试了下，坑爹的是不知情的情况下安装了什么伽卡他卡我卡大家卡的流氓学生端课堂工具（已灭口，下图1附加方法）。下午随进度写了几行代码，仅仅调整了光标以及颜色等的设置，然后就（结束了？？）emmmmm，GG，懵逼中水掉一天，还是顺带学些其他的玩意吧XD。<br>不多吐槽，这玩意虽然常见，代码千千万万但到自己手里毕竟也是第一次做，踏实些。<br><img src="/2018/06/04/2018年上实训记录/Day1B.png" alt><br><img src="/2018/06/04/2018年上实训记录/Day1A.png" alt><br></p>
+        <!--  （持续更新ing…）
+Day1.所谓实训的大目标只有一个俄罗斯方块的设计，工具为Codeblocks。实际上挺无聊，上午上机的环境之前都有配置过，简单调试了下，坑爹的是不知情的情况下安装了什么伽卡他卡我卡大家卡的流氓学生端课堂工具（已灭口，下图1附加方法）。下午随进度写了几行代码，仅仅调整了光标以及颜色等的设置，然后就（结束了？？）emmmmm，GG，懵逼中水掉一天，还是顺带学些其他的玩意......  -->
+        <p class="article-more-link">
+          <a href="/2018/06/04/2018年上实训记录/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-ISCC2018的部分WP"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/05/07/ISCC2018的部分WP/">ISCC2018的部分WP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/07/ISCC2018的部分WP/" class="article-date">
+	  <time datetime="2018-05-07T12:03:21.000Z" itemprop="datePublished">2018-05-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/信息安全/">信息安全</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>（持续更新…）</p>
+<h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p><img src="/2018/05/07/ISCC2018的部分WP/1.png" alt><br>要求输入比服务器上大的数字，随便输入几个9，发现最多只能输入三位数，直接F12找到maxlength=3将3修改为4再随意填入一个四位数即可。<br><img src="/2018/05/07/ISCC2018的部分WP/2.png" alt></p>
+<h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><p>打开地址后是一份PHP代码：<br><img src="/2018/05/07/ISCC2018的部分WP/3.png" alt><br>由代码读出需要使strcmp函数值为0，应该是要构造出长度相等的数组。构造payload，在连接后添入/?password[]=a，返回flag。<br><img src="/2018/05/07/ISCC2018的部分WP/4.png" alt></p>
+<h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><p><img src="/2018/05/07/ISCC2018的部分WP/5.png" alt><br>用Burpsuite抓包，GO一次后得到提示在Request添加X-Forwarded-For:127.0.0.1即可。<br><img src="/2018/05/07/ISCC2018的部分WP/6.png" alt><br></p>
+        <!--  （持续更新…）
+1.要求输入比服务器上大的数字，随便输入几个9，发现最多只能输入三位数，直接F12找到maxlength=3将3修改为4再随意填入一个四位数即可。
+2.打开地址后是一份PHP代码：由代码读出需要使strcmp函数值为0，应该是要构造出长度相等的数组。构造payload，在连接后添入/?password[]=a，返回flag。
+3.用Burpsuite抓包，GO一次后得到提示......  -->
+        <p class="article-more-link">
+          <a href="/2018/05/07/ISCC2018的部分WP/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-关于QQ坦白说JSON源破解对方身份的方法"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/">关于QQ坦白说JSON源破解对方身份的方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/" class="article-date">
+	  <time datetime="2018-04-03T05:06:04.000Z" itemprop="datePublished">2018-04-03</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/信息安全/">信息安全</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>这个问题在4月2日晚上七点左右已经被修复，存在时间不长。随着被修复的问题还有很多，墨水不多，这里不多说。<br>首先通过<a href="https://ti.qq.com/cgi-node/honest-say/receive/mine" target="_blank" rel="noopener">https://ti.qq.com/cgi-node/honest-say/receive/mine</a> ，可以打开自己的坦白说JSON源，然后发现EncodeUin后的加密代码，如图：<br><img src="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/B.png" alt><br>有大佬破解出了：<br><img src="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/A.png" alt><br>对照解码后便可以得到发送者的QQ号码……恩 ，很可怕。<br>当然问题很严重，修复也很快，现在只能被开发者调侃。怎么说呢，就当愚人节菜单吧，在匿名的世界里皮一下也得适当一些233。<br><img src="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/C.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QQ坦白说/">QQ坦白说</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-CTF-Tests-3"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -604,52 +753,11 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-Start-test"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/01/25/Start-test/">Start test</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/01/25/Start-test/" class="article-date">
-	  <time datetime="2018-01-25T06:20:21.000Z" itemprop="datePublished">2018-01-25</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>@2018.1<br>Okeydokey.Finished.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+    <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
   </nav>
 
 </section>
