@@ -258,6 +258,76 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Spark基础"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/12/01/Spark基础/">Spark基础</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/12/01/Spark基础/" class="article-date">
+	  <time datetime="2022-12-01T07:40:17.000Z" itemprop="datePublished">2022-12-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><font color="gold">定义</font>：<font color="gold">Apache Spark是用于大规模数据处理的统一分析引擎。</font>其核心数据结构：弹性分布式数据集（RDD）能够在大规模集群中做内存运算，且具有一定容错方式。</p>
+<h2 id="Spark框架"><a href="#Spark框架" class="headerlink" title="Spark框架"></a>Spark框架</h2><h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p><font color="orange"><strong>· Spark Core</strong></font>：以RDD为数据抽象，提供Python、Java、Scala、R语言的API和Spark的核心功能，是Spark运行的基础；</p>
+<p><font color="orange"><strong>· SparkSQL</strong></font>：基于SparkCore，提供机构化数据处理模块，支持以SQL语言对数据进行处理；同时可以作为StructuredStreaming模块的基础，进行数据流式计算；</p>
+<p><font color="orange"><strong>· SparkStreaming</strong></font>：基于SparkCore，提供数据流式计算；</p>
+<p><font color="orange"><strong>· MLlib</strong></font>：基于SparkCore，内置大量机器学习库和算法API，进行机器学习计算；</p>
+<p><font color="orange"><strong>· GraphX</strong></font>：基于SparkCore，提供了大量图计算API，用于分布式图计算</p>
+<h3 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h3><p><strong>· 本地模式（单机/local）</strong>：以一个独立进程，通过内部的多线程模拟Spark运行环境</p>
+<p><strong>· Standalone模式（集群）</strong>：Spark的各个角色以独立进程形式存在，组成集群环境</p>
+<p><strong>· Hadoop YARN模式（集群）</strong>：Spark的各个角色运行在YARN容器内部，组成集群环境</p>
+<p><strong>· Kubernetes模式（容器集群）</strong>：Spark的各个角色运行在Kubernetes容器内部，组成集群环境</p>
+<p><strong>· 云服务模式</strong></p>
+<h3 id="角色"><a href="#角色" class="headerlink" title="角色"></a>角色</h3><ul>
+<li><strong>资源</strong></li>
+</ul>
+<p><strong>· Master角色</strong>：集群资源管理</p>
+<p><strong>· Worker角色</strong>：单机资源管理(所在服务器资源管理)</p>
+<ul>
+<li><strong>任务</strong></li>
+</ul>
+<p><strong>· Driver角色</strong>：单个任务管理</p>
+<p><strong>· Executor角色</strong>：单个任务计算</p>
+        <!--  定义：Apache Spark是用于大规模数据处理的统一分析引擎。其核心数据结构：弹性分布式数据集（RDD）能够在大规模集群中做内存运算，且具有一定容错方式。
+Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、Scala、R语言的API和Spark的核心功能，是Spark运行的基础；
+· SparkSQL：基于SparkCore，提供机构化数据处理......  -->
+        <p class="article-more-link">
+          <a href="/2022/12/01/Spark基础/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spark/">Spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Nebula-全文检索"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -1006,62 +1076,6 @@ MySQL
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scrapy/">scrapy</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Python爬虫：识别网页的验证码（tesseract-OCR）"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/">Python爬虫：识别网页的验证码（tesseract-OCR）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/" class="article-date">
-	  <time datetime="2022-04-29T07:00:29.000Z" itemprop="datePublished">2022-04-29</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人</p>
-<p>但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^</p>
-<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/0.png" alt></p>
-<h2 id="获取网页验证码"><a href="#获取网页验证码" class="headerlink" title="获取网页验证码"></a>获取网页验证码</h2><p>首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容后发现并不能得到生成验证码的对应id，以为是知网做了对爬虫头的限制，于是在headers里添加了<font color="green">“Referer”</font>和<font color="green">“Accept-Encoding”</font>等信息，但是并没有效果。抓包在Doc中发现网页HTTP请求的方法为”<font color="orange">GET</font>“方法，尝试不加id也得到了验证码图片</p>
-<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/A.png" alt><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"method"</span>: <span class="string">"GET"</span>,</span><br><span class="line">    <span class="string">"Accept"</span>: <span class="string">"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Accept-Encoding"</span>: <span class="string">"gzip, deflate, br"</span>,</span><br><span class="line">    <span class="string">"Cache-Control"</span>: <span class="string">"max-age=0"</span>,</span><br><span class="line">    <span class="string">"scheme"</span>: <span class="string">"https"</span>,</span><br><span class="line">    <span class="string">"accept-language"</span>: <span class="string">"zh-CN,zh;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Cookie"</span>: <span class="string">"U:M_distinctid=1809edfcf6e8ff-088ab0a6edb385-17333273-1fa400-1809edfcf6f9fe; _pk_ref=["</span><span class="string">","</span><span class="string">",1651932918,'https://www.baidu.com/link?url=PnlS4wubLFxXVNXrTBRCZMAhA0P5TZLlCBAhBvXfLke&amp;wd=&amp;eqid=e52482a8001102070000000562767ee2']; Ecp_ClientId=1220507221503170167; Ecp_IpLoginFail=22050736.161.51.128; Ecp_ClientIp=36.161.51.128; language=chs; _pk_id=2ce0e7fb-229f-4440-a78b-57771deac2fe.1651932918.1.1651933578.1651932918.; ASP.NET_SessionId=he1no3kmgo3bwuktv1xa1lhs; SID_mycnki=020101"</span>,</span><br><span class="line">    <span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"</span>,</span><br><span class="line">    <span class="string">"Referer"</span>: <span class="string">"https://www.cnki.net/"</span></span><br><span class="line">    <span class="string">"Sec-Fetch-Dest:"</span> <span class="string">'document'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Mode"</span>: <span class="string">'navigate'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Site"</span>: <span class="string">'same-origin'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-User"</span>: <span class="string">'?1'</span>,</span><br><span class="line">    <span class="string">"Upgrade-Insecure-Requests"</span>: <span class="string">'1'</span></span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">"https://my.cnki.net/Register/CommonRegister.aspx?returnUrl=https://www.cnki.net#"</span></span><br><span class="line">r = requests.get(url, headers=headers).content.decode(<span class="string">'utf-8'</span>)</span><br><span class="line">html = etree.HTML(r)</span><br><span class="line">link=html.xpath(<span class="string">'//*[@id="commonRe"]/div[10]/div[3]/a/img/@src'</span>)[<span class="number">0</span>]</span><br><span class="line">img_url = <span class="string">"https://my.cnki.net/Register/"</span> + link</span><br><span class="line">img = requests.get(img_url, headers=headers,stream=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'checkcode.jpg'</span>,<span class="string">'wb'</span>)<span class="keyword">as</span> file:</span><br><span class="line">    file.write(img.raw.read())</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/1.png" alt><br></p>
-        <!--  在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人
-但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^
-
-获取网页验证码首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，......  -->
-        <p class="article-more-link">
-          <a href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
 
     </footer>
   </div>

@@ -258,6 +258,62 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Python爬虫：识别网页的验证码（tesseract-OCR）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/">Python爬虫：识别网页的验证码（tesseract-OCR）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/" class="article-date">
+	  <time datetime="2022-04-29T07:00:29.000Z" itemprop="datePublished">2022-04-29</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人</p>
+<p>但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/0.png" alt></p>
+<h2 id="获取网页验证码"><a href="#获取网页验证码" class="headerlink" title="获取网页验证码"></a>获取网页验证码</h2><p>首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容后发现并不能得到生成验证码的对应id，以为是知网做了对爬虫头的限制，于是在headers里添加了<font color="green">“Referer”</font>和<font color="green">“Accept-Encoding”</font>等信息，但是并没有效果。抓包在Doc中发现网页HTTP请求的方法为”<font color="orange">GET</font>“方法，尝试不加id也得到了验证码图片</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/A.png" alt><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"method"</span>: <span class="string">"GET"</span>,</span><br><span class="line">    <span class="string">"Accept"</span>: <span class="string">"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Accept-Encoding"</span>: <span class="string">"gzip, deflate, br"</span>,</span><br><span class="line">    <span class="string">"Cache-Control"</span>: <span class="string">"max-age=0"</span>,</span><br><span class="line">    <span class="string">"scheme"</span>: <span class="string">"https"</span>,</span><br><span class="line">    <span class="string">"accept-language"</span>: <span class="string">"zh-CN,zh;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Cookie"</span>: <span class="string">"U:M_distinctid=1809edfcf6e8ff-088ab0a6edb385-17333273-1fa400-1809edfcf6f9fe; _pk_ref=["</span><span class="string">","</span><span class="string">",1651932918,'https://www.baidu.com/link?url=PnlS4wubLFxXVNXrTBRCZMAhA0P5TZLlCBAhBvXfLke&amp;wd=&amp;eqid=e52482a8001102070000000562767ee2']; Ecp_ClientId=1220507221503170167; Ecp_IpLoginFail=22050736.161.51.128; Ecp_ClientIp=36.161.51.128; language=chs; _pk_id=2ce0e7fb-229f-4440-a78b-57771deac2fe.1651932918.1.1651933578.1651932918.; ASP.NET_SessionId=he1no3kmgo3bwuktv1xa1lhs; SID_mycnki=020101"</span>,</span><br><span class="line">    <span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"</span>,</span><br><span class="line">    <span class="string">"Referer"</span>: <span class="string">"https://www.cnki.net/"</span></span><br><span class="line">    <span class="string">"Sec-Fetch-Dest:"</span> <span class="string">'document'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Mode"</span>: <span class="string">'navigate'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Site"</span>: <span class="string">'same-origin'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-User"</span>: <span class="string">'?1'</span>,</span><br><span class="line">    <span class="string">"Upgrade-Insecure-Requests"</span>: <span class="string">'1'</span></span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">"https://my.cnki.net/Register/CommonRegister.aspx?returnUrl=https://www.cnki.net#"</span></span><br><span class="line">r = requests.get(url, headers=headers).content.decode(<span class="string">'utf-8'</span>)</span><br><span class="line">html = etree.HTML(r)</span><br><span class="line">link=html.xpath(<span class="string">'//*[@id="commonRe"]/div[10]/div[3]/a/img/@src'</span>)[<span class="number">0</span>]</span><br><span class="line">img_url = <span class="string">"https://my.cnki.net/Register/"</span> + link</span><br><span class="line">img = requests.get(img_url, headers=headers,stream=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'checkcode.jpg'</span>,<span class="string">'wb'</span>)<span class="keyword">as</span> file:</span><br><span class="line">    file.write(img.raw.read())</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/1.png" alt><br></p>
+        <!--  在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人
+但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^
+
+获取网页验证码首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，......  -->
+        <p class="article-more-link">
+          <a href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Numpy-Pandas"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -831,64 +887,6 @@ Hadoop伪分布式搭建首先创建一台master虚拟机，并克隆node1、nod
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/beautifulsoup/">beautifulsoup</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Python爬虫：获取yuehui163用户资料"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/05/01/Python爬虫：获取yuehui163用户资料/">Python爬虫：获取yuehui163用户资料</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/05/01/Python爬虫：获取yuehui163用户资料/" class="article-date">
-	  <time datetime="2019-05-01T14:58:05.000Z" itemprop="datePublished">2019-05-01</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p><strong>·</strong> <font color="orange">目标网站</font>：网易<a href="https://yuehui.163.com/" target="_blank" rel="noopener">https://yuehui.163.com/</a>同城约会网站</p>
-<p><strong>·</strong> <font color="orange">目标数据</font>：用户的头像、性别、城市、地区、工作、学历等</p>
-<p><strong>·</strong> <font color="orange">数据存储</font>：png、txt、csv</p>
-<p><strong>·</strong> <font color="orange">爬虫方法</font>：requests、json</p>
-<p>通过json格式，对yuehui163网站用户的多页爬取，使用循环和字符串拼接等方式获取详细分页数据</p>
-<p><img src="/2019/05/01/Python爬虫：获取yuehui163用户资料/A.png" alt="yuehui163.com"><br></p>
-        <!--  描述· 目标网站：网易https://yuehui.163.com/同城约会网站
-· 目标数据：用户的头像、性别、城市、地区、工作、学历等
-· 数据存储：png、txt、csv
-· 爬虫方法：requests、json
-通过json格式，对yuehui163网站用户的多页爬取，使用循环和字符串拼接等方式获取详细分页数据
-抓包获取网站的json数据(源json很长，以下为一条用户的信息)12......  -->
-        <p class="article-more-link">
-          <a href="/2019/05/01/Python爬虫：获取yuehui163用户资料/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xpath/">xpath</a></li></ul>
 
     </footer>
   </div>

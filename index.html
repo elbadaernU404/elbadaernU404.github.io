@@ -368,7 +368,7 @@
 <h2 id="anaconda安装insightface"><a href="#anaconda安装insightface" class="headerlink" title="anaconda安装insightface"></a>anaconda安装insightface</h2><p><font color="gold">重要：pillow版本建议选择9.5 否则过高会导致安装insightface报错</font> （错误原因：pillow10移除了getsize方法，需要修改对应位置源码为<code>getbbox</code>或 <code>getlength</code>）</p>
 <p>告警信息：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tools/test_recognition.py:<span class="number">627</span>: DeprecationWarning: getsize <span class="keyword">is</span> deprecated <span class="keyword">and</span> will be removed <span class="keyword">in</span> Pillow <span class="number">10</span> (<span class="number">2023</span><span class="number">-07</span><span class="number">-01</span>). Use getbbox <span class="keyword">or</span> getlength instead.</span><br><span class="line">  tw = font.getsize(text)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<h4 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> .</span><br><span class="line">conda install paddlepaddle-gpu==2.2.0rc0 cudatoolkit=11.2 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/Paddle/ -c conda-forge</span><br><span class="line"><span class="meta">#</span> insightface</span><br><span class="line">pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line"><span class="meta">#</span> insightface/recongition/arcface_paddle/</span><br><span class="line">pip install -r requirement.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line"><span class="meta">#</span> insightface-paddle</span><br><span class="line">pip install insightface-paddle -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
+<h4 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> .</span></span><br><span class="line">conda install paddlepaddle-gpu==2.2.0rc0 cudatoolkit=11.2 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/Paddle/ -c conda-forge</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface</span></span><br><span class="line">pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface/recongition/arcface_paddle/</span></span><br><span class="line">pip install -r requirement.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface-paddle</span></span><br><span class="line">pip install insightface-paddle -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
         <!--  环境GPU（物理）
 NVIDIA 3090*2
 
@@ -493,6 +493,108 @@ Ce......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paddlepaddle/">paddlepaddle</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-搭建nebula-CentOS集群（极速版）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/07/10/搭建nebula-CentOS集群（极速版）/">搭建nebula-CentOS集群（极速版）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/07/10/搭建nebula-CentOS集群（极速版）/" class="article-date">
+	  <time datetime="2023-07-10T01:05:06.000Z" itemprop="datePublished">2023-07-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><ul>
+<li>系统</li>
+</ul>
+<p>CentOS7.9</p>
+<ul>
+<li>机器</li>
+</ul>
+<p>三台，分别为<code>nebula01</code>、<code>nebula02</code>、<code>nebula03</code>、</p>
+<ul>
+<li>安装位置</li>
+</ul>
+<p><code>/usr/local</code></p>
+<ul>
+<li>nebula版本</li>
+</ul>
+<p><code>2.6.1</code></p>
+<ul>
+<li>nebula-graph-studio版本</li>
+</ul>
+<p><code>3.2.3</code></p>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><ul>
+<li>下载<code>tar.gz</code>文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://oss-cdn.nebula-graph.com.cn/package/2.6.1/nebula-graph-2.6.1.el7.x86_64.tar.gz</span><br><span class="line">wget https://oss-cdn.nebula-graph.com.cn/nebula-graph-studio/3.2.3/nebula-graph-studio-3.2.3.x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+<ul>
+<li>解压缩并重命名文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf nebula-graph-2.6.1.el7.x86_64.tar.gz &amp;&amp; mv nebula-graph-2.6.1.el7.x86_64 nebula</span><br><span class="line">tar -zxvf nebula-graph-studio-3.2.3.x86_64.tar.gz &amp;&amp; mv nebula-graph-studio-3.2.3.x86_64 nebula-graph-studio</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制配置文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd nebula/etc</span><br><span class="line">cp nebula-graphd.conf.default nebula-graphd.conf</span><br><span class="line">cp nebula-metad.conf.default nebula-metad.conf</span><br><span class="line">cp nebula-storaged.conf.default nebula-storaged.conf</span><br></pre></td></tr></table></figure>
+        <!--  环境准备
+系统
+
+CentOS7.9
+
+机器
+
+三台，分别为nebula01、nebula02、nebula03、
+
+安装位置
+
+/usr/local
+
+nebula版本
+
+2.6.1
+
+nebula-graph-studio版本
+
+3.2.3
+快速开始
+下载tar.gz文件
+
+123cd /usr/localwget https://oss-cdn.nebula-graph.com.cn......  -->
+        <p class="article-more-link">
+          <a href="/2023/07/10/搭建nebula-CentOS集群（极速版）/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebua/">nebua</a></li></ul>
 
     </footer>
   </div>
@@ -951,76 +1053,6 @@ Windows补丁将hadoop.dll置于C:/windows/system32/目录下，然后配置hado
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pyspark/">pyspark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Spark基础"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/12/01/Spark基础/">Spark基础</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/12/01/Spark基础/" class="article-date">
-	  <time datetime="2022-12-01T07:40:17.000Z" itemprop="datePublished">2022-12-01</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><font color="gold">定义</font>：<font color="gold">Apache Spark是用于大规模数据处理的统一分析引擎。</font>其核心数据结构：弹性分布式数据集（RDD）能够在大规模集群中做内存运算，且具有一定容错方式。</p>
-<h2 id="Spark框架"><a href="#Spark框架" class="headerlink" title="Spark框架"></a>Spark框架</h2><h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p><font color="orange"><strong>· Spark Core</strong></font>：以RDD为数据抽象，提供Python、Java、Scala、R语言的API和Spark的核心功能，是Spark运行的基础；</p>
-<p><font color="orange"><strong>· SparkSQL</strong></font>：基于SparkCore，提供机构化数据处理模块，支持以SQL语言对数据进行处理；同时可以作为StructuredStreaming模块的基础，进行数据流式计算；</p>
-<p><font color="orange"><strong>· SparkStreaming</strong></font>：基于SparkCore，提供数据流式计算；</p>
-<p><font color="orange"><strong>· MLlib</strong></font>：基于SparkCore，内置大量机器学习库和算法API，进行机器学习计算；</p>
-<p><font color="orange"><strong>· GraphX</strong></font>：基于SparkCore，提供了大量图计算API，用于分布式图计算</p>
-<h3 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h3><p><strong>· 本地模式（单机/local）</strong>：以一个独立进程，通过内部的多线程模拟Spark运行环境</p>
-<p><strong>· Standalone模式（集群）</strong>：Spark的各个角色以独立进程形式存在，组成集群环境</p>
-<p><strong>· Hadoop YARN模式（集群）</strong>：Spark的各个角色运行在YARN容器内部，组成集群环境</p>
-<p><strong>· Kubernetes模式（容器集群）</strong>：Spark的各个角色运行在Kubernetes容器内部，组成集群环境</p>
-<p><strong>· 云服务模式</strong></p>
-<h3 id="角色"><a href="#角色" class="headerlink" title="角色"></a>角色</h3><ul>
-<li><strong>资源</strong></li>
-</ul>
-<p><strong>· Master角色</strong>：集群资源管理</p>
-<p><strong>· Worker角色</strong>：单机资源管理(所在服务器资源管理)</p>
-<ul>
-<li><strong>任务</strong></li>
-</ul>
-<p><strong>· Driver角色</strong>：单个任务管理</p>
-<p><strong>· Executor角色</strong>：单个任务计算</p>
-        <!--  定义：Apache Spark是用于大规模数据处理的统一分析引擎。其核心数据结构：弹性分布式数据集（RDD）能够在大规模集群中做内存运算，且具有一定容错方式。
-Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、Scala、R语言的API和Spark的核心功能，是Spark运行的基础；
-· SparkSQL：基于SparkCore，提供机构化数据处理......  -->
-        <p class="article-more-link">
-          <a href="/2022/12/01/Spark基础/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spark/">Spark</a></li></ul>
 
     </footer>
   </div>
