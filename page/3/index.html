@@ -258,6 +258,61 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Scrapy：爬取steam热门游戏资料"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/05/01/Scrapy：爬取steam热门游戏资料/">Scrapy：爬取steam热门游戏资料</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/05/01/Scrapy：爬取steam热门游戏资料/" class="article-date">
+	  <time datetime="2022-05-01T04:00:35.000Z" itemprop="datePublished">2022-05-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>有段时间没有做爬虫程序了，正好想起来还没有写过scrapy框架的博客，写个scrapy爬虫进行总结和回顾。本文代码已上传至github：<a href="https://github.com/elbadaernU404/steamgames" target="_blank" rel="noopener">https://github.com/elbadaernU404/steamgames</a></p>
+<h2 id="1-Scrapy简介"><a href="#1-Scrapy简介" class="headerlink" title="1.Scrapy简介"></a>1.Scrapy简介</h2><p>搜索scrapy，可以很轻松的找到Scrapy的官方网站，正如其首页所描述的那样，scrapy是一款快速且强力的多线程异步爬虫框架，适合对静态页面（不配置中间件的情况下）的信息进行高速且大面积、高层次的抓取，避免了传统爬虫并发爬取网站数据的局限性，仅需要少量的代码即可完成爬虫工作，是一项高效率的主流爬虫工具。</p>
+<p><img src="/2022/05/01/Scrapy：爬取steam热门游戏资料/AA.png" alt="Scrapy"></p>
+<h2 id="2-Scrapy框架原理"><a href="#2-Scrapy框架原理" class="headerlink" title="2.Scrapy框架原理"></a>2.Scrapy框架原理</h2><p>进入scrapy官网，可以找到官方文档中对框架最新的描述如下：</p>
+<p><img src="/2022/05/01/Scrapy：爬取steam热门游戏资料/A.png" alt="Scrapy运行结构"><br><img src="/2022/05/01/Scrapy：爬取steam热门游戏资料/B.png" alt="官方文档"></p>
+<p>总结后就是：<br>scrapy框架中共包括了<strong>引擎（Scrapy Engine）、Item 字段、调度器（Scheduler）、调度中间件（Scheduler Middewares）、下载器（Downloader）、下载器中间件（Downloader Middlewares）、爬虫程序（Spiders）、爬虫中间件（Spider Middlewares）</strong>和<strong>管道（Pipeline）</strong></p>
+<p>1.scrapy引擎会从爬虫程序中获取初始请求；<br>2.scrapy引擎通过调度器（Scheduler）调度Requests并要求获取下一个Requests；<br>3.调度器将下一个请求返回至scrapy引擎；<br>4.scrapy引擎通过下载中间件将请求发送到下载器（Downloader）当中，完成一次下载后下载器会生成Response并发送给scrapy引擎；<br>5.scrapy引擎接受下载器的Response交给爬虫程序。爬虫完成对Response的处理后，将抓取的数据和新的Requests返回给scrapy引擎，scrapy引擎将数据处理完毕后交给Item管道，再将处理的请求发送给调度器，执行下一轮工作；<br>6.重复上述步骤，直到不再有来自调度器的请求，爬虫程序结束。<br></p>
+        <!--  有段时间没有做爬虫程序了，正好想起来还没有写过scrapy框架的博客，写个scrapy爬虫进行总结和回顾。本文代码已上传至github：https://github.com/elbadaernU404/steamgames
+1.Scrapy简介搜索scrapy，可以很轻松的找到Scrapy的官方网站，正如其首页所描述的那样，scrapy是一款快速且强力的多线程异步爬虫框架，适合对静态页面（......  -->
+        <p class="article-more-link">
+          <a href="/2022/05/01/Scrapy：爬取steam热门游戏资料/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scrapy/">scrapy</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Python爬虫：识别网页的验证码（tesseract-OCR）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -828,65 +883,6 @@ Hadoop伪分布式搭建首先创建一台master虚拟机，并克隆node1、nod
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xpath/">xpath</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Python爬虫：人民日报新闻"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/05/02/Python爬虫：人民日报新闻/">Python爬虫：人民日报新闻</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/05/02/Python爬虫：人民日报新闻/" class="article-date">
-	  <time datetime="2019-05-01T16:20:51.000Z" itemprop="datePublished">2019-05-02</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p><strong>·</strong> <font color="orange">目标网站</font>：人民日报官网<a href="http://paper.people.com.cn/" target="_blank" rel="noopener">http://paper.people.com.cn/</a></p>
-<p><strong>·</strong> <font color="orange">目标数据</font>：新闻的标题、正文等</p>
-<p><strong>·</strong> <font color="orange">数据存储</font>：txt</p>
-<p><strong>·</strong> <font color="orange">爬虫方法</font>：requests、beautifulsoup4</p>
-<p>主要使用了requests和bs4解析库，将指定输入的日期转化为字符串，与对应新闻链接进行连接，对区间内新闻进行爬取</p>
-<p><img src="/2019/05/02/Python爬虫：人民日报新闻/A.png" alt="人民日报"><br></p>
-        <!--  描述· 目标网站：人民日报官网http://paper.people.com.cn/
-· 目标数据：新闻的标题、正文等
-· 数据存储：txt
-· 爬虫方法：requests、beautifulsoup4
-主要使用了requests和bs4解析库，将指定输入的日期转化为字符串，与对应新闻链接进行连接，对区间内新闻进行爬取
-
-源码注：2021年1月1日起人民日报官网改动，代码已更新(2021)......  -->
-        <p class="article-more-link">
-          <a href="/2019/05/02/Python爬虫：人民日报新闻/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/beautifulsoup/">beautifulsoup</a></li></ul>
 
     </footer>
   </div>

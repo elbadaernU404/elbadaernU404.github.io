@@ -258,6 +258,62 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-LiveGBS国标GB-T28181视频流媒体平台"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/08/14/LiveGBS国标GB-T28181视频流媒体平台/">LiveGBS国标GB/T28181视频流媒体平台</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/08/14/LiveGBS国标GB-T28181视频流媒体平台/" class="article-date">
+	  <time datetime="2023-08-14T03:15:55.000Z" itemprop="datePublished">2023-08-14</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/计算机视觉/">计算机视觉</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="软件包下载"><a href="#软件包下载" class="headerlink" title="软件包下载"></a>软件包下载</h2><p>LiveGBS GB28181流媒体服务下载地址：<a href="https://www.liveqing.com/docs/download/LiveGBS.html#%E7%89%88%E6%9C%AC%E4%B8%8B%E8%BD%BD" target="_blank" rel="noopener">https://www.liveqing.com/docs/download/LiveGBS.html#%E7%89%88%E6%9C%AC%E4%B8%8B%E8%BD%BD</a></p>
+<p>选择windows版本的<code>LiveGBS 信令服务</code>和<code>LiveGBS</code>流媒体服务，免费版授权周期为26天，届时需要手动更新软件服务</p>
+<p><img src="/2023/08/14/LiveGBS国标GB-T28181视频流媒体平台/A.png" style="zoom:80%;"></p>
+<h2 id="安装LiveGBS-GB28281"><a href="#安装LiveGBS-GB28281" class="headerlink" title="安装LiveGBS GB28281"></a>安装LiveGBS GB28281</h2><p>解压下载好的软件包，分别启动<code>LiveCMS.exe</code>和<code>LiveSMS.exe</code>，如果有默认端口被占用的情况可以修改对应的<code>livecms.ini</code>或<code>livesms.ini</code>配置文件，这里我将LiveGBS的默认端口从10000修改为10005</p>
+<p>成功启动后后台出现livecms和livesms的图标</p>
+<p><img src="/2023/08/14/LiveGBS国标GB-T28181视频流媒体平台/B.png" alt></p>
+        <!--  软件包下载LiveGBS GB28181流媒体服务下载地址：https://www.liveqing.com/docs/download/LiveGBS.html#%E7%89%88%E6%9C%AC%E4%B8%8B%E8%BD%BD
+选择windows版本的LiveGBS 信令服务和LiveGBS流媒体服务，免费版授权周期为26天，届时需要手动更新软件服务
+
+安装LiveGBS GB2......  -->
+        <p class="article-more-link">
+          <a href="/2023/08/14/LiveGBS国标GB-T28181视频流媒体平台/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LiveGBS/">LiveGBS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-paddleDetection-OpenCV检测框转中文"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -285,18 +341,31 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <font color="gold">注：OpenCV不能直接显示中文，通过PIL转换会损失一部分算力性能</font>
+        <script src="\assets\js\APlayer.min.js"> </script><font color="gold">注：OpenCV不能直接显示中文，通过PIL转换会损失一部分算力性能</font>
 
 <h2 id="修改源码（可视化）"><a href="#修改源码（可视化）" class="headerlink" title="修改源码（可视化）"></a>修改源码（可视化）</h2><p><code>./deploy/python/visualize.py</code></p>
 <h3 id="增加导入字体库和字体文件"><a href="#增加导入字体库和字体文件" class="headerlink" title="增加导入字体库和字体文件"></a>增加导入字体库和字体文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageDraw, ImageFile, ImageFont</span><br><span class="line"></span><br><span class="line">font_file = <span class="string">'/exp/work/video/PaddleDetection/deploy/pipeline/SourceHanSansCN-Medium.otf'</span></span><br></pre></td></tr></table></figure>
-<h3 id="visualize-attr"><a href="#visualize-attr" class="headerlink" title="visualize_attr"></a>visualize_attr</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_attr</span><span class="params">(im, results, boxes=None, is_mtmct=False)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">        im = Image.open(im)</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line"></span><br><span class="line">    line_inter = im.shape[<span class="number">0</span>] / <span class="number">40.</span></span><br><span class="line">    <span class="comment"># 将nparray图像转PIL图像</span></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, res <span class="keyword">in</span> enumerate(results):</span><br><span class="line">        print(i, res)</span><br><span class="line">        <span class="keyword">if</span> boxes <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            text_w = <span class="number">3</span></span><br><span class="line">            text_h = <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> is_mtmct:</span><br><span class="line">            box = boxes[i]  <span class="comment"># multi camera, bbox shape is x,y, w,h</span></span><br><span class="line">            text_w = int(box[<span class="number">0</span>]) + <span class="number">3</span></span><br><span class="line">            text_h = int(box[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            box = boxes[i]  <span class="comment"># single camera, bbox shape is 0, 0, x,y, w,h</span></span><br><span class="line">            text_w = int(box[<span class="number">2</span>]) + <span class="number">3</span></span><br><span class="line">            text_h = int(box[<span class="number">3</span>])</span><br><span class="line">        <span class="keyword">for</span> text <span class="keyword">in</span> res:</span><br><span class="line">            text_h += int(line_inter)</span><br><span class="line">            text_loc = (text_w, text_h)</span><br><span class="line">            <span class="comment"># 写入</span></span><br><span class="line">            draw = ImageDraw.Draw(im)</span><br><span class="line">            draw.text(</span><br><span class="line">                text_loc,</span><br><span class="line">                text,</span><br><span class="line">                font=ImageFont.truetype(font_file), <span class="comment"># 字体位置</span></span><br><span class="line">                fill=(<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>))</span><br><span class="line">    <span class="comment"># 还原连续存储数组</span></span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
-        <!--  注：OpenCV不能直接显示中文，通过PIL转换会损失一部分算力性能
+<h3 id="visualize-attr"><a href="#visualize-attr" class="headerlink" title="visualize_attr"></a>visualize_attr</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_attr</span><span class="params">(im, results, boxes=None, is_mtmct=False)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">        im = Image.open(im)</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line"></span><br><span class="line">    line_inter = im.shape[<span class="number">0</span>] / <span class="number">40.</span></span><br><span class="line">    text_scale = max(<span class="number">0.5</span>, im.shape[<span class="number">0</span>] / <span class="number">100.</span>)</span><br><span class="line">    <span class="comment"># 将nparray图像转PIL图像</span></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, res <span class="keyword">in</span> enumerate(results):</span><br><span class="line">        print(i, res)</span><br><span class="line">        <span class="keyword">if</span> boxes <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            text_w = <span class="number">3</span></span><br><span class="line">            text_h = <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> is_mtmct:</span><br><span class="line">            box = boxes[i]  <span class="comment"># multi camera, bbox shape is x,y, w,h</span></span><br><span class="line">            text_w = int(box[<span class="number">0</span>]) + <span class="number">3</span></span><br><span class="line">            text_h = int(box[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            box = boxes[i]  <span class="comment"># single camera, bbox shape is 0, 0, x,y, w,h</span></span><br><span class="line">            text_w = int(box[<span class="number">2</span>]) + <span class="number">3</span></span><br><span class="line">            text_h = int(box[<span class="number">3</span>])</span><br><span class="line">        <span class="keyword">for</span> text <span class="keyword">in</span> res:</span><br><span class="line">            text_h += int(line_inter)</span><br><span class="line">            text_loc = (text_w, text_h)</span><br><span class="line">            <span class="comment"># 写入</span></span><br><span class="line">            draw = ImageDraw.Draw(im)</span><br><span class="line">            draw.text(</span><br><span class="line">                text_loc,</span><br><span class="line">                text,</span><br><span class="line">                font=ImageFont.truetype(font_file, size=int(text_scale)), <span class="comment"># 字体位置</span></span><br><span class="line">                fill=(<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>))</span><br><span class="line">    <span class="comment"># 还原连续存储数组</span></span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
+<h3 id="visualize-vehicleplate"><a href="#visualize-vehicleplate" class="headerlink" title="visualize_vehicleplate"></a>visualize_vehicleplate</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_vehicleplate</span><span class="params">(im, results, boxes=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">        im = Image.open(im)</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line"></span><br><span class="line">    text_scale = max(<span class="number">1.0</span>, im.shape[<span class="number">0</span>] / <span class="number">400.</span>)</span><br><span class="line">    line_inter = im.shape[<span class="number">0</span>] / <span class="number">40.</span></span><br><span class="line">    <span class="comment"># 将nparray图像转PIL图像</span></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line">    <span class="keyword">for</span> i, res <span class="keyword">in</span> enumerate(results):</span><br><span class="line">        <span class="keyword">if</span> boxes <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            text_w = <span class="number">3</span></span><br><span class="line">            text_h = <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            box = boxes[i]</span><br><span class="line">            text = res</span><br><span class="line">            <span class="keyword">if</span> text == <span class="string">""</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            text_w = int(box[<span class="number">2</span>])</span><br><span class="line">            text_h = int(box[<span class="number">5</span>] + box[<span class="number">3</span>])</span><br><span class="line">            text_loc = (text_w, text_h)</span><br><span class="line">            <span class="comment"># 写入</span></span><br><span class="line">            draw = ImageDraw.Draw(im)</span><br><span class="line">            draw.text(</span><br><span class="line">                text_loc,</span><br><span class="line">                text,</span><br><span class="line">                font=ImageFont.truetype(font_file, size=int(text_scale)), <span class="comment"># 字体位置</span></span><br><span class="line">                fill=(<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>))</span><br><span class="line">    <span class="comment"># 还原连续存储数组</span></span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
+<h3 id="visualize-action"><a href="#visualize-action" class="headerlink" title="visualize_action"></a>visualize_action</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_action</span><span class="params">(im,</span></span></span><br><span class="line"><span class="function"><span class="params">                     mot_boxes,</span></span></span><br><span class="line"><span class="function"><span class="params">                     action_visual_collector=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                     action_text=<span class="string">""</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                     video_action_score=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                     video_action_text=<span class="string">""</span>)</span>:</span></span><br><span class="line">    im = cv2.imread(im) <span class="keyword">if</span> isinstance(im, str) <span class="keyword">else</span> im</span><br><span class="line">    im_h, im_w = im.shape[:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">    text_scale = max(<span class="number">1</span>, im.shape[<span class="number">1</span>] / <span class="number">40.</span>)</span><br><span class="line">    text_thickness = <span class="number">2</span></span><br><span class="line">    <span class="comment"># 将nparray图像转PIL图像</span></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line">    <span class="keyword">if</span> action_visual_collector:</span><br><span class="line">        id_action_dict = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> collector, action_type <span class="keyword">in</span> zip(action_visual_collector, action_text):</span><br><span class="line">            id_detected = collector.get_visualize_ids()</span><br><span class="line">            <span class="keyword">for</span> pid <span class="keyword">in</span> id_detected:</span><br><span class="line">                id_action_dict[pid] = id_action_dict.get(pid, [])</span><br><span class="line">                id_action_dict[pid].append(action_type)</span><br><span class="line">        <span class="keyword">for</span> mot_box <span class="keyword">in</span> mot_boxes:</span><br><span class="line">            <span class="comment"># mot_box is a format with [mot_id, class, score, xmin, ymin, w, h] </span></span><br><span class="line">            <span class="keyword">if</span> mot_box[<span class="number">0</span>] <span class="keyword">in</span> id_action_dict:</span><br><span class="line">                text_position = (int(mot_box[<span class="number">3</span>] + mot_box[<span class="number">5</span>] * <span class="number">0.75</span>),</span><br><span class="line">                                 int(mot_box[<span class="number">4</span>] - <span class="number">10</span>))</span><br><span class="line">                display_text = <span class="string">', '</span>.join(id_action_dict[mot_box[<span class="number">0</span>]])</span><br><span class="line"></span><br><span class="line">                draw = ImageDraw.Draw(im)</span><br><span class="line">                draw.text(</span><br><span class="line">                    text_position,</span><br><span class="line">                    display_text,</span><br><span class="line">                    font=ImageFont.truetype(size=int(text_scale)),  <span class="comment"># 字体位置</span></span><br><span class="line">                    fill=(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> video_action_score:</span><br><span class="line">        draw = ImageDraw.Draw(im)</span><br><span class="line">        draw.text(</span><br><span class="line">            (int(im_w / <span class="number">2</span>), int(<span class="number">15</span> * text_scale) + <span class="number">5</span>),</span><br><span class="line">            video_action_text + <span class="string">': %.2f'</span> % video_action_score,</span><br><span class="line">            font=ImageFont.truetype(font_file, size=int(text_scale)),  <span class="comment"># 字体位置</span></span><br><span class="line">            fill=(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>))</span><br><span class="line">    <span class="comment"># 还原连续存储数组</span></span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
+<h2 id="修改源码（属性）"><a href="#修改源码（属性）" class="headerlink" title="修改源码（属性）"></a>修改源码（属性）</h2><p>修改对应中文模块</p>
+<p><code>./deploy/pipeline/</code></p>
+<ul>
+<li>pipeline.py</li>
+</ul>
+<p><code>./deploy/pipeline/ppvehicle</code></p>
+<ul>
+<li>vehicle_attr.py</li>
+<li>vehicle_plate.py</li>
+</ul>
+<p><code>./deploy/pipeline/pphuman</code></p>
+<ul>
+<li>attr_infer.py</li>
+</ul>
+<h2 id="执行脚本"><a href="#执行脚本" class="headerlink" title="执行脚本"></a>执行脚本</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> pphuman</span></span><br><span class="line">python deploy/pipeline/pipeline.py --config deploy/pipeline/config/infer_cfg_pphuman.yml --video_file=demo_input/act1.mp4 --device=gpu --output_dir=demo_output</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ppvehicle</span></span><br><span class="line">python deploy/pipeline/pipeline.py --config deploy/pipeline/config/infer_cfg_ppvehicle.yml --video_file=demo_input/car_t1.mp4 --device=gpu --output_dir=demo_output</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/08/09/paddleDetection-OpenCV检测框转中文/A.png" alt></p>
+<p><img src="/2023/08/09/paddleDetection-OpenCV检测框转中文/B.png" alt></p>
 
-修改源码（可视化）./deploy/python/visualize.py
-增加导入字体库和字体文件123from PIL import Image, ImageDraw, ImageFile, ImageFontfont_file = '/exp/work/video/PaddleDetection/deploy/p......  -->
-        <p class="article-more-link">
-          <a href="/2023/08/09/paddleDetection-OpenCV检测框转中文/#more">Read More</a>
-        </p>
       
     </div>
     <footer class="article-footer">
@@ -985,66 +1054,6 @@ Dataset：一个用于存放数据的数据集合
 特性分区RDD分区是RDD数据存储的最小......  -->
         <p class="article-more-link">
           <a href="/2022/12/07/Pyspark-RDD/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pyspark/">pyspark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Pyspark"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/12/05/Pyspark/">Pyspark</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/12/05/Pyspark/" class="article-date">
-	  <time datetime="2022-12-05T08:45:40.000Z" itemprop="datePublished">2022-12-05</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Pyspark库安装"><a href="#Pyspark库安装" class="headerlink" title="Pyspark库安装"></a>Pyspark库安装</h2><p>（本文基于上文spark基础）</p>
-<h3 id="Python库安装"><a href="#Python库安装" class="headerlink" title="Python库安装"></a>Python库安装</h3><p>在三台机器分别安装pyspark</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda activate pyspark</span><br><span class="line">pip install pyspark -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
-<h3 id="Windows补丁"><a href="#Windows补丁" class="headerlink" title="Windows补丁"></a>Windows补丁</h3><p>将hadoop.dll置于C:/windows/system32/目录下，然后配置hadoop工具包的环境变量</p>
-<p><img src="/2022/12/05/Pyspark/A.png" alt></p>
-<p>安装相关python库</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pyspark pyhive pymysql jieba -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
-<h3 id="为pycharm添加ssh解释器环境"><a href="#为pycharm添加ssh解释器环境" class="headerlink" title="为pycharm添加ssh解释器环境"></a>为pycharm添加ssh解释器环境</h3><p><img src="/2022/12/05/Pyspark/B.png" alt></p>
-<p><img src="/2022/12/05/Pyspark/C.png" alt></p>
-<p><img src="/2022/12/05/Pyspark/D.png" alt></p>
-        <!--  Pyspark库安装（本文基于上文spark基础）
-Python库安装在三台机器分别安装pyspark
-12conda activate pysparkpip install pyspark -i https://mirror.baidu.com/pypi/simple
-Windows补丁将hadoop.dll置于C:/windows/system32/目录下，然后配置hadoop工具包的......  -->
-        <p class="article-more-link">
-          <a href="/2022/12/05/Pyspark/#more">Read More</a>
         </p>
       
     </div>

@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2023/08/14/LiveGBS%E5%9B%BD%E6%A0%87GB-T28181%E8%A7%86%E9%A2%91%E6%B5%81%E5%AA%92%E4%BD%93%E5%B9%B3%E5%8F%B0/</loc>
+    
+    <lastmod>2023-08-14</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2023/08/09/paddleDetection-OpenCV%E6%A3%80%E6%B5%8B%E6%A1%86%E8%BD%AC%E4%B8%AD%E6%96%87/</loc>
+    
+    <lastmod>2023-08-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2023/07/10/%E6%90%AD%E5%BB%BAnebula-CentOS%E9%9B%86%E7%BE%A4%EF%BC%88%E6%9E%81%E9%80%9F%E7%89%88%EF%BC%89/</loc>
     
     <lastmod>2023-08-10</lastmod>
@@ -21,15 +39,6 @@
   
   <url>
     <loc>http://yoursite.com/2023/08/07/paddleDetection/</loc>
-    
-    <lastmod>2023-08-09</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2023/08/09/paddleDetection-OpenCV%E6%A3%80%E6%B5%8B%E6%A1%86%E8%BD%AC%E4%B8%AD%E6%96%87/</loc>
     
     <lastmod>2023-08-09</lastmod>
     
@@ -499,7 +508,7 @@
 
   <url>
     <loc>http://yoursite.com/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -507,266 +516,273 @@
   
   <url>
     <loc>http://yoursite.com/tags/C/</loc>
-    <lastmod>2023-08-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/BurpSuite/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/ctf/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/BurpSuite/</loc>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/database/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/clickhouse/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/D3-SVG/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/MASM/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Django/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Docker/</loc>
-    <lastmod>2023-08-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/elastic-search/</loc>
-    <lastmod>2023-08-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/FastApi/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/GET-POST/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/elastic-search/</loc>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Hadoop/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/FastApi/</loc>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/QT/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/nebula/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/LiveGBS/</loc>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/spark/</loc>
-    <lastmod>2023-08-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/fastapi/</loc>
-    <lastmod>2023-08-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/numpy%E3%80%81pandas/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/database-nebula/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/pyspark/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <loc>http://yoursite.com/tags/fastapi/</loc>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/numpy%E3%80%81pandas/</loc>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/OCR/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/%E7%88%AC%E8%99%AB/</loc>
-    <lastmod>2023-08-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/beautifulsoup/</loc>
-    <lastmod>2023-08-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/xpath/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <loc>http://yoursite.com/tags/pyspark/</loc>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/%E7%88%AC%E8%99%AB/</loc>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/beautifulsoup/</loc>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/xpath/</loc>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/PIL/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/scrapy/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/Spark/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/paddlepaddle/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/opencv/</loc>
-    <lastmod>2023-08-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/%E5%B7%A5%E5%85%B7%E7%AB%99/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/vb/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/%E5%B7%A5%E5%85%B7%E7%AB%99/</loc>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/QQ%E5%9D%A6%E7%99%BD%E8%AF%B4/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/CNN/</loc>
-    <lastmod>2023-08-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/php/</loc>
-    <lastmod>2023-08-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/java/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/nebua/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/java/</loc>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/php/</loc>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/tags/%E6%B5%B7%E9%BE%9F%E7%BB%98%E5%9B%BE/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
@@ -775,77 +791,84 @@
   
   <url>
     <loc>http://yoursite.com/categories/%E4%B8%AA%E4%BA%BA%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/BigData/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/%E6%B1%87%E7%BC%96/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Python/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Docker/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/Web/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/</loc>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>http://yoursite.com/categories/%E8%84%9A%E6%9C%AC/</loc>
-    <lastmod>2023-08-10</lastmod>
+    <lastmod>2023-08-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
