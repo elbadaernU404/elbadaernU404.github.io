@@ -266,7 +266,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2023/08/14/LiveGBS国标GB-T28181视频流媒体平台/">LiveGBS国标GB/T28181视频流媒体平台</a>
+      <a class="article-title" href="/2023/08/18/LiveGBS国标GB-T28181视频流媒体平台/">LiveGBS国标GB/T28181视频流媒体平台</a>
     </h1>
   
 
@@ -274,8 +274,8 @@
     
     <div class="article-meta">
       
-	<a href="/2023/08/14/LiveGBS国标GB-T28181视频流媒体平台/" class="article-date">
-	  <time datetime="2023-08-14T03:15:55.000Z" itemprop="datePublished">2023-08-14</time>
+	<a href="/2023/08/18/LiveGBS国标GB-T28181视频流媒体平台/" class="article-date">
+	  <time datetime="2023-08-18T08:34:45.000Z" itemprop="datePublished">2023-08-18</time>
 	</a>
 
       
@@ -287,16 +287,16 @@
       
         <h2 id="软件包下载"><a href="#软件包下载" class="headerlink" title="软件包下载"></a>软件包下载</h2><p>LiveGBS GB28181流媒体服务下载地址：<a href="https://www.liveqing.com/docs/download/LiveGBS.html#%E7%89%88%E6%9C%AC%E4%B8%8B%E8%BD%BD" target="_blank" rel="noopener">https://www.liveqing.com/docs/download/LiveGBS.html#%E7%89%88%E6%9C%AC%E4%B8%8B%E8%BD%BD</a></p>
 <p>选择windows版本的<code>LiveGBS 信令服务</code>和<code>LiveGBS</code>流媒体服务，免费版授权周期为26天，届时需要手动更新软件服务</p>
-<p><img src="/2023/08/14/LiveGBS国标GB-T28181视频流媒体平台/A.png" style="zoom:80%;"></p>
+<p><img src="/2023/08/18/LiveGBS国标GB-T28181视频流媒体平台/A.png" style="zoom:80%;"></p>
 <h2 id="安装LiveGBS-GB28281"><a href="#安装LiveGBS-GB28281" class="headerlink" title="安装LiveGBS GB28281"></a>安装LiveGBS GB28281</h2><p>解压下载好的软件包，分别启动<code>LiveCMS.exe</code>和<code>LiveSMS.exe</code>，如果有默认端口被占用的情况可以修改对应的<code>livecms.ini</code>或<code>livesms.ini</code>配置文件，这里我将LiveGBS的默认端口从10000修改为10005</p>
 <p>成功启动后后台出现livecms和livesms的图标</p>
-<p><img src="/2023/08/14/LiveGBS国标GB-T28181视频流媒体平台/B.png" alt></p>
+<p><img src="/2023/08/18/LiveGBS国标GB-T28181视频流媒体平台/B.png" alt></p>
         <!--  软件包下载LiveGBS GB28181流媒体服务下载地址：https://www.liveqing.com/docs/download/LiveGBS.html#%E7%89%88%E6%9C%AC%E4%B8%8B%E8%BD%BD
 选择windows版本的LiveGBS 信令服务和LiveGBS流媒体服务，免费版授权周期为26天，届时需要手动更新软件服务
 
 安装LiveGBS GB2......  -->
         <p class="article-more-link">
-          <a href="/2023/08/14/LiveGBS国标GB-T28181视频流媒体平台/#more">Read More</a>
+          <a href="/2023/08/18/LiveGBS国标GB-T28181视频流媒体平台/#more">Read More</a>
         </p>
       
     </div>
@@ -305,6 +305,64 @@
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LiveGBS/">LiveGBS</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-paddleDetection-视频OCR"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/08/14/paddleDetection-视频OCR/">paddleDetection-视频OCR</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/08/14/paddleDetection-视频OCR/" class="article-date">
+	  <time datetime="2023-08-14T03:15:55.000Z" itemprop="datePublished">2023-08-14</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="PPOCR-V4"><a href="#PPOCR-V4" class="headerlink" title="PPOCR_V4"></a>PPOCR_V4</h2><p>安装百度最新ppocr_v4库，使用虚拟环境为py39_vio，本虚拟环境不可与人脸识别（py38_arcface）兼容（opencv版本不兼容）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install paddleocr --user -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><code>cfg_utils.py</code>新增cfg<code>--ocr</code>，设置True为开启，默认False</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">parser.add_argument(</span><br><span class="line">    <span class="string">"--ocr"</span>,</span><br><span class="line">    type=bool,</span><br><span class="line">    default=<span class="literal">False</span>,</span><br><span class="line">    help=<span class="string">"use paddlepaddle-ocr"</span>)</span><br></pre></td></tr></table></figure>
+<p><code>pipeline.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> python.visualize <span class="keyword">import</span> visualize_box_mask, visualize_attr, visualize_pose, visualize_action, visualize_vehicleplate, visualize_vehiclepress, visualize_lane, visualize_vehicle_retrograde, visualize_ocr</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PipePredictor</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, args, cfg, is_video=True, multi_camera=False)</span>:</span></span><br><span class="line">    	self.ocr = args.ocr</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_video</span><span class="params">(self,</span></span></span><br><span class="line"><span class="function"><span class="params">                    image_rgb,</span></span></span><br><span class="line"><span class="function"><span class="params">                    result,</span></span></span><br><span class="line"><span class="function"><span class="params">                    collector,</span></span></span><br><span class="line"><span class="function"><span class="params">                    frame_id,</span></span></span><br><span class="line"><span class="function"><span class="params">                    fps,</span></span></span><br><span class="line"><span class="function"><span class="params">                    entrance=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    records=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    center_traj=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    do_illegal_parking_recognition=False,</span></span></span><br><span class="line"><span class="function"><span class="params">                    illegal_parking_dict=None)</span>:</span></span><br><span class="line">    image = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2BGR)</span><br><span class="line">    mot_res = copy.deepcopy(result.get(<span class="string">'mot'</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> self.ocr:</span><br><span class="line">        ocr_result = ocr.ocr(image_rgb, cls=<span class="literal">True</span>)[<span class="number">0</span>]</span><br><span class="line">        ocr_boxes = [line[<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result]</span><br><span class="line">        ocr_txts = [line[<span class="number">1</span>][<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result]</span><br><span class="line">        ocr_scores = [line[<span class="number">1</span>][<span class="number">1</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result]</span><br><span class="line">        </span><br><span class="line">        image = visualize_ocr(image, ocr_boxes, ocr_txts, ocr_scores)</span><br></pre></td></tr></table></figure>
+<p><code>visualize.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_ocr</span><span class="params">(im, boxes, texts, score)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">        im = Image.open(im)</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建透明图层，为图像添加文字水印</span></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line">    im = im.convert(<span class="string">'RGBA'</span>)</span><br><span class="line">    im_canvas = Image.new(<span class="string">'RGBA'</span>, im.size, (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, res <span class="keyword">in</span> enumerate(texts):</span><br><span class="line">        <span class="keyword">if</span> boxes <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            box = boxes[i]</span><br><span class="line">            text = res</span><br><span class="line">            <span class="keyword">if</span> text == <span class="string">""</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            text_scale = max(<span class="number">1.0</span>, int(box[<span class="number">2</span>][<span class="number">1</span>] - box[<span class="number">1</span>][<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">            draw = ImageDraw.Draw(im_canvas)</span><br><span class="line">            draw.text(</span><br><span class="line">                (box[<span class="number">0</span>][<span class="number">0</span>], box[<span class="number">0</span>][<span class="number">1</span>]),</span><br><span class="line">                text,</span><br><span class="line">                font=ImageFont.truetype(font_file, size=int(text_scale)),</span><br><span class="line">                fill=(<span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">85</span>)) <span class="comment"># 第四位是透明度</span></span><br><span class="line">            draw.rectangle(</span><br><span class="line">                ((box[<span class="number">0</span>][<span class="number">0</span>], box[<span class="number">0</span>][<span class="number">1</span>]), (box[<span class="number">2</span>][<span class="number">0</span>], box[<span class="number">2</span>][<span class="number">1</span>])),</span><br><span class="line">                fill=<span class="literal">None</span>,</span><br><span class="line">                outline=(<span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>),</span><br><span class="line">                width=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 复合图层</span></span><br><span class="line">    im = Image.alpha_composite(im, im_canvas)</span><br><span class="line">    im = im.convert(<span class="string">'RGB'</span>)</span><br><span class="line">    <span class="comment"># 还原连续存储数组</span></span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
+        <!--  PPOCR_V4安装百度最新ppocr_v4库，使用虚拟环境为py39_vio，本虚拟环境不可与人脸识别（py38_arcface）兼容（opencv版本不兼容）
+1pip install paddleocr --user -i https://mirror.baidu.com/pypi/simple
+代码cfg_utils.py新增cfg--ocr，设置True为开启，默认False
+1......  -->
+        <p class="article-more-link">
+          <a href="/2023/08/14/paddleDetection-视频OCR/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paddlepaddle/">paddlepaddle</a></li></ul>
 
     </footer>
   </div>
@@ -983,85 +1041,6 @@ SparkSQL ·......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Pyspark-RDD"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/12/07/Pyspark-RDD/">Pyspark-RDD</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/12/07/Pyspark-RDD/" class="article-date">
-	  <time datetime="2022-12-07T05:45:49.000Z" itemprop="datePublished">2022-12-07</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h2><p>RDD（Resilient Distributed Dataset）弹性分布式数据集，是spark中最基本的数据抽象，代表一个不可变、可分区、其中元素可并行计算的集合</p>
-<ul>
-<li>Resilient：RDD中的数据可存储再内存或磁盘中</li>
-<li>Distributed：分布式存储数据（跨机器/跨进程），用于分布式计算</li>
-<li>Dataset：一个用于存放数据的数据集合</li>
-</ul>
-<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><h4 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h4><p>RDD分区是RDD数据存储的最小单位，一份RDD数据本质上分隔成了多个分区</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 存储9个数字，设立三个分区</span></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>], <span class="number">3</span>)</span><br><span class="line">rdd.glom().collect()</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[1,2,3],[4,5,6],[7,8,9]]</span><br></pre></td></tr></table></figure>
-<h4 id="RDD方法会作用在其所有方法上"><a href="#RDD方法会作用在其所有方法上" class="headerlink" title="RDD方法会作用在其所有方法上"></a>RDD方法会作用在其所有方法上</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.map(<span class="keyword">lambda</span> x: x * <span class="number">10</span>).collect()</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[10,20,30,40,50,60,70,80,90]</span><br></pre></td></tr></table></figure>
-<h4 id="RDD之间具有依赖关系"><a href="#RDD之间具有依赖关系" class="headerlink" title="RDD之间具有依赖关系"></a>RDD之间具有依赖关系</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line">rdd1 = sc.textFile(<span class="string">"../test.text"</span>)</span><br><span class="line">rdd2 = rdd1.flatMap(<span class="keyword">lambda</span> x: x.split(<span class="string">' '</span>))</span><br><span class="line">rdd3 = rdd2.map(<span class="keyword">lambda</span> x: (x, <span class="number">1</span>))</span><br><span class="line">rdd4 = rdd3.reduceByKey(<span class="keyword">lambda</span> a, b: a+b)</span><br><span class="line">print(rdd4.collect())</span><br></pre></td></tr></table></figure>
-<h4 id="Key-Value型RDD可以有分区器"><a href="#Key-Value型RDD可以有分区器" class="headerlink" title="Key-Value型RDD可以有分区器"></a>Key-Value型RDD可以有分区器</h4><p>KV型RDD：RDD内存储的数据是只有两个元素的二元元组</p>
-<p>默认分区器：Hash分区规则，也可手动设置分区器：rdd.partitionBy()方法</p>
-<p><font color="gold">注</font>：不是所有RDD都是KV型</p>
-<h4 id="RDD的分区规划：会尽量靠近数据所在的服务器"><a href="#RDD的分区规划：会尽量靠近数据所在的服务器" class="headerlink" title="RDD的分区规划：会尽量靠近数据所在的服务器"></a>RDD的分区规划：会尽量靠近数据所在的服务器</h4><p>在初始RDD读取数据规划阶段，分区会尽量规划到存储数据所在服务器，直接读取本地数据，避免从网络读取数据</p>
-<p>Spark会在确保并行计算能力的前提下，尽量确保本地读取</p>
-<h3 id="RDD创建"><a href="#RDD创建" class="headerlink" title="RDD创建"></a>RDD创建</h3><ul>
-<li>通过并行化集合创建（本地对象转化为分布式RDD）</li>
-<li>读取外部数据源（读文件）</li>
-</ul>
-<h4 id="并行化创建"><a href="#并行化创建" class="headerlink" title="并行化创建"></a>并行化创建</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1: 集合对象，如：list</span></span><br><span class="line"><span class="comment"># arg2：可选，指定分区数量</span></span><br><span class="line">rdd = SparkContext.parallelize(arg1, arg2)</span><br></pre></td></tr></table></figure>
-<h4 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h4><p>通过textFile API来读取本地或者hdfs的数据</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1: 文件路径</span></span><br><span class="line"><span class="comment"># arg2：可选，最小分区数量</span></span><br><span class="line"><span class="comment"># 当arg2超出spark允许范围，参数失效</span></span><br><span class="line">SparkContext.textFile(arg1, arg2)</span><br></pre></td></tr></table></figure>
-<p>通过wholeTextFile API来读取小文件，这个api偏向于少量分区读取数据，是pyspark基于小文件的优化</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1：文件路径</span></span><br><span class="line"><span class="comment"># arg2：可选，最小分区数量</span></span><br><span class="line"><span class="comment"># 当arg2超出spark允许范围，参数失效</span></span><br><span class="line">SparkContext.wholeTextFiles(arg1, arg2)</span><br></pre></td></tr></table></figure>
-        <!--  RDDRDD（Resilient Distributed Dataset）弹性分布式数据集，是spark中最基本的数据抽象，代表一个不可变、可分区、其中元素可并行计算的集合
-
-Resilient：RDD中的数据可存储再内存或磁盘中
-Distributed：分布式存储数据（跨机器/跨进程），用于分布式计算
-Dataset：一个用于存放数据的数据集合
-
-特性分区RDD分区是RDD数据存储的最小......  -->
-        <p class="article-more-link">
-          <a href="/2022/12/07/Pyspark-RDD/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pyspark/">pyspark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
 
     </footer>
   </div>

@@ -258,6 +258,62 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-FastApi"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/05/23/FastApi/">FastApi</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/05/23/FastApi/" class="article-date">
+	  <time datetime="2022-05-23T03:49:29.000Z" itemprop="datePublished">2022-05-23</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>FastAPI 是一个基于Python3.6+版本用于构建API的高性能web框架</p>
+<p>官方文档链接：<a href="https://fastapi.tiangolo.com" target="_blank" rel="noopener">https://fastapi.tiangolo.com</a></p>
+<p><img src="/2022/05/23/FastApi/A.png" alt></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>执行<code>pip install fastapi[all]</code>来安装fastapi所需要的全部python包和模块</p>
+<p>也可以分开来安装来将应用程序部署到成产环境，其中uvicorn可以用作运行代码的服务器<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install fastapi</span><br><span class="line">pip install uvicorn[standard]</span><br></pre></td></tr></table></figure></p>
+        <!--  FastAPI 是一个基于Python3.6+版本用于构建API的高性能web框架
+官方文档链接：https://fastapi.tiangolo.com
+
+安装执行pip install fastapi[all]来安装fastapi所需要的全部python包和模块
+也可以分开来安装来将应用程序部署到成产环境，其中uvicorn可以用作运行代码的服务器12pip install fasta......  -->
+        <p class="article-more-link">
+          <a href="/2022/05/23/FastApi/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FastApi/">FastApi</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Scrapy：爬取steam热门游戏资料"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -824,65 +880,6 @@ Hadoop伪分布式搭建首先创建一台master虚拟机，并克隆node1、nod
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Python爬虫：豆瓣电影数据"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/05/02/Python爬虫：豆瓣电影数据/">Python爬虫：豆瓣电影数据</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/05/02/Python爬虫：豆瓣电影数据/" class="article-date">
-	  <time datetime="2019-05-01T16:39:06.000Z" itemprop="datePublished">2019-05-02</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p><strong>·</strong> <font color="orange">目标网站</font>：豆瓣电影网<a href="https://movie.douban.com/" target="_blank" rel="noopener">https://movie.douban.com/</a></p>
-<p><strong>·</strong> <font color="orange">目标数据1</font>：热门高分电影的名称、类型、评分、总评人数等</p>
-<p><strong>·</strong> <font color="orange">目标数据2</font>：热门电影《少年的你》影评</p>
-<p><strong>·</strong> <font color="orange">数据存储</font>：csv、txt</p>
-<p><strong>·</strong> <font color="orange">爬虫方法</font>：requests、json、xpath、正则表达式</p>
-<p>找到网站json，利用xpath、正则表达式等对豆瓣电影数据进行分页爬取，以及对热门电影《少年的你》全部影评进行爬取</p>
-<p><img src="/2019/05/02/Python爬虫：豆瓣电影数据/1.png" alt="movie.douban.com"><br><img src="/2019/05/02/Python爬虫：豆瓣电影数据/2.png" alt="“少年的你”影评"><br></p>
-        <!--  描述· 目标网站：豆瓣电影网https://movie.douban.com/
-· 目标数据1：热门高分电影的名称、类型、评分、总评人数等
-· 目标数据2：热门电影《少年的你》影评
-· 数据存储：csv、txt
-· 爬虫方法：requests、json、xpath、正则表达式
-找到网站json，利用xpath、正则表达式等对豆瓣电影数据进行分页爬取，以及对热门电影《少年的你》全部影评进行爬......  -->
-        <p class="article-more-link">
-          <a href="/2019/05/02/Python爬虫：豆瓣电影数据/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xpath/">xpath</a></li></ul>
 
     </footer>
   </div>
