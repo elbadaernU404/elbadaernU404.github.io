@@ -258,6 +258,135 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-LangChain + ChatGLM2-6B的本地知识问答库"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/">LangChain + ChatGLM2-6B的本地知识问答库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/" class="article-date">
+	  <time datetime="2023-10-24T01:14:34.000Z" itemprop="datePublished">2023-10-24</time>
+	</a>
+
+      
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>原项目Github：<a href="https://github.com/imClumsyPanda/langchain-ChatGLM" target="_blank" rel="noopener">https://github.com/imClumsyPanda/langchain-ChatGLM</a></p>
+<h2 id="项目部署"><a href="#项目部署" class="headerlink" title="项目部署"></a>项目部署</h2><h3 id="机器配置："><a href="#机器配置：" class="headerlink" title="机器配置："></a>机器配置：</h3><p><strong>·</strong> <font color="gold">python 环境：anaconda3 + python3.10.12</font></p>
+<p><strong>·</strong> <font color="gold">GPU：RTX3090*2 + CUDA11.7</font></p>
+<p><strong>·</strong> <font color="gold">torch：2.0.1（CUDA未升至12）</font></p>
+<h3 id="模型下载"><a href="#模型下载" class="headerlink" title="模型下载"></a>模型下载</h3><p><strong>·</strong> <font color="gold">m3e</font> <a href="https://huggingface.co/moka-ai/m3e-base/tree/main" target="_blank" rel="noopener">https://huggingface.co/moka-ai/m3e-base/tree/main</a></p>
+<p><strong>·</strong> <font color="gold">chatglm2-6b</font> <a href="https://huggingface.co/THUDM/chatglm2-6b/tree/main" target="_blank" rel="noopener">https://huggingface.co/THUDM/chatglm2-6b/tree/main</a></p>
+<p>chatglm清华源 <a href="https://cloud.tsinghua.edu.cn/d/674208019e314311ab5c/?p=%2F&amp;mode=list" target="_blank" rel="noopener">https://cloud.tsinghua.edu.cn/d/674208019e314311ab5c/?p=%2F&amp;mode=list</a></p>
+<p>(这里将模型全部下载至<code>/root/huggingface</code>下)</p>
+<h3 id="创建虚拟环境，安装依赖"><a href="#创建虚拟环境，安装依赖" class="headerlink" title="创建虚拟环境，安装依赖"></a>创建虚拟环境，安装依赖</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">conda create -n py310_dtglm python=3.10.12</span><br><span class="line">conda activate py310_dtglm</span><br><span class="line"></span><br><span class="line">pip install --use-pep517 -r requirements.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line">pip install --use-pep517 -r requirements_api.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line">pip install --use-pep517 -r requirements_webui.txt -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
+<h3 id="修改配置、模型路径"><a href="#修改配置、模型路径" class="headerlink" title="修改配置、模型路径"></a>修改配置、模型路径</h3><p>复制配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python copy_config_example.py</span><br></pre></td></tr></table></figure>
+<p>修改配置文件</p>
+<p><strong>·</strong> <font color="gold">model_config.py</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">MODEL_ROOT_PATH = <span class="string">"/root/huggingface"</span></span><br><span class="line"></span><br><span class="line">MODEL_PATH = &#123;</span><br><span class="line">    <span class="string">"embed_model"</span>: &#123;</span><br><span class="line">		...</span><br><span class="line">        <span class="string">"m3e-base"</span>: <span class="string">"/root/huggingface/m3e-base"</span>, <span class="comment"># 修改m3e模型路径</span></span><br><span class="line">		...</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment"># <span class="doctag">TODO:</span> add all supported llm models</span></span><br><span class="line">    <span class="string">"llm_model"</span>: &#123;</span><br><span class="line">		...</span><br><span class="line">        <span class="string">"chatglm2-6b"</span>: <span class="string">"/root/huggingface/chatglm2-6b"</span>, <span class="comment"># 修改chatglm2-6b模型路径</span></span><br><span class="line">		...</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">EMBEDDING_MODEL = <span class="string">"m3e-base"</span> <span class="comment"># 可以尝试最新的嵌入式sota模型：bge-large-zh-v1.5</span></span><br><span class="line">LLM_MODEL = <span class="string">"chatglm2-6b"</span></span><br></pre></td></tr></table></figure>
+        <!--  原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM
+项目部署机器配置：· python 环境：anaconda3 + python3.10.12
+· GPU：RTX3090*2 + CUDA11.7
+· torch：2.0.1（CUDA未升至12）
+模型下载· m3e https://huggingface.co/mok......  -->
+        <p class="article-more-link">
+          <a href="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Nebula3单机版快速安装"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/09/27/Nebula3单机版快速安装/">Nebula3单机版快速安装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/09/27/Nebula3单机版快速安装/" class="article-date">
+	  <time datetime="2023-09-27T08:12:31.000Z" itemprop="datePublished">2023-09-27</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <font color="gold"><strong>·</strong> 系统：CentOS7</font>
+
+<font color="gold"><strong>·</strong> nebula版本：3.6.0（开源社区版）</font>
+
+<font color="gold"><strong>·</strong> nebula-graph-studio版本：3.2.3</font>
+
+<h2 id="单机部署"><a href="#单机部署" class="headerlink" title="单机部署"></a>单机部署</h2><h3 id="tar包源码下载"><a href="#tar包源码下载" class="headerlink" title="tar包源码下载"></a>tar包源码下载</h3><p><code>wget https://oss-cdn.nebula-graph.com.cn/package/3.6.0/nebula-graph-3.6.0.el7.x86_64.tar.gz</code></p>
+<h3 id="解压并重命名"><a href="#解压并重命名" class="headerlink" title="解压并重命名"></a>解压并重命名</h3><p><code>tar -xvzf nebula-graph-3.6.0.el7.x86_64.tar.gz</code></p>
+<p><code>mv nebula-graph-3.6.0.el7.x86_64 nebula</code></p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p><code>cd nebula/etc</code></p>
+<p><code>mv nebula-graphd.conf.default nebula-graphd.conf</code></p>
+<p><code>mv nebula-metad.conf.default nebula-metad.conf</code></p>
+<p><code>mv nebula-storaged.conf nebula-storaged.conf</code></p>
+<p>修改对应文件存储位置、节点ip地址，集群同理</p>
+        <!--  · 系统：CentOS7
+
+· nebula版本：3.6.0（开源社区版）
+
+· nebula-graph-studio版本：3.2.3
+
+单机部署tar包源码下载wget https://oss-cdn.nebula-graph.com.cn/package/3.6.0/nebula-graph-3.6.0.el7.x86_64.tar.gz
+解压并重命名tar -xvzf nebula......  -->
+        <p class="article-more-link">
+          <a href="/2023/09/27/Nebula3单机版快速安装/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-LiveGBS国标GB-T28181视频流媒体平台"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -346,9 +475,9 @@
 <p><code>pipeline.py</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> python.visualize <span class="keyword">import</span> visualize_box_mask, visualize_attr, visualize_pose, visualize_action, visualize_vehicleplate, visualize_vehiclepress, visualize_lane, visualize_vehicle_retrograde, visualize_ocr</span><br></pre></td></tr></table></figure>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PipePredictor</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, args, cfg, is_video=True, multi_camera=False)</span>:</span></span><br><span class="line">    	self.ocr = args.ocr</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_video</span><span class="params">(self,</span></span></span><br><span class="line"><span class="function"><span class="params">                    image_rgb,</span></span></span><br><span class="line"><span class="function"><span class="params">                    result,</span></span></span><br><span class="line"><span class="function"><span class="params">                    collector,</span></span></span><br><span class="line"><span class="function"><span class="params">                    frame_id,</span></span></span><br><span class="line"><span class="function"><span class="params">                    fps,</span></span></span><br><span class="line"><span class="function"><span class="params">                    entrance=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    records=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    center_traj=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    do_illegal_parking_recognition=False,</span></span></span><br><span class="line"><span class="function"><span class="params">                    illegal_parking_dict=None)</span>:</span></span><br><span class="line">    image = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2BGR)</span><br><span class="line">    mot_res = copy.deepcopy(result.get(<span class="string">'mot'</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> self.ocr:</span><br><span class="line">        ocr_result = ocr.ocr(image_rgb, cls=<span class="literal">True</span>)[<span class="number">0</span>]</span><br><span class="line">        ocr_boxes = [line[<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result]</span><br><span class="line">        ocr_txts = [line[<span class="number">1</span>][<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result]</span><br><span class="line">        ocr_scores = [line[<span class="number">1</span>][<span class="number">1</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result]</span><br><span class="line">        </span><br><span class="line">        image = visualize_ocr(image, ocr_boxes, ocr_txts, ocr_scores)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_video</span><span class="params">(self,</span></span></span><br><span class="line"><span class="function"><span class="params">                    image_rgb,</span></span></span><br><span class="line"><span class="function"><span class="params">                    result,</span></span></span><br><span class="line"><span class="function"><span class="params">                    collector,</span></span></span><br><span class="line"><span class="function"><span class="params">                    frame_id,</span></span></span><br><span class="line"><span class="function"><span class="params">                    fps,</span></span></span><br><span class="line"><span class="function"><span class="params">                    entrance=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    records=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    center_traj=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                    do_illegal_parking_recognition=False,</span></span></span><br><span class="line"><span class="function"><span class="params">                    illegal_parking_dict=None)</span>:</span></span><br><span class="line">    image = cv2.cvtColor(image_rgb, cv2.COLOR_RGB2BGR)</span><br><span class="line">    mot_res = copy.deepcopy(result.get(<span class="string">'mot'</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> self.ocr:</span><br><span class="line">        lock.acquire() <span class="comment"># 加锁，paddleOCR是线程不安全的</span></span><br><span class="line">        ocr_result = ocr.ocr(image, cls=<span class="literal">True</span>)[<span class="number">0</span>]</span><br><span class="line">        lock.release()</span><br><span class="line">        ocr_boxes = [line[<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result]</span><br><span class="line">        ocr_txts = [line[<span class="number">1</span>][<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result]</span><br><span class="line">        ocr_scores = [line[<span class="number">1</span>][<span class="number">1</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result]</span><br><span class="line">        </span><br><span class="line">        image = visualize_ocr(image, ocr_boxes, ocr_txts, ocr_scores)</span><br></pre></td></tr></table></figure>
 <p><code>visualize.py</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_ocr</span><span class="params">(im, boxes, texts, score)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">        im = Image.open(im)</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建透明图层，为图像添加文字水印</span></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line">    im = im.convert(<span class="string">'RGBA'</span>)</span><br><span class="line">    im_canvas = Image.new(<span class="string">'RGBA'</span>, im.size, (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, res <span class="keyword">in</span> enumerate(texts):</span><br><span class="line">        <span class="keyword">if</span> boxes <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            box = boxes[i]</span><br><span class="line">            text = res</span><br><span class="line">            <span class="keyword">if</span> text == <span class="string">""</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            text_scale = max(<span class="number">1.0</span>, int(box[<span class="number">2</span>][<span class="number">1</span>] - box[<span class="number">1</span>][<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">            draw = ImageDraw.Draw(im_canvas)</span><br><span class="line">            draw.text(</span><br><span class="line">                (box[<span class="number">0</span>][<span class="number">0</span>], box[<span class="number">0</span>][<span class="number">1</span>]),</span><br><span class="line">                text,</span><br><span class="line">                font=ImageFont.truetype(font_file, size=int(text_scale)),</span><br><span class="line">                fill=(<span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">85</span>)) <span class="comment"># 第四位是透明度</span></span><br><span class="line">            draw.rectangle(</span><br><span class="line">                ((box[<span class="number">0</span>][<span class="number">0</span>], box[<span class="number">0</span>][<span class="number">1</span>]), (box[<span class="number">2</span>][<span class="number">0</span>], box[<span class="number">2</span>][<span class="number">1</span>])),</span><br><span class="line">                fill=<span class="literal">None</span>,</span><br><span class="line">                outline=(<span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>),</span><br><span class="line">                width=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 复合图层</span></span><br><span class="line">    im = Image.alpha_composite(im, im_canvas)</span><br><span class="line">    im = im.convert(<span class="string">'RGB'</span>)</span><br><span class="line">    <span class="comment"># 还原连续存储数组</span></span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_ocr</span><span class="params">(im, boxes, texts, score)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">        im = Image.open(im)</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 创建透明图层，为图像添加文字水印</span></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line">    im = im.convert(<span class="string">'RGBA'</span>)</span><br><span class="line">    im_canvas = Image.new(<span class="string">'RGBA'</span>, im.size, (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, res <span class="keyword">in</span> enumerate(texts):</span><br><span class="line">        <span class="keyword">if</span> boxes <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            box = boxes[i]</span><br><span class="line">            text = res</span><br><span class="line">            <span class="keyword">if</span> text == <span class="string">""</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            text_scale = max(<span class="number">1.0</span>, int(box[<span class="number">2</span>][<span class="number">1</span>] - box[<span class="number">1</span>][<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">            draw = ImageDraw.Draw(im_canvas)</span><br><span class="line">            draw.text(</span><br><span class="line">                (box[<span class="number">0</span>][<span class="number">0</span>], box[<span class="number">0</span>][<span class="number">1</span>]),</span><br><span class="line">                text,</span><br><span class="line">                font=ImageFont.truetype(font_file, size=int(text_scale)),</span><br><span class="line">                fill=(<span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">85</span>)) <span class="comment"># 第四位是透明度</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                draw.rectangle(</span><br><span class="line">                    ((box[<span class="number">0</span>][<span class="number">0</span>], box[<span class="number">0</span>][<span class="number">1</span>]), (box[<span class="number">2</span>][<span class="number">0</span>], box[<span class="number">2</span>][<span class="number">1</span>])),</span><br><span class="line">                    fill=<span class="literal">None</span>,</span><br><span class="line">                    outline=(<span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>),</span><br><span class="line">                    width=<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">except</span> ValueError:</span><br><span class="line">                <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 复合图层</span></span><br><span class="line">    im = Image.alpha_composite(im, im_canvas)</span><br><span class="line">    im = im.convert(<span class="string">'RGB'</span>)</span><br><span class="line">    <span class="comment"># 还原连续存储数组</span></span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
         <!--  PPOCR_V4安装百度最新ppocr_v4库，使用虚拟环境为py39_vio，本虚拟环境不可与人脸识别（py38_arcface）兼容（opencv版本不兼容）
 1pip install paddleocr --user -i https://mirror.baidu.com/pypi/simple
 代码cfg_utils.py新增cfg--ocr，设置True为开启，默认False
@@ -878,169 +1007,6 @@ nebula-graph-studio版本
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elastic-search/">elastic search</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Spark-SQL"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/12/08/Spark-SQL/">Spark-SQL</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/12/08/Spark-SQL/" class="article-date">
-	  <time datetime="2022-12-08T08:50:52.000Z" itemprop="datePublished">2022-12-08</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="SparkSQL"><a href="#SparkSQL" class="headerlink" title="SparkSQL"></a>SparkSQL</h2><p><strong>SparkSQL</strong>是spark的一个用于处理海量<strong>结构化数据</strong>的模块</p>
-<ul>
-<li>支持SQL语言</li>
-<li>自动优化</li>
-<li>性能强</li>
-<li>兼容HIVE</li>
-<li>API流程简单</li>
-<li>支持标准化JDBC和ODBC连接</li>
-<li>…</li>
-</ul>
-<h3 id="SparkSQL数据抽象"><a href="#SparkSQL数据抽象" class="headerlink" title="SparkSQL数据抽象"></a>SparkSQL数据抽象</h3><ul>
-<li><p><strong><font color="orange">Pandas · DataFrame</font></strong></p>
-<p><strong><font color="orange">·</font></strong> 二维表数据结构</p>
-<p><strong><font color="orange">·</font></strong> 单机（本地）集合</p>
-</li>
-<li><p><strong><font color="orange">SparkCore · RDD</font></strong></p>
-<p><strong><font color="orange">·</font></strong> 无标准数据结构</p>
-<p><strong><font color="orange">·</font></strong> 分布式（分区）集合</p>
-</li>
-<li><p><strong><font color="orange">SparkSQL · DataFrame</font></strong></p>
-<p><strong><font color="orange">·</font></strong> 二维表数据结构</p>
-<p><strong><font color="orange">·</font></strong> 分布式（分区）集合</p>
-</li>
-</ul>
-<h3 id="SparkSession对象"><a href="#SparkSession对象" class="headerlink" title="SparkSession对象"></a>SparkSession对象</h3><p>RDD程序的执行入口对象：<strong>SparkContext</strong></p>
-<p>在Spark2.0以后，推出了<strong>SparkSession</strong>对象，来作为Spark编码的统一入口对象。<strong>SparkSession</strong>：</p>
-<ul>
-<li>用于SparkSQL编程，作为入口对象</li>
-<li>用于SparkCore编程，通过SparkSession对象获取SparkContext</li>
-</ul>
-<p>构建SparkSession对象：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过builder方法来构建SparkSession对象</span></span><br><span class="line"><span class="comment"># appName：设置程序名称</span></span><br><span class="line"><span class="comment"># config：配置常用属性</span></span><br><span class="line"><span class="comment"># getOrCreate：完成创建SparkSession对象</span></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"test"</span>).master(<span class="string">"local[*]"</span>).config(<span class="string">"spark.sql.shuffle.partitions"</span>, <span class="string">"4"</span>).getOrCreate()</span><br></pre></td></tr></table></figure>
-<p>通过SparkSesion对象获取SparkContext对象：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"test"</span>).master(<span class="string">"local[*]"</span>).config(<span class="string">"spark.sql.shuffle.partitions"</span>, <span class="string">"4"</span>).getOrCreate()</span><br><span class="line"></span><br><span class="line">sc = spark.sparkContext</span><br></pre></td></tr></table></figure>
-        <!--  SparkSQLSparkSQL是spark的一个用于处理海量结构化数据的模块
-
-支持SQL语言
-自动优化
-性能强
-兼容HIVE
-API流程简单
-支持标准化JDBC和ODBC连接
-…
-
-SparkSQL数据抽象
-Pandas · DataFrame
-· 二维表数据结构
-· 单机（本地）集合
-
-SparkCore · RDD
-· 无标准数据结构
-· 分布式（分区）集合
-
-SparkSQL ·......  -->
-        <p class="article-more-link">
-          <a href="/2022/12/08/Spark-SQL/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Spark-Core"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/12/07/Spark-Core/">Spark-Core</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/12/07/Spark-Core/" class="article-date">
-	  <time datetime="2022-12-07T08:58:49.000Z" itemprop="datePublished">2022-12-07</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="广播变量"><a href="#广播变量" class="headerlink" title="广播变量"></a>广播变量</h2><p>本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费</p>
-<p><strong>解决方案</strong>：将本地对象设置为广播变量</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.将本地对象标记为广播变量</span></span><br><span class="line">broadcast = sc.broadcast(var)</span><br><span class="line"><span class="comment"># 2.使用广播变量，从broadcast对象中取出本地对象</span></span><br><span class="line">value = broadcast.value</span><br><span class="line"><span class="comment"># 当传输的是广播对象时，spark会只给每个Executor分发一份数据</span></span><br></pre></td></tr></table></figure>
-<p>当本地集合对象和分布式集合对象（RDD）进行关联时，需要将本地集合对象封装为广播变量</p>
-<ul>
-<li>节省网络IO次数</li>
-<li>降低Executor内存占用</li>
-</ul>
-<h2 id="累加器"><a href="#累加器" class="headerlink" title="累加器"></a>累加器</h2><p>当执行累加操作时，各个分区累加自身的内容</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># spark提供累加器变量，参数是初始值</span></span><br><span class="line">acmlt = sc.accumulator(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p>e.g.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">acmlt = sc.accumulator(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">counts</span><span class="params">(data)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> acmlt</span><br><span class="line">    acmlt += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rdd1 = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">3</span>)</span><br><span class="line">rdd2 = rdd1.map(counts)</span><br><span class="line">print(rdd2.collect())</span><br><span class="line">print(acmlt)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1, 2, 3]</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
-<p><font color="gold">注</font>：累加器可能因血缘关系导致重复的累加，例如一个RDD被释放后累加已经完成，此时再使用该RDD将会导致重复累加。可通过cache缓存机制来解决</p>
-        <!--  广播变量本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费
-解决方案：将本地对象设置为广播变量
-12345# 1.将本地对象标记为广播变量broadcast = sc.broadcast(var)# 2.使用广播变量，从broadcast对象中取出本......  -->
-        <p class="article-more-link">
-          <a href="/2022/12/07/Spark-Core/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
 
     </footer>
   </div>

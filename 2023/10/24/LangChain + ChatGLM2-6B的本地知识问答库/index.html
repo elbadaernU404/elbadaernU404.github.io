@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>langchain + chatglm2-6b的本地知识问答库 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  
+  <meta name="description" content="原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM 项目部署机器配置：· python 环境：anaconda3 + python3.10.12 · GPU：RTX3090*2 + CUDA11.7 · torch：2.0.1（CUDA未升至12） 模型下载· m3e https://huggingface.co/moka-ai">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LangChain + ChatGLM2-6B的本地知识问答库">
+<meta property="og:url" content="http://yoursite.com/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM 项目部署机器配置：· python 环境：anaconda3 + python3.10.12 · GPU：RTX3090*2 + CUDA11.7 · torch：2.0.1（CUDA未升至12） 模型下载· m3e https://huggingface.co/moka-ai">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/A.png">
+<meta property="og:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/B.png">
+<meta property="og:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/C.png">
+<meta property="og:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/D.png">
+<meta property="og:updated_time" content="2023-10-24T03:09:59.359Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LangChain + ChatGLM2-6B的本地知识问答库">
+<meta name="twitter:description" content="原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM 项目部署机器配置：· python 环境：anaconda3 + python3.10.12 · GPU：RTX3090*2 + CUDA11.7 · torch：2.0.1（CUDA未升至12） 模型下载· m3e https://huggingface.co/moka-ai">
+<meta name="twitter:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-LangChain + ChatGLM2-6B的本地知识问答库" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      LangChain + ChatGLM2-6B的本地知识问答库
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/" class="article-date">
+	  <time datetime="2023-10-24T01:14:34.000Z" itemprop="datePublished">2023-10-24</time>
+	</a>
+
+      
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>原项目Github：<a href="https://github.com/imClumsyPanda/langchain-ChatGLM" target="_blank" rel="noopener">https://github.com/imClumsyPanda/langchain-ChatGLM</a></p>
+<h2 id="项目部署"><a href="#项目部署" class="headerlink" title="项目部署"></a>项目部署</h2><h3 id="机器配置："><a href="#机器配置：" class="headerlink" title="机器配置："></a>机器配置：</h3><p><strong>·</strong> <font color="gold">python 环境：anaconda3 + python3.10.12</font></p>
+<p><strong>·</strong> <font color="gold">GPU：RTX3090*2 + CUDA11.7</font></p>
+<p><strong>·</strong> <font color="gold">torch：2.0.1（CUDA未升至12）</font></p>
+<h3 id="模型下载"><a href="#模型下载" class="headerlink" title="模型下载"></a>模型下载</h3><p><strong>·</strong> <font color="gold">m3e</font> <a href="https://huggingface.co/moka-ai/m3e-base/tree/main" target="_blank" rel="noopener">https://huggingface.co/moka-ai/m3e-base/tree/main</a></p>
+<p><strong>·</strong> <font color="gold">chatglm2-6b</font> <a href="https://huggingface.co/THUDM/chatglm2-6b/tree/main" target="_blank" rel="noopener">https://huggingface.co/THUDM/chatglm2-6b/tree/main</a></p>
+<p>chatglm清华源 <a href="https://cloud.tsinghua.edu.cn/d/674208019e314311ab5c/?p=%2F&amp;mode=list" target="_blank" rel="noopener">https://cloud.tsinghua.edu.cn/d/674208019e314311ab5c/?p=%2F&amp;mode=list</a></p>
+<p>(这里将模型全部下载至<code>/root/huggingface</code>下)</p>
+<h3 id="创建虚拟环境，安装依赖"><a href="#创建虚拟环境，安装依赖" class="headerlink" title="创建虚拟环境，安装依赖"></a>创建虚拟环境，安装依赖</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">conda create -n py310_dtglm python=3.10.12</span><br><span class="line">conda activate py310_dtglm</span><br><span class="line"></span><br><span class="line">pip install --use-pep517 -r requirements.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line">pip install --use-pep517 -r requirements_api.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line">pip install --use-pep517 -r requirements_webui.txt -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
+<h3 id="修改配置、模型路径"><a href="#修改配置、模型路径" class="headerlink" title="修改配置、模型路径"></a>修改配置、模型路径</h3><p>复制配置文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python copy_config_example.py</span><br></pre></td></tr></table></figure>
+<p>修改配置文件</p>
+<p><strong>·</strong> <font color="gold">model_config.py</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">MODEL_ROOT_PATH = <span class="string">"/root/huggingface"</span></span><br><span class="line"></span><br><span class="line">MODEL_PATH = &#123;</span><br><span class="line">    <span class="string">"embed_model"</span>: &#123;</span><br><span class="line">		...</span><br><span class="line">        <span class="string">"m3e-base"</span>: <span class="string">"/root/huggingface/m3e-base"</span>, <span class="comment"># 修改m3e模型路径</span></span><br><span class="line">		...</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment"># <span class="doctag">TODO:</span> add all supported llm models</span></span><br><span class="line">    <span class="string">"llm_model"</span>: &#123;</span><br><span class="line">		...</span><br><span class="line">        <span class="string">"chatglm2-6b"</span>: <span class="string">"/root/huggingface/chatglm2-6b"</span>, <span class="comment"># 修改chatglm2-6b模型路径</span></span><br><span class="line">		...</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">EMBEDDING_MODEL = <span class="string">"m3e-base"</span> <span class="comment"># 可以尝试最新的嵌入式sota模型：bge-large-zh-v1.5</span></span><br><span class="line">LLM_MODEL = <span class="string">"chatglm2-6b"</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p><strong>·</strong> <font color="gold">server_config.py</font></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># webui.py server</span></span><br><span class="line">WEBUI_SERVER = &#123;</span><br><span class="line">    <span class="string">"host"</span>: DEFAULT_BIND_HOST,</span><br><span class="line">    <span class="string">"port"</span>: <span class="number">8501</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># api.py server</span></span><br><span class="line">API_SERVER = &#123;</span><br><span class="line">    <span class="string">"host"</span>: DEFAULT_BIND_HOST,</span><br><span class="line">    <span class="string">"port"</span>: <span class="number">7861</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># fastchat openai_api server</span></span><br><span class="line">FSCHAT_OPENAI_API = &#123;</span><br><span class="line">    <span class="string">"host"</span>: DEFAULT_BIND_HOST,</span><br><span class="line">    <span class="string">"port"</span>: <span class="number">20000</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">FSCHAT_MODEL_WORKERS = &#123;</span><br><span class="line">    <span class="string">"default"</span>: &#123;</span><br><span class="line">        <span class="string">"host"</span>: DEFAULT_BIND_HOST,</span><br><span class="line">        <span class="string">"port"</span>: <span class="number">20002</span>,</span><br><span class="line">        <span class="string">"device"</span>: LLM_DEVICE,</span><br><span class="line">        <span class="string">"infer_turbo"</span>: <span class="literal">False</span>,</span><br><span class="line"></span><br><span class="line">        <span class="comment"># model_worker多卡加载需要配置的参数</span></span><br><span class="line">        <span class="string">"gpus"</span>: <span class="string">"0,1"</span>, <span class="comment"># 使用的GPU，以str的格式指定，如"0,1"，如失效请使用CUDA_VISIBLE_DEVICES="0,1"等形式指定</span></span><br><span class="line">        <span class="string">"num_gpus"</span>: <span class="number">2</span>, <span class="comment"># 使用GPU的数量</span></span><br><span class="line">        <span class="string">"max_gpu_memory"</span>: <span class="string">"20GiB"</span>, <span class="comment"># 每个GPU占用的最大显存</span></span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="string">"zhipu-api"</span>: &#123; <span class="comment"># 请为每个要运行的在线API设置不同的端口</span></span><br><span class="line">        <span class="string">"port"</span>: <span class="number">21001</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># fastchat controller server</span></span><br><span class="line">FSCHAT_CONTROLLER = &#123;</span><br><span class="line">    <span class="string">"host"</span>: DEFAULT_BIND_HOST,</span><br><span class="line">    <span class="string">"port"</span>: <span class="number">20001</span>,</span><br><span class="line">    <span class="string">"dispatch_method"</span>: <span class="string">"shortest_queue"</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="初始化默认知识库"><a href="#初始化默认知识库" class="headerlink" title="初始化默认知识库"></a>初始化默认知识库</h3><p>样例知识库文件位置：<code>knowledge_base/samples/content/test.txt</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python init_database.py --recreate-vs</span><br></pre></td></tr></table></figure>
+<h3 id="启动项目"><a href="#启动项目" class="headerlink" title="启动项目"></a>启动项目</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python startup.py -a</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/A.png" alt></p>
+<h3 id="通过fastapi接口添加知识库"><a href="#通过fastapi接口添加知识库" class="headerlink" title="通过fastapi接口添加知识库"></a>通过fastapi接口添加知识库</h3><p><code>http://host:7861/knowledge_base/upload_docs</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">curl -X 'POST' \</span><br><span class="line">  'http://host:7861/knowledge_base/upload_docs' \</span><br><span class="line">  -H 'accept: application/json' \</span><br><span class="line">  -H 'Content-Type: multipart/form-data' \</span><br><span class="line">  -F 'to_vector_store=true' \</span><br><span class="line">  -F 'override=false' \</span><br><span class="line">  -F 'not_refresh_vs_cache=false' \</span><br><span class="line">  -F 'chunk_size=250' \</span><br><span class="line">  -F 'chunk_overlap=50' \</span><br><span class="line">  -F 'zh_title_enhance=true' \</span><br><span class="line">  -F 'files=@分体式M录AI智能分析设备建设方案.docx;type=application/vnd.openxmlformats-officedocument.wordprocessingml.document' \</span><br><span class="line">  -F 'knowledge_base_name=琅琊' \</span><br><span class="line">  -F 'docs='</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/B.png" alt></p>
+<h3 id="选择知识库问答"><a href="#选择知识库问答" class="headerlink" title="选择知识库问答"></a>选择知识库问答</h3><p><img src="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/C.png" alt></p>
+<p><img src="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/D.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/09/27/Nebula3单机版快速安装/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Nebula3单机版快速安装</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目部署"><span class="nav-number">1.</span> <span class="nav-text">项目部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#机器配置："><span class="nav-number">1.1.</span> <span class="nav-text">机器配置：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型下载"><span class="nav-number">1.2.</span> <span class="nav-text">模型下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建虚拟环境，安装依赖"><span class="nav-number">1.3.</span> <span class="nav-text">创建虚拟环境，安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置、模型路径"><span class="nav-number">1.4.</span> <span class="nav-text">修改配置、模型路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化默认知识库"><span class="nav-number">1.5.</span> <span class="nav-text">初始化默认知识库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动项目"><span class="nav-number">1.6.</span> <span class="nav-text">启动项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过fastapi接口添加知识库"><span class="nav-number">1.7.</span> <span class="nav-text">通过fastapi接口添加知识库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择知识库问答"><span class="nav-number">1.8.</span> <span class="nav-text">选择知识库问答</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2023 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2023 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

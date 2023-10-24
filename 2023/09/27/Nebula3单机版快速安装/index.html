@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>nebula3单机版快速安装 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="databasenebula">
+  
+  
+  
+  
+  <meta name="description" content="· 系统：CentOS7  · nebula版本：3.6.0（开源社区版）  · nebula-graph-studio版本：3.2.3  单机部署tar包源码下载wget https://oss-cdn.nebula-graph.com.cn/package/3.6.0/nebula-graph-3.6.0.el7.x86_64.tar.gz 解压并重命名tar -xvzf nebula-gra">
+<meta name="keywords" content="database,nebula">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nebula3单机版快速安装">
+<meta property="og:url" content="http://yoursite.com/2023/09/27/Nebula3单机版快速安装/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="· 系统：CentOS7  · nebula版本：3.6.0（开源社区版）  · nebula-graph-studio版本：3.2.3  单机部署tar包源码下载wget https://oss-cdn.nebula-graph.com.cn/package/3.6.0/nebula-graph-3.6.0.el7.x86_64.tar.gz 解压并重命名tar -xvzf nebula-gra">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2023/09/27/Nebula3单机版快速安装/A.png">
+<meta property="og:image" content="http://yoursite.com/2023/09/27/Nebula3单机版快速安装/B.png">
+<meta property="og:updated_time" content="2023-10-24T02:28:41.838Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Nebula3单机版快速安装">
+<meta name="twitter:description" content="· 系统：CentOS7  · nebula版本：3.6.0（开源社区版）  · nebula-graph-studio版本：3.2.3  单机部署tar包源码下载wget https://oss-cdn.nebula-graph.com.cn/package/3.6.0/nebula-graph-3.6.0.el7.x86_64.tar.gz 解压并重命名tar -xvzf nebula-gra">
+<meta name="twitter:image" content="http://yoursite.com/2023/09/27/Nebula3单机版快速安装/A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Nebula3单机版快速安装" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Nebula3单机版快速安装
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/09/27/Nebula3单机版快速安装/" class="article-date">
+	  <time datetime="2023-09-27T08:12:31.000Z" itemprop="datePublished">2023-09-27</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><font color="gold"><strong>·</strong> 系统：CentOS7</font>
+
+<font color="gold"><strong>·</strong> nebula版本：3.6.0（开源社区版）</font>
+
+<font color="gold"><strong>·</strong> nebula-graph-studio版本：3.2.3</font>
+
+<h2 id="单机部署"><a href="#单机部署" class="headerlink" title="单机部署"></a>单机部署</h2><h3 id="tar包源码下载"><a href="#tar包源码下载" class="headerlink" title="tar包源码下载"></a>tar包源码下载</h3><p><code>wget https://oss-cdn.nebula-graph.com.cn/package/3.6.0/nebula-graph-3.6.0.el7.x86_64.tar.gz</code></p>
+<h3 id="解压并重命名"><a href="#解压并重命名" class="headerlink" title="解压并重命名"></a>解压并重命名</h3><p><code>tar -xvzf nebula-graph-3.6.0.el7.x86_64.tar.gz</code></p>
+<p><code>mv nebula-graph-3.6.0.el7.x86_64 nebula</code></p>
+<h3 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h3><p><code>cd nebula/etc</code></p>
+<p><code>mv nebula-graphd.conf.default nebula-graphd.conf</code></p>
+<p><code>mv nebula-metad.conf.default nebula-metad.conf</code></p>
+<p><code>mv nebula-storaged.conf nebula-storaged.conf</code></p>
+<p>修改对应文件存储位置、节点ip地址，集群同理</p>
+<a id="more"></a>
+<p><strong>示例：</strong></p>
+<p><strong>·</strong> <code>nebula-graphd.conf</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line">########## basics ##########</span><br><span class="line"># Whether to run as a daemon process</span><br><span class="line">--daemonize=true</span><br><span class="line"># The file to host the process id</span><br><span class="line">--pid_file=pids/nebula-graphd.pid</span><br><span class="line"># Whether to enable optimizer</span><br><span class="line">--enable_optimizer=true</span><br><span class="line"># The default charset when a space is created</span><br><span class="line">--default_charset=utf8</span><br><span class="line"># The default collate when a space is created</span><br><span class="line">--default_collate=utf8_bin</span><br><span class="line"># Whether to use the configuration obtained from the configuration file</span><br><span class="line">--local_config=true</span><br><span class="line"></span><br><span class="line">########## logging ##########</span><br><span class="line"># The directory to host logging files</span><br><span class="line">--log_dir=/home/nebula/graph/logs</span><br><span class="line"># Log level, 0, 1, 2, 3 for INFO, WARNING, ERROR, FATAL respectively</span><br><span class="line">--minloglevel=0</span><br><span class="line"># Verbose log level, 1, 2, 3, 4, the higher of the level, the more verbose of the logging</span><br><span class="line">--v=0</span><br><span class="line"># Maximum seconds to buffer the log messages</span><br><span class="line">--logbufsecs=0</span><br><span class="line"># Whether to redirect stdout and stderr to separate output files</span><br><span class="line">--redirect_stdout=true</span><br><span class="line"># Destination filename of stdout and stderr, which will also reside in log_dir.</span><br><span class="line">--stdout_log_file=graphd-stdout.log</span><br><span class="line">--stderr_log_file=graphd-stderr.log</span><br><span class="line"># Copy log messages at or above this level to stderr in addition to logfiles. The numbers of severity levels INFO, WARNING, ERROR, and FATAL are 0, 1, 2, and 3, respectively.</span><br><span class="line">--stderrthreshold=3</span><br><span class="line"># wether logging files&apos; name contain time stamp.</span><br><span class="line">--timestamp_in_logfile_name=true</span><br><span class="line">########## query ##########</span><br><span class="line"># Whether to treat partial success as an error.</span><br><span class="line"># This flag is only used for Read-only access, and Modify access always treats partial success as an error.</span><br><span class="line">--accept_partial_success=false</span><br><span class="line"># Maximum sentence length, unit byte</span><br><span class="line">--max_allowed_query_size=4194304</span><br><span class="line"></span><br><span class="line">########## networking ##########</span><br><span class="line"># Comma separated Meta Server Addresses</span><br><span class="line">--meta_server_addrs=192.168.9.103:9559</span><br><span class="line"># Local IP used to identify the nebula-graphd process.</span><br><span class="line"># Change it to an address other than loopback if the service is distributed or</span><br><span class="line"># will be accessed remotely.</span><br><span class="line">--local_ip=192.168.9.103</span><br><span class="line"># Network device to listen on</span><br><span class="line">--listen_netdev=any</span><br><span class="line"># Port to listen on</span><br><span class="line">--port=9669</span><br><span class="line"># To turn on SO_REUSEPORT or not</span><br><span class="line">--reuse_port=false</span><br><span class="line"># Backlog of the listen socket, adjust this together with net.core.somaxconn</span><br><span class="line">--listen_backlog=1024</span><br><span class="line"># The number of seconds Nebula service waits before closing the idle connections</span><br><span class="line">--client_idle_timeout_secs=28800</span><br><span class="line"># The number of seconds before idle sessions expire</span><br><span class="line"># The range should be in [1, 604800]</span><br><span class="line">--session_idle_timeout_secs=28800</span><br><span class="line"># The number of threads to accept incoming connections</span><br><span class="line">--num_accept_threads=1</span><br><span class="line"># The number of networking IO threads, 0 for # of CPU cores</span><br><span class="line">--num_netio_threads=0</span><br><span class="line"># Max active connections for all networking threads. 0 means no limit.</span><br><span class="line"># Max connections for each networking thread = num_max_connections / num_netio_threads</span><br><span class="line">--num_max_connections=0</span><br><span class="line"># The number of threads to execute user queries, 0 for # of CPU cores</span><br><span class="line">--num_worker_threads=0</span><br><span class="line"># HTTP service ip</span><br><span class="line">--ws_ip=0.0.0.0</span><br><span class="line"># HTTP service port</span><br><span class="line">--ws_http_port=19669</span><br><span class="line"># storage client timeout</span><br><span class="line">--storage_client_timeout_ms=60000</span><br><span class="line"># slow query threshold in us</span><br><span class="line">--slow_query_threshold_us=200000</span><br><span class="line"># Port to listen on Meta with HTTP protocol, it corresponds to ws_http_port in metad&apos;s configuration file</span><br><span class="line">--ws_meta_http_port=19559</span><br><span class="line"></span><br><span class="line">########## authentication ##########</span><br><span class="line"># Enable authorization</span><br><span class="line">--enable_authorize=false</span><br><span class="line"># User login authentication type, password for nebula authentication, ldap for ldap authentication, cloud for cloud authentication</span><br><span class="line">--auth_type=password</span><br><span class="line"></span><br><span class="line">########## memory ##########</span><br><span class="line"># System memory high watermark ratio, cancel the memory checking when the ratio greater than 1.0</span><br><span class="line">--system_memory_high_watermark_ratio=0.8</span><br><span class="line"></span><br><span class="line">########## metrics ##########</span><br><span class="line">--enable_space_level_metrics=false</span><br><span class="line"></span><br><span class="line">########## experimental feature ##########</span><br><span class="line"># if use experimental features</span><br><span class="line">--enable_experimental_feature=false</span><br><span class="line"></span><br><span class="line"># if use balance data feature, only work if enable_experimental_feature is true</span><br><span class="line">--enable_data_balance=true</span><br><span class="line"></span><br><span class="line"># enable udf, written in c++ only for now</span><br><span class="line">--enable_udf=true</span><br><span class="line"></span><br><span class="line"># set the directory where the .so files of udf are stored, when enable_udf is true</span><br><span class="line">--udf_path=/home/nebula/dev/nebula/udf/</span><br><span class="line"></span><br><span class="line">########## session ##########</span><br><span class="line"># Maximum number of sessions that can be created per IP and per user</span><br><span class="line">--max_sessions_per_ip_per_user=300</span><br><span class="line"></span><br><span class="line">########## memory tracker ##########</span><br><span class="line"># trackable memory ratio (trackable_memory / (total_memory - untracked_reserved_memory) )</span><br><span class="line">--memory_tracker_limit_ratio=0.8</span><br><span class="line"># untracked reserved memory in Mib</span><br><span class="line">--memory_tracker_untracked_reserved_memory_mb=50</span><br><span class="line"></span><br><span class="line"># enable log memory tracker stats periodically</span><br><span class="line">--memory_tracker_detail_log=false</span><br><span class="line"># log memory tacker stats interval in milliseconds</span><br><span class="line">--memory_tracker_detail_log_interval_ms=60000</span><br><span class="line"></span><br><span class="line"># enable memory background purge (if jemalloc is used)</span><br><span class="line">--memory_purge_enabled=true</span><br><span class="line"># memory background purge interval in seconds</span><br><span class="line">--memory_purge_interval_seconds=10</span><br><span class="line"></span><br><span class="line">########## performance optimization ##########</span><br><span class="line"># The max job size in multi job mode</span><br><span class="line">--max_job_size=1</span><br><span class="line"># The min batch size for handling dataset in multi job mode, only enabled when max_job_size is greater than 1</span><br><span class="line">--min_batch_size=8192</span><br><span class="line"># if true, return directly without go through RPC</span><br><span class="line">--optimize_appendvertices=false</span><br><span class="line"># number of paths constructed by each thread</span><br><span class="line">--path_batch_size=10000</span><br></pre></td></tr></table></figure>
+<p><strong>·</strong> <code>nebula-metad.conf</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">########## basics ##########</span><br><span class="line"># Whether to run as a daemon process</span><br><span class="line">--daemonize=true</span><br><span class="line"># The file to host the process id</span><br><span class="line">--pid_file=pids/nebula-metad.pid</span><br><span class="line"></span><br><span class="line">########## logging ##########</span><br><span class="line"># The directory to host logging files</span><br><span class="line">--log_dir=/home/nebula/meta/logs</span><br><span class="line"># Log level, 0, 1, 2, 3 for INFO, WARNING, ERROR, FATAL respectively</span><br><span class="line">--minloglevel=0</span><br><span class="line"># Verbose log level, 1, 2, 3, 4, the higher of the level, the more verbose of the logging</span><br><span class="line">--v=0</span><br><span class="line"># Maximum seconds to buffer the log messages</span><br><span class="line">--logbufsecs=0</span><br><span class="line"># Whether to redirect stdout and stderr to separate output files</span><br><span class="line">--redirect_stdout=true</span><br><span class="line"># Destination filename of stdout and stderr, which will also reside in log_dir.</span><br><span class="line">--stdout_log_file=metad-stdout.log</span><br><span class="line">--stderr_log_file=metad-stderr.log</span><br><span class="line"># Copy log messages at or above this level to stderr in addition to logfiles. The numbers of severity levels INFO, WARNING, ERROR, and FATAL are 0, 1, 2, and 3, respectively.</span><br><span class="line">--stderrthreshold=3</span><br><span class="line"># wether logging files&apos; name contain time stamp, If Using logrotate to rotate logging files, than should set it to true.</span><br><span class="line">--timestamp_in_logfile_name=true</span><br><span class="line"></span><br><span class="line">########## networking ##########</span><br><span class="line"># Comma separated Meta Server addresses</span><br><span class="line">--meta_server_addrs=192.168.9.103:9559</span><br><span class="line"># Local IP used to identify the nebula-metad process.</span><br><span class="line"># Change it to an address other than loopback if the service is distributed or</span><br><span class="line"># will be accessed remotely.</span><br><span class="line">--local_ip=192.168.9.103</span><br><span class="line"># Meta daemon listening port</span><br><span class="line">--port=9559</span><br><span class="line"># HTTP service ip</span><br><span class="line">--ws_ip=0.0.0.0</span><br><span class="line"># HTTP service port</span><br><span class="line">--ws_http_port=19559</span><br><span class="line"># Port to listen on Storage with HTTP protocol, it corresponds to ws_http_port in storage&apos;s configuration file</span><br><span class="line">--ws_storage_http_port=19779</span><br><span class="line"></span><br><span class="line">########## storage ##########</span><br><span class="line"># Root data path, here should be only single path for metad</span><br><span class="line">--data_path=/home/nebula/data/meta</span><br><span class="line"></span><br><span class="line">########## Misc #########</span><br><span class="line"># The default number of parts when a space is created</span><br><span class="line">--default_parts_num=100</span><br><span class="line"># The default replica factor when a space is created</span><br><span class="line">--default_replica_factor=1</span><br><span class="line"></span><br><span class="line">--heartbeat_interval_secs=10</span><br><span class="line">--agent_heartbeat_interval_secs=60</span><br></pre></td></tr></table></figure>
+<p><strong>·</strong> <code>nebula-metad.conf</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line">########## basics ##########</span><br><span class="line"># Whether to run as a daemon process</span><br><span class="line">--daemonize=true</span><br><span class="line"># The file to host the process id</span><br><span class="line">--pid_file=pids/nebula-storaged.pid</span><br><span class="line"># Whether to use the configuration obtained from the configuration file</span><br><span class="line">--local_config=true</span><br><span class="line"></span><br><span class="line">########## logging ##########</span><br><span class="line"># The directory to host logging files</span><br><span class="line">--log_dir=/home/nebula/storage/logs</span><br><span class="line"># Log level, 0, 1, 2, 3 for INFO, WARNING, ERROR, FATAL respectively</span><br><span class="line">--minloglevel=0</span><br><span class="line"># Verbose log level, 1, 2, 3, 4, the higher of the level, the more verbose of the logging</span><br><span class="line">--v=0</span><br><span class="line"># Maximum seconds to buffer the log messages</span><br><span class="line">--logbufsecs=0</span><br><span class="line"># Whether to redirect stdout and stderr to separate output files</span><br><span class="line">--redirect_stdout=true</span><br><span class="line"># Destination filename of stdout and stderr, which will also reside in log_dir.</span><br><span class="line">--stdout_log_file=storaged-stdout.log</span><br><span class="line">--stderr_log_file=storaged-stderr.log</span><br><span class="line"># Copy log messages at or above this level to stderr in addition to logfiles. The numbers of severity levels INFO, WARNING, ERROR, and FATAL are 0, 1, 2, and 3, respectively.</span><br><span class="line">--stderrthreshold=3</span><br><span class="line"># Wether logging files&apos; name contain time stamp.</span><br><span class="line">--timestamp_in_logfile_name=true</span><br><span class="line"></span><br><span class="line">########## networking ##########</span><br><span class="line"># Comma separated Meta server addresses</span><br><span class="line">--meta_server_addrs=192.168.9.103:9559</span><br><span class="line"># Local IP used to identify the nebula-storaged process.</span><br><span class="line"># Change it to an address other than loopback if the service is distributed or</span><br><span class="line"># will be accessed remotely.</span><br><span class="line">--local_ip=192.168.9.103</span><br><span class="line"># Storage daemon listening port</span><br><span class="line">--port=9779</span><br><span class="line"># HTTP service ip</span><br><span class="line">--ws_ip=0.0.0.0</span><br><span class="line"># HTTP service port</span><br><span class="line">--ws_http_port=19779</span><br><span class="line"># heartbeat with meta service</span><br><span class="line">--heartbeat_interval_secs=10</span><br><span class="line"></span><br><span class="line">######### Raft #########</span><br><span class="line"># Raft election timeout</span><br><span class="line">--raft_heartbeat_interval_secs=30</span><br><span class="line"># RPC timeout for raft client (ms)</span><br><span class="line">--raft_rpc_timeout_ms=500</span><br><span class="line">## recycle Raft WAL</span><br><span class="line">--wal_ttl=14400</span><br><span class="line"></span><br><span class="line">########## Disk ##########</span><br><span class="line"># Root data path. Split by comma. e.g. --data_path=/disk1/path1/,/disk2/path2/</span><br><span class="line"># One path per Rocksdb instance.</span><br><span class="line">--data_path=/home/nebula/data/storage</span><br><span class="line"></span><br><span class="line"># Minimum reserved bytes of each data path</span><br><span class="line">--minimum_reserved_bytes=268435456</span><br><span class="line"></span><br><span class="line"># The default reserved bytes for one batch operation</span><br><span class="line">--rocksdb_batch_size=4096</span><br><span class="line"># The default block cache size used in BlockBasedTable.</span><br><span class="line"># The unit is MB.</span><br><span class="line">--rocksdb_block_cache=4</span><br><span class="line"># The type of storage engine, `rocksdb&apos;, `memory&apos;, etc.</span><br><span class="line">--engine_type=rocksdb</span><br><span class="line"></span><br><span class="line"># Compression algorithm, options: no,snappy,lz4,lz4hc,zlib,bzip2,zstd</span><br><span class="line"># For the sake of binary compatibility, the default value is snappy.</span><br><span class="line"># Recommend to use:</span><br><span class="line">#   * lz4 to gain more CPU performance, with the same compression ratio with snappy</span><br><span class="line">#   * zstd to occupy less disk space</span><br><span class="line">#   * lz4hc for the read-heavy write-light scenario</span><br><span class="line">--rocksdb_compression=lz4</span><br><span class="line"></span><br><span class="line"># Set different compressions for different levels</span><br><span class="line"># For example, if --rocksdb_compression is snappy,</span><br><span class="line"># &quot;no:no:lz4:lz4::zstd&quot; is identical to &quot;no:no:lz4:lz4:snappy:zstd:snappy&quot;</span><br><span class="line"># In order to disable compression for level 0/1, set it to &quot;no:no&quot;</span><br><span class="line">--rocksdb_compression_per_level=</span><br><span class="line"></span><br><span class="line"># Whether or not to enable rocksdb&apos;s statistics, disabled by default</span><br><span class="line">--enable_rocksdb_statistics=false</span><br><span class="line"></span><br><span class="line"># Statslevel used by rocksdb to collection statistics, optional values are</span><br><span class="line">#   * kExceptHistogramOrTimers, disable timer stats, and skip histogram stats</span><br><span class="line">#   * kExceptTimers, Skip timer stats</span><br><span class="line">#   * kExceptDetailedTimers, Collect all stats except time inside mutex lock AND time spent on compression.</span><br><span class="line">#   * kExceptTimeForMutex, Collect all stats except the counters requiring to get time inside the mutex lock.</span><br><span class="line">#   * kAll, Collect all stats</span><br><span class="line">--rocksdb_stats_level=kExceptHistogramOrTimers</span><br><span class="line"></span><br><span class="line"># Whether or not to enable rocksdb&apos;s prefix bloom filter, enabled by default.</span><br><span class="line">--enable_rocksdb_prefix_filtering=true</span><br><span class="line"># Whether or not to enable rocksdb&apos;s whole key bloom filter, disabled by default.</span><br><span class="line">--enable_rocksdb_whole_key_filtering=false</span><br><span class="line"></span><br><span class="line">############## rocksdb Options ##############</span><br><span class="line"># rocksdb DBOptions in json, each name and value of option is a string, given as &quot;option_name&quot;:&quot;option_value&quot; separated by comma</span><br><span class="line">--rocksdb_db_options=&#123;&#125;</span><br><span class="line"># rocksdb ColumnFamilyOptions in json, each name and value of option is string, given as &quot;option_name&quot;:&quot;option_value&quot; separated by comma</span><br><span class="line">--rocksdb_column_family_options=&#123;&quot;write_buffer_size&quot;:&quot;67108864&quot;,&quot;max_write_buffer_number&quot;:&quot;4&quot;,&quot;max_bytes_for_level_base&quot;:&quot;268435456&quot;&#125;</span><br><span class="line"># rocksdb BlockBasedTableOptions in json, each name and value of option is string, given as &quot;option_name&quot;:&quot;option_value&quot; separated by comma</span><br><span class="line">--rocksdb_block_based_table_options=&#123;&quot;block_size&quot;:&quot;8192&quot;&#125;</span><br><span class="line"></span><br><span class="line">############### misc ####################</span><br><span class="line"># Whether turn on query in multiple thread</span><br><span class="line">--query_concurrently=true</span><br><span class="line"># Whether remove outdated space data</span><br><span class="line">--auto_remove_invalid_space=true</span><br><span class="line"># Network IO threads number</span><br><span class="line">--num_io_threads=16</span><br><span class="line"># Max active connections for all networking threads. 0 means no limit.</span><br><span class="line"># Max connections for each networking thread = num_max_connections / num_netio_threads</span><br><span class="line">--num_max_connections=0</span><br><span class="line"># Worker threads number to handle request</span><br><span class="line">--num_worker_threads=32</span><br><span class="line"># Maximum subtasks to run admin jobs concurrently</span><br><span class="line">--max_concurrent_subtasks=10</span><br><span class="line"># The rate limit in bytes when leader synchronizes snapshot data</span><br><span class="line">--snapshot_part_rate_limit=10485760</span><br><span class="line"># The amount of data sent in each batch when leader synchronizes snapshot data</span><br><span class="line">--snapshot_batch_size=1048576</span><br><span class="line"># The rate limit in bytes when leader synchronizes rebuilding index</span><br><span class="line">--rebuild_index_part_rate_limit=4194304</span><br><span class="line"># The amount of data sent in each batch when leader synchronizes rebuilding index</span><br><span class="line">--rebuild_index_batch_size=1048576</span><br><span class="line"></span><br><span class="line">########## memory tracker ##########</span><br><span class="line"># trackable memory ratio (trackable_memory / (total_memory - untracked_reserved_memory) )</span><br><span class="line">--memory_tracker_limit_ratio=0.8</span><br><span class="line"># untracked reserved memory in Mib</span><br><span class="line">--memory_tracker_untracked_reserved_memory_mb=50</span><br><span class="line"></span><br><span class="line"># enable log memory tracker stats periodically</span><br><span class="line">--memory_tracker_detail_log=false</span><br><span class="line"># log memory tacker stats interval in milliseconds</span><br><span class="line">--memory_tracker_detail_log_interval_ms=60000</span><br><span class="line"></span><br><span class="line"># enable memory background purge (if jemalloc is used)</span><br><span class="line">--memory_purge_enabled=true</span><br><span class="line"># memory background purge interval in seconds</span><br><span class="line">--memory_purge_interval_seconds=10</span><br></pre></td></tr></table></figure>
+<h3 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h3><p>回到nebula根目录</p>
+<p><code>cd ..</code></p>
+<p>执行启动脚本</p>
+<p><code>./scripts/nebula.service start all</code></p>
+<p>查看服务状态</p>
+<p><code>./scripts/nebula.service status all</code></p>
+<p>重启服务</p>
+<p><code>./scripts/nebula.service restart all</code></p>
+<p>关闭服务</p>
+<p><code>./scripts/nebula.service stop all</code></p>
+<h2 id="nebula-graph-studio部署"><a href="#nebula-graph-studio部署" class="headerlink" title="nebula-graph-studio部署"></a>nebula-graph-studio部署</h2><p>v3.2.3下载地址（免费使用图探索的最高社区版本）</p>
+<p><a href="https://github.com/vesoft-inc/nebula-studio/releases/tag/v3.2.3" target="_blank" rel="noopener">https://github.com/vesoft-inc/nebula-studio/releases/tag/v3.2.3</a></p>
+<p>源码安装后，进入对应目录，执行启动脚本</p>
+<p><code>./service</code></p>
+<p><img src="/2023/09/27/Nebula3单机版快速安装/A.png" alt></p>
+<p><img src="/2023/09/27/Nebula3单机版快速安装/B.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          LangChain + ChatGLM2-6B的本地知识问答库
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/08/18/LiveGBS国标GB-T28181视频流媒体平台/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">LiveGBS国标GB/T28181视频流媒体平台</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单机部署"><span class="nav-number">1.</span> <span class="nav-text">单机部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tar包源码下载"><span class="nav-number">1.1.</span> <span class="nav-text">tar包源码下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解压并重命名"><span class="nav-number">1.2.</span> <span class="nav-text">解压并重命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置文件"><span class="nav-number">1.3.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动服务"><span class="nav-number">1.4.</span> <span class="nav-text">启动服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nebula-graph-studio部署"><span class="nav-number">2.</span> <span class="nav-text">nebula-graph-studio部署</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2023 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2023 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

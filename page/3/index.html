@@ -258,6 +258,362 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-ClickHouse"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/07/07/ClickHouse/">ClickHouse</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/07/07/ClickHouse/" class="article-date">
+	  <time datetime="2022-07-07T08:02:23.000Z" itemprop="datePublished">2022-07-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文参考CK中文官方文档：<a href="https://clickhouse.com/docs/zh/" target="_blank" rel="noopener">https://clickhouse.com/docs/zh/</a><br>ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)</p>
+<p>在传统的行式数据库系统中，数据按如下顺序存储：</p>
+<table>
+<thead>
+<tr>
+<th>ROW</th>
+<th>Title</th>
+<th>Code</th>
+<th>Note</th>
+<th>Datetime</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#0</td>
+<td>Database</td>
+<td>0</td>
+<td>数据库</td>
+<td>2022-07-07 16:03:00</td>
+</tr>
+<tr>
+<td>#1</td>
+<td>MySQL</td>
+<td>1</td>
+<td>关系型数据库</td>
+<td>2022-07-07 16:03:10</td>
+</tr>
+<tr>
+<td>#2</td>
+<td>Nebula</td>
+<td>1</td>
+<td>图数据库</td>
+<td>2022-07-07 16:03:20</td>
+</tr>
+<tr>
+<td>#3</td>
+<td>ClickHouse</td>
+<td>1</td>
+<td>列式数据库</td>
+<td>2022-07-07 16:03:30</td>
+</tr>
+<tr>
+<td>#N</td>
+<td>…</td>
+<td>1</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>处于同一行中的数据总是被物理的存储在一起。常见的行式数据库系统有：<font color="orange">MySQL</font>、<font color="orange">Postgres</font> 和 <font color="orange">MS SQL Server</font> 等</p>
+<p>而在列式数据库系统中，数据则按如下顺序存储</p>
+<table>
+<thead>
+<tr>
+<th>ROW</th>
+<th>#0</th>
+<th>#1</th>
+<th>#2</th>
+<th>#3</th>
+<th>#4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Title</strong></td>
+<td>Database</td>
+<td>MySQL</td>
+<td>Nebula</td>
+<td>ClickHouse</td>
+<td>…</td>
+</tr>
+<tr>
+<td><strong>Code</strong></td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>Note</strong></td>
+<td>数据库</td>
+<td>关系型数据库</td>
+<td>图数据库</td>
+<td>列式数据库</td>
+<td>…</td>
+</tr>
+<tr>
+<td><strong>Datetime</strong></td>
+<td>2022-0707 16:03:00</td>
+<td>2022-0707 16:03:10</td>
+<td>2022-0707 16:03:20</td>
+<td>2022-07-07 16:03:30</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
+<p>这些示例只显示了数据的排列顺序，来自不同列的值被单独存储，来自同一列的数据被存储在一起。常见的列式数据库系统有：<font color="orange">Vertica</font>、<font color="orange">Paraccel</font>(Actian Matrix, Amazon Redshift)、<font color="orange">Sybase IQ</font>、<font color="orange">Exasol</font>、<font color="orange">Infobright</font>、<font color="orange">InfiniDB</font>、<font color="orange">MonetDB</font>(VectorWise, Actian Vector)、<font color="orange">LucidDB</font>、<font color="orange">SAP HANA</font>、<font color="orange">Google Dremel</font>、<font color="orange">Google PowerDrill</font>、<font color="orange">Druid</font>、<font color="orange">kdb+</font> 等</p>
+<p>不同的数据存储方式适用不同的业务场景，数据访问的场景包括：进行了何种查询、多久查询一次以及各类查询的比例；每种类型的查询(行、列和字节)读取多少数据；读取数据和更新之间的关系；使用的数据集大小以及如何使用本地的数据集；是否使用事务,以及它们是如何进行隔离的；数据的复制机制与数据的完整性要求；每种类型的查询要求的延迟与吞吐量等等</p>
+<p>系统负载越高，依据使用场景进行定制化就越重要，并且定制将会变的越精细。没有一个系统能够同时适用所有不同的业务场景。如果系统适用于广泛的场景，在负载高的情况下，要兼顾所有的场景，那么将不得不做出选择：<font color="#008080">平衡</font> OR <font color="#008080">效率</font></p>
+<h2 id="联机分析（OLAP）场景的关键特征"><a href="#联机分析（OLAP）场景的关键特征" class="headerlink" title="联机分析（OLAP）场景的关键特征"></a>联机分析（OLAP）场景的关键特征</h2><pre><code>· 绝大多数是读请求
+
+· 数据以相当大的批次(&gt; 1000行)更新，而不是单行更新;或者根本没有更新。
+
+· 已添加到数据库的数据不能修改。
+
+· 对于读取，从数据库中提取相当多的行，但只提取列的一小部分。
+
+· 宽表，即每个表包含着大量的列
+
+· 查询相对较少(通常每台服务器每秒查询数百次或更少)
+
+· 对于简单查询，允许延迟大约50毫秒
+
+· 列中的数据相对较小：数字和短字符串(例如，每个URL 60个字节)
+
+· 处理单个查询时需要高吞吐量(每台服务器每秒可达数十亿行)
+
+· 事务不是必须的
+
+· 对数据一致性要求低
+
+· 每个查询有一个大表。除了他以外，其他的都很小。
+
+· 查询结果明显小于源数据。换句话说，数据经过过滤或聚合，因此结果适合于单个服务器的RAM中
+</code></pre><p>很容易可以看出，OLAP场景与其他通常业务场景(例如,OLTP或K/V)有很大的不同， 因此想要使用OLTP或Key-Value数据库去高效的处理分析查询场景，并不是非常完美的适用方案。例如，使用OLAP数据库去处理分析请求通常要优于使用MongoDB或Redis去处理分析请求。<br></p>
+        <!--  本文参考CK中文官方文档：https://clickhouse.com/docs/zh/ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)
+在传统的行式数据库系统中，数据按如下顺序存储：
+
+
+
+ROW
+Title
+Code
+Note
+Datetime
+
+
+
+
+#0
+Database
+0
+数据库
+2022-07-07 16:03:00
+
+
+#1
+MySQL
+1......  -->
+        <p class="article-more-link">
+          <a href="/2022/07/07/ClickHouse/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/clickhouse/">clickhouse</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Nebula-CentOS安装与部署"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/06/21/Nebula-CentOS安装与部署/">Nebula-CentOS安装与部署</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/06/21/Nebula-CentOS安装与部署/" class="article-date">
+	  <time datetime="2022-06-21T13:46:14.000Z" itemprop="datePublished">2022-06-21</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文参考、提取自Nebula Graph Database官方文档(<a href="https://docs.nebula-graph.com.cn/2.6.0" target="_blank" rel="noopener">https://docs.nebula-graph.com.cn/2.6.0</a>)</p>
+<h2 id="1-前期准备"><a href="#1-前期准备" class="headerlink" title="1.前期准备"></a>1.前期准备</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p><strong>·</strong> nebula版本：<font color="orange">2.6.0</font><br><strong>·</strong> 主机：<font color="orange">CentOS7 64位</font><br><strong>·</strong> 内存：<font color="orange">8GB</font><br><strong>·</strong> 处理器数量：<font color="orange">4</font><br><strong>·</strong> 处理器内核数：<font color="orange">4</font><br><strong>·</strong> 处理器内核总数：<font color="orange">16</font><br><strong>·</strong> 硬盘：<font color="orange">30GB，SSD</font></p>
+<h3 id="硬件要求"><a href="#硬件要求" class="headerlink" title="硬件要求"></a>硬件要求</h3><p><strong>·</strong> CPU架构：<font color="orange">x86_64</font><br><strong>·</strong> 内存：<font color="orange">4GB</font><br><strong>·</strong> 硬盘：<font color="orange">10GB，SSD</font></p>
+<h3 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h3><table>
+<thead>
+<tr>
+<th>软件名称</th>
+<th>版本</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>glibc</td>
+<td><font color="orange">2.17</font>及以上</td>
+<td>执行<code>ldd --version</code>检查版本</td>
+</tr>
+<tr>
+<td>make</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>m4</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>git</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>wget</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>unzip</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>xz</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>redline-devel</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>ncurses-devel</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>zlib-devel</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td><font color="orange">gcc</font></td>
+<td><font color="orange">7.5.0</font>及以上</td>
+<td>执行命令<code>gcc -v</code>检查版本</td>
+</tr>
+<tr>
+<td>gcc-c++</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td><font color="orange">cmake</font></td>
+<td><font color="orange">3.9.0</font>及以上</td>
+<td>执行命令<code>cmake --version</code>检查版本</td>
+</tr>
+<tr>
+<td>gettext</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>curl</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>redhat-lsb-core</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+<tr>
+<td>libstdc++-static</td>
+<td>任意稳定版本</td>
+<td>仅在CentOS 8+、RedHat 8+、Fedora中需要</td>
+</tr>
+<tr>
+<td>libasan</td>
+<td>任意稳定版本</td>
+<td>仅在CentOS 8+、RedHat 8+、Fedora中需要</td>
+</tr>
+<tr>
+<td>bzip2</td>
+<td>任意稳定版本</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<p>需要保证<font color="orange">gcc</font>和<font color="orange">cmake</font>的版本足够高，其他第三方软件将在安装（<font color="orange">cmake</font>）阶段自动下载并安装到build目录中<br></p>
+        <!--  本文参考、提取自Nebula Graph Database官方文档(https://docs.nebula-graph.com.cn/2.6.0)
+1.前期准备环境· nebula版本：2.6.0· 主机：CentOS7 64位· 内存：8GB· 处理器数量：4· 处理器内核数：4· 处理器内核总数：16· 硬盘：30GB，SSD
+硬件要求· CPU架构：x86_64· 内存：4GB· 硬......  -->
+        <p class="article-more-link">
+          <a href="/2022/06/21/Nebula-CentOS安装与部署/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-FastApi"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -766,120 +1122,6 @@ Numpy1.惯用写法：1import numpy as np
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Hadoop入门"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/09/07/Hadoop入门/">Hadoop入门</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/09/07/Hadoop入门/" class="article-date">
-	  <time datetime="2019-09-07T09:17:17.000Z" itemprop="datePublished">2019-09-07</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Hadoop是一个用Java编写的Apache开源框架，允许使用简单的编程模型跨计算机集群分布式处理大型数据集。Hadoop框架工作的应用程序在跨计算机集群提供分布式存储和计算的环境中工作。Hadoop旨在从单个服务器扩展到数千个机器，每个都提供本地计算和存储。</p>
-<h2 id="Hadoop伪分布式搭建"><a href="#Hadoop伪分布式搭建" class="headerlink" title="Hadoop伪分布式搭建"></a>Hadoop伪分布式搭建</h2><p>首先创建一台master虚拟机，并克隆node1、node2两台节点机，我的虚拟机集群ip地址分别设置为：</p>
-<p><strong>·</strong> 192.168.218.141 <font color="orange">master</font></p>
-<p><strong>·</strong> 192.168.218.142 <font color="orange">node1</font></p>
-<p><strong>·</strong> 192.168.218.143 <font color="orange">node2</font></p>
-<p>到master中设置好ssh，做好主机名与ip地址的映射，修改/etc/hosts下的配置文件，并将完成的hosts文件复制进节点机中</p>
-<p>此时可以打开xshell，也可以继续在虚拟机中进行操作</p>
-<p>将hadoop的jar包上传到虚拟机中，配置环境变量，并对hadoop下的<font color="orange">core-site.xml</font>、<font color="orange">hdfs-site.xml</font>、<font color="orange">yarn-site.xml</font>和<font color="orange">mapred-site.xml</font>文件进行相关配置</p>
-<p>完成以后再将hadoop的安装目录分别拷贝到子节点中，检查是否完成集群文件的配置和部署</p>
-<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>回到主机中打开hadoop安装目录，执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start-dfs.sh</span><br><span class="line">start-yarn.sh</span><br></pre></td></tr></table></figure>
-<p>（老版本的”start-all.sh”会提示已过期）</p>
-<p>完成hadoop的启动后，在主机和节点机输入jps查看当前运行的java进程</p>
-<p><img src="/2019/09/07/Hadoop入门/1.png" alt><br><img src="/2019/09/07/Hadoop入门/2.png" alt><br><img src="/2019/09/07/Hadoop入门/2.5.png" alt><br>成功后打开浏览器，输入localhost:50700可以进入hadoop初始界面。</p>
-<p><img src="/2019/09/07/Hadoop入门/3.png" alt><br></p>
-        <!--  Hadoop是一个用Java编写的Apache开源框架，允许使用简单的编程模型跨计算机集群分布式处理大型数据集。Hadoop框架工作的应用程序在跨计算机集群提供分布式存储和计算的环境中工作。Hadoop旨在从单个服务器扩展到数千个机器，每个都提供本地计算和存储。
-Hadoop伪分布式搭建首先创建一台master虚拟机，并克隆node1、node2两台节点机，我的虚拟机集群ip地址分别设置为......  -->
-        <p class="article-more-link">
-          <a href="/2019/09/07/Hadoop入门/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-实习项目：CRM管理系统"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/06/06/实习项目：CRM管理系统/">实习项目：CRM管理系统</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/06/06/实习项目：CRM管理系统/" class="article-date">
-	  <time datetime="2019-06-06T05:59:01.000Z" itemprop="datePublished">2019-06-06</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/个人笔记/">个人笔记</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><font size="3">项目文件代码已存储于github：<a href="https://github.com/elbadaernU404/projcode" target="_blank" rel="noopener">https://github.com/elbadaernU404/projcode</a></font></p>
-<h2 id="1-前期准备"><a href="#1-前期准备" class="headerlink" title="1.前期准备"></a>1.前期准备</h2><p>首先完成了MySql、JspStudy的安装，测试了数据库的连接，tomcat服务器的部署，以及配置tomcat的动态更新等操作。<br>接下来主要是做了对Html语法的复习，并尝试对后台登陆界面的编程。<br>在项目文件的根目录下/web中创建register.html文件进行测试，通过do get的方法发送网页请求，以及添加各类可视化元素，完成注册界面。<br>同样在/web中创建login.html文件，通过do post的方法发送网页请求（隐藏显示的细节）完成登陆界面。</p>
-<p><img src="/2019/06/06/实习项目：CRM管理系统/A.png" alt="测试"><br><img src="/2019/06/06/实习项目：CRM管理系统/B.png" alt="登陆功能"><br><img src="/2019/06/06/实习项目：CRM管理系统/C.png" alt="注册功能"><br></p>
-        <!--  项目文件代码已存储于github：https://github.com/elbadaernU404/projcode
-1.前期准备首先完成了MySql、JspStudy的安装，测试了数据库的连接，tomcat服务器的部署，以及配置tomcat的动态更新等操作。接下来主要是做了对Html语法的复习，并尝试对后台登陆界面的编程。在项目文件的根目录下/web中创建register.html文件进......  -->
-        <p class="article-more-link">
-          <a href="/2019/06/06/实习项目：CRM管理系统/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
 
     </footer>
   </div>
