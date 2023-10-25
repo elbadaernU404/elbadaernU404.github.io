@@ -577,13 +577,6 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/MASM/</loc>
-    <lastmod>2023-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/tags/D3-SVG/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -591,7 +584,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/Docker/</loc>
+    <loc>http://yoursite.com/tags/MASM/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -605,6 +598,13 @@
   </url>
   
   <url>
+    <loc>http://yoursite.com/tags/Docker/</loc>
+    <lastmod>2023-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/tags/elastic-search/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -612,14 +612,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/GET-POST/</loc>
+    <loc>http://yoursite.com/tags/FastApi/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/FastApi/</loc>
+    <loc>http://yoursite.com/tags/GET-POST/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -654,6 +654,13 @@
   </url>
   
   <url>
+    <loc>http://yoursite.com/tags/fastapi/</loc>
+    <lastmod>2023-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/tags/spark/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -668,7 +675,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/fastapi/</loc>
+    <loc>http://yoursite.com/tags/numpy%E3%80%81pandas/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -676,13 +683,6 @@
   
   <url>
     <loc>http://yoursite.com/tags/OCR/</loc>
-    <lastmod>2023-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/numpy%E3%80%81pandas/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -738,14 +738,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/paddlepaddle/</loc>
+    <loc>http://yoursite.com/tags/Spark/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/Spark/</loc>
+    <loc>http://yoursite.com/tags/paddlepaddle/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -766,14 +766,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/QQ%E5%9D%A6%E7%99%BD%E8%AF%B4/</loc>
+    <loc>http://yoursite.com/tags/%E5%B7%A5%E5%85%B7%E7%AB%99/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/%E5%B7%A5%E5%85%B7%E7%AB%99/</loc>
+    <loc>http://yoursite.com/tags/QQ%E5%9D%A6%E7%99%BD%E8%AF%B4/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -787,13 +787,6 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/php/</loc>
-    <lastmod>2023-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/tags/nebua/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -801,7 +794,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/%E6%B5%B7%E9%BE%9F%E7%BB%98%E5%9B%BE/</loc>
+    <loc>http://yoursite.com/tags/php/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -809,6 +802,13 @@
   
   <url>
     <loc>http://yoursite.com/tags/java/</loc>
+    <lastmod>2023-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/%E6%B5%B7%E9%BE%9F%E7%BB%98%E5%9B%BE/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -838,13 +838,6 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/%E6%B1%87%E7%BC%96/</loc>
-    <lastmod>2023-10-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -852,7 +845,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/Docker/</loc>
+    <loc>http://yoursite.com/categories/%E6%B1%87%E7%BC%96/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -860,6 +853,13 @@
   
   <url>
     <loc>http://yoursite.com/categories/Python/</loc>
+    <lastmod>2023-10-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/categories/Docker/</loc>
     <lastmod>2023-10-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
