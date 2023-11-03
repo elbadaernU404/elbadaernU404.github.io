@@ -6,24 +6,27 @@
   <title>langchain + chatglm2-6b的本地知识问答库 | 青域</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
+  <meta name="keywords" content="langchain-chatchatchat-glmbaichuan">
   
   
   
-  <meta name="description" content="原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM 项目部署机器配置：· python 环境：anaconda3 + python3.10.12 · GPU：RTX3090*2 + CUDA11.7 · torch：2.0.1（CUDA未升至12） 模型下载· m3e https://huggingface.co/moka-ai">
+  
+  <meta name="description" content="原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM 项目部署· v 0.2.6 机器配置：· python 环境：anaconda3 + python3.10.12 · GPU：RTX3090*2 + CUDA11.7 · torch：2.0.1（CUDA未升至12） · conda：py310_dtglm 模型下载· m3e">
+<meta name="keywords" content="langchain-chatchat,chat-glm,baichuan">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LangChain + ChatGLM2-6B的本地知识问答库">
 <meta property="og:url" content="http://yoursite.com/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/index.html">
 <meta property="og:site_name" content="青域">
-<meta property="og:description" content="原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM 项目部署机器配置：· python 环境：anaconda3 + python3.10.12 · GPU：RTX3090*2 + CUDA11.7 · torch：2.0.1（CUDA未升至12） 模型下载· m3e https://huggingface.co/moka-ai">
+<meta property="og:description" content="原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM 项目部署· v 0.2.6 机器配置：· python 环境：anaconda3 + python3.10.12 · GPU：RTX3090*2 + CUDA11.7 · torch：2.0.1（CUDA未升至12） · conda：py310_dtglm 模型下载· m3e">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/A.png">
 <meta property="og:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/B.png">
 <meta property="og:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/C.png">
 <meta property="og:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/D.png">
-<meta property="og:updated_time" content="2023-10-24T03:09:59.359Z">
+<meta property="og:updated_time" content="2023-10-31T15:34:01.311Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LangChain + ChatGLM2-6B的本地知识问答库">
-<meta name="twitter:description" content="原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM 项目部署机器配置：· python 环境：anaconda3 + python3.10.12 · GPU：RTX3090*2 + CUDA11.7 · torch：2.0.1（CUDA未升至12） 模型下载· m3e https://huggingface.co/moka-ai">
+<meta name="twitter:description" content="原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM 项目部署· v 0.2.6 机器配置：· python 环境：anaconda3 + python3.10.12 · GPU：RTX3090*2 + CUDA11.7 · torch：2.0.1（CUDA未升至12） · conda：py310_dtglm 模型下载· m3e">
 <meta name="twitter:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/A.png">
   
     <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
@@ -182,6 +185,8 @@
 	</a>
 
       
+    <a class="article-category-link" href="/categories/GPT/">GPT</a>
+
       
 	<a class="article-views">
 	<span id="busuanzi_container_page_pv">
@@ -193,9 +198,11 @@
     <div class="article-entry" itemprop="articleBody">
       
         <script src="\assets\js\APlayer.min.js"> </script><p>原项目Github：<a href="https://github.com/imClumsyPanda/langchain-ChatGLM" target="_blank" rel="noopener">https://github.com/imClumsyPanda/langchain-ChatGLM</a></p>
-<h2 id="项目部署"><a href="#项目部署" class="headerlink" title="项目部署"></a>项目部署</h2><h3 id="机器配置："><a href="#机器配置：" class="headerlink" title="机器配置："></a>机器配置：</h3><p><strong>·</strong> <font color="gold">python 环境：anaconda3 + python3.10.12</font></p>
+<h2 id="项目部署"><a href="#项目部署" class="headerlink" title="项目部署"></a>项目部署</h2><p><strong>·</strong> <font color="gold">v 0.2.6</font></p>
+<h3 id="机器配置："><a href="#机器配置：" class="headerlink" title="机器配置："></a>机器配置：</h3><p><strong>·</strong> <font color="gold">python 环境：anaconda3 + python3.10.12</font></p>
 <p><strong>·</strong> <font color="gold">GPU：RTX3090*2 + CUDA11.7</font></p>
 <p><strong>·</strong> <font color="gold">torch：2.0.1（CUDA未升至12）</font></p>
+<p><strong>·</strong> <font color="gold">conda：py310_dtglm</font></p>
 <h3 id="模型下载"><a href="#模型下载" class="headerlink" title="模型下载"></a>模型下载</h3><p><strong>·</strong> <font color="gold">m3e</font> <a href="https://huggingface.co/moka-ai/m3e-base/tree/main" target="_blank" rel="noopener">https://huggingface.co/moka-ai/m3e-base/tree/main</a></p>
 <p><strong>·</strong> <font color="gold">chatglm2-6b</font> <a href="https://huggingface.co/THUDM/chatglm2-6b/tree/main" target="_blank" rel="noopener">https://huggingface.co/THUDM/chatglm2-6b/tree/main</a></p>
 <p>chatglm清华源 <a href="https://cloud.tsinghua.edu.cn/d/674208019e314311ab5c/?p=%2F&amp;mode=list" target="_blank" rel="noopener">https://cloud.tsinghua.edu.cn/d/674208019e314311ab5c/?p=%2F&amp;mode=list</a></p>
@@ -218,6 +225,12 @@
 <p><img src="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/B.png" alt></p>
 <h3 id="选择知识库问答"><a href="#选择知识库问答" class="headerlink" title="选择知识库问答"></a>选择知识库问答</h3><p><img src="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/C.png" alt></p>
 <p><img src="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/D.png" alt></p>
+<h2 id="代码调整"><a href="#代码调整" class="headerlink" title="代码调整"></a>代码调整</h2><h3 id="百川大模型接入"><a href="#百川大模型接入" class="headerlink" title="百川大模型接入"></a>百川大模型接入</h3><p>调整<code>./configs/model_config.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"llm_model"</span>: &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">'baichuan-13b-chat'</span>:<span class="string">'/home/Baichuan2-main/baichuan-inc/Baichuan2-13B-Chat'</span>,</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="comment"># LLM 名称</span></span><br><span class="line">LLM_MODEL = <span class="string">"baichuan-13b-chat"</span></span><br></pre></td></tr></table></figure>
+<h3 id="接口流式输出"><a href="#接口流式输出" class="headerlink" title="接口流式输出"></a>接口流式输出</h3><p>安装sse_starlette</p>
+<p><code>pip install sse-starlette -i https://mirror.baidu.com/pypi/simple</code></p>
+<p>进入<code>./chat/*.py</code>，修改接口</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sse_starlette.sse <span class="keyword">import</span> EventSourceResponse</span><br><span class="line">...</span><br><span class="line"><span class="keyword">return</span> EventSourceResponse(chat_iterator(query=query,</span><br><span class="line">                                         history=history,</span><br><span class="line">                                         model_name=model_name,</span><br><span class="line">                                         prompt_name=prompt_name))</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -250,6 +263,8 @@
 
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/baichuan/">baichuan</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/chat-glm/">chat-glm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/langchain-chatchat/">langchain-chatchat</a></li></ul>
+
     </footer>
   </div>
   
@@ -257,9 +272,9 @@
 <nav id="article-nav">
   
   
-    <a href="/2023/09/27/Nebula3单机版快速安装/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2023/09/28/Nebula3集群版版本多开/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Nebula3单机版快速安装</div>
+      <div class="article-nav-title">Nebula3集群版新旧版本多开</div>
     </a>
   
 </nav>
@@ -273,7 +288,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">Contents</strong>
     
-        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目部署"><span class="nav-number">1.</span> <span class="nav-text">项目部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#机器配置："><span class="nav-number">1.1.</span> <span class="nav-text">机器配置：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型下载"><span class="nav-number">1.2.</span> <span class="nav-text">模型下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建虚拟环境，安装依赖"><span class="nav-number">1.3.</span> <span class="nav-text">创建虚拟环境，安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置、模型路径"><span class="nav-number">1.4.</span> <span class="nav-text">修改配置、模型路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化默认知识库"><span class="nav-number">1.5.</span> <span class="nav-text">初始化默认知识库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动项目"><span class="nav-number">1.6.</span> <span class="nav-text">启动项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过fastapi接口添加知识库"><span class="nav-number">1.7.</span> <span class="nav-text">通过fastapi接口添加知识库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择知识库问答"><span class="nav-number">1.8.</span> <span class="nav-text">选择知识库问答</span></a></li></ol></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目部署"><span class="nav-number">1.</span> <span class="nav-text">项目部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#机器配置："><span class="nav-number">1.1.</span> <span class="nav-text">机器配置：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型下载"><span class="nav-number">1.2.</span> <span class="nav-text">模型下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建虚拟环境，安装依赖"><span class="nav-number">1.3.</span> <span class="nav-text">创建虚拟环境，安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改配置、模型路径"><span class="nav-number">1.4.</span> <span class="nav-text">修改配置、模型路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化默认知识库"><span class="nav-number">1.5.</span> <span class="nav-text">初始化默认知识库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动项目"><span class="nav-number">1.6.</span> <span class="nav-text">启动项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过fastapi接口添加知识库"><span class="nav-number">1.7.</span> <span class="nav-text">通过fastapi接口添加知识库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择知识库问答"><span class="nav-number">1.8.</span> <span class="nav-text">选择知识库问答</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码调整"><span class="nav-number">2.</span> <span class="nav-text">代码调整</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#百川大模型接入"><span class="nav-number">2.1.</span> <span class="nav-text">百川大模型接入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#接口流式输出"><span class="nav-number">2.2.</span> <span class="nav-text">接口流式输出</span></a></li></ol></li></ol>
     
     </div>
   </aside>

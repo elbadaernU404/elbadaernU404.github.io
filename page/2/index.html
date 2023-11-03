@@ -258,6 +258,104 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-ElasticSearch环境搭建"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/02/16/ElasticSearch环境搭建/">ElasticSearch环境搭建</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/02/16/ElasticSearch环境搭建/" class="article-date">
+	  <time datetime="2023-02-16T03:16:07.000Z" itemprop="datePublished">2023-02-16</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>* 配合nebula全文检索测试环境而搭建的es单机环境</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><p>【<a href="https://www.elastic.co/cn/downloads/elasticsearch#ga-release" target="_blank" rel="noopener">https://www.elastic.co/cn/downloads/elasticsearch#ga-release</a>】 (或前往elastic中文社区下载中心【<a href="https://elasticsearch.cn/download/" target="_blank" rel="noopener">https://elasticsearch.cn/download/</a>】)</p>
+<ul>
+<li>选择linux版本</li>
+</ul>
+<p><img src="/2023/02/16/ElasticSearch环境搭建/A.png" alt></p>
+<h3 id="安装ES"><a href="#安装ES" class="headerlink" title="安装ES"></a>安装ES</h3><ul>
+<li>解压缩</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> tar xf elasticsearch-7.14.2-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建es用户</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> useradd es &amp;&amp; passwd es</span><br></pre></td></tr></table></figure>
+<ul>
+<li>更名</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> mv elasticsearch-7.14.2 elasticsearch</span><br></pre></td></tr></table></figure>
+<ul>
+<li>赋予es用户权限</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> chown -R es:es elasticsearch</span><br></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><pre><code>* 可使用es自带的java环境：ES_JAVA_HOME
+</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> vim /etc/profile</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ES_JAVA_HOME</span></span><br><span class="line"><span class="built_in">export</span> ES_JAVA_HOME=/data/elasticsearch/jdk/</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$ES_JAVA_HOME</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> /etc/profile</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>elasticsearch config</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> elasticsearch/config</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> vim elasticsearch.yml</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span>                          <span class="comment">##节点名称</span></span><br><span class="line"><span class="attr">path.data:</span> <span class="string">/usr/local/elasticsearch/data</span>        <span class="comment">##数据存放路径</span></span><br><span class="line"><span class="attr">path.logs:</span> <span class="string">/usr/local/elasticsearch/logs</span>        <span class="comment">##日志存放路径 </span></span><br><span class="line"><span class="attr">bootstrap.memory_lock:</span> <span class="literal">true</span>                <span class="comment">##避免es使用swap交换分区</span></span><br><span class="line"><span class="attr">indices.requests.cache.size:</span> <span class="number">5</span><span class="string">%</span>            <span class="comment">##缓存配置</span></span><br><span class="line"><span class="attr">indices.queries.cache.size:</span> <span class="number">10</span><span class="string">%</span>            <span class="comment">##缓存配置</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">192.168</span><span class="number">.80</span><span class="number">.128</span>               <span class="comment">##本机IP</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span>                            <span class="comment">##默认端口</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["node-1"]</span>   <span class="comment">##设置符合主节点条件的节点的主机名或 IP 地址来引导启动集群</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span>                    <span class="comment">##跨域</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>将当前用户软硬限制调大</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /etc/security/limits.conf</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">es</span> <span class="string">soft</span> <span class="string">nofile</span> <span class="number">65535</span></span><br><span class="line"><span class="string">es</span> <span class="string">hard</span> <span class="string">nofile</span> <span class="number">65537</span></span><br><span class="line"><span class="string">es</span> <span class="string">soft</span> <span class="string">memlock</span> <span class="string">unlimited</span></span><br><span class="line"><span class="string">es</span> <span class="string">hard</span> <span class="string">memlock</span> <span class="string">unlimited</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改vm.max_map_count内存</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">vm.max_map_count=655360</span></span><br></pre></td></tr></table></figure>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> su es</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ../bin</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./elasticsearch -d</span></span><br></pre></td></tr></table></figure>
+        <!--  * 配合nebula全文检索测试环境而搭建的es单机环境
+安装下载地址【https://www.elastic.co/cn/downloads/elasticsearch#ga-release】 (或前往elastic中文社区下载中心【https://elasticsearch.cn/download/】)
+
+选择linux版本
+
+
+安装ES
+解压缩
+
+1$ tar xf elastics......  -->
+        <p class="article-more-link">
+          <a href="/2023/02/16/ElasticSearch环境搭建/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elastic-search/">elastic search</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Spark-SQL"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -718,13 +816,13 @@ Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、S
         <h2 id="CentOS-Docker安装"><a href="#CentOS-Docker安装" class="headerlink" title="CentOS Docker安装"></a>CentOS Docker安装</h2><p>CentOS7要求64位，且内核版本高于3.10</p>
 <p>查看CentOS内核版本：<code>uname -r</code></p>
 <p><strong><font size="4" color="orange">·</font></strong> 安装Docker：卸载旧版本</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum remove docker \</span></span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
 <p><strong><font size="4" color="orange">·</font></strong> 安装所需软件包</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install -y yum-utils \</span></span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
 <p><strong><font size="4" color="orange">·</font></strong> 设置Docker仓库（清华源）</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum-config-manager \</span></span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
 <p><strong><font size="4" color="orange">·</font></strong> 安装Docker Engine-Community</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install docker-ce docker-ce-cli containerd.io</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
         <!--  CentOS Docker安装CentOS7要求64位，且内核版本高于3.10
 查看CentOS内核版本：uname -r
 · 安装Docker：卸载旧版本
@@ -843,66 +941,6 @@ Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、S
 安装依赖· 安装paddleocr version&gt;=2.51......  -->
         <p class="article-more-link">
           <a href="/2022/07/21/PaddleOCR表格识别/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-PaddleOCR"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/07/12/PaddleOCR/">PaddleOCR</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/07/12/PaddleOCR/" class="article-date">
-	  <time datetime="2022-07-12T06:20:14.000Z" itemprop="datePublished">2022-07-12</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>进入PaddleOCR的github页面（<a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener">https://github.com/PaddlePaddle/PaddleOCR</a>），进行下载和解压</p>
-<p>使用pip进行安装，这里因为速度很慢推荐使用百度源<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure></p>
-<p>安装shapely（<a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/" target="_blank" rel="noopener">https://www.lfd.uci.edu/~gohlke/pythonlibs/</a>），下载shapely对应python和系统版本的安装包（我使用的是py39，windows_64），python版本目前不能超过3.9</p>
-<p>将下载好的Shapely-1.8.2-cp39-cp39-win_amd64.whl放进python根目录下的libs文件夹内，通过cmd或pycharm终端使用pip执行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Shapely-1.8.2-cp39-cp39-win_amd64.whl</span><br></pre></td></tr></table></figure></p>
-<p>完成以后接着来到PaddleOCR目录下，通过终端安装依赖，这里同样推荐使用百度源<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure></p>
-<p>到这里，PaddleOCR的安装完成了</p>
-<p>如果再执行<code>pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</code>到安装opencv4.4.0.46包时报错：</p>
-<font size="4" color="red">error: subprocess-exited-with-error</font>
-
-<p>说明python的版本可能存在问题，需要切换虚拟环境或回退python版本，因为opencv-python目前仅支持py3.6-3.9版本</p>
-<p>opencv-python镜像：<a href="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/opencv-python/" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/opencv-python/</a><br></p>
-        <!--  安装进入PaddleOCR的github页面（https://github.com/PaddlePaddle/PaddleOCR），进行下载和解压
-使用pip进行安装，这里因为速度很慢推荐使用百度源1pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
-安装shapely（https://www.lfd.uci.e......  -->
-        <p class="article-more-link">
-          <a href="/2022/07/12/PaddleOCR/#more">Read More</a>
         </p>
       
     </div>

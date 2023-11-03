@@ -279,14 +279,18 @@
 	</a>
 
       
+    <a class="article-category-link" href="/categories/GPT/">GPT</a>
+
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
         <p>原项目Github：<a href="https://github.com/imClumsyPanda/langchain-ChatGLM" target="_blank" rel="noopener">https://github.com/imClumsyPanda/langchain-ChatGLM</a></p>
-<h2 id="项目部署"><a href="#项目部署" class="headerlink" title="项目部署"></a>项目部署</h2><h3 id="机器配置："><a href="#机器配置：" class="headerlink" title="机器配置："></a>机器配置：</h3><p><strong>·</strong> <font color="gold">python 环境：anaconda3 + python3.10.12</font></p>
+<h2 id="项目部署"><a href="#项目部署" class="headerlink" title="项目部署"></a>项目部署</h2><p><strong>·</strong> <font color="gold">v 0.2.6</font></p>
+<h3 id="机器配置："><a href="#机器配置：" class="headerlink" title="机器配置："></a>机器配置：</h3><p><strong>·</strong> <font color="gold">python 环境：anaconda3 + python3.10.12</font></p>
 <p><strong>·</strong> <font color="gold">GPU：RTX3090*2 + CUDA11.7</font></p>
 <p><strong>·</strong> <font color="gold">torch：2.0.1（CUDA未升至12）</font></p>
+<p><strong>·</strong> <font color="gold">conda：py310_dtglm</font></p>
 <h3 id="模型下载"><a href="#模型下载" class="headerlink" title="模型下载"></a>模型下载</h3><p><strong>·</strong> <font color="gold">m3e</font> <a href="https://huggingface.co/moka-ai/m3e-base/tree/main" target="_blank" rel="noopener">https://huggingface.co/moka-ai/m3e-base/tree/main</a></p>
 <p><strong>·</strong> <font color="gold">chatglm2-6b</font> <a href="https://huggingface.co/THUDM/chatglm2-6b/tree/main" target="_blank" rel="noopener">https://huggingface.co/THUDM/chatglm2-6b/tree/main</a></p>
 <p>chatglm清华源 <a href="https://cloud.tsinghua.edu.cn/d/674208019e314311ab5c/?p=%2F&amp;mode=list" target="_blank" rel="noopener">https://cloud.tsinghua.edu.cn/d/674208019e314311ab5c/?p=%2F&amp;mode=list</a></p>
@@ -298,10 +302,12 @@
 <p><strong>·</strong> <font color="gold">model_config.py</font></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">MODEL_ROOT_PATH = <span class="string">"/root/huggingface"</span></span><br><span class="line"></span><br><span class="line">MODEL_PATH = &#123;</span><br><span class="line">    <span class="string">"embed_model"</span>: &#123;</span><br><span class="line">		...</span><br><span class="line">        <span class="string">"m3e-base"</span>: <span class="string">"/root/huggingface/m3e-base"</span>, <span class="comment"># 修改m3e模型路径</span></span><br><span class="line">		...</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment"># <span class="doctag">TODO:</span> add all supported llm models</span></span><br><span class="line">    <span class="string">"llm_model"</span>: &#123;</span><br><span class="line">		...</span><br><span class="line">        <span class="string">"chatglm2-6b"</span>: <span class="string">"/root/huggingface/chatglm2-6b"</span>, <span class="comment"># 修改chatglm2-6b模型路径</span></span><br><span class="line">		...</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">EMBEDDING_MODEL = <span class="string">"m3e-base"</span> <span class="comment"># 可以尝试最新的嵌入式sota模型：bge-large-zh-v1.5</span></span><br><span class="line">LLM_MODEL = <span class="string">"chatglm2-6b"</span></span><br></pre></td></tr></table></figure>
         <!--  原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM
-项目部署机器配置：· python 环境：anaconda3 + python3.10.12
+项目部署· v 0.2.6
+机器配置：· python 环境：anaconda3 + python3.10.12
 · GPU：RTX3090*2 + CUDA11.7
 · torch：2.0.1（CUDA未升至12）
-模型下载· m3e https://huggingface.co/mok......  -->
+· conda：py310_dtglm
+模型下载· ......  -->
         <p class="article-more-link">
           <a href="/2023/10/24/LangChain + ChatGLM2-6B的本地知识问答库/#more">Read More</a>
         </p>
@@ -311,6 +317,74 @@
       
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/baichuan/">baichuan</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/chat-glm/">chat-glm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/langchain-chatchat/">langchain-chatchat</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Nebula3集群版版本多开"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/09/28/Nebula3集群版版本多开/">Nebula3集群版新旧版本多开</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/09/28/Nebula3集群版版本多开/" class="article-date">
+	  <time datetime="2023-09-28T02:10:10.000Z" itemprop="datePublished">2023-09-28</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><font color="gold"><strong>·</strong> 系统：CentOS7</font>
+
+<font color="gold"><strong>·</strong> 已有nebula版本：2.6.1（开源社区版）</font>
+
+<font color="gold"><strong>·</strong> 已有nebula-console版本：2.6.0</font>
+
+<font color="gold"><strong>·</strong> 已有nebula-graph-studio版本：3.2.3</font>
+
+<font color="gold"><strong>·</strong> 多开nebula版本：3.6.0（开源社区版）</font>
+
+<font color="gold"><strong>·</strong> 多开nebula-graph-studio版本：3.2.3</font>
+
+<font color="gold"><strong>·</strong> 多开nebula-console版本：3.6.0</font>
+
+<h2 id="集群部署"><a href="#集群部署" class="headerlink" title="集群部署"></a>集群部署</h2><p><strong>·</strong> 参考单机部署方式，对配置文件<code>--meta_server_addrs</code>做扩展，添加meta机器</p>
+<p><strong>·</strong> 区分2.6.1版本已被占用的端口，找到配置文件默认的<code>9559</code>、<code>19559</code>、<code>9669</code>、<code>19669</code>、<code>9779</code>、<code>19779</code>端口，修改为<code>8559</code>、<code>18559</code>、<code>8669</code>、<code>18669</code>、<code>8779</code>、<code>18779</code></p>
+<p><strong>·</strong> 启动集群</p>
+<p><strong>·</strong> 配置nebula-graph-studio默认端口为<code>7002</code></p>
+<p><font color="gold"><strong>·</strong> 注</font>：双开nebula后使用同版本nebula-graph-studio即使更换了端口，也不能同时运行，可以安装nebula-console来同时启动nebula控制台</p>
+<p><code>chmod 111 nebula-console</code></p>
+<p><code>./nebula-console --addr &lt;host&gt; --port 9669 -u root -p nebula</code></p>
+<p><code>./nebula-console --addr &lt;host&gt; --port 8669 -u root -p nebula</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li></ul>
+
     </footer>
   </div>
   
@@ -909,104 +983,6 @@ nebula-graph-studio版本
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-ElasticSearch环境搭建"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2023/02/16/ElasticSearch环境搭建/">ElasticSearch环境搭建</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2023/02/16/ElasticSearch环境搭建/" class="article-date">
-	  <time datetime="2023-02-16T03:16:07.000Z" itemprop="datePublished">2023-02-16</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>* 配合nebula全文检索测试环境而搭建的es单机环境</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><p>【<a href="https://www.elastic.co/cn/downloads/elasticsearch#ga-release" target="_blank" rel="noopener">https://www.elastic.co/cn/downloads/elasticsearch#ga-release</a>】 (或前往elastic中文社区下载中心【<a href="https://elasticsearch.cn/download/" target="_blank" rel="noopener">https://elasticsearch.cn/download/</a>】)</p>
-<ul>
-<li>选择linux版本</li>
-</ul>
-<p><img src="/2023/02/16/ElasticSearch环境搭建/A.png" alt></p>
-<h3 id="安装ES"><a href="#安装ES" class="headerlink" title="安装ES"></a>安装ES</h3><ul>
-<li>解压缩</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> tar xf elasticsearch-7.14.2-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
-<ul>
-<li>创建es用户</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> useradd es &amp;&amp; passwd es</span><br></pre></td></tr></table></figure>
-<ul>
-<li>更名</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> mv elasticsearch-7.14.2 elasticsearch</span><br></pre></td></tr></table></figure>
-<ul>
-<li>赋予es用户权限</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> chown -R es:es elasticsearch</span><br></pre></td></tr></table></figure>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><pre><code>* 可使用es自带的java环境：ES_JAVA_HOME
-</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> vim /etc/profile</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ES_JAVA_HOME</span></span><br><span class="line"><span class="built_in">export</span> ES_JAVA_HOME=/data/elasticsearch/jdk/</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$ES_JAVA_HOME</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> /etc/profile</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>elasticsearch config</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> elasticsearch/config</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> vim elasticsearch.yml</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span>                          <span class="comment">##节点名称</span></span><br><span class="line"><span class="attr">path.data:</span> <span class="string">/usr/local/elasticsearch/data</span>        <span class="comment">##数据存放路径</span></span><br><span class="line"><span class="attr">path.logs:</span> <span class="string">/usr/local/elasticsearch/logs</span>        <span class="comment">##日志存放路径 </span></span><br><span class="line"><span class="attr">bootstrap.memory_lock:</span> <span class="literal">true</span>                <span class="comment">##避免es使用swap交换分区</span></span><br><span class="line"><span class="attr">indices.requests.cache.size:</span> <span class="number">5</span><span class="string">%</span>            <span class="comment">##缓存配置</span></span><br><span class="line"><span class="attr">indices.queries.cache.size:</span> <span class="number">10</span><span class="string">%</span>            <span class="comment">##缓存配置</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">192.168</span><span class="number">.80</span><span class="number">.128</span>               <span class="comment">##本机IP</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span>                            <span class="comment">##默认端口</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["node-1"]</span>   <span class="comment">##设置符合主节点条件的节点的主机名或 IP 地址来引导启动集群</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span>                    <span class="comment">##跨域</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>将当前用户软硬限制调大</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /etc/security/limits.conf</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">es</span> <span class="string">soft</span> <span class="string">nofile</span> <span class="number">65535</span></span><br><span class="line"><span class="string">es</span> <span class="string">hard</span> <span class="string">nofile</span> <span class="number">65537</span></span><br><span class="line"><span class="string">es</span> <span class="string">soft</span> <span class="string">memlock</span> <span class="string">unlimited</span></span><br><span class="line"><span class="string">es</span> <span class="string">hard</span> <span class="string">memlock</span> <span class="string">unlimited</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>修改vm.max_map_count内存</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">vm.max_map_count=655360</span></span><br></pre></td></tr></table></figure>
-<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> su es</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ../bin</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./elasticsearch -d</span></span><br></pre></td></tr></table></figure>
-        <!--  * 配合nebula全文检索测试环境而搭建的es单机环境
-安装下载地址【https://www.elastic.co/cn/downloads/elasticsearch#ga-release】 (或前往elastic中文社区下载中心【https://elasticsearch.cn/download/】)
-
-选择linux版本
-
-
-安装ES
-解压缩
-
-1$ tar xf elastics......  -->
-        <p class="article-more-link">
-          <a href="/2023/02/16/ElasticSearch环境搭建/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elastic-search/">elastic search</a></li></ul>
 
     </footer>
   </div>
