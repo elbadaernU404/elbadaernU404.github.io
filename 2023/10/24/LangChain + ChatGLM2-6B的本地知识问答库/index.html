@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/B.png">
 <meta property="og:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/C.png">
 <meta property="og:image" content="http://yoursite.com/2023/10/24/LangChain%20+%20ChatGLM2-6B的本地知识问答库/D.png">
-<meta property="og:updated_time" content="2023-10-31T15:34:01.311Z">
+<meta property="og:updated_time" content="2023-11-06T08:31:28.442Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LangChain + ChatGLM2-6B的本地知识问答库">
 <meta name="twitter:description" content="原项目Github：https://github.com/imClumsyPanda/langchain-ChatGLM 项目部署· v 0.2.6 机器配置：· python 环境：anaconda3 + python3.10.12 · GPU：RTX3090*2 + CUDA11.7 · torch：2.0.1（CUDA未升至12） · conda：py310_dtglm 模型下载· m3e">
@@ -231,6 +231,7 @@
 <p><code>pip install sse-starlette -i https://mirror.baidu.com/pypi/simple</code></p>
 <p>进入<code>./chat/*.py</code>，修改接口</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sse_starlette.sse <span class="keyword">import</span> EventSourceResponse</span><br><span class="line">...</span><br><span class="line"><span class="keyword">return</span> EventSourceResponse(chat_iterator(query=query,</span><br><span class="line">                                         history=history,</span><br><span class="line">                                         model_name=model_name,</span><br><span class="line">                                         prompt_name=prompt_name))</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*注释内容 */</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -270,6 +271,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2023/12/28/CentOS-LibreOffice工具包安装/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          CentOS-LibreOffice工具包安装
+        
+      </div>
+    </a>
   
   
     <a href="/2023/09/28/Nebula3集群版版本多开/" id="article-nav-older" class="article-nav-link-wrap">
