@@ -258,6 +258,108 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-搭建nebula-CentOS集群（极速版）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/07/10/搭建nebula-CentOS集群（极速版）/">搭建nebula-CentOS集群（极速版）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/07/10/搭建nebula-CentOS集群（极速版）/" class="article-date">
+	  <time datetime="2023-07-10T01:05:06.000Z" itemprop="datePublished">2023-07-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><ul>
+<li>系统</li>
+</ul>
+<p>CentOS7.9</p>
+<ul>
+<li>机器</li>
+</ul>
+<p>三台，分别为<code>nebula01</code>、<code>nebula02</code>、<code>nebula03</code>、</p>
+<ul>
+<li>安装位置</li>
+</ul>
+<p><code>/usr/local</code></p>
+<ul>
+<li>nebula版本</li>
+</ul>
+<p><code>2.6.1</code></p>
+<ul>
+<li>nebula-graph-studio版本</li>
+</ul>
+<p><code>3.2.3</code></p>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><ul>
+<li>下载<code>tar.gz</code>文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://oss-cdn.nebula-graph.com.cn/package/2.6.1/nebula-graph-2.6.1.el7.x86_64.tar.gz</span><br><span class="line">wget https://oss-cdn.nebula-graph.com.cn/nebula-graph-studio/3.2.3/nebula-graph-studio-3.2.3.x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+<ul>
+<li>解压缩并重命名文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf nebula-graph-2.6.1.el7.x86_64.tar.gz &amp;&amp; mv nebula-graph-2.6.1.el7.x86_64 nebula</span><br><span class="line">tar -zxvf nebula-graph-studio-3.2.3.x86_64.tar.gz &amp;&amp; mv nebula-graph-studio-3.2.3.x86_64 nebula-graph-studio</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制配置文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd nebula/etc</span><br><span class="line">cp nebula-graphd.conf.default nebula-graphd.conf</span><br><span class="line">cp nebula-metad.conf.default nebula-metad.conf</span><br><span class="line">cp nebula-storaged.conf.default nebula-storaged.conf</span><br></pre></td></tr></table></figure>
+        <!--  环境准备
+系统
+
+CentOS7.9
+
+机器
+
+三台，分别为nebula01、nebula02、nebula03、
+
+安装位置
+
+/usr/local
+
+nebula版本
+
+2.6.1
+
+nebula-graph-studio版本
+
+3.2.3
+快速开始
+下载tar.gz文件
+
+123cd /usr/localwget https://oss-cdn.nebula-graph.com.cn......  -->
+        <p class="article-more-link">
+          <a href="/2023/07/10/搭建nebula-CentOS集群（极速版）/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebua/">nebua</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Nebula-Spark"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -306,7 +408,7 @@
       
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图算法/">图算法</a></li></ul>
 
     </footer>
   </div>
@@ -904,55 +1006,6 @@ Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、S
 <!-- Table of Contents -->
 
   
-    <article id="post-Nebula-fastapi接口维护文档"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/08/19/Nebula-fastapi接口维护文档/">Nebula-fastapi接口维护文档</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/08/19/Nebula-fastapi接口维护文档/" class="article-date">
-	  <time datetime="2022-08-19T09:40:40.000Z" itemprop="datePublished">2022-08-19</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Web/">Web</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="普通接口"><a href="#普通接口" class="headerlink" title="普通接口"></a>普通接口</h1><h2 id="1-导入fastapi、连接nebula连接池"><a href="#1-导入fastapi、连接nebula连接池" class="headerlink" title="1.导入fastapi、连接nebula连接池"></a>1.导入fastapi、连接nebula连接池</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"><span class="keyword">from</span> nebula2.gclient.net <span class="keyword">import</span> ConnectionPool</span><br><span class="line"><span class="keyword">from</span> nebula2.Config <span class="keyword">import</span> Config</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭在线文档，防止攻击</span></span><br><span class="line">app_router = FastAPI(docs_url=<span class="literal">None</span>, redoc_url=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">config = Config()</span><br><span class="line">config.max_connection_pool_size = <span class="number">10</span></span><br><span class="line"><span class="comment"># 连接超时时间</span></span><br><span class="line">config.timeout = <span class="number">60000</span></span><br><span class="line"><span class="comment"># 关闭空闲连接时间</span></span><br><span class="line">config.idle_time = <span class="number">0</span></span><br><span class="line"><span class="comment"># 检查空闲连接时间间隔</span></span><br><span class="line">config.interval_check = <span class="number">-1</span></span><br><span class="line"><span class="comment"># 初始化连接池</span></span><br><span class="line">connection_pool = ConnectionPool()</span><br><span class="line"><span class="comment"># 如果给定的服务器正常，则返回true，否则返回false</span></span><br><span class="line">ok = connection_pool.init([(<span class="string">'host'</span>, <span class="number">9669</span>)], config)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">import</span> uvicorn</span><br><span class="line">    uvicorn.run(app=<span class="string">"nebula_api:app_router"</span>, reload=<span class="literal">True</span>, debug=<span class="literal">True</span>, host=host, port=port)</span><br></pre></td></tr></table></figure>
-<h2 id="2-CORS跨域访问设置"><a href="#2-CORS跨域访问设置" class="headerlink" title="2.CORS跨域访问设置"></a>2.CORS跨域访问设置</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi.middleware.cors <span class="keyword">import</span> CORSMiddleware</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># CORS</span></span><br><span class="line">origins = [</span><br><span class="line">    <span class="string">"*"</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">app_router.add_middleware(</span><br><span class="line">    CORSMiddleware,</span><br><span class="line">    allow_origins=origins,</span><br><span class="line">    allow_credentials=<span class="literal">True</span>,</span><br><span class="line">    allow_methods=[<span class="string">"*"</span>],</span><br><span class="line">    allow_headers=[<span class="string">"*"</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-        <!--  普通接口1.导入fastapi、连接nebula连接池123456789101112131415161718192021222324from fastapi import FastAPIfrom nebula2.gclient.net import ConnectionPoolfrom nebula2.Config import Config# 关闭在线文档，防止攻击app_router ......  -->
-        <p class="article-more-link">
-          <a href="/2022/08/19/Nebula-fastapi接口维护文档/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fastapi/">fastapi</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -972,7 +1025,7 @@ Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、S
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2023 青域 All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2024 青域 All Rights Reserved.</p>
 
 	      
     		<p class="busuanzi_uv">
@@ -1125,7 +1178,7 @@ Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、S
             青域
           </div>
           <div class="panel-body">
-            Copyright © 2023 tianL.R All Rights Reserved.
+            Copyright © 2024 tianL.R All Rights Reserved.
           </div>
         </div>
       </div>

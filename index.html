@@ -258,6 +258,59 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-NetworkX-图论算法应用"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2024/01/08/NetworkX-图论算法应用/">NetworkX: 图论算法应用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2024/01/08/NetworkX-图论算法应用/" class="article-date">
+	  <time datetime="2024-01-08T07:48:56.000Z" itemprop="datePublished">2024-01-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/NetworkX/">NetworkX</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="NetworkX"><a href="#NetworkX" class="headerlink" title="NetworkX"></a>NetworkX</h2><p>NetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等</p>
+<p>参考文献地址: <a href="https://www.osgeo.cn/networkx/reference/index.html" target="_blank" rel="noopener">https://www.osgeo.cn/networkx/reference/index.html</a></p>
+<h2 id="图计算应用方式比较"><a href="#图计算应用方式比较" class="headerlink" title="图计算应用方式比较"></a>图计算应用方式比较</h2><h3 id="1-nebula-spark"><a href="#1-nebula-spark" class="headerlink" title="1.nebula + spark"></a>1.nebula + spark</h3><p>依赖nebula-spark-connector包、nebula-algorithm包和spark集群的数据读取、图计算方式</p>
+<h3 id="2-clickhouse-NetworkX"><a href="#2-clickhouse-NetworkX" class="headerlink" title="2.clickhouse + NetworkX"></a>2.clickhouse + NetworkX</h3><p>由于nebula-algorithm依赖spark集群，且nebula-console原生的数据读取能力不佳，在环境受限且计算量有限的情况下优先考虑跳过spark集群和nebula图库，采用clickhouse + NetworkX的图计算方式，其中clickhouse是存储了nebula源数据的列式分布式表，作用类似于方法1中将nebula集群数据通过nebula-spark-connector包导入为spark-DataFrame，仅用做数据读取，再通过将数据转化为NetworkX的图结构进行图计算</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/0.png" alt></p>
+        <!--  NetworkXNetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等
+参考文献地址: https://www.osgeo.cn/networkx/reference......  -->
+        <p class="article-more-link">
+          <a href="/2024/01/08/NetworkX-图论算法应用/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/networkx/">networkx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图算法/">图算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-CentOS-LibreOffice工具包安装"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -900,108 +953,6 @@ Ce......  -->
 <!-- Table of Contents -->
 
   
-    <article id="post-搭建nebula-CentOS集群（极速版）"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2023/07/10/搭建nebula-CentOS集群（极速版）/">搭建nebula-CentOS集群（极速版）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2023/07/10/搭建nebula-CentOS集群（极速版）/" class="article-date">
-	  <time datetime="2023-07-10T01:05:06.000Z" itemprop="datePublished">2023-07-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><ul>
-<li>系统</li>
-</ul>
-<p>CentOS7.9</p>
-<ul>
-<li>机器</li>
-</ul>
-<p>三台，分别为<code>nebula01</code>、<code>nebula02</code>、<code>nebula03</code>、</p>
-<ul>
-<li>安装位置</li>
-</ul>
-<p><code>/usr/local</code></p>
-<ul>
-<li>nebula版本</li>
-</ul>
-<p><code>2.6.1</code></p>
-<ul>
-<li>nebula-graph-studio版本</li>
-</ul>
-<p><code>3.2.3</code></p>
-<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><ul>
-<li>下载<code>tar.gz</code>文件</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://oss-cdn.nebula-graph.com.cn/package/2.6.1/nebula-graph-2.6.1.el7.x86_64.tar.gz</span><br><span class="line">wget https://oss-cdn.nebula-graph.com.cn/nebula-graph-studio/3.2.3/nebula-graph-studio-3.2.3.x86_64.tar.gz</span><br></pre></td></tr></table></figure>
-<ul>
-<li>解压缩并重命名文件</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf nebula-graph-2.6.1.el7.x86_64.tar.gz &amp;&amp; mv nebula-graph-2.6.1.el7.x86_64 nebula</span><br><span class="line">tar -zxvf nebula-graph-studio-3.2.3.x86_64.tar.gz &amp;&amp; mv nebula-graph-studio-3.2.3.x86_64 nebula-graph-studio</span><br></pre></td></tr></table></figure>
-<ul>
-<li>复制配置文件</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd nebula/etc</span><br><span class="line">cp nebula-graphd.conf.default nebula-graphd.conf</span><br><span class="line">cp nebula-metad.conf.default nebula-metad.conf</span><br><span class="line">cp nebula-storaged.conf.default nebula-storaged.conf</span><br></pre></td></tr></table></figure>
-        <!--  环境准备
-系统
-
-CentOS7.9
-
-机器
-
-三台，分别为nebula01、nebula02、nebula03、
-
-安装位置
-
-/usr/local
-
-nebula版本
-
-2.6.1
-
-nebula-graph-studio版本
-
-3.2.3
-快速开始
-下载tar.gz文件
-
-123cd /usr/localwget https://oss-cdn.nebula-graph.com.cn......  -->
-        <p class="article-more-link">
-          <a href="/2023/07/10/搭建nebula-CentOS集群（极速版）/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebua/">nebua</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -1021,7 +972,7 @@ nebula-graph-studio版本
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2023 青域 All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2024 青域 All Rights Reserved.</p>
 
 	      
     		<p class="busuanzi_uv">
@@ -1174,7 +1125,7 @@ nebula-graph-studio版本
             青域
           </div>
           <div class="panel-body">
-            Copyright © 2023 tianL.R All Rights Reserved.
+            Copyright © 2024 tianL.R All Rights Reserved.
           </div>
         </div>
       </div>

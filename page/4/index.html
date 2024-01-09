@@ -258,6 +258,81 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-基于卷积神经网络的面部年龄识别"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/05/26/基于卷积神经网络的面部年龄识别/">基于卷积神经网络的面部年龄识别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/05/26/基于卷积神经网络的面部年龄识别/" class="article-date">
+	  <time datetime="2021-05-26T15:13:00.000Z" itemprop="datePublished">2021-05-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-训练模型和框架"><a href="#1-训练模型和框架" class="headerlink" title="1.训练模型和框架"></a>1.训练模型和框架</h2><h3 id="1-1-Adience数据集"><a href="#1-1-Adience数据集" class="headerlink" title="1.1 Adience数据集"></a>1.1 Adience数据集</h3><p>Adience图片集包括Flickr等相册，通过从iPhone5（或更高版本）的智能手机等移动设备自动上传并进行组装，由其作者根据知识共享（CC）许可向公众发布。数据集提供了共计26580张面部照片的数据和基准，旨在尽可能真实地应对实际成像并做出判断。数据的标签有年龄组、性别、户外等，可用于监督学习的人脸识别对年龄的研究。Adience收录的数据信息包括主体外观、动作、噪点、光线等实际情况中进行图像采集时包含的动态变化，具有环境适应性强、应用范围广的特点。</p>
+<h3 id="1-2-Caffe框架"><a href="#1-2-Caffe框架" class="headerlink" title="1.2 Caffe框架"></a>1.2 Caffe框架</h3><p>Caffe（Convolutional Architecture for Fast Feature Embedding）采用CUDA架构，可在CPU和GPU上进行高速运算，是一个兼具了效率、表达和思维模块化的卷积神经网络框架。</p>
+<p>Caffe的数据结构以Blobs-Layers-Net的形式存在。</p>
+<p>Blobs是Caffe的核心数据格式，提供了统一的内存接口，并且可以在CPU与GPU之间进行数据同步。主要通过四维张量（Number<em>Channel</em>weight*high）的形式，按照C-contiguous方式（数组的行存储连续且不间断）来存储和交流网络中的权重、激活值、正反向数据。</p>
+<p>Layers是Caffe模型的关键内容，是组成神经网络和进行相关计算的基础。所有的Layer层都可以接收底层输入的Blobs，并向高层输出Blobs。Layers每一层都定义三种重要的计算：初始化（Setup）、向前传播（Forward）、向后传播（Backward）。</p>
+<p>其包含的运算有：</p>
+<p><strong>·</strong> 1.<font color="orange">load data</font>：数据载入</p>
+<p><strong>·</strong> 2.<font color="orange">Convolve filters</font>：卷积层，进行卷积。</p>
+<p><strong>·</strong> 3.<font color="orange">Pooling</font>：池化层，进行池化。</p>
+<p><strong>·</strong> 4.<font color="orange">Nonlinearities</font>：非线性映射运算，即激活函数。</p>
+<p><strong>·</strong> 5.<font color="orange">Inner Products</font>：内积运算。</p>
+<p><strong>·</strong> 6.<font color="orange">Normalize</font>：归一化</p>
+<p><strong>·</strong> 7.<font color="orange">Compute losses</font>：损失函数计算，如softmax、hinge。</p>
+<p>Net是一个由一系列连接的Layer层组成的有向无环图（Directed Acyclic Graph，DAG）。caffe会在向前传播或向后传播时，对DAG中的所有层进行记录，确保其准确性。</p>
+<h2 id="2-基于卷积神经网络的人脸识别"><a href="#2-基于卷积神经网络的人脸识别" class="headerlink" title="2.基于卷积神经网络的人脸识别"></a>2.基于卷积神经网络的人脸识别</h2><h3 id="2-1-卷积神经网络架构"><a href="#2-1-卷积神经网络架构" class="headerlink" title="2.1 卷积神经网络架构"></a>2.1 卷积神经网络架构</h3><p>使用的架构包括3个卷积层、2个全连接层和1个最终输出层。具体定义卷积层如下：</p>
+<p>1.Conv1：将内核大小为3<em>3</em>7的共计96个像素节点的过滤应用于输入第一卷积层中，经过修正线性单元ReLU（激活函数）处理后，池化层采用保留最大值（max-pooling）的规则，选择一个两像素跨度的3*3区域中最大值，进行池化，再经过局部响应归一化层（Local Response Normalization，LRN）。</p>
+<p>2.Conv2：上一层的输出（96×28×28）由第二个卷积层进行处理，包括对256个大小为96<em>5</em>5的像素过滤。同样的，经过一个修正线性单元ReLU，最大池化层，和一个与之前参数相同的局部响应归一化层。</p>
+<p>3.Conv3：第三层卷积层通过对一组384个大小为256<em>3</em>3的像素过滤来对256×14×14的 Blob进行处理，接着经过修正线性单元ReLU和一个最大池化层。</p>
+<p>再通过下列方式定义完全连接层：</p>
+<p>1.第一个完全连接层包含了512个人工神经元，用于接收第三卷积层的输出结果。接着再通过修正线性单元ReLU和Dropout层（防止CNN过拟合）。</p>
+<p>2.第二个完全连接层接收第一个完全连接层的512个人工神经元空间大小的输出（同样包含512个人工神经元），再通过修正线性单元ReLU和Dropout层。</p>
+<p>3.第三层完全连接层映射最终的分类结果。</p>
+<p>最终，最后一个完全连接层的输出会被反馈到为每个类别分配概率的Softmax层，预测其本身通过给定的测试图像的最大概率。</p>
+<p><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/A.png" alt></p>
+<h3 id="2-2-年龄预测"><a href="#2-2-年龄预测" class="headerlink" title="2.2 年龄预测"></a>2.2 年龄预测</h3><p>人的面部特征无时不刻发生着微妙变化反映出其年龄的不断增长，在最理想的情况之下，人的面部特征随着人的成长应该表现出正相关的关系，那么年龄估计就是一个广义上的回归问题。然而实际上仅通过回归的方法来判断一个人的年龄是靠不住的，即便一个正常的自然人也很难推断出观察对象的准确实际年龄。</p>
+<p>但是人眼可以对观察对象做出一个大致判断，较为准确的预测出对方的年龄所在区间。这样，就对对方的年龄有了初步估计。这样，就可以对年龄区间进行一个分类，以进一步研究人脸和年龄的关系。</p>
+<p>Adience数据集将人的年龄划分为了八个类别，分别为：[0-2]、[4-6]、[8-13]、[15-20]、[25-32]、[38-43]、[48-53]、[60 -]。因此，深度神经网络在最终的Softmax层中有8个节点，分别对各年龄段进行分类。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MODEL_MEAN_VALUES = (<span class="number">78.4263377603</span>, <span class="number">87.7689143744</span>, <span class="number">114.895847746</span>)</span><br><span class="line">ageList = [<span class="string">'(0-2)'</span>, <span class="string">'(4-6)'</span>, <span class="string">'(8-12)'</span>, <span class="string">'(15-20)'</span>, <span class="string">'(25-32)'</span>, <span class="string">'(38-43)'</span>, <span class="string">'(48-53)'</span>, <span class="string">'(60-100)'</span>]</span><br></pre></td></tr></table></figure></p>
+<p>Blob输入网络进行年龄的检测，并且年龄检测程序向前传播。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ageNet.setInput(blobs)</span><br><span class="line">agepredction = ageNet.forward()</span><br><span class="line">age = ageList[agepredction[<span class="number">0</span>].argmax()]</span><br></pre></td></tr></table></figure></p>
+        <!--  1.训练模型和框架1.1 Adience数据集Adience图片集包括Flickr等相册，通过从iPhone5（或更高版本）的智能手机等移动设备自动上传并进行组装，由其作者根据知识共享（CC）许可向公众发布。数据集提供了共计26580张面部照片的数据和基准，旨在尽可能真实地应对实际成像并做出判断。数据的标签有年龄组、性别、户外等，可用于监督学习的人脸识别对年龄的研究。Adience收录的数......  -->
+        <p class="article-more-link">
+          <a href="/2021/05/26/基于卷积神经网络的面部年龄识别/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN/">CNN</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-卷积神经网络算法"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -813,53 +888,6 @@ Hadoop伪分布式搭建首先创建一台master虚拟机，并克隆node1、nod
 <!-- Table of Contents -->
 
   
-    <article id="post-Python的图片与字符画转换"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/04/10/Python的图片与字符画转换/">Python的图片与字符画转换</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/04/10/Python的图片与字符画转换/" class="article-date">
-	  <time datetime="2019-04-10T11:27:27.000Z" itemprop="datePublished">2019-04-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>总体思想为：将图片转换为灰度图片后,利用字符的“复杂程度”替换掉图片的内容，字符数组的“复杂程度”由大到小排列即可。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="（需要pip安装PIL库）"><a href="#（需要pip安装PIL库）" class="headerlink" title="（需要pip安装PIL库）"></a>（需要pip安装PIL库）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image </span><br><span class="line"><span class="keyword">import</span> argparse </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 命令行输入参数处理 </span></span><br><span class="line">parser = argparse.ArgumentParser() </span><br><span class="line">  </span><br><span class="line">parser.add_argument(<span class="string">'file'</span>)   <span class="comment"># 输入文件 </span></span><br><span class="line">parser.add_argument(<span class="string">'-o'</span>, <span class="string">'--output'</span>)  <span class="comment"># 输出文件 </span></span><br><span class="line">parser.add_argument(<span class="string">'--width'</span>, type=int, default=<span class="number">80</span>) <span class="comment"># 输出字符画宽 </span></span><br><span class="line">parser.add_argument(<span class="string">'--height'</span>, type=int, default=<span class="number">80</span>) <span class="comment"># 输出字符画高 </span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 获取参数 </span></span><br><span class="line">args = parser.parse_args() </span><br><span class="line">  </span><br><span class="line">IMG = args.file</span><br><span class="line">WIDTH = args.width </span><br><span class="line">HEIGHT = args.height </span><br><span class="line">OUTPUT = args.output </span><br><span class="line">  </span><br><span class="line">ascii_char = list(<span class="string">"$@B%8&amp;WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1&#123;&#125;[]?-_+~&lt;&gt;i!lI;:,\"^`'. "</span>) </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 将256灰度映射到70个字符上 </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_char</span><span class="params">(r, b, g, alpha=<span class="number">256</span>)</span>:</span> </span><br><span class="line">  <span class="keyword">if</span> alpha == <span class="number">0</span>: </span><br><span class="line">    <span class="keyword">return</span> <span class="string">' '</span></span><br><span class="line">  length = len(ascii_char) </span><br><span class="line">  gray = int(<span class="number">0.2126</span> * r + <span class="number">0.7152</span> * g + <span class="number">0.0722</span> * b) </span><br><span class="line">  </span><br><span class="line">  unit = (<span class="number">256.0</span> + <span class="number">1</span>)/length </span><br><span class="line">  <span class="keyword">return</span> ascii_char[int(gray/unit)] </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>: </span><br><span class="line">  </span><br><span class="line">  im = Image.open(IMG) </span><br><span class="line">  im = im.resize((WIDTH, HEIGHT), Image.NEAREST) </span><br><span class="line">  </span><br><span class="line">  txt = <span class="string">""</span> </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> range(HEIGHT): </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(WIDTH): </span><br><span class="line">      txt += get_char(*im.getpixel((j, i))) </span><br><span class="line">    txt += <span class="string">'\n'</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">print</span> (txt) </span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 字符画输出到文件 </span></span><br><span class="line">  <span class="keyword">if</span> OUTPUT: </span><br><span class="line">    <span class="keyword">with</span> open(OUTPUT,<span class="string">'w'</span>) <span class="keyword">as</span> f: </span><br><span class="line">      f.write(txt) </span><br><span class="line">  <span class="keyword">else</span>: </span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">"output.txt"</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f: </span><br><span class="line">      f.write(txt)</span><br></pre></td></tr></table></figure>
-<p>（稿）</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PIL/">PIL</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -879,7 +907,7 @@ Hadoop伪分布式搭建首先创建一台master虚拟机，并克隆node1、nod
   <div class="container">
       	<div class="row">
 	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2017 - 2023 青域 All Rights Reserved.</p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2024 青域 All Rights Reserved.</p>
 
 	      
     		<p class="busuanzi_uv">
@@ -1032,7 +1060,7 @@ Hadoop伪分布式搭建首先创建一台master虚拟机，并克隆node1、nod
             青域
           </div>
           <div class="panel-body">
-            Copyright © 2023 tianL.R All Rights Reserved.
+            Copyright © 2024 tianL.R All Rights Reserved.
           </div>
         </div>
       </div>

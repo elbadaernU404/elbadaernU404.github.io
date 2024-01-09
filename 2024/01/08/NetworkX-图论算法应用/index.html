@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>networkx: 图论算法应用 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="nebulanetworkx图算法">
+  
+  
+  
+  
+  <meta name="description" content="NetworkXNetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等 参考文献地址: https://www.osgeo.cn/networkx/reference/ind">
+<meta name="keywords" content="nebula,networkx,图算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NetworkX: 图论算法应用">
+<meta property="og:url" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="NetworkXNetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等 参考文献地址: https://www.osgeo.cn/networkx/reference/ind">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/0.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/1.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/2.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/3.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/4.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/5.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/6.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/7.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/8.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/9.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/10.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/11.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/12.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/13.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/14.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/15.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/16.png">
+<meta property="og:updated_time" content="2024-01-09T00:45:56.630Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NetworkX: 图论算法应用">
+<meta name="twitter:description" content="NetworkXNetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等 参考文献地址: https://www.osgeo.cn/networkx/reference/ind">
+<meta name="twitter:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/0.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-NetworkX-图论算法应用" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      NetworkX: 图论算法应用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2024/01/08/NetworkX-图论算法应用/" class="article-date">
+	  <time datetime="2024-01-08T07:48:56.000Z" itemprop="datePublished">2024-01-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/NetworkX/">NetworkX</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="NetworkX"><a href="#NetworkX" class="headerlink" title="NetworkX"></a>NetworkX</h2><p>NetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等</p>
+<p>参考文献地址: <a href="https://www.osgeo.cn/networkx/reference/index.html" target="_blank" rel="noopener">https://www.osgeo.cn/networkx/reference/index.html</a></p>
+<h2 id="图计算应用方式比较"><a href="#图计算应用方式比较" class="headerlink" title="图计算应用方式比较"></a>图计算应用方式比较</h2><h3 id="1-nebula-spark"><a href="#1-nebula-spark" class="headerlink" title="1.nebula + spark"></a>1.nebula + spark</h3><p>依赖nebula-spark-connector包、nebula-algorithm包和spark集群的数据读取、图计算方式</p>
+<h3 id="2-clickhouse-NetworkX"><a href="#2-clickhouse-NetworkX" class="headerlink" title="2.clickhouse + NetworkX"></a>2.clickhouse + NetworkX</h3><p>由于nebula-algorithm依赖spark集群，且nebula-console原生的数据读取能力不佳，在环境受限且计算量有限的情况下优先考虑跳过spark集群和nebula图库，采用clickhouse + NetworkX的图计算方式，其中clickhouse是存储了nebula源数据的列式分布式表，作用类似于方法1中将nebula集群数据通过nebula-spark-connector包导入为spark-DataFrame，仅用做数据读取，再通过将数据转化为NetworkX的图结构进行图计算</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/0.png" alt></p>
+<a id="more"></a>
+<h2 id="应用实例"><a href="#应用实例" class="headerlink" title="应用实例"></a>应用实例</h2><p>nebula集群存储以群聊和群成员、好友关系所组成的关系网，clickhouse集群存储节点源数据和对应关系</p>
+<h3 id="一、集合运算"><a href="#一、集合运算" class="headerlink" title="一、集合运算"></a>一、集合运算</h3><p>交、并、差集</p>
+<p>直接使用clickhouse进行查询，适用于两个群组成员或账号所加群的交并差集</p>
+<p><strong>输入：</strong></p>
+<p><strong><font color="gold">·</font></strong> n个账号（n≥2）</p>
+<p><strong><font color="gold">·</font></strong> n个群组（n≥2）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/1.png" alt></p>
+<h3 id="二、路径探寻"><a href="#二、路径探寻" class="headerlink" title="二、路径探寻"></a>二、路径探寻</h3><p>直接使用nebula进行查询，适用于搜索图谱中任意两个节点的最短可达路径</p>
+<p><strong>输入：</strong></p>
+<p><strong><font color="gold">·</font></strong> 任意类型2个节点</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/2.png" alt></p>
+<h3 id="三、中心性"><a href="#三、中心性" class="headerlink" title="三、中心性"></a>三、中心性</h3><p><strong>输入：</strong></p>
+<p><strong><font color="gold">·</font></strong> n个群组（n≥1），分析包括指定n个群组、群组群成员、群成员所加群组成关系网各节点的中心性</p>
+<p><strong><font color="gold">·</font></strong> n个账号（n≥1），分析包括指定n个账号、账号所加群、群成员组成关系网各节点的中心性</p>
+<p><strong><font color="gold">·</font></strong> 指定关系网，分析各节点中心性</p>
+<p><strong>ClickHouse SQL示例（关系图谱）：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span>  team_id,account_id <span class="keyword">FROM</span> mqv3.ly_team_ship lts </span><br><span class="line">PREWHERE account_id <span class="keyword">GLOBAL</span> <span class="keyword">IN</span> </span><br><span class="line">(<span class="keyword">SELECT</span> account_id <span class="keyword">FROM</span> mqv3.ly_team_ship lts PREWHERE team_id=<span class="string">'&#123;src_vid&#125;'</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="1-度中心性"><a href="#1-度中心性" class="headerlink" title="1.度中心性"></a>1.度中心性</h4><p>衡量节点中心性的指标</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res = nx.degree_centrality(G)</span><br><span class="line">res = dict(sorted(res.items(), key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>], reverse=<span class="literal">True</span>))</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p><strong>e.g.</strong> 以群（-1151413367、-1541749047）为指定节点，计算三级关系网各节点度中心性（抛弃度&lt;5的节点，突出结构）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/3.png" alt></p>
+<h4 id="2-接近中心性"><a href="#2-接近中心性" class="headerlink" title="2.接近中心性"></a>2.接近中心性</h4><p>反映在关系网络中某一节点与其他节点之间的接近程度</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res = nx.closeness_centrality(G)</span><br><span class="line">res = dict(sorted(res.items(), key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>], reverse=<span class="literal">True</span>))</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p><strong>e.g.</strong> 以群（-1151413367、-1541749047）为指定节点，计算三级关系网各节点接近中心性（抛弃度&lt;50的节点，突出结构）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/4.png" alt></p>
+<h4 id="3-中介中心性"><a href="#3-中介中心性" class="headerlink" title="3.中介中心性"></a>3.中介中心性</h4><p>以经过某个节点的最短路径数目来刻画节点重要性的指标</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res = nx.betweenness_centrality(G, k=<span class="number">1000</span>)</span><br><span class="line">res = dict(sorted(res.items(), key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>], reverse=<span class="literal">True</span>))</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p><strong>e.g.</strong> 以群（-1151413367、-1541749047）为指定节点，计算三级关系网各节点中介中心性（抛弃度&lt;5的节点，突出结构）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/5.png" alt></p>
+<h4 id="4-特征向量中心性"><a href="#4-特征向量中心性" class="headerlink" title="4.特征向量中心性"></a>4.特征向量中心性</h4><p>关系网络中一个节点的重要性既取决于其邻居节点的数量（即该节点的度），也取决于其邻居节点的重要性</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res = nx.eigenvector_centrality(G)</span><br><span class="line">res = dict(sorted(res.items(), key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>], reverse=<span class="literal">True</span>))</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p><strong>e.g.</strong> 以群（-1151413367、-1541749047）为指定节点，计算三级关系网各节点特征向量中心性（抛弃度&lt;5的节点，突出结构）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/6.png" alt></p>
+<h3 id="四、重要性"><a href="#四、重要性" class="headerlink" title="四、重要性"></a>四、重要性</h3><p><strong>输入：</strong></p>
+<p><strong><font color="gold">·</font></strong> n个群组（n≥1），分析包括指定n个群组、群组群成员、群成员所加群组成关系网各节点的重要程度</p>
+<p><strong><font color="gold">·</font></strong> n个账号（n≥1），分析包括指定n个账号、账号所加群、群成员组成关系网各节点的重要程度</p>
+<p><strong><font color="gold">·</font></strong> 指定关系网，分析各节点的重要程度</p>
+<h4 id="1-k核"><a href="#1-k核" class="headerlink" title="1.k核"></a>1.k核</h4><p>用于在图中寻找符合一定紧密关系条件（K）的子图结构的算法，要求每个顶点至少与该子图的其他K个顶点关联</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">res1 = nx.core_number(G)</span><br><span class="line">res2 = nx.k_core(G, <span class="number">6</span>)</span><br><span class="line">res1 = dict(sorted(res1.items(), key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>], reverse=<span class="literal">True</span>))</span><br><span class="line">print(res1)</span><br><span class="line">print(list(res2))</span><br></pre></td></tr></table></figure>
+<p><strong>e.g.</strong> 以群（-1151413367、-1541749047）为指定节点，计算三级关系网各节点k-core值，结合louvain社区上色（全图）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/7.png" alt></p>
+<h4 id="2-PageRank"><a href="#2-PageRank" class="headerlink" title="2.PageRank"></a>2.PageRank</h4><p>衡量图中节点重要性的指标，值越高，图中访问该节点的概率越高</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res = nx.pagerank(G, alpha=<span class="number">0.85</span>)</span><br><span class="line">res = dict(sorted(res.items(), key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>], reverse=<span class="literal">True</span>))</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p><strong>e.g.1.</strong> 以群（-1151413367、-1541749047）为指定节点，计算三级关系网各节点pagerank值（抛弃度&lt;5的节点，突出结构）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/8.png" alt></p>
+<p><strong>e.g.2.</strong> 以群（-1151413367、-1541749047）为指定节点，计算三级关系网各节点pagerank值，结合louvain社区（全图）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/9.png" alt></p>
+<h3 id="五、聚类算法"><a href="#五、聚类算法" class="headerlink" title="五、聚类算法"></a>五、聚类算法</h3><p><strong>输入（社区发现）：</strong></p>
+<p><strong><font color="gold">·</font></strong> n个群组（n≥1），划分包括指定n个群组、群组群成员、群成员所加群组成关系网的各个社区</p>
+<p><strong><font color="gold">·</font></strong> n个账号（n≥1），划分包括指定n个账号、账号所加群、群成员组成关系网的各个社区</p>
+<p><strong><font color="gold">·</font></strong> 划分指定关系网各节点的社区</p>
+<p><strong>输入（三角形计数）：</strong></p>
+<p><strong><font color="gold">·</font></strong> n个群组（n≥1），计算包括指定n个群组、群组群成员、群成员好友、群成员所加群组、群成员所加群组成关系网的三角形数量，挖掘团体关系</p>
+<p><strong><font color="gold">·</font></strong> 计算指定关系网各节点的三角形数量，挖掘团体关系</p>
+<p>用于计算图谱中三角关系数量，挖掘关系团体</p>
+<p><strong>ClickHouse SQL示例（三角形计数）：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WITH</span> T <span class="keyword">AS</span>(<span class="comment">-- 指定群群成员</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> team_id,account_id <span class="keyword">FROM</span> mqv3.ly_team_ship PREWHERE team_id = <span class="string">'&#123;src_vid&#125;'</span></span><br><span class="line">),T1 <span class="keyword">AS</span>(<span class="comment">-- 指定群群成员的好友</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> account_id,fri_account_id <span class="keyword">FROM</span> mqv3.ly_account_ship PREWHERE account_id <span class="keyword">GLOBAL</span> <span class="keyword">IN</span> (<span class="keyword">SELECT</span> account_id <span class="keyword">FROM</span> T) </span><br><span class="line"><span class="keyword">UNION</span> <span class="keyword">DISTINCT</span> </span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> fri_account_id,account_id <span class="keyword">FROM</span> mqv3.ly_account_ship PREWHERE fri_account_id <span class="keyword">GLOBAL</span> <span class="keyword">IN</span> (<span class="keyword">SELECT</span> account_id <span class="keyword">FROM</span> T)</span><br><span class="line">),T2 <span class="keyword">AS</span>(<span class="comment">-- 群成员所加群</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> team_id,account_id <span class="keyword">FROM</span> mqv3.ly_team_ship PREWHERE account_id <span class="keyword">GLOBAL</span> <span class="keyword">IN</span> (<span class="keyword">SELECT</span> account_id <span class="keyword">FROM</span> T)</span><br><span class="line">),T3 <span class="keyword">AS</span>(<span class="comment">-- 群成员所加群和群成员和群成员的好友</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> team_id,account_id,fri_account_id <span class="keyword">FROM</span> T2 <span class="keyword">RIGHT</span> <span class="keyword">JOIN</span> T1 <span class="keyword">ON</span> T2.account_id = T1.account_id</span><br><span class="line">),T4 <span class="keyword">AS</span>(<span class="comment">-- 群成员好友所加群</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> team_id,account_id <span class="keyword">AS</span> fri_account_id <span class="keyword">FROM</span> mqv3.ly_team_ship lts PREWHERE lts.account_id <span class="keyword">GLOBAL</span> <span class="keyword">IN</span> (<span class="keyword">SELECT</span> fri_account_id <span class="keyword">FROM</span> T1)</span><br><span class="line">),T5 <span class="keyword">AS</span>(<span class="comment">-- 共同所加群</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> team_id,account_id,fri_account_id <span class="keyword">FROM</span> T3 <span class="keyword">JOIN</span> T4 <span class="keyword">ON</span> (T3.team_id = T4.team_id <span class="keyword">AND</span> T3.fri_account_id = T4.fri_account_id)</span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">DISTINCT</span> team_id,account_id,fri_account_id <span class="keyword">from</span> T5</span><br></pre></td></tr></table></figure>
+<h4 id="1-标签传播（LPA社区发现）"><a href="#1-标签传播（LPA社区发现）" class="headerlink" title="1.标签传播（LPA社区发现）"></a>1.标签传播（LPA社区发现）</h4><p>基于lpa的社区划分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res = nx.algorithms.community.label_propagation_communities(G)</span><br><span class="line">print(list(res))</span><br></pre></td></tr></table></figure>
+<p><strong>e.g.</strong>以群（-1151413367、-1541749047）为指定节点，划分lpa标签传播社区（抛弃度&lt;5的节点，突出结构）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/10.png" alt></p>
+<h4 id="2-鲁汶（Louvain社区发现）"><a href="#2-鲁汶（Louvain社区发现）" class="headerlink" title="2.鲁汶（Louvain社区发现）"></a>2.鲁汶（Louvain社区发现）</h4><p>基于louvain的社区划分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res = nx.algorithms.community.louvain_communities(G, resolution=<span class="number">0.5</span>)</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p><strong>e.g.1.</strong>以群（-1151413367、-1541749047）为指定节点，划分louvain鲁汶社区（resolution=1，抛弃度&lt;5的节点，突出结构）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/11.png" alt></p>
+<p><strong>e.g.2.</strong>以群（-1151413367、-1541749047）为指定节点，划分louvain鲁汶社区（resolution=0.3，抛弃度&lt;5的节点，突出结构）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/12.png" alt></p>
+<h4 id="3-三角形计数"><a href="#3-三角形计数" class="headerlink" title="3.三角形计数"></a>3.三角形计数</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res = nx.triangles(G)</span><br><span class="line">res = dict(sorted(res.items(), key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>], reverse=<span class="literal">True</span>))</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p><strong>e.g.</strong>以群（-1151413367、-1541749047）为指定节点，计算关系网中各个节点三角形数量（抛弃度&lt;5的节点，突出结构）</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/13.png" alt></p>
+<h3 id="六、连通性"><a href="#六、连通性" class="headerlink" title="六、连通性"></a>六、连通性</h3><p><strong>输入：</strong></p>
+<p><strong><font color="gold">·</font></strong> 指定n个群组（n≥2），判断群组、群成员、群成员所加群所组关系网是否为连通图</p>
+<p><strong><font color="gold">·</font></strong> 指定n个账号（n≥2），判断账号、账号所加群、群成员所组关系网是否为连通图</p>
+<p><strong><font color="gold">·</font></strong> 指定关系网</p>
+<h4 id="1-连通性检测"><a href="#1-连通性检测" class="headerlink" title="1.连通性检测"></a>1.连通性检测</h4><p>判断目标图谱是否为连通图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res1 = nx.is_connected(G)</span><br><span class="line">print(res1)</span><br></pre></td></tr></table></figure>
+<p><strong>e.g.1.</strong>连通图</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/14.png" alt></p>
+<p><strong>e.g.2.</strong>非连通图</p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/15.png" alt></p>
+<h4 id="2-联通组件数"><a href="#2-联通组件数" class="headerlink" title="2.联通组件数"></a>2.联通组件数</h4><p>判断目标图谱中联通组件的数量（n）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res2 = nx.number_connected_components(G)</span><br><span class="line">print(res2)</span><br></pre></td></tr></table></figure>
+<h4 id="3-联通组件"><a href="#3-联通组件" class="headerlink" title="3.联通组件"></a>3.联通组件</h4><p>显示目标图谱中的全部联通组件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res3 = nx.connected_components(G)</span><br><span class="line">print(res3)</span><br></pre></td></tr></table></figure>
+<h4 id="4-指定节点联通组件"><a href="#4-指定节点联通组件" class="headerlink" title="4.指定节点联通组件"></a>4.指定节点联通组件</h4><p>显示目标图谱中指定节点所在的联通组件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res4 = nx.node_connected_component(G, <span class="string">"sample_node"</span>)</span><br><span class="line">print(res4)</span><br></pre></td></tr></table></figure>
+<h3 id="七、几何"><a href="#七、几何" class="headerlink" title="七、几何"></a>七、几何</h3><p><strong>输入：</strong></p>
+<p><strong><font color="gold">·</font></strong> 指定n个群组（n≥2），计算群组、群成员、群成员所加群所组关系网的中心、重心</p>
+<p><strong><font color="gold">·</font></strong> 指定n个账号（n≥2），计算账号、账号所加群、群成员所组关系网的中心、重心</p>
+<p><strong><font color="gold">·</font></strong> 计算指定关系网几何中心、重心</p>
+<h4 id="1-几何重心"><a href="#1-几何重心" class="headerlink" title="1.几何重心"></a>1.几何重心</h4><p>图的重心节点</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res1 = nx.barycenter(G)</span><br><span class="line">print(res1)</span><br></pre></td></tr></table></figure>
+<h4 id="2-几何中心"><a href="#2-几何中心" class="headerlink" title="2.几何中心"></a>2.几何中心</h4><p>图的中心节点</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res2 = nx.center(G)</span><br><span class="line">print(res2)</span><br></pre></td></tr></table></figure>
+<h2 id="绘图"><a href="#绘图" class="headerlink" title="绘图"></a>绘图</h2><p><strong>e.g.</strong> 中心中心性 + LPA标签传播算法聚类</p>
+<p>数据源：<a href="https://www.inetbio.org/wormnet/downloadnetwork.php" target="_blank" rel="noopener">https://www.inetbio.org/wormnet/downloadnetwork.php</a></p>
+<p><strong><font color="gold">·</font></strong> WormNet v.3-GS (<a href="https://www.inetbio.org/wormnet/download.php?type=2" target="_blank" rel="noopener">https://www.inetbio.org/wormnet/download.php?type=2</a>)</p>
+<p> 完整代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> sample</span><br><span class="line"><span class="keyword">import</span> networkx <span class="keyword">as</span> nx</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Gold standard data of positive gene functional associations</span></span><br><span class="line"><span class="comment"># from https://www.inetbio.org/wormnet/downloadnetwork.php</span></span><br><span class="line">G = nx.read_edgelist(<span class="string">"WormNet.v3.benchmark.txt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># remove randomly selected nodes (to make example fast)</span></span><br><span class="line">num_to_remove = int(len(G) / <span class="number">1.5</span>)</span><br><span class="line">nodes = sample(list(G.nodes), num_to_remove)</span><br><span class="line">G.remove_nodes_from(nodes)</span><br><span class="line"></span><br><span class="line"><span class="comment"># remove low-degree nodes</span></span><br><span class="line">low_degree = [n <span class="keyword">for</span> n, d <span class="keyword">in</span> G.degree() <span class="keyword">if</span> d &lt; <span class="number">10</span>]</span><br><span class="line">G.remove_nodes_from(low_degree)</span><br><span class="line"></span><br><span class="line"><span class="comment"># largest connected component</span></span><br><span class="line">components = nx.connected_components(G)</span><br><span class="line">largest_component = max(components, key=len)</span><br><span class="line">H = G.subgraph(largest_component)</span><br><span class="line"></span><br><span class="line"><span class="comment"># compute centrality</span></span><br><span class="line">centrality = nx.betweenness_centrality(H, k=<span class="number">10</span>, endpoints=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># compute community structure</span></span><br><span class="line">lpc = nx.community.label_propagation_communities(H)</span><br><span class="line">community_index = &#123;n: i <span class="keyword">for</span> i, com <span class="keyword">in</span> enumerate(lpc) <span class="keyword">for</span> n <span class="keyword">in</span> com&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#### draw graph ####</span></span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">20</span>, <span class="number">15</span>))</span><br><span class="line">pos = nx.spring_layout(H, k=<span class="number">0.15</span>, seed=<span class="number">4572321</span>)</span><br><span class="line">node_color = [community_index[n] <span class="keyword">for</span> n <span class="keyword">in</span> H]</span><br><span class="line">node_size = [v * <span class="number">20000</span> <span class="keyword">for</span> v <span class="keyword">in</span> centrality.values()]</span><br><span class="line">nx.draw_networkx(</span><br><span class="line">    H,</span><br><span class="line">    pos=pos,</span><br><span class="line">    with_labels=<span class="literal">False</span>,</span><br><span class="line">    node_color=node_color,</span><br><span class="line">    node_size=node_size,</span><br><span class="line">    edge_color=<span class="string">"gainsboro"</span>,</span><br><span class="line">    alpha=<span class="number">0.4</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Title/legend</span></span><br><span class="line">font = &#123;<span class="string">"color"</span>: <span class="string">"k"</span>, <span class="string">"fontweight"</span>: <span class="string">"bold"</span>, <span class="string">"fontsize"</span>: <span class="number">20</span>&#125;</span><br><span class="line">ax.set_title(<span class="string">"Gene functional association network (C. elegans)"</span>, font)</span><br><span class="line"><span class="comment"># Change font color for legend</span></span><br><span class="line">font[<span class="string">"color"</span>] = <span class="string">"r"</span></span><br><span class="line"></span><br><span class="line">ax.text(</span><br><span class="line">    <span class="number">0.80</span>,</span><br><span class="line">    <span class="number">0.10</span>,</span><br><span class="line">    <span class="string">"node color = community structure"</span>,</span><br><span class="line">    horizontalalignment=<span class="string">"center"</span>,</span><br><span class="line">    transform=ax.transAxes,</span><br><span class="line">    fontdict=font,</span><br><span class="line">)</span><br><span class="line">ax.text(</span><br><span class="line">    <span class="number">0.80</span>,</span><br><span class="line">    <span class="number">0.06</span>,</span><br><span class="line">    <span class="string">"node size = betweeness centrality"</span>,</span><br><span class="line">    horizontalalignment=<span class="string">"center"</span>,</span><br><span class="line">    transform=ax.transAxes,</span><br><span class="line">    fontdict=font,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Resize figure for label readibility</span></span><br><span class="line">ax.margins(<span class="number">0.1</span>, <span class="number">0.05</span>)</span><br><span class="line">fig.tight_layout()</span><br><span class="line">plt.axis(<span class="string">"off"</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/16.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/networkx/">networkx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图算法/">图算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2023/12/28/CentOS-LibreOffice工具包安装/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">CentOS-LibreOffice工具包安装</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NetworkX"><span class="nav-number">1.</span> <span class="nav-text">NetworkX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图计算应用方式比较"><span class="nav-number">2.</span> <span class="nav-text">图计算应用方式比较</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-nebula-spark"><span class="nav-number">2.1.</span> <span class="nav-text">1.nebula + spark</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-clickhouse-NetworkX"><span class="nav-number">2.2.</span> <span class="nav-text">2.clickhouse + NetworkX</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用实例"><span class="nav-number">3.</span> <span class="nav-text">应用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、集合运算"><span class="nav-number">3.1.</span> <span class="nav-text">一、集合运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、路径探寻"><span class="nav-number">3.2.</span> <span class="nav-text">二、路径探寻</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、中心性"><span class="nav-number">3.3.</span> <span class="nav-text">三、中心性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-度中心性"><span class="nav-number">3.3.1.</span> <span class="nav-text">1.度中心性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-接近中心性"><span class="nav-number">3.3.2.</span> <span class="nav-text">2.接近中心性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-中介中心性"><span class="nav-number">3.3.3.</span> <span class="nav-text">3.中介中心性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-特征向量中心性"><span class="nav-number">3.3.4.</span> <span class="nav-text">4.特征向量中心性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、重要性"><span class="nav-number">3.4.</span> <span class="nav-text">四、重要性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-k核"><span class="nav-number">3.4.1.</span> <span class="nav-text">1.k核</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-PageRank"><span class="nav-number">3.4.2.</span> <span class="nav-text">2.PageRank</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、聚类算法"><span class="nav-number">3.5.</span> <span class="nav-text">五、聚类算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-标签传播（LPA社区发现）"><span class="nav-number">3.5.1.</span> <span class="nav-text">1.标签传播（LPA社区发现）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-鲁汶（Louvain社区发现）"><span class="nav-number">3.5.2.</span> <span class="nav-text">2.鲁汶（Louvain社区发现）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-三角形计数"><span class="nav-number">3.5.3.</span> <span class="nav-text">3.三角形计数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、连通性"><span class="nav-number">3.6.</span> <span class="nav-text">六、连通性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-连通性检测"><span class="nav-number">3.6.1.</span> <span class="nav-text">1.连通性检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-联通组件数"><span class="nav-number">3.6.2.</span> <span class="nav-text">2.联通组件数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-联通组件"><span class="nav-number">3.6.3.</span> <span class="nav-text">3.联通组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-指定节点联通组件"><span class="nav-number">3.6.4.</span> <span class="nav-text">4.指定节点联通组件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七、几何"><span class="nav-number">3.7.</span> <span class="nav-text">七、几何</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-几何重心"><span class="nav-number">3.7.1.</span> <span class="nav-text">1.几何重心</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-几何中心"><span class="nav-number">3.7.2.</span> <span class="nav-text">2.几何中心</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绘图"><span class="nav-number">4.</span> <span class="nav-text">绘图</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2024 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2024 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
