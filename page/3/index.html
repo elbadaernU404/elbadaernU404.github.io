@@ -258,6 +258,124 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Nebula-全文检索"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/11/25/Nebula-全文检索/">Nebula-全文检索</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/11/25/Nebula-全文检索/" class="article-date">
+	  <time datetime="2022-11-25T06:17:41.000Z" itemprop="datePublished">2022-11-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="连接ES"><a href="#连接ES" class="headerlink" title="连接ES"></a>连接ES</h2><h3 id="添加Nebula全文索引模板文件"><a href="#添加Nebula全文索引模板文件" class="headerlink" title="添加Nebula全文索引模板文件"></a>添加Nebula全文索引模板文件</h3><p><code>http://localhost:5601/app/dev_tools#/console</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">curl -H "Content-Type: application/json; charset=utf-8" -XPUT http://localhost:9200/_template/nebula_index_template -d '</span><br><span class="line">&#123;</span><br><span class="line"> <span class="attr">"template"</span>: <span class="string">"nebula*"</span>,</span><br><span class="line">  <span class="attr">"settings"</span>: &#123;</span><br><span class="line">    <span class="attr">"index"</span>: &#123;</span><br><span class="line">      <span class="attr">"number_of_shards"</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="attr">"number_of_replicas"</span>: <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"mappings"</span>: &#123;</span><br><span class="line">    <span class="attr">"properties"</span> : &#123;</span><br><span class="line">            <span class="attr">"tag_id"</span> : &#123; <span class="attr">"type"</span> : <span class="string">"long"</span> &#125;,</span><br><span class="line">            <span class="attr">"column_id"</span> : &#123; <span class="attr">"type"</span> : <span class="string">"text"</span> &#125;,</span><br><span class="line">            <span class="attr">"value"</span> :&#123; <span class="attr">"type"</span> : <span class="string">"keyword"</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;'</span><br></pre></td></tr></table></figure>
+<h3 id="登录ES客户端"><a href="#登录ES客户端" class="headerlink" title="登录ES客户端"></a>登录ES客户端</h3><p><code>SIGN IN TEXT SERVICE (localhost:9200,&quot;admin&quot;,&quot;123456&quot;)</code></p>
+<h3 id="查看ES客户端详情"><a href="#查看ES客户端详情" class="headerlink" title="查看ES客户端详情"></a>查看ES客户端详情</h3><p><code>SHOW TEXT SEARCH CLIENTS;</code></p>
+<h3 id="退出ES客户端"><a href="#退出ES客户端" class="headerlink" title="退出ES客户端"></a>退出ES客户端</h3><p><code>SIGN OUT TEXT SERVICE</code></p>
+<h2 id="配置Nebula"><a href="#配置Nebula" class="headerlink" title="配置Nebula"></a>配置Nebula</h2><h3 id="安装storage服务"><a href="#安装storage服务" class="headerlink" title="安装storage服务"></a>安装storage服务</h3><p>进入/usr/local/nebula根目录下，进入/etc子目录，找到nebula-storaged-listener.conf.production文件，复制一份并去除.production后缀。将文件中的listenr地址改为真实地址。</p>
+<p>随后启动listener：<code>./bin/nebula-storaged --flagfile etc/nebula-storaged-listener.conf</code></p>
+<h3 id="添加listener"><a href="#添加listener" class="headerlink" title="添加listener"></a>添加listener</h3><p><code>ADD LISTENER ELASTICSEARCH 192.168.100.1:9789,192.168.100.2:9789;</code>(<font color="gold">注：如果有多台图库集群，都要配置</font>)</p>
+<p>进入nebula-console，执行<code>SHOW LISTENER</code>可以查看图空间的所有listener。</p>
+<p>要删除所有listener，执行：<code>REMOVE LISTENER ELASTICSEARCH</code>(<font color="gold">注：一个图空间仅可执行一次</font>)</p>
+        <!--  连接ES添加Nebula全文索引模板文件http://localhost:5601/app/dev_tools#/console
+1234567891011121314151617curl -H "Content-Type: application/json; charset=utf-8" -XPUT http://localhost:9200/_template/nebula_index......  -->
+        <p class="article-more-link">
+          <a href="/2022/11/25/Nebula-全文检索/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database-nebula/">-database -nebula</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Docker"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/09/16/Docker/">Docker</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/09/16/Docker/" class="article-date">
+	  <time datetime="2022-09-16T07:15:39.000Z" itemprop="datePublished">2022-09-16</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="CentOS-Docker安装"><a href="#CentOS-Docker安装" class="headerlink" title="CentOS Docker安装"></a>CentOS Docker安装</h2><p>CentOS7要求64位，且内核版本高于3.10</p>
+<p>查看CentOS内核版本：<code>uname -r</code></p>
+<p><strong><font size="4" color="orange">·</font></strong> 安装Docker：卸载旧版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum remove docker \</span></span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<p><strong><font size="4" color="orange">·</font></strong> 安装所需软件包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install -y yum-utils \</span></span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
+<p><strong><font size="4" color="orange">·</font></strong> 设置Docker仓库（清华源）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum-config-manager \</span></span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<p><strong><font size="4" color="orange">·</font></strong> 安装Docker Engine-Community</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install docker-ce docker-ce-cli containerd.io</span></span><br></pre></td></tr></table></figure>
+        <!--  CentOS Docker安装CentOS7要求64位，且内核版本高于3.10
+查看CentOS内核版本：uname -r
+· 安装Docker：卸载旧版本
+12345678$ sudo yum remove docker \                  docker-client \                  docker-client-latest \          ......  -->
+        <p class="article-more-link">
+          <a href="/2022/09/16/Docker/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Nebula-fastapi接口维护文档"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -953,147 +1071,11 @@ MySQL
 <!-- Table of Contents -->
 
   
-    <article id="post-Numpy-Pandas"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/03/01/Numpy-Pandas/">Numpy &amp; Pandas</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/03/01/Numpy-Pandas/" class="article-date">
-	  <time datetime="2022-03-01T05:13:22.000Z" itemprop="datePublished">2022-03-01</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文主要记录一些Numpy和Pandas的方法</p>
-<h2 id="Numpy"><a href="#Numpy" class="headerlink" title="Numpy"></a>Numpy</h2><h3 id="1-惯用写法："><a href="#1-惯用写法：" class="headerlink" title="1.惯用写法："></a>1.惯用写法：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
-<h3 id="2-从列表生成一个矩阵："><a href="#2-从列表生成一个矩阵：" class="headerlink" title="2.从列表生成一个矩阵："></a>2.从列表生成一个矩阵：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.array([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]]))</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/03/01/Numpy-Pandas/A.png" alt="创建矩阵"></p>
-<h3 id="3-创建全0或全1矩阵："><a href="#3-创建全0或全1矩阵：" class="headerlink" title="3.创建全0或全1矩阵："></a>3.创建全0或全1矩阵：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)))</span><br><span class="line">print(np.ones((<span class="number">5</span>,<span class="number">5</span>)))</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/03/01/Numpy-Pandas/B.png" alt="0/1矩阵"></p>
-<h3 id="4-通过-shape得到当前矩阵的尺寸，通过-reshape-将当前矩阵转置"><a href="#4-通过-shape得到当前矩阵的尺寸，通过-reshape-将当前矩阵转置" class="headerlink" title="4.通过.shape得到当前矩阵的尺寸，通过.reshape()将当前矩阵转置"></a>4.通过<font color="orange">.shape</font>得到当前矩阵的尺寸，通过<font color="orange">.reshape()</font>将当前矩阵转置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)))</span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)).shape)</span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)).reshape(<span class="number">4</span>,<span class="number">3</span>))</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/03/01/Numpy-Pandas/C.png" alt="获取矩阵的尺寸，转置"></p>
-<h3 id="5-使用arange-创建递增-递减的数列"><a href="#5-使用arange-创建递增-递减的数列" class="headerlink" title="5.使用arange()创建递增/递减的数列"></a>5.使用<font color="orange">arange()</font>创建递增/递减的数列</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.arange(<span class="number">1</span>,<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/03/01/Numpy-Pandas/D.png" alt="arange()"></p>
-<h3 id="6-使用linspace-获取一个等分的区间序列，第三个参数是输出样本的总数"><a href="#6-使用linspace-获取一个等分的区间序列，第三个参数是输出样本的总数" class="headerlink" title="6.使用linspace()获取一个等分的区间序列，第三个参数是输出样本的总数"></a>6.使用<font color="orange">linspace()</font>获取一个等分的区间序列，第三个参数是输出样本的总数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.linspace(<span class="number">1</span>,<span class="number">100</span>,<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/03/01/Numpy-Pandas/E.png" alt="linspace()"></p>
-<h3 id="7-通过random-rand-生成随机数组"><a href="#7-通过random-rand-生成随机数组" class="headerlink" title="7.通过random.rand()生成随机数组"></a>7.通过<font color="orange">random.rand()</font>生成随机数组</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.random.rand(<span class="number">3</span>,<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/03/01/Numpy-Pandas/F.png" alt="随机数组"></p>
-<h3 id="8-Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用dtype参数指定其他的数据类型"><a href="#8-Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用dtype参数指定其他的数据类型" class="headerlink" title="8.Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用dtype参数指定其他的数据类型"></a>8.Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用<font color="orange">dtype</font>参数指定其他的数据类型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.ones((<span class="number">3</span>,<span class="number">4</span>),dtype=np.float32))</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/03/01/Numpy-Pandas/G.png" alt="numpy数据类型"></p>
-<h3 id="9-对先有的数组，也可以使用astype-来更改数据类型"><a href="#9-对先有的数组，也可以使用astype-来更改数据类型" class="headerlink" title="9.对先有的数组，也可以使用astype()来更改数据类型"></a>9.对先有的数组，也可以使用<font color="orange">astype()</font>来更改数据类型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array0=np.ones((<span class="number">3</span>,<span class="number">4</span>),dtype=np.float32)</span><br><span class="line">array1=array0.astype(int)</span><br><span class="line"></span><br><span class="line">print(array0,array1)</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/03/01/Numpy-Pandas/H.png" alt="数据类型转换"></p>
-<h3 id="10-Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸"><a href="#10-Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸" class="headerlink" title="10.Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸"></a>10.Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array0=np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">array1=np.array([<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>])</span><br><span class="line">array2=np.array([[<span class="number">7</span>],</span><br><span class="line">                 [<span class="number">8</span>],</span><br><span class="line">                 [<span class="number">9</span>]])</span><br><span class="line"></span><br><span class="line">print(array0*<span class="number">10</span>)</span><br><span class="line">print(array1+array2)</span><br></pre></td></tr></table></figure>
-<p><img src="/2022/03/01/Numpy-Pandas/INSERT.png" alt="numpy的广播与numpy中不同尺寸数组的运算"><br></p>
-        <!--  本文主要记录一些Numpy和Pandas的方法
-Numpy1.惯用写法：1import numpy as np
-2.从列表生成一个矩阵：123import numpy as npprint(np.array([[0,1,2,3,4,5],[6,7,8,9,10,11]]))
-
-3.创建全0或全1矩阵：1234import numpy as npprint(np.zeros((3,4)))p......  -->
-        <p class="article-more-link">
-          <a href="/2022/03/01/Numpy-Pandas/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy、pandas/">numpy、pandas</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Django项目：订单管理系统"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/02/27/Django项目：订单管理系统/">Django项目：订单管理系统</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/02/27/Django项目：订单管理系统/" class="article-date">
-	  <time datetime="2022-02-26T18:21:08.000Z" itemprop="datePublished">2022-02-27</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-Django简介"><a href="#1-Django简介" class="headerlink" title="1.Django简介"></a>1.Django简介</h2><p>Django是一款开源的python web应用框架，采用MTV(Model-Template-View)模式，其中Model负责对象与数据库的映射(ORM)，Template通过接口等方式将前端页面传递给用户，View视图函数对应业务逻辑，在合适的时候调用Model或Template</p>
-<p>除去MTV模型以外，Django还有一个URL控制器，分别将不同的URL请求传递给不同的View视图函数处理，再通过各自的View函数来调用对应的Model和Template</p>
-<h2 id="2-Django项目：订单管理系统"><a href="#2-Django项目：订单管理系统" class="headerlink" title="2.Django项目：订单管理系统"></a>2.Django项目：订单管理系统</h2><h3 id="1-Django项目的创建"><a href="#1-Django项目的创建" class="headerlink" title="1.Django项目的创建"></a>1.Django项目的创建</h3><p>在python 3中安装完成Django库后，可以在CMD或Pycharm终端里执行：<font size="4" color="orange">django-admin</font> <font size="4" color="#008080">startproject itemproj</font>来创建Django项目</p>
-<p>也可以在Pycharm专业版本直接创建一个Django项目，这样会自动生成一个空的Template文件夹，以及在settings.py中生成Template对应的路径。还可以直接创建初始APP，这里没有做</p>
-<p>(本文使用的Django版本为3.2.4)</p>
-<p><img src="/2022/02/27/Django项目：订单管理系统/A.png" alt="Django项目创建"><br>执行创建完成后，系统会为我们生成这样一个初始目录：</p>
-<p><img src="/2022/02/27/Django项目：订单管理系统/B.png" alt="Django目录"><br>其中：</p>
-<p><strong><em>·</em></strong> <font color="orange">manage.py</font>是Django项目管理的工具脚本，执行Django命令时通过这个文件进行管理操作</p>
-<p><strong><em>·</em></strong> <font color="orange">itemproj/settings.py</font>是Django项目的配置文件，包括了App配置、Django中间件、数据库等重要设置，在实际开发中要经常修改其中内容</p>
-<p><strong><em>·</em></strong> <font color="orange">itemproj/urls.py</font>是URL路由映射文件，其中声明了前端发送的各种http请求，再通过各级路由文件来寻找到对应的View视图函数来进行处理</p>
-<p><strong><em>·</em></strong> <font color="orange">itemproj/wsgi.py</font>，WSGI是Python web服务网关接口规范(Web Server Gateway Interface)的简称，由wsgi web server和wsgi web application两部分组成，是运行在同一个python进程中的两个模块</p>
-<p>wsgi web sever接收了http请求以后调用wsgi web application接口，处理请求的具体内容，处理完成后再将结果返回给wsgi web server，通过wsgi web server将请求传递给前端，如图所示(Django官方文档)：</p>
-<p><img src="/2022/02/27/Django项目：订单管理系统/C.png" alt="WSGI"><br><strong><em>·</em></strong> <font color="orange">itemproj/asgi.py</font>，ASGI即异步网关协议接口(Asynchronous Server  Gateway Interface)，是一个介于网络协议服务和python应用之间的标准接口，用于处理通用类型的协议。参考自Django官方文档的资料，ASGI是为了支持异步网络服务器和应用而出现的新的python标准，可以将ASGI理解为WSGI协议的扩展</p>
-<p><img src="/2022/02/27/Django项目：订单管理系统/D.png" alt="ASGI"></p>
-<h3 id="2-Django生命周期"><a href="#2-Django生命周期" class="headerlink" title="2.Django生命周期"></a>2.Django生命周期</h3><p>了解了Django项目基本组成后，Django的生命周期也基本明朗：<font color="#008080">前端发起URL请求</font> ➞ <font color="#008080">WSGI</font> ➞ <font color="#008080">Django中间件</font> ➞ <font color="#008080">URL路由</font> ➞ <font color="#008080">View视图函数</font> ➞ <font color="#008080">Model数据库交互</font> ➞ <font color="#008080">Template模板进行html渲染</font> ➞ <font color="#008080">Django中间件</font> ➞ <font color="#008080">WSGI</font> ➞ <font color="#008080">前端页面</font></p>
-<h3 id="3-Django项目启动"><a href="#3-Django项目启动" class="headerlink" title="3.Django项目启动"></a>3.Django项目启动</h3><p>通过在Pycharm终端中执行<font size="4" color="orange">python</font> <font size="4" color="#008080">manage.py runserver</font>来启动Django服务，系统默认在:8000端口上执行</p>
-<p><img src="/2022/02/27/Django项目：订单管理系统/E.png" alt="Django启动"><br>可以在settings.py中增加ALLOWED_HOSTS的参数，来增加支持的hosts，这里新增一个localhost。也可以自定义端口号等<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALLOWED_HOSTS = [<span class="string">'localhost'</span>]</span><br></pre></td></tr></table></figure></p>
-        <!--  1.Django简介Django是一款开源的python web应用框架，采用MTV(Model-Template-View)模式，其中Model负责对象与数据库的映射(ORM)，Template通过接口等方式将前端页面传递给用户，View视图函数对应业务逻辑，在合适的时候调用Model或Template
-除去MTV模型以外，Django还有一个URL控制器，分别将不同的URL请求传递给不......  -->
-        <p class="article-more-link">
-          <a href="/2022/02/27/Django项目：订单管理系统/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Django/">Django</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
   </nav>
 
 </section>

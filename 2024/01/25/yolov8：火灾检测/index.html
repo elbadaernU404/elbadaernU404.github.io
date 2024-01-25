@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>yolov8-火灾检测 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="opencvyolov8">
+  
+  
+  
+  
+  <meta name="description" content="环境GPU NVIDIA 3090*2 显卡驱动 535.104.05 CUDA版本 12.2 CUDAtoolkit (cuda_12.2.2_535.104.05_linux) cuDNN (v8.9.7)    yolo版本 v8.1.5 (ultralytics yolov8)  pytorch版本 v2.1.2    python环境 CentOS7.9  anaconda3  pyth">
+<meta name="keywords" content="opencv,yolov8">
+<meta property="og:type" content="article">
+<meta property="og:title" content="yolov8-火灾检测">
+<meta property="og:url" content="http://yoursite.com/2024/01/25/yolov8：火灾检测/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="环境GPU NVIDIA 3090*2 显卡驱动 535.104.05 CUDA版本 12.2 CUDAtoolkit (cuda_12.2.2_535.104.05_linux) cuDNN (v8.9.7)    yolo版本 v8.1.5 (ultralytics yolov8)  pytorch版本 v2.1.2    python环境 CentOS7.9  anaconda3  pyth">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2024/01/25/yolov8：火灾检测/1.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/25/yolov8：火灾检测/2.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/25/yolov8：火灾检测/3.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/25/yolov8：火灾检测/4.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/25/yolov8：火灾检测/5.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/25/yolov8：火灾检测/6.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/25/yolov8：火灾检测/7.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/25/yolov8：火灾检测/8.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/25/yolov8：火灾检测/fire.gif">
+<meta property="og:updated_time" content="2024-01-25T11:21:45.306Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="yolov8-火灾检测">
+<meta name="twitter:description" content="环境GPU NVIDIA 3090*2 显卡驱动 535.104.05 CUDA版本 12.2 CUDAtoolkit (cuda_12.2.2_535.104.05_linux) cuDNN (v8.9.7)    yolo版本 v8.1.5 (ultralytics yolov8)  pytorch版本 v2.1.2    python环境 CentOS7.9  anaconda3  pyth">
+<meta name="twitter:image" content="http://yoursite.com/2024/01/25/yolov8：火灾检测/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-yolov8：火灾检测" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      yolov8-火灾检测
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2024/01/25/yolov8：火灾检测/" class="article-date">
+	  <time datetime="2024-01-25T09:23:20.000Z" itemprop="datePublished">2024-01-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/目标检测/">目标检测</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h3><ul>
+<li><font color="gold">NVIDIA 3090*2</font></li>
+<li><font color="gold">显卡驱动 535.104.05</font></li>
+<li><font color="gold">CUDA版本 12.2</font></li>
+<li><font color="gold">CUDAtoolkit</font> (cuda_12.2.2_535.104.05_linux)</li>
+<li><font color="gold">cuDNN (v8.9.7)</font>
+
+</li>
+</ul>
+<h3 id="yolo版本"><a href="#yolo版本" class="headerlink" title="yolo版本"></a>yolo版本</h3><ul>
+<li><font color="gold">v8.1.5</font> (ultralytics yolov8)</li>
+</ul>
+<h3 id="pytorch版本"><a href="#pytorch版本" class="headerlink" title="pytorch版本"></a>pytorch版本</h3><ul>
+<li><font color="gold">v2.1.2</font>
+
+</li>
+</ul>
+<h3 id="python环境"><a href="#python环境" class="headerlink" title="python环境"></a>python环境</h3><ul>
+<li><font color="gold">CentOS7.9</font>
+</li>
+<li><font color="gold">anaconda3</font>
+</li>
+<li><font color="gold">python3.9</font>
+
+</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>源码主页：<a href="https://github.com/ultralytics/ultralytics" target="_blank" rel="noopener">https://github.com/ultralytics/ultralytics</a></p>
+<p>官方文档：<a href="https://docs.ultralytics.com/zh" target="_blank" rel="noopener">https://docs.ultralytics.com/zh</a></p>
+<p><img src="/2024/01/25/yolov8：火灾检测/1.png" alt></p>
+<h3 id="克隆源码"><a href="#克隆源码" class="headerlink" title="克隆源码"></a>克隆源码</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://hub.nuaa.cf/ultralytics/ultralytics.git</span><br></pre></td></tr></table></figure>
+<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pip install ultralytics -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
+<h3 id="环境验证"><a href="#环境验证" class="headerlink" title="环境验证"></a>环境验证</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yolo predict model=yolov8n.pt source=ultralytics/assets/zidane.jpg</span><br></pre></td></tr></table></figure>
+<p>执行完毕后得到输出的结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(py39_yolov8) [root@jdz yolov8]# yolo predict model=yolov8n.pt source=ultralytics/assets/zidane.jpg </span><br><span class="line">Ultralytics YOLOv8.1.5 🚀 Python-3.9.18 torch-2.1.2+cu121 CUDA:0 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">YOLOv8n summary (fused): 168 layers, 3151904 parameters, 0 gradients, 8.7 GFLOPs</span><br><span class="line"></span><br><span class="line">image 1/1 /exp/work/video/yolov8/ultralytics/assets/zidane.jpg: 384x640 2 persons, 1 tie, 216.9ms</span><br><span class="line">Speed: 7.3ms preprocess, 216.9ms inference, 762.4ms postprocess per image at shape (1, 3, 384, 640)</span><br><span class="line">Results saved to runs/detect/predict</span><br><span class="line">💡 Learn more at https://docs.ultralytics.com/modes/predict</span><br></pre></td></tr></table></figure>
+<p>将在<code>Results saved to runs/detect/predict</code>目录下找到输出结果</p>
+<a id="more"></a>
+<p><img src="/2024/01/25/yolov8：火灾检测/2.png" alt></p>
+<p>至此，已验证基础环境正常工作。</p>
+<h2 id="训练集"><a href="#训练集" class="headerlink" title="训练集"></a>训练集</h2><p>前往kaggle官网寻找火焰训练集，这里使用Fire and Smoke Dataset数据集（<a href="https://www.kaggle.com/datasets/dataclusterlabs/fire-and-smoke-dataset" target="_blank" rel="noopener">https://www.kaggle.com/datasets/dataclusterlabs/fire-and-smoke-dataset</a>）</p>
+<p>数据集包含烟、火图像共100张</p>
+<p><img src="/2024/01/25/yolov8：火灾检测/3.png" alt></p>
+<p><img src="/2024/01/25/yolov8：火灾检测/4.png" alt></p>
+<h2 id="数据标注"><a href="#数据标注" class="headerlink" title="数据标注"></a>数据标注</h2><h3 id="标注工具：labelme"><a href="#标注工具：labelme" class="headerlink" title="标注工具：labelme"></a>标注工具：labelme</h3><p>对图像中的火焰和烟雾进行矩形标记，将数据的label分为两类：0-火焰；1-烟雾</p>
+<p><img src="/2024/01/25/yolov8：火灾检测/5.png" alt></p>
+<h3 id="数据格式转换"><a href="#数据格式转换" class="headerlink" title="数据格式转换"></a>数据格式转换</h3><p>将labelme数据格式转为yolo格式</p>
+<h3 id="创建训练yaml文件"><a href="#创建训练yaml文件" class="headerlink" title="创建训练yaml文件"></a>创建训练yaml文件</h3><p>在数据集的根目录下新建<code>fire.yaml</code>文件用于记录训练集信息</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">train:</span> <span class="string">/exp/work/video/yolov8/datasets/fire/data/train/images</span> <span class="comment"># 训练集</span></span><br><span class="line"><span class="attr">val:</span> <span class="string">/exp/work/video/yolov8/datasets/fire/data/val/images</span> <span class="comment"># 验证集</span></span><br><span class="line"><span class="attr">test:</span> <span class="string">/exp/work/video/yolov8/datasets/fire/data/test/images</span> <span class="comment"># 测试集</span></span><br><span class="line"><span class="attr">nc:</span> <span class="number">2</span> <span class="comment"># 分类数量</span></span><br><span class="line"></span><br><span class="line"><span class="attr">names:</span> <span class="string">[fire,</span> <span class="string">smoke]</span> <span class="comment"># 类别名称</span></span><br></pre></td></tr></table></figure>
+<h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><p>在项目根目录下创建训练脚本<code>yolov8_train.py</code>，并设置双卡训练</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载模型</span></span><br><span class="line">model = YOLO(<span class="string">'yolov8n.pt'</span>)  <span class="comment"># 加载预训练模型</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 双卡训练</span></span><br><span class="line">model.train(</span><br><span class="line">    data=<span class="string">'datasets/fire/data/fire.yaml'</span>,</span><br><span class="line">    epochs=<span class="number">300</span>,</span><br><span class="line">    device=[<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动验证</span></span><br><span class="line">model.val()</span><br></pre></td></tr></table></figure>
+<p>启动训练脚本，开启训练</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python yolov8_train.py</span><br></pre></td></tr></table></figure>
+<p>打印配置信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Ultralytics YOLOv8.1.5 🚀 Python-3.9.18 torch-2.1.2+cu121 CUDA:0 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">                                                          CUDA:1 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">engine/trainer: task=detect, mode=train, model=yolov8n.pt, data=datasets/fire/data/fire.yaml, epochs=300, time=None, patience=50, batch=16, imgsz=640, save=True, save_period=-1, cache=False, device=[0, 1], workers=8, project=None, name=train9, exist_ok=False, pretrained=True, optimizer=auto, verbose=True, seed=0, deterministic=True, single_cls=False, rect=False, cos_lr=False, close_mosaic=10, resume=False, amp=True, fraction=1.0, profile=False, freeze=None, multi_scale=False, overlap_mask=True, mask_ratio=4, dropout=0.0, val=True, split=val, save_json=False, save_hybrid=False, conf=None, iou=0.7, max_det=300, half=False, dnn=False, plots=True, source=None, vid_stride=1, stream_buffer=False, visualize=False, augment=False, agnostic_nms=False, classes=None, retina_masks=False, embed=None, show=False, save_frames=False, save_txt=False, save_conf=False, save_crop=False, show_labels=True, show_conf=True, show_boxes=True, line_width=None, format=torchscript, keras=False, optimize=False, int8=False, dynamic=False, simplify=False, opset=None, workspace=4, nms=False, lr0=0.01, lrf=0.01, momentum=0.937, weight_decay=0.0005, warmup_epochs=3.0, warmup_momentum=0.8, warmup_bias_lr=0.1, box=7.5, cls=0.5, dfl=1.5, pose=12.0, kobj=1.0, label_smoothing=0.0, nbs=64, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, degrees=0.0, translate=0.1, scale=0.5, shear=0.0, perspective=0.0, flipud=0.0, fliplr=0.5, mosaic=1.0, mixup=0.0, copy_paste=0.0, auto_augment=randaugment, erasing=0.4, crop_fraction=1.0, cfg=None, tracker=botsort.yaml, save_dir=runs/detect/train9</span><br><span class="line">Overriding model.yaml nc=80 with nc=2</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">                   from  n    params  module                                       arguments                     </span><br><span class="line">  0                  -1  1       464  ultralytics.nn.modules.conv.Conv             [3, 16, 3, 2]                 </span><br><span class="line">  1                  -1  1      4672  ultralytics.nn.modules.conv.Conv             [16, 32, 3, 2]                </span><br><span class="line">  2                  -1  1      7360  ultralytics.nn.modules.block.C2f             [32, 32, 1, True]             </span><br><span class="line">  3                  -1  1     18560  ultralytics.nn.modules.conv.Conv             [32, 64, 3, 2]                </span><br><span class="line">  4                  -1  2     49664  ultralytics.nn.modules.block.C2f             [64, 64, 2, True]             </span><br><span class="line">  5                  -1  1     73984  ultralytics.nn.modules.conv.Conv             [64, 128, 3, 2]               </span><br><span class="line">  6                  -1  2    197632  ultralytics.nn.modules.block.C2f             [128, 128, 2, True]           </span><br><span class="line">  7                  -1  1    295424  ultralytics.nn.modules.conv.Conv             [128, 256, 3, 2]              </span><br><span class="line">  8                  -1  1    460288  ultralytics.nn.modules.block.C2f             [256, 256, 1, True]           </span><br><span class="line">  9                  -1  1    164608  ultralytics.nn.modules.block.SPPF            [256, 256, 5]                 </span><br><span class="line"> 10                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          </span><br><span class="line"> 11             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 12                  -1  1    148224  ultralytics.nn.modules.block.C2f             [384, 128, 1]                 </span><br><span class="line"> 13                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          </span><br><span class="line"> 14             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 15                  -1  1     37248  ultralytics.nn.modules.block.C2f             [192, 64, 1]                  </span><br><span class="line"> 16                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                </span><br><span class="line"> 17            [-1, 12]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 18                  -1  1    123648  ultralytics.nn.modules.block.C2f             [192, 128, 1]                 </span><br><span class="line"> 19                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              </span><br><span class="line"> 20             [-1, 9]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 21                  -1  1    493056  ultralytics.nn.modules.block.C2f             [384, 256, 1]                 </span><br><span class="line"> 22        [15, 18, 21]  1    751702  ultralytics.nn.modules.head.Detect           [2, [64, 128, 256]]           </span><br><span class="line">Model summary: 225 layers, 3011238 parameters, 3011222 gradients, 8.2 GFLOPs</span><br><span class="line"></span><br><span class="line">Transferred 319/355 items from pretrained weights</span><br><span class="line">DDP: debug command /root/anaconda3/envs/py39_yolov8/bin/python -m torch.distributed.run --nproc_per_node 2 --master_port 45027 /root/.config/Ultralytics/DDP/_temp_bfxihrb7140614302513712.py</span><br><span class="line">WARNING:__main__:</span><br><span class="line">*****************************************</span><br><span class="line">Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. </span><br><span class="line">*****************************************</span><br><span class="line">Ultralytics YOLOv8.1.5 🚀 Python-3.9.18 torch-2.1.2+cu121 CUDA:0 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">                                                          CUDA:1 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">Overriding model.yaml nc=80 with nc=2</span><br><span class="line">Transferred 319/355 items from pretrained weights</span><br><span class="line">Freezing layer 'model.22.dfl.conv.weight'</span><br><span class="line">AMP: running Automatic Mixed Precision (AMP) checks with YOLOv8n...</span><br><span class="line">AMP: checks passed ✅</span><br></pre></td></tr></table></figure>
+<p>记录模型输出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Plotting labels to runs/detect/train9/labels.jpg... </span><br><span class="line">optimizer: 'optimizer=auto' found, ignoring 'lr0=0.01' and 'momentum=0.937' and determining best 'optimizer', 'lr0' and 'momentum' automatically... </span><br><span class="line">optimizer: AdamW(lr=0.000714, momentum=0.9) with parameter groups 57 weight(decay=0.0), 64 weight(decay=0.0005), 63 bias(decay=0.0)</span><br><span class="line">Image sizes 640 train, 640 val</span><br><span class="line">Using 16 dataloader workers</span><br><span class="line">Logging results to runs/detect/train9</span><br></pre></td></tr></table></figure>
+<p>训练开始</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">Starting training for 300 epochs...</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">      1/300      1.38G      2.132      4.599       2.13          6        640: 100%|██████████| 3/3 [00:04&lt;00:00,  1.53s/it]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00,  3.10it/s]</span><br><span class="line">                   all         41         62    0.00191      0.349     0.0223     0.0121</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">      2/300      1.44G      1.984      4.085      1.942         18        640: 100%|██████████| 3/3 [00:00&lt;00:00,  5.08it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00, 11.57it/s]</span><br><span class="line">                   all         41         62    0.00209      0.373     0.0247     0.0119</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">      3/300      1.48G      2.421      4.407      2.348         14        640: 100%|██████████| 3/3 [00:00&lt;00:00,  5.78it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00, 10.23it/s]</span><br><span class="line">                   all         41         62    0.00205      0.373     0.0335     0.0165</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">      4/300      1.48G      1.795      3.787      1.724         18        640: 100%|██████████| 3/3 [00:00&lt;00:00,  5.61it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00,  9.82it/s]</span><br><span class="line">                   all         41         62    0.00239      0.434     0.0445     0.0219</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">      5/300      1.48G      1.707      3.619      1.785         17        640: 100%|██████████| 3/3 [00:00&lt;00:00,  5.49it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00,  8.87it/s]</span><br><span class="line">                   all         41         62      0.003      0.495     0.0735     0.0283</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    295/300       1.5G     0.3742     0.5917     0.8247          7        640: 100%|██████████| 3/3 [00:00&lt;00:00,  7.21it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00, 11.40it/s]</span><br><span class="line">                   all         41         62      0.996          1      0.995      0.946</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    296/300      1.44G     0.4263     0.6716     0.8004          7        640: 100%|██████████| 3/3 [00:00&lt;00:00,  6.86it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00, 11.97it/s]</span><br><span class="line">                   all         41         62      0.996          1      0.995      0.945</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    297/300       1.5G      0.473     0.6775     0.8499          7        640: 100%|██████████| 3/3 [00:00&lt;00:00,  7.20it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00, 11.12it/s]</span><br><span class="line">                   all         41         62      0.996          1      0.995      0.945</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    298/300      1.51G     0.4877     0.6956     0.8936         11        640: 100%|██████████| 3/3 [00:00&lt;00:00,  6.73it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00, 11.03it/s]</span><br><span class="line">                   all         41         62      0.996          1      0.995      0.942</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    299/300       1.5G     0.4303      0.622     0.8264          6        640: 100%|██████████| 3/3 [00:00&lt;00:00,  6.89it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00, 11.62it/s]</span><br><span class="line">                   all         41         62      0.996          1      0.995      0.941</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    300/300      1.44G     0.4593     0.6413     0.8419          6        640: 100%|██████████| 3/3 [00:00&lt;00:00,  6.31it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00, 11.83it/s]</span><br><span class="line">                   all         41         62      0.995          1      0.995       0.94</span><br></pre></td></tr></table></figure>
+<p>训练结束，验证</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">300 epochs completed in 0.101 hours.</span><br><span class="line">Optimizer stripped from runs/detect/train9/weights/last.pt, 6.3MB</span><br><span class="line">Optimizer stripped from runs/detect/train9/weights/best.pt, 6.3MB</span><br><span class="line"></span><br><span class="line">Validating runs/detect/train9/weights/best.pt...</span><br><span class="line">Ultralytics YOLOv8.1.5 🚀 Python-3.9.18 torch-2.1.2+cu121 CUDA:0 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">                                                          CUDA:1 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">Model summary (fused): 168 layers, 3006038 parameters, 0 gradients, 8.1 GFLOPs</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:00&lt;00:00, 10.62it/s]</span><br><span class="line">                   all         41         62      0.996          1      0.995      0.946</span><br><span class="line">                  fire         41         41      0.999          1      0.995      0.938</span><br><span class="line">                 smoke         41         21      0.992          1      0.995      0.955</span><br><span class="line">Speed: 0.1ms preprocess, 1.4ms inference, 0.0ms loss, 1.0ms postprocess per image</span><br><span class="line">Results saved to runs/detect/train9</span><br><span class="line">Ultralytics YOLOv8.1.5 🚀 Python-3.9.18 torch-2.1.2+cu121 CUDA:0 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">                                                          CUDA:1 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">Model summary (fused): 168 layers, 3006038 parameters, 0 gradients, 8.1 GFLOPs</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95): 100%|██████████| 3/3 [00:04&lt;00:00,  1.41s/it]</span><br><span class="line">                   all         41         62      0.996          1      0.995      0.941</span><br><span class="line">                  fire         41         41      0.999          1      0.995      0.939</span><br><span class="line">                 smoke         41         21      0.992          1      0.995      0.942</span><br><span class="line">Speed: 0.2ms preprocess, 14.3ms inference, 0.0ms loss, 16.8ms postprocess per image</span><br><span class="line">Results saved to runs/detect/train92</span><br></pre></td></tr></table></figure>
+<h2 id="评估"><a href="#评估" class="headerlink" title="评估"></a>评估</h2><p>进入保存训练结果的文件夹内，其中<code>weights</code>文件夹包含了最佳训练模型和最近训练模型，文件夹外存储训练的各项记录和测试曲线等</p>
+<p><img src="/2024/01/25/yolov8：火灾检测/6.png" alt></p>
+<p><img src="/2024/01/25/yolov8：火灾检测/7.png" alt></p>
+<p><code>result.csv</code>文件中记录了300轮epoch的详细结果</p>
+<p><img src="/2024/01/25/yolov8：火灾检测/8.png" alt></p>
+<h2 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h2><p>在项目根目录下创建预测脚本<code>yolov8_test.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"></span><br><span class="line">model = YOLO(<span class="string">'runs/detect/train9/weights/best.pt'</span>) <span class="comment"># 指定最佳模型</span></span><br><span class="line">model.predict(<span class="string">'video/fire.mp4'</span>, save=<span class="literal">True</span>, classes=[<span class="number">0</span>, <span class="number">1</span>]) <span class="comment"># 指定输出类别</span></span><br></pre></td></tr></table></figure>
+<p>执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">video 1/1 (1/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 208.5ms</span><br><span class="line">video 1/1 (2/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 9.6ms</span><br><span class="line">video 1/1 (3/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 7.9ms</span><br><span class="line">video 1/1 (4/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 7.9ms</span><br><span class="line">video 1/1 (5/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 8.0ms</span><br><span class="line">video 1/1 (6/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 7.8ms</span><br><span class="line">video 1/1 (7/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 7.7ms</span><br><span class="line">video 1/1 (8/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 7.6ms</span><br><span class="line">video 1/1 (9/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 7.9ms</span><br><span class="line">video 1/1 (10/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 7.8ms</span><br><span class="line">video 1/1 (11/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 8.1ms</span><br><span class="line">video 1/1 (12/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 8.1ms</span><br><span class="line">video 1/1 (13/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 8.2ms</span><br><span class="line">video 1/1 (14/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 8.0ms</span><br><span class="line">video 1/1 (15/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 7.7ms</span><br><span class="line">video 1/1 (16/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 7.8ms</span><br><span class="line">video 1/1 (17/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 (no detections), 7.6ms</span><br><span class="line">video 1/1 (18/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.6ms</span><br><span class="line">video 1/1 (19/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.8ms</span><br><span class="line">video 1/1 (20/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.6ms</span><br><span class="line">video 1/1 (21/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.8ms</span><br><span class="line">video 1/1 (22/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 2 fires, 7.7ms</span><br><span class="line">video 1/1 (23/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.6ms</span><br><span class="line">video 1/1 (24/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.5ms</span><br><span class="line">video 1/1 (25/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.7ms</span><br><span class="line">video 1/1 (26/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.5ms</span><br><span class="line">video 1/1 (27/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.4ms</span><br><span class="line">video 1/1 (28/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.6ms</span><br><span class="line">video 1/1 (29/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.8ms</span><br><span class="line">video 1/1 (30/306) /exp/work/video/yolov8/video/fire.mp4: 384x640 1 fire, 7.7ms</span><br><span class="line">...</span><br><span class="line">Speed: 2.2ms preprocess, 8.3ms inference, 3.8ms postprocess per image at shape (1, 3, 384, 640)</span><br><span class="line">Results saved to runs/detect/predict13</span><br></pre></td></tr></table></figure>
+<p><img src="/2024/01/25/yolov8：火灾检测/fire.gif" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolov8/">yolov8</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/01/08/NetworkX-图论算法应用/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">NetworkX: 图论算法应用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GPU"><span class="nav-number">1.1.</span> <span class="nav-text">GPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yolo版本"><span class="nav-number">1.2.</span> <span class="nav-text">yolo版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pytorch版本"><span class="nav-number">1.3.</span> <span class="nav-text">pytorch版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python环境"><span class="nav-number">1.4.</span> <span class="nav-text">python环境</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#克隆源码"><span class="nav-number">2.1.</span> <span class="nav-text">克隆源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装依赖"><span class="nav-number">2.2.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境验证"><span class="nav-number">2.3.</span> <span class="nav-text">环境验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练集"><span class="nav-number">3.</span> <span class="nav-text">训练集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据标注"><span class="nav-number">4.</span> <span class="nav-text">数据标注</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标注工具：labelme"><span class="nav-number">4.1.</span> <span class="nav-text">标注工具：labelme</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据格式转换"><span class="nav-number">4.2.</span> <span class="nav-text">数据格式转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建训练yaml文件"><span class="nav-number">4.3.</span> <span class="nav-text">创建训练yaml文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练"><span class="nav-number">5.</span> <span class="nav-text">训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#评估"><span class="nav-number">6.</span> <span class="nav-text">评估</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预测"><span class="nav-number">7.</span> <span class="nav-text">预测</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2024 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2024 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

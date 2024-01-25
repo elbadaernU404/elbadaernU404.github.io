@@ -258,6 +258,110 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-yolov8：火灾检测"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2024/01/25/yolov8：火灾检测/">yolov8-火灾检测</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2024/01/25/yolov8：火灾检测/" class="article-date">
+	  <time datetime="2024-01-25T09:23:20.000Z" itemprop="datePublished">2024-01-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/目标检测/">目标检测</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h3><ul>
+<li><font color="gold">NVIDIA 3090*2</font></li>
+<li><font color="gold">显卡驱动 535.104.05</font></li>
+<li><font color="gold">CUDA版本 12.2</font></li>
+<li><font color="gold">CUDAtoolkit</font> (cuda_12.2.2_535.104.05_linux)</li>
+<li><font color="gold">cuDNN (v8.9.7)</font>
+
+</li>
+</ul>
+<h3 id="yolo版本"><a href="#yolo版本" class="headerlink" title="yolo版本"></a>yolo版本</h3><ul>
+<li><font color="gold">v8.1.5</font> (ultralytics yolov8)</li>
+</ul>
+<h3 id="pytorch版本"><a href="#pytorch版本" class="headerlink" title="pytorch版本"></a>pytorch版本</h3><ul>
+<li><font color="gold">v2.1.2</font>
+
+</li>
+</ul>
+<h3 id="python环境"><a href="#python环境" class="headerlink" title="python环境"></a>python环境</h3><ul>
+<li><font color="gold">CentOS7.9</font>
+</li>
+<li><font color="gold">anaconda3</font>
+</li>
+<li><font color="gold">python3.9</font>
+
+</li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>源码主页：<a href="https://github.com/ultralytics/ultralytics" target="_blank" rel="noopener">https://github.com/ultralytics/ultralytics</a></p>
+<p>官方文档：<a href="https://docs.ultralytics.com/zh" target="_blank" rel="noopener">https://docs.ultralytics.com/zh</a></p>
+<p><img src="/2024/01/25/yolov8：火灾检测/1.png" alt></p>
+<h3 id="克隆源码"><a href="#克隆源码" class="headerlink" title="克隆源码"></a>克隆源码</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://hub.nuaa.cf/ultralytics/ultralytics.git</span><br></pre></td></tr></table></figure>
+<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pip install ultralytics -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
+<h3 id="环境验证"><a href="#环境验证" class="headerlink" title="环境验证"></a>环境验证</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yolo predict model=yolov8n.pt source=ultralytics/assets/zidane.jpg</span><br></pre></td></tr></table></figure>
+<p>执行完毕后得到输出的结果如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(py39_yolov8) [root@jdz yolov8]# yolo predict model=yolov8n.pt source=ultralytics/assets/zidane.jpg </span><br><span class="line">Ultralytics YOLOv8.1.5 🚀 Python-3.9.18 torch-2.1.2+cu121 CUDA:0 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">YOLOv8n summary (fused): 168 layers, 3151904 parameters, 0 gradients, 8.7 GFLOPs</span><br><span class="line"></span><br><span class="line">image 1/1 /exp/work/video/yolov8/ultralytics/assets/zidane.jpg: 384x640 2 persons, 1 tie, 216.9ms</span><br><span class="line">Speed: 7.3ms preprocess, 216.9ms inference, 762.4ms postprocess per image at shape (1, 3, 384, 640)</span><br><span class="line">Results saved to runs/detect/predict</span><br><span class="line">💡 Learn more at https://docs.ultralytics.com/modes/predict</span><br></pre></td></tr></table></figure>
+<p>将在<code>Results saved to runs/detect/predict</code>目录下找到输出结果</p>
+        <!--  环境GPU
+NVIDIA 3090*2
+显卡驱动 535.104.05
+CUDA版本 12.2
+CUDAtoolkit (cuda_12.2.2_535.104.05_linux)
+cuDNN (v8.9.7)
+
+
+
+yolo版本
+v8.1.5 (ultralytics yolov8)
+
+pytorch版本
+v2.1.2
+
+
+
+python环境
+CentOS7.9
+
+anaconda3
+
+......  -->
+        <p class="article-more-link">
+          <a href="/2024/01/25/yolov8：火灾检测/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolov8/">yolov8</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-NetworkX-图论算法应用"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -289,7 +393,7 @@
 <p>参考文献地址: <a href="https://www.osgeo.cn/networkx/reference/index.html" target="_blank" rel="noopener">https://www.osgeo.cn/networkx/reference/index.html</a></p>
 <h2 id="图计算应用方式比较"><a href="#图计算应用方式比较" class="headerlink" title="图计算应用方式比较"></a>图计算应用方式比较</h2><h3 id="1-nebula-spark"><a href="#1-nebula-spark" class="headerlink" title="1.nebula + spark"></a>1.nebula + spark</h3><p>依赖nebula-spark-connector包、nebula-algorithm包和spark集群的数据读取、图计算方式</p>
 <h3 id="2-clickhouse-NetworkX"><a href="#2-clickhouse-NetworkX" class="headerlink" title="2.clickhouse + NetworkX"></a>2.clickhouse + NetworkX</h3><p>由于nebula-algorithm依赖spark集群，且nebula-console原生的数据读取能力不佳，在环境受限且计算量有限的情况下优先考虑跳过spark集群和nebula图库，采用clickhouse + NetworkX的图计算方式，其中clickhouse是存储了nebula源数据的列式分布式表，作用类似于方法1中将nebula集群数据通过nebula-spark-connector包导入为spark-DataFrame，仅用做数据读取，再通过将数据转化为NetworkX的图结构进行图计算</p>
-<p><img src="/2024/01/08/NetworkX-图论算法应用/0.png" alt></p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/9.png" alt></p>
         <!--  NetworkXNetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等
 参考文献地址: https://www.osgeo.cn/networkx/reference......  -->
         <p class="article-more-link">
@@ -582,6 +686,59 @@
 <!-- Table of Contents -->
 
   
+    <article id="post-paddleDetection Demo"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/08/31/paddleDetection Demo/">paddleDetection Demo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/08/31/paddleDetection Demo/" class="article-date">
+	  <time datetime="2023-08-31T04:20:20.000Z" itemprop="datePublished">2023-08-31</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="PPHuman"><a href="#PPHuman" class="headerlink" title="PPHuman"></a>PPHuman</h2><h3 id="行人属性识别"><a href="#行人属性识别" class="headerlink" title="行人属性识别"></a>行人属性识别</h3><h4 id="行人属性"><a href="#行人属性" class="headerlink" title="行人属性"></a>行人属性</h4><p>cfg：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">crop_thresh:</span> <span class="number">0.5</span></span><br><span class="line"><span class="attr">attr_thresh:</span> <span class="number">0.5</span></span><br><span class="line"><span class="attr">kpt_thresh:</span> <span class="number">0.2</span></span><br><span class="line"><span class="attr">visual:</span> <span class="literal">True</span></span><br><span class="line"><span class="attr">warmup_frame:</span> <span class="number">50</span></span><br><span class="line"></span><br><span class="line"><span class="attr">DET:</span></span><br><span class="line">  <span class="attr">model_dir:</span> <span class="string">https://bj.bcebos.com/v1/paddledet/models/pipeline/mot_ppyoloe_l_36e_pipeline.zip</span></span><br><span class="line">  <span class="attr">batch_size:</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="attr">MOT:</span></span><br><span class="line">  <span class="attr">model_dir:</span> <span class="string">https://bj.bcebos.com/v1/paddledet/models/pipeline/mot_ppyoloe_l_36e_pipeline.zip</span></span><br><span class="line">  <span class="attr">tracker_config:</span> <span class="string">/exp/work/video/PaddleDetection/deploy/pipeline/config/tracker_config.yml</span></span><br><span class="line">  <span class="attr">batch_size:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">skip_frame_num:</span> <span class="number">-1</span> <span class="comment"># preferably no more than 3</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="attr">KPT:</span></span><br><span class="line">  <span class="attr">model_dir:</span> <span class="string">https://bj.bcebos.com/v1/paddledet/models/pipeline/dark_hrnet_w32_256x192.zip</span></span><br><span class="line">  <span class="attr">batch_size:</span> <span class="number">8</span></span><br><span class="line"></span><br><span class="line"><span class="attr">ATTR:</span></span><br><span class="line">  <span class="attr">model_dir:</span>  <span class="string">https://bj.bcebos.com/v1/paddledet/models/pipeline/PPLCNet_x1_0_person_attribute_945_infer.zip</span></span><br><span class="line">  <span class="attr">batch_size:</span> <span class="number">8</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>cli：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python deploy/pipeline/pipeline.py --config deploy/pipeline/config/cache/cfg_human.yml --device=gpu --video_file=demo_input/human.mp4 --output_dir=demo_output/</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/08/31/paddleDetection Demo/行人属性.gif" alt></p>
+        <!--  PPHuman行人属性识别行人属性cfg：
+12345678910111213141516171819202122232425crop_thresh: 0.5attr_thresh: 0.5kpt_thresh: 0.2visual: Truewarmup_frame: 50DET:  model_dir: https://bj.bcebos.com/v1/paddledet/models......  -->
+        <p class="article-more-link">
+          <a href="/2023/08/31/paddleDetection Demo/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paddlepaddle/">paddlepaddle</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-LiveGBS国标GB-T28181视频流媒体平台"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -723,31 +880,20 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <script src="\assets\js\APlayer.min.js"> </script><font color="gold">注：OpenCV不能直接显示中文，通过PIL转换会损失一部分算力性能</font>
+        <font color="gold">注：OpenCV不能直接显示中文，通过PIL转换会损失一部分算力性能</font>
 
+<p><img src="/2023/08/09/paddleDetection-OpenCV检测框转中文/A.png" alt></p>
 <h2 id="修改源码（可视化）"><a href="#修改源码（可视化）" class="headerlink" title="修改源码（可视化）"></a>修改源码（可视化）</h2><p><code>./deploy/python/visualize.py</code></p>
 <h3 id="增加导入字体库和字体文件"><a href="#增加导入字体库和字体文件" class="headerlink" title="增加导入字体库和字体文件"></a>增加导入字体库和字体文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageDraw, ImageFile, ImageFont</span><br><span class="line"></span><br><span class="line">font_file = <span class="string">'/exp/work/video/PaddleDetection/deploy/pipeline/SourceHanSansCN-Medium.otf'</span></span><br></pre></td></tr></table></figure>
 <h3 id="visualize-attr"><a href="#visualize-attr" class="headerlink" title="visualize_attr"></a>visualize_attr</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_attr</span><span class="params">(im, results, boxes=None, is_mtmct=False)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">        im = Image.open(im)</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line"></span><br><span class="line">    line_inter = im.shape[<span class="number">0</span>] / <span class="number">40.</span></span><br><span class="line">    text_scale = max(<span class="number">0.5</span>, im.shape[<span class="number">0</span>] / <span class="number">100.</span>)</span><br><span class="line">    <span class="comment"># 将nparray图像转PIL图像</span></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, res <span class="keyword">in</span> enumerate(results):</span><br><span class="line">        print(i, res)</span><br><span class="line">        <span class="keyword">if</span> boxes <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            text_w = <span class="number">3</span></span><br><span class="line">            text_h = <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> is_mtmct:</span><br><span class="line">            box = boxes[i]  <span class="comment"># multi camera, bbox shape is x,y, w,h</span></span><br><span class="line">            text_w = int(box[<span class="number">0</span>]) + <span class="number">3</span></span><br><span class="line">            text_h = int(box[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            box = boxes[i]  <span class="comment"># single camera, bbox shape is 0, 0, x,y, w,h</span></span><br><span class="line">            text_w = int(box[<span class="number">2</span>]) + <span class="number">3</span></span><br><span class="line">            text_h = int(box[<span class="number">3</span>])</span><br><span class="line">        <span class="keyword">for</span> text <span class="keyword">in</span> res:</span><br><span class="line">            text_h += int(line_inter)</span><br><span class="line">            text_loc = (text_w, text_h)</span><br><span class="line">            <span class="comment"># 写入</span></span><br><span class="line">            draw = ImageDraw.Draw(im)</span><br><span class="line">            draw.text(</span><br><span class="line">                text_loc,</span><br><span class="line">                text,</span><br><span class="line">                font=ImageFont.truetype(font_file, size=int(text_scale)), <span class="comment"># 字体位置</span></span><br><span class="line">                fill=(<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>))</span><br><span class="line">    <span class="comment"># 还原连续存储数组</span></span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
-<h3 id="visualize-vehicleplate"><a href="#visualize-vehicleplate" class="headerlink" title="visualize_vehicleplate"></a>visualize_vehicleplate</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_vehicleplate</span><span class="params">(im, results, boxes=None)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">        im = Image.open(im)</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line"></span><br><span class="line">    text_scale = max(<span class="number">1.0</span>, im.shape[<span class="number">0</span>] / <span class="number">400.</span>)</span><br><span class="line">    line_inter = im.shape[<span class="number">0</span>] / <span class="number">40.</span></span><br><span class="line">    <span class="comment"># 将nparray图像转PIL图像</span></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line">    <span class="keyword">for</span> i, res <span class="keyword">in</span> enumerate(results):</span><br><span class="line">        <span class="keyword">if</span> boxes <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            text_w = <span class="number">3</span></span><br><span class="line">            text_h = <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            box = boxes[i]</span><br><span class="line">            text = res</span><br><span class="line">            <span class="keyword">if</span> text == <span class="string">""</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            text_w = int(box[<span class="number">2</span>])</span><br><span class="line">            text_h = int(box[<span class="number">5</span>] + box[<span class="number">3</span>])</span><br><span class="line">            text_loc = (text_w, text_h)</span><br><span class="line">            <span class="comment"># 写入</span></span><br><span class="line">            draw = ImageDraw.Draw(im)</span><br><span class="line">            draw.text(</span><br><span class="line">                text_loc,</span><br><span class="line">                text,</span><br><span class="line">                font=ImageFont.truetype(font_file, size=int(text_scale)), <span class="comment"># 字体位置</span></span><br><span class="line">                fill=(<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>))</span><br><span class="line">    <span class="comment"># 还原连续存储数组</span></span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
-<h3 id="visualize-action"><a href="#visualize-action" class="headerlink" title="visualize_action"></a>visualize_action</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_action</span><span class="params">(im,</span></span></span><br><span class="line"><span class="function"><span class="params">                     mot_boxes,</span></span></span><br><span class="line"><span class="function"><span class="params">                     action_visual_collector=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                     action_text=<span class="string">""</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                     video_action_score=None,</span></span></span><br><span class="line"><span class="function"><span class="params">                     video_action_text=<span class="string">""</span>)</span>:</span></span><br><span class="line">    im = cv2.imread(im) <span class="keyword">if</span> isinstance(im, str) <span class="keyword">else</span> im</span><br><span class="line">    im_h, im_w = im.shape[:<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">    text_scale = max(<span class="number">1</span>, im.shape[<span class="number">1</span>] / <span class="number">40.</span>)</span><br><span class="line">    text_thickness = <span class="number">2</span></span><br><span class="line">    <span class="comment"># 将nparray图像转PIL图像</span></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line">    <span class="keyword">if</span> action_visual_collector:</span><br><span class="line">        id_action_dict = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> collector, action_type <span class="keyword">in</span> zip(action_visual_collector, action_text):</span><br><span class="line">            id_detected = collector.get_visualize_ids()</span><br><span class="line">            <span class="keyword">for</span> pid <span class="keyword">in</span> id_detected:</span><br><span class="line">                id_action_dict[pid] = id_action_dict.get(pid, [])</span><br><span class="line">                id_action_dict[pid].append(action_type)</span><br><span class="line">        <span class="keyword">for</span> mot_box <span class="keyword">in</span> mot_boxes:</span><br><span class="line">            <span class="comment"># mot_box is a format with [mot_id, class, score, xmin, ymin, w, h] </span></span><br><span class="line">            <span class="keyword">if</span> mot_box[<span class="number">0</span>] <span class="keyword">in</span> id_action_dict:</span><br><span class="line">                text_position = (int(mot_box[<span class="number">3</span>] + mot_box[<span class="number">5</span>] * <span class="number">0.75</span>),</span><br><span class="line">                                 int(mot_box[<span class="number">4</span>] - <span class="number">10</span>))</span><br><span class="line">                display_text = <span class="string">', '</span>.join(id_action_dict[mot_box[<span class="number">0</span>]])</span><br><span class="line"></span><br><span class="line">                draw = ImageDraw.Draw(im)</span><br><span class="line">                draw.text(</span><br><span class="line">                    text_position,</span><br><span class="line">                    display_text,</span><br><span class="line">                    font=ImageFont.truetype(size=int(text_scale)),  <span class="comment"># 字体位置</span></span><br><span class="line">                    fill=(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> video_action_score:</span><br><span class="line">        draw = ImageDraw.Draw(im)</span><br><span class="line">        draw.text(</span><br><span class="line">            (int(im_w / <span class="number">2</span>), int(<span class="number">15</span> * text_scale) + <span class="number">5</span>),</span><br><span class="line">            video_action_text + <span class="string">': %.2f'</span> % video_action_score,</span><br><span class="line">            font=ImageFont.truetype(font_file, size=int(text_scale)),  <span class="comment"># 字体位置</span></span><br><span class="line">            fill=(<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>))</span><br><span class="line">    <span class="comment"># 还原连续存储数组</span></span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
-<h2 id="修改源码（属性）"><a href="#修改源码（属性）" class="headerlink" title="修改源码（属性）"></a>修改源码（属性）</h2><p>修改对应中文模块</p>
-<p><code>./deploy/pipeline/</code></p>
-<ul>
-<li>pipeline.py</li>
-</ul>
-<p><code>./deploy/pipeline/ppvehicle</code></p>
-<ul>
-<li>vehicle_attr.py</li>
-<li>vehicle_plate.py</li>
-</ul>
-<p><code>./deploy/pipeline/pphuman</code></p>
-<ul>
-<li>attr_infer.py</li>
-</ul>
-<h2 id="执行脚本"><a href="#执行脚本" class="headerlink" title="执行脚本"></a>执行脚本</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> pphuman</span></span><br><span class="line">python deploy/pipeline/pipeline.py --config deploy/pipeline/config/infer_cfg_pphuman.yml --video_file=demo_input/act1.mp4 --device=gpu --output_dir=demo_output</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> ppvehicle</span></span><br><span class="line">python deploy/pipeline/pipeline.py --config deploy/pipeline/config/infer_cfg_ppvehicle.yml --video_file=demo_input/car_t1.mp4 --device=gpu --output_dir=demo_output</span><br></pre></td></tr></table></figure>
-<p><img src="/2023/08/09/paddleDetection-OpenCV检测框转中文/A.png" alt></p>
-<p><img src="/2023/08/09/paddleDetection-OpenCV检测框转中文/B.png" alt></p>
+        <!--  注：OpenCV不能直接显示中文，通过PIL转换会损失一部分算力性能
 
+
+修改源码（可视化）./deploy/python/visualize.py
+增加导入字体库和字体文件123from PIL import Image, ImageDraw, ImageFile, ImageFontfont_file = '/exp/work/video/PaddleDetection/deploy/......  -->
+        <p class="article-more-link">
+          <a href="/2023/08/09/paddleDetection-OpenCV检测框转中文/#more">Read More</a>
+        </p>
       
     </div>
     <footer class="article-footer">
@@ -764,200 +910,11 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-arcface-paddle"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2023/08/08/arcface-paddle/">arcface_paddle</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2023/08/08/arcface-paddle/" class="article-date">
-	  <time datetime="2023-08-08T09:12:11.000Z" itemprop="datePublished">2023-08-08</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="GPU（物理）"><a href="#GPU（物理）" class="headerlink" title="GPU（物理）"></a>GPU（物理）</h3><ul>
-<li><p>NVIDIA 3090*2</p>
-</li>
-<li><p>显卡驱动 515.43.04</p>
-</li>
-<li><p>CUDA版本 11.7</p>
-</li>
-<li><p>CUDAtoolkit (cuda_11.7.0_515.43.04_linux)</p>
-</li>
-<li><p>cuDNN (v8.4.1)</p>
-</li>
-<li><p><font color="gold">paddlepaddle 多卡训练需要NCLL支持</font> (ncll v2.12.12 cuda11.7)</p>
-</li>
-</ul>
-<h3 id="paddlepaddle版本"><a href="#paddlepaddle版本" class="headerlink" title="paddlepaddle版本"></a>paddlepaddle版本</h3><ul>
-<li>paddlepaddle-gpu==2.2.0rc0（虚拟环境cuda11.2）</li>
-</ul>
-<h3 id="python环境"><a href="#python环境" class="headerlink" title="python环境"></a>python环境</h3><ul>
-<li><p>CentOS7.9</p>
-</li>
-<li><p>anaconda3</p>
-</li>
-<li><p>python3.8</p>
-</li>
-</ul>
-<h2 id="anaconda安装insightface"><a href="#anaconda安装insightface" class="headerlink" title="anaconda安装insightface"></a>anaconda安装insightface</h2><p><font color="gold">重要：pillow版本建议选择9.5 否则过高会导致安装insightface报错</font> （错误原因：pillow10移除了getsize方法，需要修改对应位置源码为<code>getbbox</code>或 <code>getlength</code>）</p>
-<p>告警信息：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tools/test_recognition.py:<span class="number">627</span>: DeprecationWarning: getsize <span class="keyword">is</span> deprecated <span class="keyword">and</span> will be removed <span class="keyword">in</span> Pillow <span class="number">10</span> (<span class="number">2023</span><span class="number">-07</span><span class="number">-01</span>). Use getbbox <span class="keyword">or</span> getlength instead.</span><br><span class="line">  tw = font.getsize(text)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<h4 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> .</span></span><br><span class="line">conda install paddlepaddle-gpu==2.2.0rc0 cudatoolkit=11.2 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/Paddle/ -c conda-forge</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface</span></span><br><span class="line">pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface/recongition/arcface_paddle/</span></span><br><span class="line">pip install -r requirement.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface-paddle</span></span><br><span class="line">pip install insightface-paddle -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
-        <!--  环境GPU（物理）
-NVIDIA 3090*2
-
-显卡驱动 515.43.04
-
-CUDA版本 11.7
-
-CUDAtoolkit (cuda_11.7.0_515.43.04_linux)
-
-cuDNN (v8.4.1)
-
-paddlepaddle 多卡训练需要NCLL支持 (ncll v2.12.12 cuda11.7)
-
-
-paddlepaddle版本
-paddlepaddle-gp......  -->
-        <p class="article-more-link">
-          <a href="/2023/08/08/arcface-paddle/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paddlepaddle/">paddlepaddle</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-paddleDetection"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2023/08/07/paddleDetection/">paddleDetection</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2023/08/07/paddleDetection/" class="article-date">
-	  <time datetime="2023-08-07T08:20:53.000Z" itemprop="datePublished">2023-08-07</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h3><ul>
-<li><p>NVIDIA 3090*2</p>
-</li>
-<li><p>显卡驱动 515.43.04</p>
-</li>
-<li><p>CUDA版本 11.7</p>
-</li>
-<li><p>CUDAtoolkit (cuda_11.7.0_515.43.04_linux)</p>
-</li>
-<li><p>cuDNN (v8.4.1)</p>
-</li>
-<li><p><font color="gold">paddlepaddle 多卡训练需要NCLL支持</font> (ncll v2.12.12 cuda11.7)</p>
-</li>
-</ul>
-<h3 id="paddlepaddle版本"><a href="#paddlepaddle版本" class="headerlink" title="paddlepaddle版本"></a>paddlepaddle版本</h3><ul>
-<li>v2.4.2</li>
-</ul>
-<h3 id="python环境"><a href="#python环境" class="headerlink" title="python环境"></a>python环境</h3><ul>
-<li><p>CentOS7.9</p>
-</li>
-<li><p>anaconda3</p>
-</li>
-<li><p>python3.8</p>
-</li>
-</ul>
-<h2 id="普通视频处理"><a href="#普通视频处理" class="headerlink" title="普通视频处理"></a>普通视频处理</h2><font color="gold">h264格式视频被opencv解析帧率超过65535报错</font>
-
-<p>源码：</p>
-<p><code>./deploy/pipeline/pipeline.py</code> predict_video</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">out_path = os.path.join(self.output_dir, video_out_name + <span class="string">".mp4"</span>)</span><br><span class="line">fourcc = cv2.VideoWriter_fourcc(* <span class="string">'mp4v'</span>)</span><br><span class="line">writer = cv2.VideoWriter(out_path, fourcc, fps, (width, height))</span><br></pre></td></tr></table></figure>
-<p>输入：cv2.VideoCapture()</p>
-<p>输出：cv2.VideoWriter(）</p>
-<p>本GPU模式下对时长5分钟的行人检测视频处理时间约20分钟（高精度模型），视频体积增大13倍（100M-&gt;1.3G）</p>
-        <!--  环境GPU
-NVIDIA 3090*2
-
-显卡驱动 515.43.04
-
-CUDA版本 11.7
-
-CUDAtoolkit (cuda_11.7.0_515.43.04_linux)
-
-cuDNN (v8.4.1)
-
-paddlepaddle 多卡训练需要NCLL支持 (ncll v2.12.12 cuda11.7)
-
-
-paddlepaddle版本
-v2.4.2
-
-python环境
-Ce......  -->
-        <p class="article-more-link">
-          <a href="/2023/08/07/paddleDetection/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paddlepaddle/">paddlepaddle</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 
 </section>

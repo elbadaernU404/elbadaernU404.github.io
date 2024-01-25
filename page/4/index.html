@@ -258,6 +258,142 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Numpy-Pandas"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/03/01/Numpy-Pandas/">Numpy &amp; Pandas</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/03/01/Numpy-Pandas/" class="article-date">
+	  <time datetime="2022-03-01T05:13:22.000Z" itemprop="datePublished">2022-03-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文主要记录一些Numpy和Pandas的方法</p>
+<h2 id="Numpy"><a href="#Numpy" class="headerlink" title="Numpy"></a>Numpy</h2><h3 id="1-惯用写法："><a href="#1-惯用写法：" class="headerlink" title="1.惯用写法："></a>1.惯用写法：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<h3 id="2-从列表生成一个矩阵："><a href="#2-从列表生成一个矩阵：" class="headerlink" title="2.从列表生成一个矩阵："></a>2.从列表生成一个矩阵：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.array([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]]))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/A.png" alt="创建矩阵"></p>
+<h3 id="3-创建全0或全1矩阵："><a href="#3-创建全0或全1矩阵：" class="headerlink" title="3.创建全0或全1矩阵："></a>3.创建全0或全1矩阵：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)))</span><br><span class="line">print(np.ones((<span class="number">5</span>,<span class="number">5</span>)))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/B.png" alt="0/1矩阵"></p>
+<h3 id="4-通过-shape得到当前矩阵的尺寸，通过-reshape-将当前矩阵转置"><a href="#4-通过-shape得到当前矩阵的尺寸，通过-reshape-将当前矩阵转置" class="headerlink" title="4.通过.shape得到当前矩阵的尺寸，通过.reshape()将当前矩阵转置"></a>4.通过<font color="orange">.shape</font>得到当前矩阵的尺寸，通过<font color="orange">.reshape()</font>将当前矩阵转置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)))</span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)).shape)</span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)).reshape(<span class="number">4</span>,<span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/C.png" alt="获取矩阵的尺寸，转置"></p>
+<h3 id="5-使用arange-创建递增-递减的数列"><a href="#5-使用arange-创建递增-递减的数列" class="headerlink" title="5.使用arange()创建递增/递减的数列"></a>5.使用<font color="orange">arange()</font>创建递增/递减的数列</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.arange(<span class="number">1</span>,<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/D.png" alt="arange()"></p>
+<h3 id="6-使用linspace-获取一个等分的区间序列，第三个参数是输出样本的总数"><a href="#6-使用linspace-获取一个等分的区间序列，第三个参数是输出样本的总数" class="headerlink" title="6.使用linspace()获取一个等分的区间序列，第三个参数是输出样本的总数"></a>6.使用<font color="orange">linspace()</font>获取一个等分的区间序列，第三个参数是输出样本的总数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.linspace(<span class="number">1</span>,<span class="number">100</span>,<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/E.png" alt="linspace()"></p>
+<h3 id="7-通过random-rand-生成随机数组"><a href="#7-通过random-rand-生成随机数组" class="headerlink" title="7.通过random.rand()生成随机数组"></a>7.通过<font color="orange">random.rand()</font>生成随机数组</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.random.rand(<span class="number">3</span>,<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/F.png" alt="随机数组"></p>
+<h3 id="8-Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用dtype参数指定其他的数据类型"><a href="#8-Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用dtype参数指定其他的数据类型" class="headerlink" title="8.Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用dtype参数指定其他的数据类型"></a>8.Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用<font color="orange">dtype</font>参数指定其他的数据类型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.ones((<span class="number">3</span>,<span class="number">4</span>),dtype=np.float32))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/G.png" alt="numpy数据类型"></p>
+<h3 id="9-对先有的数组，也可以使用astype-来更改数据类型"><a href="#9-对先有的数组，也可以使用astype-来更改数据类型" class="headerlink" title="9.对先有的数组，也可以使用astype()来更改数据类型"></a>9.对先有的数组，也可以使用<font color="orange">astype()</font>来更改数据类型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array0=np.ones((<span class="number">3</span>,<span class="number">4</span>),dtype=np.float32)</span><br><span class="line">array1=array0.astype(int)</span><br><span class="line"></span><br><span class="line">print(array0,array1)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/H.png" alt="数据类型转换"></p>
+<h3 id="10-Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸"><a href="#10-Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸" class="headerlink" title="10.Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸"></a>10.Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array0=np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">array1=np.array([<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>])</span><br><span class="line">array2=np.array([[<span class="number">7</span>],</span><br><span class="line">                 [<span class="number">8</span>],</span><br><span class="line">                 [<span class="number">9</span>]])</span><br><span class="line"></span><br><span class="line">print(array0*<span class="number">10</span>)</span><br><span class="line">print(array1+array2)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/INSERT.png" alt="numpy的广播与numpy中不同尺寸数组的运算"><br></p>
+        <!--  本文主要记录一些Numpy和Pandas的方法
+Numpy1.惯用写法：1import numpy as np
+2.从列表生成一个矩阵：123import numpy as npprint(np.array([[0,1,2,3,4,5],[6,7,8,9,10,11]]))
+
+3.创建全0或全1矩阵：1234import numpy as npprint(np.zeros((3,4)))p......  -->
+        <p class="article-more-link">
+          <a href="/2022/03/01/Numpy-Pandas/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy、pandas/">numpy、pandas</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Django项目：订单管理系统"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/02/27/Django项目：订单管理系统/">Django项目：订单管理系统</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/02/27/Django项目：订单管理系统/" class="article-date">
+	  <time datetime="2022-02-26T18:21:08.000Z" itemprop="datePublished">2022-02-27</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-Django简介"><a href="#1-Django简介" class="headerlink" title="1.Django简介"></a>1.Django简介</h2><p>Django是一款开源的python web应用框架，采用MTV(Model-Template-View)模式，其中Model负责对象与数据库的映射(ORM)，Template通过接口等方式将前端页面传递给用户，View视图函数对应业务逻辑，在合适的时候调用Model或Template</p>
+<p>除去MTV模型以外，Django还有一个URL控制器，分别将不同的URL请求传递给不同的View视图函数处理，再通过各自的View函数来调用对应的Model和Template</p>
+<h2 id="2-Django项目：订单管理系统"><a href="#2-Django项目：订单管理系统" class="headerlink" title="2.Django项目：订单管理系统"></a>2.Django项目：订单管理系统</h2><h3 id="1-Django项目的创建"><a href="#1-Django项目的创建" class="headerlink" title="1.Django项目的创建"></a>1.Django项目的创建</h3><p>在python 3中安装完成Django库后，可以在CMD或Pycharm终端里执行：<font size="4" color="orange">django-admin</font> <font size="4" color="#008080">startproject itemproj</font>来创建Django项目</p>
+<p>也可以在Pycharm专业版本直接创建一个Django项目，这样会自动生成一个空的Template文件夹，以及在settings.py中生成Template对应的路径。还可以直接创建初始APP，这里没有做</p>
+<p>(本文使用的Django版本为3.2.4)</p>
+<p><img src="/2022/02/27/Django项目：订单管理系统/A.png" alt="Django项目创建"><br>执行创建完成后，系统会为我们生成这样一个初始目录：</p>
+<p><img src="/2022/02/27/Django项目：订单管理系统/B.png" alt="Django目录"><br>其中：</p>
+<p><strong><em>·</em></strong> <font color="orange">manage.py</font>是Django项目管理的工具脚本，执行Django命令时通过这个文件进行管理操作</p>
+<p><strong><em>·</em></strong> <font color="orange">itemproj/settings.py</font>是Django项目的配置文件，包括了App配置、Django中间件、数据库等重要设置，在实际开发中要经常修改其中内容</p>
+<p><strong><em>·</em></strong> <font color="orange">itemproj/urls.py</font>是URL路由映射文件，其中声明了前端发送的各种http请求，再通过各级路由文件来寻找到对应的View视图函数来进行处理</p>
+<p><strong><em>·</em></strong> <font color="orange">itemproj/wsgi.py</font>，WSGI是Python web服务网关接口规范(Web Server Gateway Interface)的简称，由wsgi web server和wsgi web application两部分组成，是运行在同一个python进程中的两个模块</p>
+<p>wsgi web sever接收了http请求以后调用wsgi web application接口，处理请求的具体内容，处理完成后再将结果返回给wsgi web server，通过wsgi web server将请求传递给前端，如图所示(Django官方文档)：</p>
+<p><img src="/2022/02/27/Django项目：订单管理系统/C.png" alt="WSGI"><br><strong><em>·</em></strong> <font color="orange">itemproj/asgi.py</font>，ASGI即异步网关协议接口(Asynchronous Server  Gateway Interface)，是一个介于网络协议服务和python应用之间的标准接口，用于处理通用类型的协议。参考自Django官方文档的资料，ASGI是为了支持异步网络服务器和应用而出现的新的python标准，可以将ASGI理解为WSGI协议的扩展</p>
+<p><img src="/2022/02/27/Django项目：订单管理系统/D.png" alt="ASGI"></p>
+<h3 id="2-Django生命周期"><a href="#2-Django生命周期" class="headerlink" title="2.Django生命周期"></a>2.Django生命周期</h3><p>了解了Django项目基本组成后，Django的生命周期也基本明朗：<font color="#008080">前端发起URL请求</font> ➞ <font color="#008080">WSGI</font> ➞ <font color="#008080">Django中间件</font> ➞ <font color="#008080">URL路由</font> ➞ <font color="#008080">View视图函数</font> ➞ <font color="#008080">Model数据库交互</font> ➞ <font color="#008080">Template模板进行html渲染</font> ➞ <font color="#008080">Django中间件</font> ➞ <font color="#008080">WSGI</font> ➞ <font color="#008080">前端页面</font></p>
+<h3 id="3-Django项目启动"><a href="#3-Django项目启动" class="headerlink" title="3.Django项目启动"></a>3.Django项目启动</h3><p>通过在Pycharm终端中执行<font size="4" color="orange">python</font> <font size="4" color="#008080">manage.py runserver</font>来启动Django服务，系统默认在:8000端口上执行</p>
+<p><img src="/2022/02/27/Django项目：订单管理系统/E.png" alt="Django启动"><br>可以在settings.py中增加ALLOWED_HOSTS的参数，来增加支持的hosts，这里新增一个localhost。也可以自定义端口号等<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALLOWED_HOSTS = [<span class="string">'localhost'</span>]</span><br></pre></td></tr></table></figure></p>
+        <!--  1.Django简介Django是一款开源的python web应用框架，采用MTV(Model-Template-View)模式，其中Model负责对象与数据库的映射(ORM)，Template通过接口等方式将前端页面传递给用户，View视图函数对应业务逻辑，在合适的时候调用Model或Template
+除去MTV模型以外，Django还有一个URL控制器，分别将不同的URL请求传递给不......  -->
+        <p class="article-more-link">
+          <a href="/2022/02/27/Django项目：订单管理系统/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Django/">Django</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-基于卷积神经网络的面部年龄识别"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -762,137 +898,11 @@ Hadoop伪分布式搭建首先创建一台master虚拟机，并克隆node1、nod
 <!-- Table of Contents -->
 
   
-    <article id="post-Python多线程基础"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/04/16/Python多线程基础/">Python多线程基础</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/04/16/Python多线程基础/" class="article-date">
-	  <time datetime="2019-04-16T13:00:56.000Z" itemprop="datePublished">2019-04-16</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h2><h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>其实类似于小学时期如何在最短的时间内去完成所有事件的数学题。</p>
-<p>假设小明早上7：00起床，刷牙洗脸需要3分钟，烧水需要10分钟，穿衣叠被需要2分钟，吃早餐需要15分钟，收听早间新闻需要20分钟（7点开始），问小明起床做完这些事情至少需要多长时间？</p>
-<p>同步是指调用一旦开始，必须等待返回调用的结果，才能继续下一步操作</p>
-<p>那么结果就是，小明一共需要听新闻（20分钟）+穿衣叠被（2分钟）+刷牙洗脸（3分钟）+烧水（10分钟）+吃早餐（15分钟），总共50分钟，一定要迟到了，很笨</p>
-<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>异步和同步相反，调用一旦开始，调用者无需等待方法的完成，就可以继续执行后续方法，被调用者通过状态体通知调用者，或者使用回调函数处理调用</p>
-<p>异步方法下，小明需要打开新闻，开始烧水，穿衣叠被，再洗漱，吃早餐，只需要20分钟，新闻结束，就可以高高兴兴去上学了</p>
-<h2 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h2><h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3><p>并发是同时具有多个活动的系统，实质是一个或多个物理CPU在若干道程序（或线程）之间多路复用，其实就是n个事件在同一时间线上交替完成：小明做完所有事件花了50分钟</p>
-<p><img src="/2019/04/16/Python多线程基础/A.png" alt="并发"></p>
-<h3 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h3><p>并行是真正意义上的不同事件或线程在同一时刻同时执行。并行利用并发使系统运行更快，在操作系统的多个抽象层次运用，是n个事件在同一时刻上同时发生：小明家里雇了4个机器人保姆，1个打开电视后烧水，1个帮小明穿衣叠被，1个帮小明洗漱，最后1个喂小明吃早餐，这样在早间新闻放完前，小明只用了18分钟就完成了所有事件，还多出2分钟时间检查书包</p>
-<p><img src="/2019/04/16/Python多线程基础/B.png" alt="并行"></p>
-<h2 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h2><h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><p>程序不能自己运行，只有将程序装载进内存，由系统分配资源后才能运行。程序是指令的集合，可以视为指令的静态文本，而进程是指令的执行活动，是动态的行为</p>
-<p>进程是操作系统对于一个运行中程序的抽象，是CPU、内存、IO设备的抽象。系统可以同时运行多个进程</p>
-<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><p>线程是操作系统进行运算调度的最小单位，被包含于进程中，是进程的实际运作单位。一个进程可以由多个线程组成，线程之间共享代码和数据。</p>
-<p>由于在实际网络服务器中对并行的需求，线程成为重要的编程模型：</p>
-<p>1.多线程之间比多进程之间更易共享数据。<br>2.线程一般比进程高效。<br></p>
-        <!--  同步和异步同步其实类似于小学时期如何在最短的时间内去完成所有事件的数学题。
-假设小明早上7：00起床，刷牙洗脸需要3分钟，烧水需要10分钟，穿衣叠被需要2分钟，吃早餐需要15分钟，收听早间新闻需要20分钟（7点开始），问小明起床做完这些事情至少需要多长时间？
-同步是指调用一旦开始，必须等待返回调用的结果，才能继续下一步操作
-那么结果就是，小明一共需要听新闻（20分钟）+穿衣叠被（2分钟）+......  -->
-        <p class="article-more-link">
-          <a href="/2019/04/16/Python多线程基础/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-HTTP请求方法"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/04/11/HTTP请求方法/">HTTP请求方法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/04/11/HTTP请求方法/" class="article-date">
-	  <time datetime="2019-04-11T08:07:35.000Z" itemprop="datePublished">2019-04-11</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Web/">Web</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><h2 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h2><p>请求指定的页面信息，并返回实体主体</p>
-<h2 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h2><p>向指定的资源提交数据，请求处理。数据被包含在请求体当中，重新提交页面，导致新资源的建立或已有资源的修改</p>
-<h2 id="PUT"><a href="#PUT" class="headerlink" title="PUT"></a>PUT</h2><p>从客户端向服务器传送数据来取代指定的文档内容</p>
-<h2 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h2><p>请求服务器删除指定的页面</p>
-<h2 id="HEAD"><a href="#HEAD" class="headerlink" title="HEAD"></a>HEAD</h2><p>类似GET请求，返回的响应中没有具体内容，仅获取报头</p>
-<h2 id="OPTIONS"><a href="#OPTIONS" class="headerlink" title="OPTIONS"></a>OPTIONS</h2><p>允许客户端查看服务器的内容</p>
-<h2 id="TRACE"><a href="#TRACE" class="headerlink" title="TRACE"></a>TRACE</h2><p>显示服务器收到的请求，用于测试或诊断</p>
-<h2 id="CONNECT"><a href="#CONNECT" class="headerlink" title="CONNECT"></a>CONNECT</h2><p>HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器</p>
-<h2 id="GET方法和POST方法的区别"><a href="#GET方法和POST方法的区别" class="headerlink" title="GET方法和POST方法的区别"></a>GET方法和POST方法的区别</h2><p><strong>·</strong> GET仅请求目标信息，返回/刷新是无害的，POST每次返回/刷新会重新提交数据</p>
-<p><strong>·</strong> GET可被保存在书签、缓存、历史记录当中，POST不行</p>
-<p><strong>·</strong> GET相对没有POST安全</p>
-<p><strong>·</strong> GET参数通过URL进行传递，POST参数存放在Request body当中</p>
-<p><strong>·</strong> GET请求时，浏览器会将http header和data一起发送除去，服务器响应为200；</p>
-<p>POST请求时，浏览器会先发送header，服务器响应100 continue，再发送data，服务器响应200（时间消耗相对GET要长）</p>
-<p><strong>·</strong> GET每次产生1个TCP数据包，POST产生两个</p>
-<p><strong>·</strong> GET对数据的长度有限制（2KB），POST没有限制</p>
-<p><strong>·</strong> GET仅允许ASCII字符，POST没有限制</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GET-POST/">GET/POST...</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
   </nav>
 
 </section>

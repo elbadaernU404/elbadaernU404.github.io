@@ -6,20 +6,20 @@
   <title>networkx: 图论算法应用 | 青域</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="nebulanetworkx图算法">
+  <meta name="keywords" content="nebula图算法networkx">
   
   
   
   
   <meta name="description" content="NetworkXNetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等 参考文献地址: https://www.osgeo.cn/networkx/reference/ind">
-<meta name="keywords" content="nebula,networkx,图算法">
+<meta name="keywords" content="nebula,图算法,networkx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NetworkX: 图论算法应用">
 <meta property="og:url" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/index.html">
 <meta property="og:site_name" content="青域">
 <meta property="og:description" content="NetworkXNetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等 参考文献地址: https://www.osgeo.cn/networkx/reference/ind">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/0.png">
+<meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/9.png">
 <meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/1.png">
 <meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/2.png">
 <meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/3.png">
@@ -36,11 +36,11 @@
 <meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/14.png">
 <meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/15.png">
 <meta property="og:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/16.png">
-<meta property="og:updated_time" content="2024-01-09T00:45:56.630Z">
+<meta property="og:updated_time" content="2024-01-25T08:23:02.432Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NetworkX: 图论算法应用">
 <meta name="twitter:description" content="NetworkXNetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等 参考文献地址: https://www.osgeo.cn/networkx/reference/ind">
-<meta name="twitter:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/0.png">
+<meta name="twitter:image" content="http://yoursite.com/2024/01/08/NetworkX-图论算法应用/9.png">
   
     <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
   
@@ -214,7 +214,7 @@
 <p>参考文献地址: <a href="https://www.osgeo.cn/networkx/reference/index.html" target="_blank" rel="noopener">https://www.osgeo.cn/networkx/reference/index.html</a></p>
 <h2 id="图计算应用方式比较"><a href="#图计算应用方式比较" class="headerlink" title="图计算应用方式比较"></a>图计算应用方式比较</h2><h3 id="1-nebula-spark"><a href="#1-nebula-spark" class="headerlink" title="1.nebula + spark"></a>1.nebula + spark</h3><p>依赖nebula-spark-connector包、nebula-algorithm包和spark集群的数据读取、图计算方式</p>
 <h3 id="2-clickhouse-NetworkX"><a href="#2-clickhouse-NetworkX" class="headerlink" title="2.clickhouse + NetworkX"></a>2.clickhouse + NetworkX</h3><p>由于nebula-algorithm依赖spark集群，且nebula-console原生的数据读取能力不佳，在环境受限且计算量有限的情况下优先考虑跳过spark集群和nebula图库，采用clickhouse + NetworkX的图计算方式，其中clickhouse是存储了nebula源数据的列式分布式表，作用类似于方法1中将nebula集群数据通过nebula-spark-connector包导入为spark-DataFrame，仅用做数据读取，再通过将数据转化为NetworkX的图结构进行图计算</p>
-<p><img src="/2024/01/08/NetworkX-图论算法应用/0.png" alt></p>
+<p><img src="/2024/01/08/NetworkX-图论算法应用/9.png" alt></p>
 <a id="more"></a>
 <h2 id="应用实例"><a href="#应用实例" class="headerlink" title="应用实例"></a>应用实例</h2><p>nebula集群存储以群聊和群成员、好友关系所组成的关系网，clickhouse集群存储节点源数据和对应关系</p>
 <h3 id="一、集合运算"><a href="#一、集合运算" class="headerlink" title="一、集合运算"></a>一、集合运算</h3><p>交、并、差集</p>
@@ -355,6 +355,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2024/01/25/yolov8：火灾检测/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          yolov8-火灾检测
+        
+      </div>
+    </a>
   
   
     <a href="/2023/12/28/CentOS-LibreOffice工具包安装/" id="article-nav-older" class="article-nav-link-wrap">

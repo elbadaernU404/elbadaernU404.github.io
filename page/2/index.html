@@ -258,6 +258,197 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-arcface-paddle"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/08/08/arcface-paddle/">arcface_paddle</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/08/08/arcface-paddle/" class="article-date">
+	  <time datetime="2023-08-08T09:12:11.000Z" itemprop="datePublished">2023-08-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="GPU（物理）"><a href="#GPU（物理）" class="headerlink" title="GPU（物理）"></a>GPU（物理）</h3><ul>
+<li><p>NVIDIA 3090*2</p>
+</li>
+<li><p>显卡驱动 515.43.04</p>
+</li>
+<li><p>CUDA版本 11.7</p>
+</li>
+<li><p>CUDAtoolkit (cuda_11.7.0_515.43.04_linux)</p>
+</li>
+<li><p>cuDNN (v8.4.1)</p>
+</li>
+<li><p><font color="gold">paddlepaddle 多卡训练需要NCLL支持</font> (ncll v2.12.12 cuda11.7)</p>
+</li>
+</ul>
+<h3 id="paddlepaddle版本"><a href="#paddlepaddle版本" class="headerlink" title="paddlepaddle版本"></a>paddlepaddle版本</h3><ul>
+<li>paddlepaddle-gpu==2.2.0rc0（虚拟环境cuda11.2）</li>
+</ul>
+<h3 id="python环境"><a href="#python环境" class="headerlink" title="python环境"></a>python环境</h3><ul>
+<li><p>CentOS7.9</p>
+</li>
+<li><p>anaconda3</p>
+</li>
+<li><p>python3.8</p>
+</li>
+</ul>
+<h2 id="anaconda安装insightface"><a href="#anaconda安装insightface" class="headerlink" title="anaconda安装insightface"></a>anaconda安装insightface</h2><p><font color="gold">重要：pillow版本建议选择9.5 否则过高会导致安装insightface报错</font> （错误原因：pillow10移除了getsize方法，需要修改对应位置源码为<code>getbbox</code>或 <code>getlength</code>）</p>
+<p>告警信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tools/test_recognition.py:<span class="number">627</span>: DeprecationWarning: getsize <span class="keyword">is</span> deprecated <span class="keyword">and</span> will be removed <span class="keyword">in</span> Pillow <span class="number">10</span> (<span class="number">2023</span><span class="number">-07</span><span class="number">-01</span>). Use getbbox <span class="keyword">or</span> getlength instead.</span><br><span class="line">  tw = font.getsize(text)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> .</span></span><br><span class="line">conda install paddlepaddle-gpu==2.2.0rc0 cudatoolkit=11.2 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/Paddle/ -c conda-forge</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface</span></span><br><span class="line">pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface/recongition/arcface_paddle/</span></span><br><span class="line">pip install -r requirement.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface-paddle</span></span><br><span class="line">pip install insightface-paddle -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
+        <!--  环境GPU（物理）
+NVIDIA 3090*2
+
+显卡驱动 515.43.04
+
+CUDA版本 11.7
+
+CUDAtoolkit (cuda_11.7.0_515.43.04_linux)
+
+cuDNN (v8.4.1)
+
+paddlepaddle 多卡训练需要NCLL支持 (ncll v2.12.12 cuda11.7)
+
+
+paddlepaddle版本
+paddlepaddle-gp......  -->
+        <p class="article-more-link">
+          <a href="/2023/08/08/arcface-paddle/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paddlepaddle/">paddlepaddle</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-paddleDetection前置"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/08/07/paddleDetection前置/">paddleDetection前置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/08/07/paddleDetection前置/" class="article-date">
+	  <time datetime="2023-08-07T08:20:53.000Z" itemprop="datePublished">2023-08-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h3><ul>
+<li><p>NVIDIA 3090*2</p>
+</li>
+<li><p>显卡驱动 515.43.04</p>
+</li>
+<li><p>CUDA版本 11.7</p>
+</li>
+<li><p>CUDAtoolkit (cuda_11.7.0_515.43.04_linux)</p>
+</li>
+<li><p>cuDNN (v8.4.1)</p>
+</li>
+<li><p><font color="gold">paddlepaddle 多卡训练需要NCLL支持</font> (ncll v2.12.12 cuda11.7)</p>
+</li>
+</ul>
+<h3 id="paddlepaddle版本"><a href="#paddlepaddle版本" class="headerlink" title="paddlepaddle版本"></a>paddlepaddle版本</h3><ul>
+<li>v2.4.2</li>
+</ul>
+<h3 id="paddleDetection版本"><a href="#paddleDetection版本" class="headerlink" title="paddleDetection版本"></a>paddleDetection版本</h3><ul>
+<li>v2.6.0</li>
+</ul>
+<h3 id="python环境"><a href="#python环境" class="headerlink" title="python环境"></a>python环境</h3><ul>
+<li><p>CentOS7.9</p>
+</li>
+<li><p>anaconda3</p>
+</li>
+<li><p>python3.8</p>
+</li>
+</ul>
+<h2 id="普通视频处理"><a href="#普通视频处理" class="headerlink" title="普通视频处理"></a>普通视频处理</h2><font color="gold">h264格式视频被opencv解析帧率超过65535报错</font>
+
+<p>源码：</p>
+<p><code>./deploy/pipeline/pipeline.py</code> predict_video</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">out_path = os.path.join(self.output_dir, video_out_name + <span class="string">".mp4"</span>)</span><br><span class="line">fourcc = cv2.VideoWriter_fourcc(* <span class="string">'mp4v'</span>)</span><br><span class="line">writer = cv2.VideoWriter(out_path, fourcc, fps, (width, height))</span><br></pre></td></tr></table></figure>
+<p>输入：cv2.VideoCapture()</p>
+<p>输出：cv2.VideoWriter(）</p>
+<p>本GPU模式下对时长5分钟的行人检测视频处理时间约20分钟（高精度模型），视频体积增大13倍（100M-&gt;1.3G）</p>
+        <!--  环境GPU
+NVIDIA 3090*2
+
+显卡驱动 515.43.04
+
+CUDA版本 11.7
+
+CUDAtoolkit (cuda_11.7.0_515.43.04_linux)
+
+cuDNN (v8.4.1)
+
+paddlepaddle 多卡训练需要NCLL支持 (ncll v2.12.12 cuda11.7)
+
+
+paddlepaddle版本
+v2.4.2
+
+paddleDetec......  -->
+        <p class="article-more-link">
+          <a href="/2023/08/07/paddleDetection前置/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paddlepaddle/">paddlepaddle</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-搭建nebula-CentOS集群（极速版）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -888,129 +1079,11 @@ Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、S
 <!-- Table of Contents -->
 
   
-    <article id="post-Nebula-全文检索"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/11/25/Nebula-全文检索/">Nebula-全文检索</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/11/25/Nebula-全文检索/" class="article-date">
-	  <time datetime="2022-11-25T06:17:41.000Z" itemprop="datePublished">2022-11-25</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="连接ES"><a href="#连接ES" class="headerlink" title="连接ES"></a>连接ES</h2><h3 id="添加Nebula全文索引模板文件"><a href="#添加Nebula全文索引模板文件" class="headerlink" title="添加Nebula全文索引模板文件"></a>添加Nebula全文索引模板文件</h3><p><code>http://localhost:5601/app/dev_tools#/console</code></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">curl -H "Content-Type: application/json; charset=utf-8" -XPUT http://localhost:9200/_template/nebula_index_template -d '</span><br><span class="line">&#123;</span><br><span class="line"> <span class="attr">"template"</span>: <span class="string">"nebula*"</span>,</span><br><span class="line">  <span class="attr">"settings"</span>: &#123;</span><br><span class="line">    <span class="attr">"index"</span>: &#123;</span><br><span class="line">      <span class="attr">"number_of_shards"</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="attr">"number_of_replicas"</span>: <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"mappings"</span>: &#123;</span><br><span class="line">    <span class="attr">"properties"</span> : &#123;</span><br><span class="line">            <span class="attr">"tag_id"</span> : &#123; <span class="attr">"type"</span> : <span class="string">"long"</span> &#125;,</span><br><span class="line">            <span class="attr">"column_id"</span> : &#123; <span class="attr">"type"</span> : <span class="string">"text"</span> &#125;,</span><br><span class="line">            <span class="attr">"value"</span> :&#123; <span class="attr">"type"</span> : <span class="string">"keyword"</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;'</span><br></pre></td></tr></table></figure>
-<h3 id="登录ES客户端"><a href="#登录ES客户端" class="headerlink" title="登录ES客户端"></a>登录ES客户端</h3><p><code>SIGN IN TEXT SERVICE (localhost:9200,&quot;admin&quot;,&quot;123456&quot;)</code></p>
-<h3 id="查看ES客户端详情"><a href="#查看ES客户端详情" class="headerlink" title="查看ES客户端详情"></a>查看ES客户端详情</h3><p><code>SHOW TEXT SEARCH CLIENTS;</code></p>
-<h3 id="退出ES客户端"><a href="#退出ES客户端" class="headerlink" title="退出ES客户端"></a>退出ES客户端</h3><p><code>SIGN OUT TEXT SERVICE</code></p>
-<h2 id="配置Nebula"><a href="#配置Nebula" class="headerlink" title="配置Nebula"></a>配置Nebula</h2><h3 id="安装storage服务"><a href="#安装storage服务" class="headerlink" title="安装storage服务"></a>安装storage服务</h3><p>进入/usr/local/nebula根目录下，进入/etc子目录，找到nebula-storaged-listener.conf.production文件，复制一份并去除.production后缀。将文件中的listenr地址改为真实地址。</p>
-<p>随后启动listener：<code>./bin/nebula-storaged --flagfile etc/nebula-storaged-listener.conf</code></p>
-<h3 id="添加listener"><a href="#添加listener" class="headerlink" title="添加listener"></a>添加listener</h3><p><code>ADD LISTENER ELASTICSEARCH 192.168.100.1:9789,192.168.100.2:9789;</code>(<font color="gold">注：如果有多台图库集群，都要配置</font>)</p>
-<p>进入nebula-console，执行<code>SHOW LISTENER</code>可以查看图空间的所有listener。</p>
-<p>要删除所有listener，执行：<code>REMOVE LISTENER ELASTICSEARCH</code>(<font color="gold">注：一个图空间仅可执行一次</font>)</p>
-        <!--  连接ES添加Nebula全文索引模板文件http://localhost:5601/app/dev_tools#/console
-1234567891011121314151617curl -H "Content-Type: application/json; charset=utf-8" -XPUT http://localhost:9200/_template/nebula_index......  -->
-        <p class="article-more-link">
-          <a href="/2022/11/25/Nebula-全文检索/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database-nebula/">-database -nebula</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Docker"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/09/16/Docker/">Docker</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/09/16/Docker/" class="article-date">
-	  <time datetime="2022-09-16T07:15:39.000Z" itemprop="datePublished">2022-09-16</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Docker/">Docker</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="CentOS-Docker安装"><a href="#CentOS-Docker安装" class="headerlink" title="CentOS Docker安装"></a>CentOS Docker安装</h2><p>CentOS7要求64位，且内核版本高于3.10</p>
-<p>查看CentOS内核版本：<code>uname -r</code></p>
-<p><strong><font size="4" color="orange">·</font></strong> 安装Docker：卸载旧版本</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum remove docker \</span></span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
-<p><strong><font size="4" color="orange">·</font></strong> 安装所需软件包</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install -y yum-utils \</span></span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
-<p><strong><font size="4" color="orange">·</font></strong> 设置Docker仓库（清华源）</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum-config-manager \</span></span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
-<p><strong><font size="4" color="orange">·</font></strong> 安装Docker Engine-Community</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install docker-ce docker-ce-cli containerd.io</span></span><br></pre></td></tr></table></figure>
-        <!--  CentOS Docker安装CentOS7要求64位，且内核版本高于3.10
-查看CentOS内核版本：uname -r
-· 安装Docker：卸载旧版本
-12345678$ sudo yum remove docker \                  docker-client \                  docker-client-latest \          ......  -->
-        <p class="article-more-link">
-          <a href="/2022/09/16/Docker/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
   </nav>
 
 </section>
