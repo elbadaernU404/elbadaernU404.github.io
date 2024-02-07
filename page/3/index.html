@@ -258,6 +258,215 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Pyspark-RDD"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/12/07/Pyspark-RDD/">Pyspark-RDD</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/12/07/Pyspark-RDD/" class="article-date">
+	  <time datetime="2022-12-07T05:45:49.000Z" itemprop="datePublished">2022-12-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h2><p>RDD（Resilient Distributed Dataset）弹性分布式数据集，是spark中最基本的数据抽象，代表一个不可变、可分区、其中元素可并行计算的集合</p>
+<ul>
+<li>Resilient：RDD中的数据可存储再内存或磁盘中</li>
+<li>Distributed：分布式存储数据（跨机器/跨进程），用于分布式计算</li>
+<li>Dataset：一个用于存放数据的数据集合</li>
+</ul>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><h4 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h4><p>RDD分区是RDD数据存储的最小单位，一份RDD数据本质上分隔成了多个分区</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 存储9个数字，设立三个分区</span></span><br><span class="line">rdd = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>], <span class="number">3</span>)</span><br><span class="line">rdd.glom().collect()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[1,2,3],[4,5,6],[7,8,9]]</span><br></pre></td></tr></table></figure>
+<h4 id="RDD方法会作用在其所有方法上"><a href="#RDD方法会作用在其所有方法上" class="headerlink" title="RDD方法会作用在其所有方法上"></a>RDD方法会作用在其所有方法上</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdd.map(<span class="keyword">lambda</span> x: x * <span class="number">10</span>).collect()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[10,20,30,40,50,60,70,80,90]</span><br></pre></td></tr></table></figure>
+<h4 id="RDD之间具有依赖关系"><a href="#RDD之间具有依赖关系" class="headerlink" title="RDD之间具有依赖关系"></a>RDD之间具有依赖关系</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line">rdd1 = sc.textFile(<span class="string">"../test.text"</span>)</span><br><span class="line">rdd2 = rdd1.flatMap(<span class="keyword">lambda</span> x: x.split(<span class="string">' '</span>))</span><br><span class="line">rdd3 = rdd2.map(<span class="keyword">lambda</span> x: (x, <span class="number">1</span>))</span><br><span class="line">rdd4 = rdd3.reduceByKey(<span class="keyword">lambda</span> a, b: a+b)</span><br><span class="line">print(rdd4.collect())</span><br></pre></td></tr></table></figure>
+<h4 id="Key-Value型RDD可以有分区器"><a href="#Key-Value型RDD可以有分区器" class="headerlink" title="Key-Value型RDD可以有分区器"></a>Key-Value型RDD可以有分区器</h4><p>KV型RDD：RDD内存储的数据是只有两个元素的二元元组</p>
+<p>默认分区器：Hash分区规则，也可手动设置分区器：rdd.partitionBy()方法</p>
+<p><font color="gold">注</font>：不是所有RDD都是KV型</p>
+<h4 id="RDD的分区规划：会尽量靠近数据所在的服务器"><a href="#RDD的分区规划：会尽量靠近数据所在的服务器" class="headerlink" title="RDD的分区规划：会尽量靠近数据所在的服务器"></a>RDD的分区规划：会尽量靠近数据所在的服务器</h4><p>在初始RDD读取数据规划阶段，分区会尽量规划到存储数据所在服务器，直接读取本地数据，避免从网络读取数据</p>
+<p>Spark会在确保并行计算能力的前提下，尽量确保本地读取</p>
+<h3 id="RDD创建"><a href="#RDD创建" class="headerlink" title="RDD创建"></a>RDD创建</h3><ul>
+<li>通过并行化集合创建（本地对象转化为分布式RDD）</li>
+<li>读取外部数据源（读文件）</li>
+</ul>
+<h4 id="并行化创建"><a href="#并行化创建" class="headerlink" title="并行化创建"></a>并行化创建</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1: 集合对象，如：list</span></span><br><span class="line"><span class="comment"># arg2：可选，指定分区数量</span></span><br><span class="line">rdd = SparkContext.parallelize(arg1, arg2)</span><br></pre></td></tr></table></figure>
+<h4 id="读取文件"><a href="#读取文件" class="headerlink" title="读取文件"></a>读取文件</h4><p>通过textFile API来读取本地或者hdfs的数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1: 文件路径</span></span><br><span class="line"><span class="comment"># arg2：可选，最小分区数量</span></span><br><span class="line"><span class="comment"># 当arg2超出spark允许范围，参数失效</span></span><br><span class="line">SparkContext.textFile(arg1, arg2)</span><br></pre></td></tr></table></figure>
+<p>通过wholeTextFile API来读取小文件，这个api偏向于少量分区读取数据，是pyspark基于小文件的优化</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># arg1：文件路径</span></span><br><span class="line"><span class="comment"># arg2：可选，最小分区数量</span></span><br><span class="line"><span class="comment"># 当arg2超出spark允许范围，参数失效</span></span><br><span class="line">SparkContext.wholeTextFiles(arg1, arg2)</span><br></pre></td></tr></table></figure>
+        <!--  RDDRDD（Resilient Distributed Dataset）弹性分布式数据集，是spark中最基本的数据抽象，代表一个不可变、可分区、其中元素可并行计算的集合
+
+Resilient：RDD中的数据可存储再内存或磁盘中
+Distributed：分布式存储数据（跨机器/跨进程），用于分布式计算
+Dataset：一个用于存放数据的数据集合
+
+特性分区RDD分区是RDD数据存储的最小......  -->
+        <p class="article-more-link">
+          <a href="/2022/12/07/Pyspark-RDD/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pyspark/">pyspark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Pyspark"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/12/05/Pyspark/">Pyspark</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/12/05/Pyspark/" class="article-date">
+	  <time datetime="2022-12-05T08:45:40.000Z" itemprop="datePublished">2022-12-05</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Pyspark库安装"><a href="#Pyspark库安装" class="headerlink" title="Pyspark库安装"></a>Pyspark库安装</h2><p>（本文基于上文spark基础）</p>
+<h3 id="Python库安装"><a href="#Python库安装" class="headerlink" title="Python库安装"></a>Python库安装</h3><p>在三台机器分别安装pyspark</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda activate pyspark</span><br><span class="line">pip install pyspark -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
+<h3 id="Windows补丁"><a href="#Windows补丁" class="headerlink" title="Windows补丁"></a>Windows补丁</h3><p>将hadoop.dll置于C:/windows/system32/目录下，然后配置hadoop工具包的环境变量</p>
+<p><img src="/2022/12/05/Pyspark/A.png" alt></p>
+<p>安装相关python库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pyspark pyhive pymysql jieba -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
+<h3 id="为pycharm添加ssh解释器环境"><a href="#为pycharm添加ssh解释器环境" class="headerlink" title="为pycharm添加ssh解释器环境"></a>为pycharm添加ssh解释器环境</h3><p><img src="/2022/12/05/Pyspark/B.png" alt></p>
+<p><img src="/2022/12/05/Pyspark/C.png" alt></p>
+<p><img src="/2022/12/05/Pyspark/D.png" alt></p>
+        <!--  Pyspark库安装（本文基于上文spark基础）
+Python库安装在三台机器分别安装pyspark
+12conda activate pysparkpip install pyspark -i https://mirror.baidu.com/pypi/simple
+Windows补丁将hadoop.dll置于C:/windows/system32/目录下，然后配置hadoop工具包的......  -->
+        <p class="article-more-link">
+          <a href="/2022/12/05/Pyspark/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pyspark/">pyspark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Spark基础"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/12/01/Spark基础/">Spark基础</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/12/01/Spark基础/" class="article-date">
+	  <time datetime="2022-12-01T07:40:17.000Z" itemprop="datePublished">2022-12-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><font color="gold">定义</font>：<font color="gold">Apache Spark是用于大规模数据处理的统一分析引擎。</font>其核心数据结构：弹性分布式数据集（RDD）能够在大规模集群中做内存运算，且具有一定容错方式。</p>
+<h2 id="Spark框架"><a href="#Spark框架" class="headerlink" title="Spark框架"></a>Spark框架</h2><h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p><font color="orange"><strong>· Spark Core</strong></font>：以RDD为数据抽象，提供Python、Java、Scala、R语言的API和Spark的核心功能，是Spark运行的基础；</p>
+<p><font color="orange"><strong>· SparkSQL</strong></font>：基于SparkCore，提供机构化数据处理模块，支持以SQL语言对数据进行处理；同时可以作为StructuredStreaming模块的基础，进行数据流式计算；</p>
+<p><font color="orange"><strong>· SparkStreaming</strong></font>：基于SparkCore，提供数据流式计算；</p>
+<p><font color="orange"><strong>· MLlib</strong></font>：基于SparkCore，内置大量机器学习库和算法API，进行机器学习计算；</p>
+<p><font color="orange"><strong>· GraphX</strong></font>：基于SparkCore，提供了大量图计算API，用于分布式图计算</p>
+<h3 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h3><p><strong>· 本地模式（单机/local）</strong>：以一个独立进程，通过内部的多线程模拟Spark运行环境</p>
+<p><strong>· Standalone模式（集群）</strong>：Spark的各个角色以独立进程形式存在，组成集群环境</p>
+<p><strong>· Hadoop YARN模式（集群）</strong>：Spark的各个角色运行在YARN容器内部，组成集群环境</p>
+<p><strong>· Kubernetes模式（容器集群）</strong>：Spark的各个角色运行在Kubernetes容器内部，组成集群环境</p>
+<p><strong>· 云服务模式</strong></p>
+<h3 id="角色"><a href="#角色" class="headerlink" title="角色"></a>角色</h3><ul>
+<li><strong>资源</strong></li>
+</ul>
+<p><strong>· Master角色</strong>：集群资源管理</p>
+<p><strong>· Worker角色</strong>：单机资源管理(所在服务器资源管理)</p>
+<ul>
+<li><strong>任务</strong></li>
+</ul>
+<p><strong>· Driver角色</strong>：单个任务管理</p>
+<p><strong>· Executor角色</strong>：单个任务计算</p>
+        <!--  定义：Apache Spark是用于大规模数据处理的统一分析引擎。其核心数据结构：弹性分布式数据集（RDD）能够在大规模集群中做内存运算，且具有一定容错方式。
+Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、Scala、R语言的API和Spark的核心功能，是Spark运行的基础；
+· SparkSQL：基于SparkCore，提供机构化数据处理......  -->
+        <p class="article-more-link">
+          <a href="/2022/12/01/Spark基础/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spark/">Spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Nebula-全文检索"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -895,173 +1104,6 @@ MySQL
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-FastApi"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/05/23/FastApi/">FastApi</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/05/23/FastApi/" class="article-date">
-	  <time datetime="2022-05-23T03:49:29.000Z" itemprop="datePublished">2022-05-23</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>FastAPI 是一个基于Python3.6+版本用于构建API的高性能web框架</p>
-<p>官方文档链接：<a href="https://fastapi.tiangolo.com" target="_blank" rel="noopener">https://fastapi.tiangolo.com</a></p>
-<p><img src="/2022/05/23/FastApi/A.png" alt></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>执行<code>pip install fastapi[all]</code>来安装fastapi所需要的全部python包和模块</p>
-<p>也可以分开来安装来将应用程序部署到成产环境，其中uvicorn可以用作运行代码的服务器<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install fastapi</span><br><span class="line">pip install uvicorn[standard]</span><br></pre></td></tr></table></figure></p>
-        <!--  FastAPI 是一个基于Python3.6+版本用于构建API的高性能web框架
-官方文档链接：https://fastapi.tiangolo.com
-
-安装执行pip install fastapi[all]来安装fastapi所需要的全部python包和模块
-也可以分开来安装来将应用程序部署到成产环境，其中uvicorn可以用作运行代码的服务器12pip install fasta......  -->
-        <p class="article-more-link">
-          <a href="/2022/05/23/FastApi/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FastApi/">FastApi</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Scrapy：爬取steam热门游戏资料"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/05/01/Scrapy：爬取steam热门游戏资料/">Scrapy：爬取steam热门游戏资料</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/05/01/Scrapy：爬取steam热门游戏资料/" class="article-date">
-	  <time datetime="2022-05-01T04:00:35.000Z" itemprop="datePublished">2022-05-01</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>有段时间没有做爬虫程序了，正好想起来还没有写过scrapy框架的博客，写个scrapy爬虫进行总结和回顾。本文代码已上传至github：<a href="https://github.com/elbadaernU404/steamgames" target="_blank" rel="noopener">https://github.com/elbadaernU404/steamgames</a></p>
-<h2 id="1-Scrapy简介"><a href="#1-Scrapy简介" class="headerlink" title="1.Scrapy简介"></a>1.Scrapy简介</h2><p>搜索scrapy，可以很轻松的找到Scrapy的官方网站，正如其首页所描述的那样，scrapy是一款快速且强力的多线程异步爬虫框架，适合对静态页面（不配置中间件的情况下）的信息进行高速且大面积、高层次的抓取，避免了传统爬虫并发爬取网站数据的局限性，仅需要少量的代码即可完成爬虫工作，是一项高效率的主流爬虫工具。</p>
-<p><img src="/2022/05/01/Scrapy：爬取steam热门游戏资料/AA.png" alt="Scrapy"></p>
-<h2 id="2-Scrapy框架原理"><a href="#2-Scrapy框架原理" class="headerlink" title="2.Scrapy框架原理"></a>2.Scrapy框架原理</h2><p>进入scrapy官网，可以找到官方文档中对框架最新的描述如下：</p>
-<p><img src="/2022/05/01/Scrapy：爬取steam热门游戏资料/A.png" alt="Scrapy运行结构"><br><img src="/2022/05/01/Scrapy：爬取steam热门游戏资料/B.png" alt="官方文档"></p>
-<p>总结后就是：<br>scrapy框架中共包括了<strong>引擎（Scrapy Engine）、Item 字段、调度器（Scheduler）、调度中间件（Scheduler Middewares）、下载器（Downloader）、下载器中间件（Downloader Middlewares）、爬虫程序（Spiders）、爬虫中间件（Spider Middlewares）</strong>和<strong>管道（Pipeline）</strong></p>
-<p>1.scrapy引擎会从爬虫程序中获取初始请求；<br>2.scrapy引擎通过调度器（Scheduler）调度Requests并要求获取下一个Requests；<br>3.调度器将下一个请求返回至scrapy引擎；<br>4.scrapy引擎通过下载中间件将请求发送到下载器（Downloader）当中，完成一次下载后下载器会生成Response并发送给scrapy引擎；<br>5.scrapy引擎接受下载器的Response交给爬虫程序。爬虫完成对Response的处理后，将抓取的数据和新的Requests返回给scrapy引擎，scrapy引擎将数据处理完毕后交给Item管道，再将处理的请求发送给调度器，执行下一轮工作；<br>6.重复上述步骤，直到不再有来自调度器的请求，爬虫程序结束。<br></p>
-        <!--  有段时间没有做爬虫程序了，正好想起来还没有写过scrapy框架的博客，写个scrapy爬虫进行总结和回顾。本文代码已上传至github：https://github.com/elbadaernU404/steamgames
-1.Scrapy简介搜索scrapy，可以很轻松的找到Scrapy的官方网站，正如其首页所描述的那样，scrapy是一款快速且强力的多线程异步爬虫框架，适合对静态页面（......  -->
-        <p class="article-more-link">
-          <a href="/2022/05/01/Scrapy：爬取steam热门游戏资料/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scrapy/">scrapy</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Python爬虫：识别网页的验证码（tesseract-OCR）"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/">Python爬虫：识别网页的验证码（tesseract-OCR）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/" class="article-date">
-	  <time datetime="2022-04-29T07:00:29.000Z" itemprop="datePublished">2022-04-29</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人</p>
-<p>但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^</p>
-<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/0.png" alt></p>
-<h2 id="获取网页验证码"><a href="#获取网页验证码" class="headerlink" title="获取网页验证码"></a>获取网页验证码</h2><p>首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容后发现并不能得到生成验证码的对应id，以为是知网做了对爬虫头的限制，于是在headers里添加了<font color="green">“Referer”</font>和<font color="green">“Accept-Encoding”</font>等信息，但是并没有效果。抓包在Doc中发现网页HTTP请求的方法为”<font color="orange">GET</font>“方法，尝试不加id也得到了验证码图片</p>
-<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/A.png" alt><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"method"</span>: <span class="string">"GET"</span>,</span><br><span class="line">    <span class="string">"Accept"</span>: <span class="string">"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Accept-Encoding"</span>: <span class="string">"gzip, deflate, br"</span>,</span><br><span class="line">    <span class="string">"Cache-Control"</span>: <span class="string">"max-age=0"</span>,</span><br><span class="line">    <span class="string">"scheme"</span>: <span class="string">"https"</span>,</span><br><span class="line">    <span class="string">"accept-language"</span>: <span class="string">"zh-CN,zh;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Cookie"</span>: <span class="string">"U:M_distinctid=1809edfcf6e8ff-088ab0a6edb385-17333273-1fa400-1809edfcf6f9fe; _pk_ref=["</span><span class="string">","</span><span class="string">",1651932918,'https://www.baidu.com/link?url=PnlS4wubLFxXVNXrTBRCZMAhA0P5TZLlCBAhBvXfLke&amp;wd=&amp;eqid=e52482a8001102070000000562767ee2']; Ecp_ClientId=1220507221503170167; Ecp_IpLoginFail=22050736.161.51.128; Ecp_ClientIp=36.161.51.128; language=chs; _pk_id=2ce0e7fb-229f-4440-a78b-57771deac2fe.1651932918.1.1651933578.1651932918.; ASP.NET_SessionId=he1no3kmgo3bwuktv1xa1lhs; SID_mycnki=020101"</span>,</span><br><span class="line">    <span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"</span>,</span><br><span class="line">    <span class="string">"Referer"</span>: <span class="string">"https://www.cnki.net/"</span></span><br><span class="line">    <span class="string">"Sec-Fetch-Dest:"</span> <span class="string">'document'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Mode"</span>: <span class="string">'navigate'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Site"</span>: <span class="string">'same-origin'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-User"</span>: <span class="string">'?1'</span>,</span><br><span class="line">    <span class="string">"Upgrade-Insecure-Requests"</span>: <span class="string">'1'</span></span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">"https://my.cnki.net/Register/CommonRegister.aspx?returnUrl=https://www.cnki.net#"</span></span><br><span class="line">r = requests.get(url, headers=headers).content.decode(<span class="string">'utf-8'</span>)</span><br><span class="line">html = etree.HTML(r)</span><br><span class="line">link=html.xpath(<span class="string">'//*[@id="commonRe"]/div[10]/div[3]/a/img/@src'</span>)[<span class="number">0</span>]</span><br><span class="line">img_url = <span class="string">"https://my.cnki.net/Register/"</span> + link</span><br><span class="line">img = requests.get(img_url, headers=headers,stream=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'checkcode.jpg'</span>,<span class="string">'wb'</span>)<span class="keyword">as</span> file:</span><br><span class="line">    file.write(img.raw.read())</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/1.png" alt><br></p>
-        <!--  在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人
-但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^
-
-获取网页验证码首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，......  -->
-        <p class="article-more-link">
-          <a href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
 
     </footer>
   </div>

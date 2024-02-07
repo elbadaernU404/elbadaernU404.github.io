@@ -21,7 +21,7 @@
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/2023/02/16/ElasticSearch环境搭建/A.png">
 <meta property="og:image" content="http://yoursite.com/2023/02/16/ElasticSearch环境搭建/B.png">
-<meta property="og:updated_time" content="2023-03-24T06:52:51.416Z">
+<meta property="og:updated_time" content="2024-02-01T09:14:50.041Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ElasticSearch环境搭建">
 <meta name="twitter:description" content="* 配合nebula全文检索测试环境而搭建的es单机环境 安装下载地址【https://www.elastic.co/cn/downloads/elasticsearch#ga-release】 (或前往elastic中文社区下载中心【https://elasticsearch.cn/download/】)  选择linux版本   安装ES 解压缩  1$ tar xf elasticsearc">
@@ -236,6 +236,7 @@
 </ul>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">vm.max_map_count=655360</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl -p</span><br></pre></td></tr></table></figure>
 <h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> su es</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ../bin</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./elasticsearch -d</span></span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <h2 id="Kibana"><a href="#Kibana" class="headerlink" title="Kibana"></a>Kibana</h2><h3 id="下载地址-1"><a href="#下载地址-1" class="headerlink" title="下载地址"></a>下载地址</h3><p>[<a href="https://elasticsearch.cn/download/]" target="_blank" rel="noopener">https://elasticsearch.cn/download/]</a></p>
