@@ -258,6 +258,69 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Spark-Core"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/12/07/Spark-Core/">Spark-Core</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/12/07/Spark-Core/" class="article-date">
+	  <time datetime="2022-12-07T08:58:49.000Z" itemprop="datePublished">2022-12-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="广播变量"><a href="#广播变量" class="headerlink" title="广播变量"></a>广播变量</h2><p>本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费</p>
+<p><strong>解决方案</strong>：将本地对象设置为广播变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.将本地对象标记为广播变量</span></span><br><span class="line">broadcast = sc.broadcast(var)</span><br><span class="line"><span class="comment"># 2.使用广播变量，从broadcast对象中取出本地对象</span></span><br><span class="line">value = broadcast.value</span><br><span class="line"><span class="comment"># 当传输的是广播对象时，spark会只给每个Executor分发一份数据</span></span><br></pre></td></tr></table></figure>
+<p>当本地集合对象和分布式集合对象（RDD）进行关联时，需要将本地集合对象封装为广播变量</p>
+<ul>
+<li>节省网络IO次数</li>
+<li>降低Executor内存占用</li>
+</ul>
+<h2 id="累加器"><a href="#累加器" class="headerlink" title="累加器"></a>累加器</h2><p>当执行累加操作时，各个分区累加自身的内容</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># spark提供累加器变量，参数是初始值</span></span><br><span class="line">acmlt = sc.accumulator(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>e.g.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">acmlt = sc.accumulator(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">counts</span><span class="params">(data)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> acmlt</span><br><span class="line">    acmlt += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rdd1 = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">3</span>)</span><br><span class="line">rdd2 = rdd1.map(counts)</span><br><span class="line">print(rdd2.collect())</span><br><span class="line">print(acmlt)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1, 2, 3]</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<p><font color="gold">注</font>：累加器可能因血缘关系导致重复的累加，例如一个RDD被释放后累加已经完成，此时再使用该RDD将会导致重复累加。可通过cache缓存机制来解决</p>
+        <!--  广播变量本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费
+解决方案：将本地对象设置为广播变量
+12345# 1.将本地对象标记为广播变量broadcast = sc.broadcast(var)# 2.使用广播变量，从broadcast对象中取出本......  -->
+        <p class="article-more-link">
+          <a href="/2022/12/07/Spark-Core/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Pyspark-RDD"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -555,13 +618,13 @@ Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、S
         <h2 id="CentOS-Docker安装"><a href="#CentOS-Docker安装" class="headerlink" title="CentOS Docker安装"></a>CentOS Docker安装</h2><p>CentOS7要求64位，且内核版本高于3.10</p>
 <p>查看CentOS内核版本：<code>uname -r</code></p>
 <p><strong><font size="4" color="orange">·</font></strong> 安装Docker：卸载旧版本</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum remove docker \</span></span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
 <p><strong><font size="4" color="orange">·</font></strong> 安装所需软件包</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install -y yum-utils \</span></span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
 <p><strong><font size="4" color="orange">·</font></strong> 设置Docker仓库（清华源）</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum-config-manager \</span></span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
 <p><strong><font size="4" color="orange">·</font></strong> 安装Docker Engine-Community</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install docker-ce docker-ce-cli containerd.io</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
         <!--  CentOS Docker安装CentOS7要求64位，且内核版本高于3.10
 查看CentOS内核版本：uname -r
 · 安装Docker：卸载旧版本
@@ -945,165 +1008,6 @@ MySQL
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/clickhouse/">clickhouse</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Nebula-CentOS安装与部署"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/06/21/Nebula-CentOS安装与部署/">Nebula-CentOS安装与部署</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/06/21/Nebula-CentOS安装与部署/" class="article-date">
-	  <time datetime="2022-06-21T13:46:14.000Z" itemprop="datePublished">2022-06-21</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文参考、提取自Nebula Graph Database官方文档(<a href="https://docs.nebula-graph.com.cn/2.6.0" target="_blank" rel="noopener">https://docs.nebula-graph.com.cn/2.6.0</a>)</p>
-<h2 id="1-前期准备"><a href="#1-前期准备" class="headerlink" title="1.前期准备"></a>1.前期准备</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p><strong>·</strong> nebula版本：<font color="orange">2.6.0</font><br><strong>·</strong> 主机：<font color="orange">CentOS7 64位</font><br><strong>·</strong> 内存：<font color="orange">8GB</font><br><strong>·</strong> 处理器数量：<font color="orange">4</font><br><strong>·</strong> 处理器内核数：<font color="orange">4</font><br><strong>·</strong> 处理器内核总数：<font color="orange">16</font><br><strong>·</strong> 硬盘：<font color="orange">30GB，SSD</font></p>
-<h3 id="硬件要求"><a href="#硬件要求" class="headerlink" title="硬件要求"></a>硬件要求</h3><p><strong>·</strong> CPU架构：<font color="orange">x86_64</font><br><strong>·</strong> 内存：<font color="orange">4GB</font><br><strong>·</strong> 硬盘：<font color="orange">10GB，SSD</font></p>
-<h3 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h3><table>
-<thead>
-<tr>
-<th>软件名称</th>
-<th>版本</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>glibc</td>
-<td><font color="orange">2.17</font>及以上</td>
-<td>执行<code>ldd --version</code>检查版本</td>
-</tr>
-<tr>
-<td>make</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>m4</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>git</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>wget</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>unzip</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>xz</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>redline-devel</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>ncurses-devel</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>zlib-devel</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td><font color="orange">gcc</font></td>
-<td><font color="orange">7.5.0</font>及以上</td>
-<td>执行命令<code>gcc -v</code>检查版本</td>
-</tr>
-<tr>
-<td>gcc-c++</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td><font color="orange">cmake</font></td>
-<td><font color="orange">3.9.0</font>及以上</td>
-<td>执行命令<code>cmake --version</code>检查版本</td>
-</tr>
-<tr>
-<td>gettext</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>curl</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>redhat-lsb-core</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-<tr>
-<td>libstdc++-static</td>
-<td>任意稳定版本</td>
-<td>仅在CentOS 8+、RedHat 8+、Fedora中需要</td>
-</tr>
-<tr>
-<td>libasan</td>
-<td>任意稳定版本</td>
-<td>仅在CentOS 8+、RedHat 8+、Fedora中需要</td>
-</tr>
-<tr>
-<td>bzip2</td>
-<td>任意稳定版本</td>
-<td>-</td>
-</tr>
-</tbody>
-</table>
-<p>需要保证<font color="orange">gcc</font>和<font color="orange">cmake</font>的版本足够高，其他第三方软件将在安装（<font color="orange">cmake</font>）阶段自动下载并安装到build目录中<br></p>
-        <!--  本文参考、提取自Nebula Graph Database官方文档(https://docs.nebula-graph.com.cn/2.6.0)
-1.前期准备环境· nebula版本：2.6.0· 主机：CentOS7 64位· 内存：8GB· 处理器数量：4· 处理器内核数：4· 处理器内核总数：16· 硬盘：30GB，SSD
-硬件要求· CPU架构：x86_64· 内存：4GB· 硬......  -->
-        <p class="article-more-link">
-          <a href="/2022/06/21/Nebula-CentOS安装与部署/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li></ul>
 
     </footer>
   </div>

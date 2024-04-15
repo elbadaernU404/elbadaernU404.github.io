@@ -258,6 +258,59 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-paddleDetection Demo"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/08/31/paddleDetection Demo/">paddleDetection Demo</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/08/31/paddleDetection Demo/" class="article-date">
+	  <time datetime="2023-08-31T04:20:20.000Z" itemprop="datePublished">2023-08-31</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="PPHuman"><a href="#PPHuman" class="headerlink" title="PPHuman"></a>PPHuman</h2><h3 id="行人属性识别"><a href="#行人属性识别" class="headerlink" title="行人属性识别"></a>行人属性识别</h3><h4 id="行人属性"><a href="#行人属性" class="headerlink" title="行人属性"></a>行人属性</h4><p>cfg：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">crop_thresh:</span> <span class="number">0.5</span></span><br><span class="line"><span class="attr">attr_thresh:</span> <span class="number">0.5</span></span><br><span class="line"><span class="attr">kpt_thresh:</span> <span class="number">0.2</span></span><br><span class="line"><span class="attr">visual:</span> <span class="literal">True</span></span><br><span class="line"><span class="attr">warmup_frame:</span> <span class="number">50</span></span><br><span class="line"></span><br><span class="line"><span class="attr">DET:</span></span><br><span class="line">  <span class="attr">model_dir:</span> <span class="string">https://bj.bcebos.com/v1/paddledet/models/pipeline/mot_ppyoloe_l_36e_pipeline.zip</span></span><br><span class="line">  <span class="attr">batch_size:</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="attr">MOT:</span></span><br><span class="line">  <span class="attr">model_dir:</span> <span class="string">https://bj.bcebos.com/v1/paddledet/models/pipeline/mot_ppyoloe_l_36e_pipeline.zip</span></span><br><span class="line">  <span class="attr">tracker_config:</span> <span class="string">/exp/work/video/PaddleDetection/deploy/pipeline/config/tracker_config.yml</span></span><br><span class="line">  <span class="attr">batch_size:</span> <span class="number">1</span></span><br><span class="line">  <span class="attr">skip_frame_num:</span> <span class="number">-1</span> <span class="comment"># preferably no more than 3</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="attr">KPT:</span></span><br><span class="line">  <span class="attr">model_dir:</span> <span class="string">https://bj.bcebos.com/v1/paddledet/models/pipeline/dark_hrnet_w32_256x192.zip</span></span><br><span class="line">  <span class="attr">batch_size:</span> <span class="number">8</span></span><br><span class="line"></span><br><span class="line"><span class="attr">ATTR:</span></span><br><span class="line">  <span class="attr">model_dir:</span>  <span class="string">https://bj.bcebos.com/v1/paddledet/models/pipeline/PPLCNet_x1_0_person_attribute_945_infer.zip</span></span><br><span class="line">  <span class="attr">batch_size:</span> <span class="number">8</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>cli：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python deploy/pipeline/pipeline.py --config deploy/pipeline/config/cache/cfg_human.yml --device=gpu --video_file=demo_input/human.mp4 --output_dir=demo_output/</span><br></pre></td></tr></table></figure>
+<p><img src="/2023/08/31/paddleDetection Demo/行人属性.gif" alt></p>
+        <!--  PPHuman行人属性识别行人属性cfg：
+12345678910111213141516171819202122232425crop_thresh: 0.5attr_thresh: 0.5kpt_thresh: 0.2visual: Truewarmup_frame: 50DET:  model_dir: https://bj.bcebos.com/v1/paddledet/models......  -->
+        <p class="article-more-link">
+          <a href="/2023/08/31/paddleDetection Demo/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paddlepaddle/">paddlepaddle</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-LiveGBS国标GB-T28181视频流媒体平台"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -962,69 +1015,6 @@ SparkCore · RDD
 SparkSQL ·......  -->
         <p class="article-more-link">
           <a href="/2022/12/08/Spark-SQL/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Spark-Core"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/12/07/Spark-Core/">Spark-Core</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/12/07/Spark-Core/" class="article-date">
-	  <time datetime="2022-12-07T08:58:49.000Z" itemprop="datePublished">2022-12-07</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="广播变量"><a href="#广播变量" class="headerlink" title="广播变量"></a>广播变量</h2><p>本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费</p>
-<p><strong>解决方案</strong>：将本地对象设置为广播变量</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.将本地对象标记为广播变量</span></span><br><span class="line">broadcast = sc.broadcast(var)</span><br><span class="line"><span class="comment"># 2.使用广播变量，从broadcast对象中取出本地对象</span></span><br><span class="line">value = broadcast.value</span><br><span class="line"><span class="comment"># 当传输的是广播对象时，spark会只给每个Executor分发一份数据</span></span><br></pre></td></tr></table></figure>
-<p>当本地集合对象和分布式集合对象（RDD）进行关联时，需要将本地集合对象封装为广播变量</p>
-<ul>
-<li>节省网络IO次数</li>
-<li>降低Executor内存占用</li>
-</ul>
-<h2 id="累加器"><a href="#累加器" class="headerlink" title="累加器"></a>累加器</h2><p>当执行累加操作时，各个分区累加自身的内容</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># spark提供累加器变量，参数是初始值</span></span><br><span class="line">acmlt = sc.accumulator(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
-<p>e.g.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line"></span><br><span class="line">conf = SparkConf().setAppName(<span class="string">"test"</span>).setMaster(<span class="string">"local[*]"</span>)</span><br><span class="line">sc = SparkContext(conf=conf)</span><br><span class="line"></span><br><span class="line">acmlt = sc.accumulator(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">counts</span><span class="params">(data)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> acmlt</span><br><span class="line">    acmlt += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> data</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rdd1 = sc.parallelize([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="number">3</span>)</span><br><span class="line">rdd2 = rdd1.map(counts)</span><br><span class="line">print(rdd2.collect())</span><br><span class="line">print(acmlt)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[1, 2, 3]</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
-<p><font color="gold">注</font>：累加器可能因血缘关系导致重复的累加，例如一个RDD被释放后累加已经完成，此时再使用该RDD将会导致重复累加。可通过cache缓存机制来解决</p>
-        <!--  广播变量本地对象被发送到同个Executor内每个分区的处理线程上使用，这样每个分区实际上存放了重复的数据。而Executor本质上是进程，进程内资源共享，没必要将本地对象分发给所有分区，造成内存浪费
-解决方案：将本地对象设置为广播变量
-12345# 1.将本地对象标记为广播变量broadcast = sc.broadcast(var)# 2.使用广播变量，从broadcast对象中取出本......  -->
-        <p class="article-more-link">
-          <a href="/2022/12/07/Spark-Core/#more">Read More</a>
         </p>
       
     </div>
