@@ -258,6 +258,283 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-基于卷积神经网络的面部年龄识别"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/05/26/基于卷积神经网络的面部年龄识别/">基于卷积神经网络的面部年龄识别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/05/26/基于卷积神经网络的面部年龄识别/" class="article-date">
+	  <time datetime="2021-05-26T15:13:00.000Z" itemprop="datePublished">2021-05-26</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-训练模型和框架"><a href="#1-训练模型和框架" class="headerlink" title="1.训练模型和框架"></a>1.训练模型和框架</h2><h3 id="1-1-Adience数据集"><a href="#1-1-Adience数据集" class="headerlink" title="1.1 Adience数据集"></a>1.1 Adience数据集</h3><p>Adience图片集包括Flickr等相册，通过从iPhone5（或更高版本）的智能手机等移动设备自动上传并进行组装，由其作者根据知识共享（CC）许可向公众发布。数据集提供了共计26580张面部照片的数据和基准，旨在尽可能真实地应对实际成像并做出判断。数据的标签有年龄组、性别、户外等，可用于监督学习的人脸识别对年龄的研究。Adience收录的数据信息包括主体外观、动作、噪点、光线等实际情况中进行图像采集时包含的动态变化，具有环境适应性强、应用范围广的特点。</p>
+<h3 id="1-2-Caffe框架"><a href="#1-2-Caffe框架" class="headerlink" title="1.2 Caffe框架"></a>1.2 Caffe框架</h3><p>Caffe（Convolutional Architecture for Fast Feature Embedding）采用CUDA架构，可在CPU和GPU上进行高速运算，是一个兼具了效率、表达和思维模块化的卷积神经网络框架。</p>
+<p>Caffe的数据结构以Blobs-Layers-Net的形式存在。</p>
+<p>Blobs是Caffe的核心数据格式，提供了统一的内存接口，并且可以在CPU与GPU之间进行数据同步。主要通过四维张量（Number<em>Channel</em>weight*high）的形式，按照C-contiguous方式（数组的行存储连续且不间断）来存储和交流网络中的权重、激活值、正反向数据。</p>
+<p>Layers是Caffe模型的关键内容，是组成神经网络和进行相关计算的基础。所有的Layer层都可以接收底层输入的Blobs，并向高层输出Blobs。Layers每一层都定义三种重要的计算：初始化（Setup）、向前传播（Forward）、向后传播（Backward）。</p>
+<p>其包含的运算有：</p>
+<p><strong>·</strong> 1.<font color="orange">load data</font>：数据载入</p>
+<p><strong>·</strong> 2.<font color="orange">Convolve filters</font>：卷积层，进行卷积。</p>
+<p><strong>·</strong> 3.<font color="orange">Pooling</font>：池化层，进行池化。</p>
+<p><strong>·</strong> 4.<font color="orange">Nonlinearities</font>：非线性映射运算，即激活函数。</p>
+<p><strong>·</strong> 5.<font color="orange">Inner Products</font>：内积运算。</p>
+<p><strong>·</strong> 6.<font color="orange">Normalize</font>：归一化</p>
+<p><strong>·</strong> 7.<font color="orange">Compute losses</font>：损失函数计算，如softmax、hinge。</p>
+<p>Net是一个由一系列连接的Layer层组成的有向无环图（Directed Acyclic Graph，DAG）。caffe会在向前传播或向后传播时，对DAG中的所有层进行记录，确保其准确性。</p>
+<h2 id="2-基于卷积神经网络的人脸识别"><a href="#2-基于卷积神经网络的人脸识别" class="headerlink" title="2.基于卷积神经网络的人脸识别"></a>2.基于卷积神经网络的人脸识别</h2><h3 id="2-1-卷积神经网络架构"><a href="#2-1-卷积神经网络架构" class="headerlink" title="2.1 卷积神经网络架构"></a>2.1 卷积神经网络架构</h3><p>使用的架构包括3个卷积层、2个全连接层和1个最终输出层。具体定义卷积层如下：</p>
+<p>1.Conv1：将内核大小为3<em>3</em>7的共计96个像素节点的过滤应用于输入第一卷积层中，经过修正线性单元ReLU（激活函数）处理后，池化层采用保留最大值（max-pooling）的规则，选择一个两像素跨度的3*3区域中最大值，进行池化，再经过局部响应归一化层（Local Response Normalization，LRN）。</p>
+<p>2.Conv2：上一层的输出（96×28×28）由第二个卷积层进行处理，包括对256个大小为96<em>5</em>5的像素过滤。同样的，经过一个修正线性单元ReLU，最大池化层，和一个与之前参数相同的局部响应归一化层。</p>
+<p>3.Conv3：第三层卷积层通过对一组384个大小为256<em>3</em>3的像素过滤来对256×14×14的 Blob进行处理，接着经过修正线性单元ReLU和一个最大池化层。</p>
+<p>再通过下列方式定义完全连接层：</p>
+<p>1.第一个完全连接层包含了512个人工神经元，用于接收第三卷积层的输出结果。接着再通过修正线性单元ReLU和Dropout层（防止CNN过拟合）。</p>
+<p>2.第二个完全连接层接收第一个完全连接层的512个人工神经元空间大小的输出（同样包含512个人工神经元），再通过修正线性单元ReLU和Dropout层。</p>
+<p>3.第三层完全连接层映射最终的分类结果。</p>
+<p>最终，最后一个完全连接层的输出会被反馈到为每个类别分配概率的Softmax层，预测其本身通过给定的测试图像的最大概率。</p>
+<p><img src="/2021/05/26/基于卷积神经网络的面部年龄识别/A.png" alt></p>
+<h3 id="2-2-年龄预测"><a href="#2-2-年龄预测" class="headerlink" title="2.2 年龄预测"></a>2.2 年龄预测</h3><p>人的面部特征无时不刻发生着微妙变化反映出其年龄的不断增长，在最理想的情况之下，人的面部特征随着人的成长应该表现出正相关的关系，那么年龄估计就是一个广义上的回归问题。然而实际上仅通过回归的方法来判断一个人的年龄是靠不住的，即便一个正常的自然人也很难推断出观察对象的准确实际年龄。</p>
+<p>但是人眼可以对观察对象做出一个大致判断，较为准确的预测出对方的年龄所在区间。这样，就对对方的年龄有了初步估计。这样，就可以对年龄区间进行一个分类，以进一步研究人脸和年龄的关系。</p>
+<p>Adience数据集将人的年龄划分为了八个类别，分别为：[0-2]、[4-6]、[8-13]、[15-20]、[25-32]、[38-43]、[48-53]、[60 -]。因此，深度神经网络在最终的Softmax层中有8个节点，分别对各年龄段进行分类。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MODEL_MEAN_VALUES = (<span class="number">78.4263377603</span>, <span class="number">87.7689143744</span>, <span class="number">114.895847746</span>)</span><br><span class="line">ageList = [<span class="string">'(0-2)'</span>, <span class="string">'(4-6)'</span>, <span class="string">'(8-12)'</span>, <span class="string">'(15-20)'</span>, <span class="string">'(25-32)'</span>, <span class="string">'(38-43)'</span>, <span class="string">'(48-53)'</span>, <span class="string">'(60-100)'</span>]</span><br></pre></td></tr></table></figure></p>
+<p>Blob输入网络进行年龄的检测，并且年龄检测程序向前传播。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ageNet.setInput(blobs)</span><br><span class="line">agepredction = ageNet.forward()</span><br><span class="line">age = ageList[agepredction[<span class="number">0</span>].argmax()]</span><br></pre></td></tr></table></figure></p>
+        <!--  1.训练模型和框架1.1 Adience数据集Adience图片集包括Flickr等相册，通过从iPhone5（或更高版本）的智能手机等移动设备自动上传并进行组装，由其作者根据知识共享（CC）许可向公众发布。数据集提供了共计26580张面部照片的数据和基准，旨在尽可能真实地应对实际成像并做出判断。数据的标签有年龄组、性别、户外等，可用于监督学习的人脸识别对年龄的研究。Adience收录的数......  -->
+        <p class="article-more-link">
+          <a href="/2021/05/26/基于卷积神经网络的面部年龄识别/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN/">CNN</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-卷积神经网络算法"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2021/05/25/卷积神经网络算法/">卷积神经网络算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2021/05/25/卷积神经网络算法/" class="article-date">
+	  <time datetime="2021-05-25T05:01:35.000Z" itemprop="datePublished">2021-05-25</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>神经网络(Neural Networks，NN)是人工智能研究领域的重要组成部分，是大数据与人工智能技术发展的重要动力。</p>
+<h2 id="1-卷积神经网络"><a href="#1-卷积神经网络" class="headerlink" title="1.卷积神经网络"></a>1.卷积神经网络</h2><p>卷积神经网络属于机器学习领域当中的深度学习技术，是一类包含了卷积计算并且具有深度结构的前馈神经网络（Feedforward Neural Networks）。由纽约大学教授Yann LeCun在1998年提出，主要应用于语音识别、计算机视觉、自然语言处理等领域。</p>
+<p>其本质上是一个采用了局部连接和权值共享方式的多层感知机，包括一般的卷积神经网络（CNN）和深度卷积神经网络（Deep Convolutional Neural Networks, DCNN），通常不做特意区分。一般的卷积神经网络存在浅层结构，但准确性和表现力相对不足，深度卷积神经网络可以自动从大规模的数据中进行特征学习，且具备将结果向同类型的未知数据泛化的能力，是目前最常用的神经网络技术。</p>
+<h2 id="2-卷积神经网络原理"><a href="#2-卷积神经网络原理" class="headerlink" title="2.卷积神经网络原理"></a>2.卷积神经网络原理</h2><h3 id="2-1-卷积原理"><a href="#2-1-卷积原理" class="headerlink" title="2.1 卷积原理"></a>2.1 卷积原理</h3><p>从数学的角度出发，分析数学中定义一种运算，称(f*g)(n)为(f，g)的卷积（Convolution）。其连续的定义为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/A.png" alt><br>其离散的定义为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/B.png" alt></p>
+<p>其连续和离散具有共同的特征：n=τ+(n-τ)，当令x=τ，y=n-τ时，有直线：x+y=n，其图像为如下图：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/C.png" alt><br>如果遍历这些直线，就类似于沿直线卷起毛巾的过程。</p>
+<p>下面将卷积扩展到二维，有两个R2→R的二元函数f(x，y)和g(x，y)，那么令f和g的卷积就是一个新的R2→R的二元函数c(x，y)：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/D.png" alt><br>其含义为将f在(s，t)上的值乘以g在(x-s，y-t)上的值，再遍历从-∞到+∞全部s和t的值，进行f和g积分意义上的加和，最终得到c在(x，y)上的值（二重积分）。</p>
+<p>可以看出这种加和是一种加权求和，即以f为权，(x，y)为中心，将f在(s，t)上的值乘以g距离中心(-s，-t)上的值再相加。</p>
+<p>其离散的表示形式为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/E.png" alt></p>
+<h3 id="2-2-神经元"><a href="#2-2-神经元" class="headerlink" title="2.2 神经元"></a>2.2 神经元</h3><p>神经细胞有众多的树突和一个伸长的轴突，不同神经元之间通过树突连接轴突的方式，并通过神经脉冲的传导进行细胞间交流。具体过程为神经细胞A的轴突连接到神经细胞B的树突，传导神经脉冲，神经细胞A根据其树突传递来的信号决定是否通过轴突来向下一个神经细胞C传递信息。</p>
+<p>1943年，美国心理学家W.McCulloch和数学家W.Pitts根据生物神经元、生物电和生物化学的运行机理提出了二值神经元的数学模型，即神经细胞机能的简单化的数理模型，被称作莫克罗-彼特氏神经模型（McCulloch－Pitts′Neuron Model），也叫人工神经元模型。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/F.png" alt><br>一个人工神经元模型就是对生物神经元的数学建模：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/G.png" alt><br>其中X1、X2、X3、…、Xn分别是从其他神经元传入的输入信号，Wi1、Wi2、Wi3、…、Win分别是对应X1、X2、X3、…、Xn的权重。θ表示一个阈值，或称为偏置（Bias），其设置目的是正确将样本分类。神经元当前的输入信号和偏置相加后产生当前神经元的最终处理信号Net，称为净激活或净激励（Net Activation），并作为激活函数或激励函数（Activation Function）f的输入，即f（net），最终得到对应的输出yi。形如：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/H.png" alt><br>激活函数<strong>f（net）</strong>的作用是通过加入非线性因素来解决线性模型的表达和分类能力不足的问题。常见的激活函数有：</p>
+<h4 id="1-Linear"><a href="#1-Linear" class="headerlink" title="1.Linear"></a>1.Linear</h4><p>Linear是一个线性激活函数：<strong>f(x)=∑i xiwi+b</strong>。本质上就是对输入的加权求和再加上偏置，所以相对简单，功能较为单一。</p>
+<p>由于多个矩阵进行连乘的结果仍是矩阵，类似的，如果一个神经网络中仅使用线性激活函数，那么就只能学习到线性函数。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/I.png" alt></p>
+<h4 id="2-Sigmoid"><a href="#2-Sigmoid" class="headerlink" title="2.Sigmoid"></a>2.Sigmoid</h4><p>Sigmoid是在神经网络研究的初始阶段就被投入了广泛使用的一个经典的非线性激活函数，其表达式是一种逻辑斯蒂函数（Logistic Function）：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/J.png" alt><br>其中<strong>x=∑i xiwi+b</strong></p>
+<p>这个函数在函数的区域内是完全可导的，输出为0到1范围内的正值（被证实不易于神经网络对收敛的学习），并且对于接近0和1的函数部分，导数无限趋近于0，存在明显的梯度衰减问题。所以现阶段对Sigmod函数的应用已经越来越少。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/K.png" alt></p>
+<h4 id="3-Tanh"><a href="#3-Tanh" class="headerlink" title="3.Tanh"></a>3.Tanh</h4><p>通过其图像可以看出Tanh函数旨在克服Sigmoid函数只能取正值的缺陷，将其设计为关于原点对称的双曲正切（hyperbolic tangent）形式：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/L.png" alt><br>其中<strong>x=∑i xiwi+b</strong>。函数的导数取值范围在0到1之间，优于sigmoid的0至1/4，在一定程度上减轻了梯度的消失。但函数的两端仍然存在梯度饱和问题，且计算变得更为复杂。</p>
+<p>Tanh的输入和输出能够保持非线性单调上升和下降的关系，符合BP算法网络的梯度求解，容错性好。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/M.png" alt></p>
+<h4 id="4-ReLU-（The-Rectified-Linear-Unit）"><a href="#4-ReLU-（The-Rectified-Linear-Unit）" class="headerlink" title="4.ReLU （The Rectified Linear Unit）"></a>4.ReLU （The Rectified Linear Unit）</h4><p>其公式的表达形式为：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/N.png" alt><br>也可以表示为<strong>f(x)=max(0,x)</strong>。即当输入信号小于0时，函数的输出为0；当输入信号大于0时，函数的输出等于输入值。</p>
+<p>ReLU拥有操作简便，耗时少的优点，又具有部分线性的特性，不会出现过饱和现象、减免了梯度消失的问题（函数得到的随机梯度下降法的收敛速度比Sigmoid和Tanh都快）。并且ReLU只需要一个阈值就可以得到激活值，不用和Sigmoid一样进行复杂的指数运算。但其神经元比价脆弱容易失去作用：当神经元接收到非常大的梯度数据流以后，该神经元可能就不再对输入数据进行反馈了，所以在进行训练时要设置一个较小的学习率参数。ReLU是目前用于神经网络领域最常见的激活函数之一。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/O.png" alt><br>这就是单个人工神经元的定义。但是早期的单个人工神经元模型甚至无法处理异或等运算，在多个人工神经元发展为神经网络之后逐渐克服了这些问题和种种困难，成为现代人工智能的重要模型。<br></p>
+        <!--  神经网络(Neural Networks，NN)是人工智能研究领域的重要组成部分，是大数据与人工智能技术发展的重要动力。
+1.卷积神经网络卷积神经网络属于机器学习领域当中的深度学习技术，是一类包含了卷积计算并且具有深度结构的前馈神经网络（Feedforward Neural Networks）。由纽约大学教授Yann LeCun在1998年提出，主要应用于语音识别、计算机视觉、自然语言处理......  -->
+        <p class="article-more-link">
+          <a href="/2021/05/25/卷积神经网络算法/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CNN/">CNN</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Hadoop集群组件配置"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/09/09/Hadoop集群组件配置/">Hadoop集群组件配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/09/09/Hadoop集群组件配置/" class="article-date">
+	  <time datetime="2019-09-08T18:35:33.000Z" itemprop="datePublished">2019-09-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Spark集群搭建"><a href="#Spark集群搭建" class="headerlink" title="Spark集群搭建"></a>Spark集群搭建</h2><p>首先在scala官网（<a href="http://www.scala-lang.org/files/archive/scala-2.10.4.tgz" target="_blank" rel="noopener">http://www.scala-lang.org/files/archive/scala-2.10.4.tgz</a>）下载scala语言并解压缩，配置/etc/profile下scala的环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SCALA_HOME=/usr/local/scala</span><br><span class="line">export PATH=$PATH:$&#123;SCALA_HOME&#125;/bin</span><br></pre></td></tr></table></figure></p>
+<p>环境变量成功生效后进行测试，输入15*15,返回225，成功</p>
+<p><img src="/2019/09/09/Hadoop集群组件配置/A.png" alt><br>接下来到spark官网（<a href="http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz</a>）下载Spark包，继续配置环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SPARK_HOME=/usr/local/soft/spark-1.6.0-bin-hadoop2.6</span><br><span class="line">export PATH=$PATH:$&#123;SPARK_HOME&#125;/bin</span><br></pre></td></tr></table></figure></p>
+<p>完成后继续配置<font color="orange">${SPARK_HOME}/conf/spark-env.sh</font></p>
+<p><img src="/2019/09/09/Hadoop集群组件配置/B.png" alt><br>配置<font color="orange">{SPARK_HOME}/conf/ slaves</font>，在vi编辑器中添加node节点,在将程序分发给node节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node1:/usr/local/soft/</span><br><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node2:/usr/local/soft/</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2019/09/09/Hadoop集群组件配置/C.png" alt><br>可以通过<font color="#008080">./start-all.sh</font>命令来启动spark集群</p>
+<p><img src="/2019/09/09/Hadoop集群组件配置/D.png" alt><br>可也有通过节点来启动：</p>
+<p><strong>·</strong> 通过<font color="#008080">sbin/start-master.sh</font>启动主节点<br><strong>·</strong> 通过<font color="#008080">sbin/start-slave.sh 192.168.218.141:8070</font>等启动node节点</p>
+<p><img src="/2019/09/09/Hadoop集群组件配置/E.png" alt><br>可以执行<font color="#008080">/bin/run-example SparkPi 10 &gt; Sparkpilog.txt</font>运行spark示例程序</p>
+<p><img src="/2019/09/09/Hadoop集群组件配置/F.png" alt><br>通过<font color="orange">jps</font>命令查看启动的java服务，进行验证</p>
+<p><img src="/2019/09/09/Hadoop集群组件配置/G.png" alt><br></p>
+        <!--  Spark集群搭建首先在scala官网（http://www.scala-lang.org/files/archive/scala-2.10.4.tgz）下载scala语言并解压缩，配置/etc/profile下scala的环境变量12export SCALA_HOME=/usr/local/scalaexport PATH=$PATH:$&#123;SCALA_HOME&#125;/bi......  -->
+        <p class="article-more-link">
+          <a href="/2019/09/09/Hadoop集群组件配置/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Hadoop入门"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/09/07/Hadoop入门/">Hadoop入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/09/07/Hadoop入门/" class="article-date">
+	  <time datetime="2019-09-07T09:17:17.000Z" itemprop="datePublished">2019-09-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Hadoop是一个用Java编写的Apache开源框架，允许使用简单的编程模型跨计算机集群分布式处理大型数据集。Hadoop框架工作的应用程序在跨计算机集群提供分布式存储和计算的环境中工作。Hadoop旨在从单个服务器扩展到数千个机器，每个都提供本地计算和存储。</p>
+<h2 id="Hadoop伪分布式搭建"><a href="#Hadoop伪分布式搭建" class="headerlink" title="Hadoop伪分布式搭建"></a>Hadoop伪分布式搭建</h2><p>首先创建一台master虚拟机，并克隆node1、node2两台节点机，我的虚拟机集群ip地址分别设置为：</p>
+<p><strong>·</strong> 192.168.218.141 <font color="orange">master</font></p>
+<p><strong>·</strong> 192.168.218.142 <font color="orange">node1</font></p>
+<p><strong>·</strong> 192.168.218.143 <font color="orange">node2</font></p>
+<p>到master中设置好ssh，做好主机名与ip地址的映射，修改/etc/hosts下的配置文件，并将完成的hosts文件复制进节点机中</p>
+<p>此时可以打开xshell，也可以继续在虚拟机中进行操作</p>
+<p>将hadoop的jar包上传到虚拟机中，配置环境变量，并对hadoop下的<font color="orange">core-site.xml</font>、<font color="orange">hdfs-site.xml</font>、<font color="orange">yarn-site.xml</font>和<font color="orange">mapred-site.xml</font>文件进行相关配置</p>
+<p>完成以后再将hadoop的安装目录分别拷贝到子节点中，检查是否完成集群文件的配置和部署</p>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>回到主机中打开hadoop安装目录，执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start-dfs.sh</span><br><span class="line">start-yarn.sh</span><br></pre></td></tr></table></figure>
+<p>（老版本的”start-all.sh”会提示已过期）</p>
+<p>完成hadoop的启动后，在主机和节点机输入jps查看当前运行的java进程</p>
+<p><img src="/2019/09/07/Hadoop入门/1.png" alt><br><img src="/2019/09/07/Hadoop入门/2.png" alt><br><img src="/2019/09/07/Hadoop入门/2.5.png" alt><br>成功后打开浏览器，输入localhost:50700可以进入hadoop初始界面。</p>
+<p><img src="/2019/09/07/Hadoop入门/3.png" alt><br></p>
+        <!--  Hadoop是一个用Java编写的Apache开源框架，允许使用简单的编程模型跨计算机集群分布式处理大型数据集。Hadoop框架工作的应用程序在跨计算机集群提供分布式存储和计算的环境中工作。Hadoop旨在从单个服务器扩展到数千个机器，每个都提供本地计算和存储。
+Hadoop伪分布式搭建首先创建一台master虚拟机，并克隆node1、node2两台节点机，我的虚拟机集群ip地址分别设置为......  -->
+        <p class="article-more-link">
+          <a href="/2019/09/07/Hadoop入门/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hadoop/">Hadoop</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-实习项目：CRM管理系统"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -602,204 +879,6 @@
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GET-POST/">GET/POST...</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Python的图片与字符画转换"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/04/10/Python的图片与字符画转换/">Python的图片与字符画转换</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/04/10/Python的图片与字符画转换/" class="article-date">
-	  <time datetime="2019-04-10T11:27:27.000Z" itemprop="datePublished">2019-04-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>总体思想为：将图片转换为灰度图片后,利用字符的“复杂程度”替换掉图片的内容，字符数组的“复杂程度”由大到小排列即可。</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="（需要pip安装PIL库）"><a href="#（需要pip安装PIL库）" class="headerlink" title="（需要pip安装PIL库）"></a>（需要pip安装PIL库）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image </span><br><span class="line"><span class="keyword">import</span> argparse </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 命令行输入参数处理 </span></span><br><span class="line">parser = argparse.ArgumentParser() </span><br><span class="line">  </span><br><span class="line">parser.add_argument(<span class="string">'file'</span>)   <span class="comment"># 输入文件 </span></span><br><span class="line">parser.add_argument(<span class="string">'-o'</span>, <span class="string">'--output'</span>)  <span class="comment"># 输出文件 </span></span><br><span class="line">parser.add_argument(<span class="string">'--width'</span>, type=int, default=<span class="number">80</span>) <span class="comment"># 输出字符画宽 </span></span><br><span class="line">parser.add_argument(<span class="string">'--height'</span>, type=int, default=<span class="number">80</span>) <span class="comment"># 输出字符画高 </span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 获取参数 </span></span><br><span class="line">args = parser.parse_args() </span><br><span class="line">  </span><br><span class="line">IMG = args.file</span><br><span class="line">WIDTH = args.width </span><br><span class="line">HEIGHT = args.height </span><br><span class="line">OUTPUT = args.output </span><br><span class="line">  </span><br><span class="line">ascii_char = list(<span class="string">"$@B%8&amp;WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1&#123;&#125;[]?-_+~&lt;&gt;i!lI;:,\"^`'. "</span>) </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 将256灰度映射到70个字符上 </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_char</span><span class="params">(r, b, g, alpha=<span class="number">256</span>)</span>:</span> </span><br><span class="line">  <span class="keyword">if</span> alpha == <span class="number">0</span>: </span><br><span class="line">    <span class="keyword">return</span> <span class="string">' '</span></span><br><span class="line">  length = len(ascii_char) </span><br><span class="line">  gray = int(<span class="number">0.2126</span> * r + <span class="number">0.7152</span> * g + <span class="number">0.0722</span> * b) </span><br><span class="line">  </span><br><span class="line">  unit = (<span class="number">256.0</span> + <span class="number">1</span>)/length </span><br><span class="line">  <span class="keyword">return</span> ascii_char[int(gray/unit)] </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>: </span><br><span class="line">  </span><br><span class="line">  im = Image.open(IMG) </span><br><span class="line">  im = im.resize((WIDTH, HEIGHT), Image.NEAREST) </span><br><span class="line">  </span><br><span class="line">  txt = <span class="string">""</span> </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> range(HEIGHT): </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(WIDTH): </span><br><span class="line">      txt += get_char(*im.getpixel((j, i))) </span><br><span class="line">    txt += <span class="string">'\n'</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">print</span> (txt) </span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 字符画输出到文件 </span></span><br><span class="line">  <span class="keyword">if</span> OUTPUT: </span><br><span class="line">    <span class="keyword">with</span> open(OUTPUT,<span class="string">'w'</span>) <span class="keyword">as</span> f: </span><br><span class="line">      f.write(txt) </span><br><span class="line">  <span class="keyword">else</span>: </span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">"output.txt"</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f: </span><br><span class="line">      f.write(txt)</span><br></pre></td></tr></table></figure>
-<p>（稿）</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PIL/">PIL</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-DOSBox0-74-For-MASM"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/04/10/DOSBox0-74-For-MASM/">DOSBox0.74 For MASM</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/04/10/DOSBox0-74-For-MASM/" class="article-date">
-	  <time datetime="2019-04-10T11:26:12.000Z" itemprop="datePublished">2019-04-10</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/汇编/">汇编</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>由于汇编的MASM是在32位环境下使用的，要在64位Windows环境下使用需要借助工具DOSBox。</p>
-<h2 id="DOSBox-0-74下载"><a href="#DOSBox-0-74下载" class="headerlink" title="DOSBox-0.74下载"></a>DOSBox-0.74下载</h2><p>地址：[<a href="https://pan.baidu.com/s/1wiAv0pwUhRavkM51pmdJCQ]" target="_blank" rel="noopener">https://pan.baidu.com/s/1wiAv0pwUhRavkM51pmdJCQ]</a><br>（提取码：m0kx）</p>
-<h2 id="MASM下载"><a href="#MASM下载" class="headerlink" title="MASM下载"></a>MASM下载</h2><p>MASM文件夹内至少要包含debug/exe2bin/link/masm四个.exe文件。<br>地址：[<a href="https://pan.baidu.com/s/1MC75x01gKBxZwxmBuYq6fA]" target="_blank" rel="noopener">https://pan.baidu.com/s/1MC75x01gKBxZwxmBuYq6fA]</a><br>（提取码：4zu0）</p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>将DOSBox-0.74放进MASM文件夹内，找到DOSBox.exe文件双击打开，输入mount d d:\path,path可以为你的masm目录。<br>如果MASM文件夹下有编写好的.asm汇编指令，可以直接通过命令d:进入MASM，再输入masm，进入调试，输入.asm文件名称（可不写扩展名），依次link，debug完成。<br>效果如图：<br><img src="/2019/04/10/DOSBox0-74-For-MASM/A.png" alt><br><img src="/2019/04/10/DOSBox0-74-For-MASM/B.png" alt><br><img src="/2019/04/10/DOSBox0-74-For-MASM/C.png" alt></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MASM/">MASM</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Just-for-joy-打地鼠小游戏"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/12/20/Just-for-joy-打地鼠小游戏/">Just for joy---打地鼠小游戏</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/12/20/Just-for-joy-打地鼠小游戏/" class="article-date">
-	  <time datetime="2018-12-20T02:59:34.000Z" itemprop="datePublished">2018-12-20</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/个人笔记/">个人笔记</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><h1 id="Just-For-Joy-官网（模拟）"><a href="#Just-For-Joy-官网（模拟）" class="headerlink" title="Just For Joy 官网（模拟）"></a>Just For Joy 官网（模拟）</h1><p>获取更多JFJ咨询，请关注我们的官方网站<br>Created by elbadaernU9.9（inc） powered by hexo 2018.</p>
-<h2 id="打地鼠小游戏"><a href="#打地鼠小游戏" class="headerlink" title="打地鼠小游戏"></a>打地鼠小游戏</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">快来和你的小伙伴们来试试我们全新推出的休闲小游戏：MouseHit（打地鼠），游戏仅售0$!</span><br></pre></td></tr></table></figure>
-<h2 id="购买链接："><a href="#购买链接：" class="headerlink" title="购买链接："></a>购买链接：</h2><p><img src="/2018/12/20/Just-for-joy-打地鼠小游戏/A.png" alt></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">链接: </span><br><span class="line">https://pan.baidu.com/s/1LSMij2q31pJXMwmXImponA</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提取码：90t6</span><br></pre></td></tr></table></figure>
-<h2 id="提要"><a href="#提要" class="headerlink" title="提要"></a>提要</h2><p>我们的游戏基于Qt环境开发，可以实现调整游戏难度等各项基础功能，除此以外，我们为游戏设置了更多的可玩性因素！现在点击两个大红色问号，来获得作弊的快感！<br>你同样可以进行不同的游戏模式，我们目前开发出来经典模式和闯关两种模式，快来测试你在闯关模式中能闯到第几轮呢？？？<br>赶紧和你的小伙伴们一起来挑战吧！</p>
-<p><img src="/2018/12/20/Just-for-joy-打地鼠小游戏/B.png" alt></p>
-<h2 id="（注，以上内容为演出效果，有时间将具体代码补至Github）"><a href="#（注，以上内容为演出效果，有时间将具体代码补至Github）" class="headerlink" title="（注，以上内容为演出效果，有时间将具体代码补至Github）"></a>（注，以上内容为演出效果，有时间将具体代码补至Github）</h2>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QT/">QT</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-D3-SVG随机树与时钟等"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/08/07/D3-SVG随机树与时钟等/">D3:SVG随机树与时钟等</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/08/07/D3-SVG随机树与时钟等/" class="article-date">
-	  <time datetime="2018-08-07T13:18:40.000Z" itemprop="datePublished">2018-08-07</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/前端/">前端</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><h2 id="基本功能及说明："><a href="#基本功能及说明：" class="headerlink" title="基本功能及说明："></a>基本功能及说明：</h2><p>1.点击index.html文件，进入主页选择相应的功能。</p>
-<p><img src="/2018/08/07/D3-SVG随机树与时钟等/A.png" alt><br>2.选择svg盆栽随机树：基于D3和SVG生成的盆栽随机树，通过点击“Start Growing!”按钮，来实现盆栽的生长过程，同时更新按钮，继续点击“Growing More”继续生成更多的随机树子叶；最后通过点击“Replant”恢复花盆状态，可以进行重新生成；通过单机“Back”按钮，回到index主页面</p>
-<p><img src="/2018/08/07/D3-SVG随机树与时钟等/B.png" alt><br>3.选择SVG时钟：基于SVG和TweenmaxGSAP的时钟模型，用SVG来绘制时刻表形状，并通过GSAP来实现时钟指针转动的动态效果。进入主页以后会自动匹配系统时间，主要通过Tweenmax的GSAP动画形成环形时钟。浏览后可以通过点击“Back”按钮，回到系统index主界面，完成交互</p>
-<p><img src="/2018/08/07/D3-SVG随机树与时钟等/C.png" alt></p>
-<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>本文件内容可拆分用于装饰博客等视讯网站框架，增加功能性和可读性</p>
-<h2 id="使用的库和工具"><a href="#使用的库和工具" class="headerlink" title="使用的库和工具"></a>使用的库和工具</h2><p>jquery-2.1.1.min.js、TweenMax、D3.js、SVG</p>
-<p>额外的Svg.css文件用于存放index.html的主界面信息，增强可视化。</p>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><img src="/2018/08/07/D3-SVG随机树与时钟等/D.png" alt><br><img src="/2018/08/07/D3-SVG随机树与时钟等/E.png" alt><br><img src="/2018/08/07/D3-SVG随机树与时钟等/F.png" alt><br><a href="https://github.com/elbadaernU404/d3" target="_blank" rel="noopener">https://github.com/elbadaernU404/d3</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/D3-SVG/">D3-SVG</a></li></ul>
 
     </footer>
   </div>

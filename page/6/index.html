@@ -258,6 +258,204 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Python的图片与字符画转换"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/04/10/Python的图片与字符画转换/">Python的图片与字符画转换</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/04/10/Python的图片与字符画转换/" class="article-date">
+	  <time datetime="2019-04-10T11:27:27.000Z" itemprop="datePublished">2019-04-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>总体思想为：将图片转换为灰度图片后,利用字符的“复杂程度”替换掉图片的内容，字符数组的“复杂程度”由大到小排列即可。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="（需要pip安装PIL库）"><a href="#（需要pip安装PIL库）" class="headerlink" title="（需要pip安装PIL库）"></a>（需要pip安装PIL库）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image </span><br><span class="line"><span class="keyword">import</span> argparse </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 命令行输入参数处理 </span></span><br><span class="line">parser = argparse.ArgumentParser() </span><br><span class="line">  </span><br><span class="line">parser.add_argument(<span class="string">'file'</span>)   <span class="comment"># 输入文件 </span></span><br><span class="line">parser.add_argument(<span class="string">'-o'</span>, <span class="string">'--output'</span>)  <span class="comment"># 输出文件 </span></span><br><span class="line">parser.add_argument(<span class="string">'--width'</span>, type=int, default=<span class="number">80</span>) <span class="comment"># 输出字符画宽 </span></span><br><span class="line">parser.add_argument(<span class="string">'--height'</span>, type=int, default=<span class="number">80</span>) <span class="comment"># 输出字符画高 </span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 获取参数 </span></span><br><span class="line">args = parser.parse_args() </span><br><span class="line">  </span><br><span class="line">IMG = args.file</span><br><span class="line">WIDTH = args.width </span><br><span class="line">HEIGHT = args.height </span><br><span class="line">OUTPUT = args.output </span><br><span class="line">  </span><br><span class="line">ascii_char = list(<span class="string">"$@B%8&amp;WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1&#123;&#125;[]?-_+~&lt;&gt;i!lI;:,\"^`'. "</span>) </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="comment"># 将256灰度映射到70个字符上 </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_char</span><span class="params">(r, b, g, alpha=<span class="number">256</span>)</span>:</span> </span><br><span class="line">  <span class="keyword">if</span> alpha == <span class="number">0</span>: </span><br><span class="line">    <span class="keyword">return</span> <span class="string">' '</span></span><br><span class="line">  length = len(ascii_char) </span><br><span class="line">  gray = int(<span class="number">0.2126</span> * r + <span class="number">0.7152</span> * g + <span class="number">0.0722</span> * b) </span><br><span class="line">  </span><br><span class="line">  unit = (<span class="number">256.0</span> + <span class="number">1</span>)/length </span><br><span class="line">  <span class="keyword">return</span> ascii_char[int(gray/unit)] </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>: </span><br><span class="line">  </span><br><span class="line">  im = Image.open(IMG) </span><br><span class="line">  im = im.resize((WIDTH, HEIGHT), Image.NEAREST) </span><br><span class="line">  </span><br><span class="line">  txt = <span class="string">""</span> </span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> range(HEIGHT): </span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(WIDTH): </span><br><span class="line">      txt += get_char(*im.getpixel((j, i))) </span><br><span class="line">    txt += <span class="string">'\n'</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">print</span> (txt) </span><br><span class="line">  </span><br><span class="line">  <span class="comment"># 字符画输出到文件 </span></span><br><span class="line">  <span class="keyword">if</span> OUTPUT: </span><br><span class="line">    <span class="keyword">with</span> open(OUTPUT,<span class="string">'w'</span>) <span class="keyword">as</span> f: </span><br><span class="line">      f.write(txt) </span><br><span class="line">  <span class="keyword">else</span>: </span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">"output.txt"</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f: </span><br><span class="line">      f.write(txt)</span><br></pre></td></tr></table></figure>
+<p>（稿）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PIL/">PIL</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-DOSBox0-74-For-MASM"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/04/10/DOSBox0-74-For-MASM/">DOSBox0.74 For MASM</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/04/10/DOSBox0-74-For-MASM/" class="article-date">
+	  <time datetime="2019-04-10T11:26:12.000Z" itemprop="datePublished">2019-04-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/汇编/">汇编</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>由于汇编的MASM是在32位环境下使用的，要在64位Windows环境下使用需要借助工具DOSBox。</p>
+<h2 id="DOSBox-0-74下载"><a href="#DOSBox-0-74下载" class="headerlink" title="DOSBox-0.74下载"></a>DOSBox-0.74下载</h2><p>地址：[<a href="https://pan.baidu.com/s/1wiAv0pwUhRavkM51pmdJCQ]" target="_blank" rel="noopener">https://pan.baidu.com/s/1wiAv0pwUhRavkM51pmdJCQ]</a><br>（提取码：m0kx）</p>
+<h2 id="MASM下载"><a href="#MASM下载" class="headerlink" title="MASM下载"></a>MASM下载</h2><p>MASM文件夹内至少要包含debug/exe2bin/link/masm四个.exe文件。<br>地址：[<a href="https://pan.baidu.com/s/1MC75x01gKBxZwxmBuYq6fA]" target="_blank" rel="noopener">https://pan.baidu.com/s/1MC75x01gKBxZwxmBuYq6fA]</a><br>（提取码：4zu0）</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>将DOSBox-0.74放进MASM文件夹内，找到DOSBox.exe文件双击打开，输入mount d d:\path,path可以为你的masm目录。<br>如果MASM文件夹下有编写好的.asm汇编指令，可以直接通过命令d:进入MASM，再输入masm，进入调试，输入.asm文件名称（可不写扩展名），依次link，debug完成。<br>效果如图：<br><img src="/2019/04/10/DOSBox0-74-For-MASM/A.png" alt><br><img src="/2019/04/10/DOSBox0-74-For-MASM/B.png" alt><br><img src="/2019/04/10/DOSBox0-74-For-MASM/C.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MASM/">MASM</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Just-for-joy-打地鼠小游戏"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/12/20/Just-for-joy-打地鼠小游戏/">Just for joy---打地鼠小游戏</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/12/20/Just-for-joy-打地鼠小游戏/" class="article-date">
+	  <time datetime="2018-12-20T02:59:34.000Z" itemprop="datePublished">2018-12-20</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/个人笔记/">个人笔记</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h1 id="Just-For-Joy-官网（模拟）"><a href="#Just-For-Joy-官网（模拟）" class="headerlink" title="Just For Joy 官网（模拟）"></a>Just For Joy 官网（模拟）</h1><p>获取更多JFJ咨询，请关注我们的官方网站<br>Created by elbadaernU9.9（inc） powered by hexo 2018.</p>
+<h2 id="打地鼠小游戏"><a href="#打地鼠小游戏" class="headerlink" title="打地鼠小游戏"></a>打地鼠小游戏</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">快来和你的小伙伴们来试试我们全新推出的休闲小游戏：MouseHit（打地鼠），游戏仅售0$!</span><br></pre></td></tr></table></figure>
+<h2 id="购买链接："><a href="#购买链接：" class="headerlink" title="购买链接："></a>购买链接：</h2><p><img src="/2018/12/20/Just-for-joy-打地鼠小游戏/A.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">链接: </span><br><span class="line">https://pan.baidu.com/s/1LSMij2q31pJXMwmXImponA</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提取码：90t6</span><br></pre></td></tr></table></figure>
+<h2 id="提要"><a href="#提要" class="headerlink" title="提要"></a>提要</h2><p>我们的游戏基于Qt环境开发，可以实现调整游戏难度等各项基础功能，除此以外，我们为游戏设置了更多的可玩性因素！现在点击两个大红色问号，来获得作弊的快感！<br>你同样可以进行不同的游戏模式，我们目前开发出来经典模式和闯关两种模式，快来测试你在闯关模式中能闯到第几轮呢？？？<br>赶紧和你的小伙伴们一起来挑战吧！</p>
+<p><img src="/2018/12/20/Just-for-joy-打地鼠小游戏/B.png" alt></p>
+<h2 id="（注，以上内容为演出效果，有时间将具体代码补至Github）"><a href="#（注，以上内容为演出效果，有时间将具体代码补至Github）" class="headerlink" title="（注，以上内容为演出效果，有时间将具体代码补至Github）"></a>（注，以上内容为演出效果，有时间将具体代码补至Github）</h2>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QT/">QT</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-D3-SVG随机树与时钟等"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/08/07/D3-SVG随机树与时钟等/">D3:SVG随机树与时钟等</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/08/07/D3-SVG随机树与时钟等/" class="article-date">
+	  <time datetime="2018-08-07T13:18:40.000Z" itemprop="datePublished">2018-08-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/前端/">前端</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="基本功能及说明："><a href="#基本功能及说明：" class="headerlink" title="基本功能及说明："></a>基本功能及说明：</h2><p>1.点击index.html文件，进入主页选择相应的功能。</p>
+<p><img src="/2018/08/07/D3-SVG随机树与时钟等/A.png" alt><br>2.选择svg盆栽随机树：基于D3和SVG生成的盆栽随机树，通过点击“Start Growing!”按钮，来实现盆栽的生长过程，同时更新按钮，继续点击“Growing More”继续生成更多的随机树子叶；最后通过点击“Replant”恢复花盆状态，可以进行重新生成；通过单机“Back”按钮，回到index主页面</p>
+<p><img src="/2018/08/07/D3-SVG随机树与时钟等/B.png" alt><br>3.选择SVG时钟：基于SVG和TweenmaxGSAP的时钟模型，用SVG来绘制时刻表形状，并通过GSAP来实现时钟指针转动的动态效果。进入主页以后会自动匹配系统时间，主要通过Tweenmax的GSAP动画形成环形时钟。浏览后可以通过点击“Back”按钮，回到系统index主界面，完成交互</p>
+<p><img src="/2018/08/07/D3-SVG随机树与时钟等/C.png" alt></p>
+<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>本文件内容可拆分用于装饰博客等视讯网站框架，增加功能性和可读性</p>
+<h2 id="使用的库和工具"><a href="#使用的库和工具" class="headerlink" title="使用的库和工具"></a>使用的库和工具</h2><p>jquery-2.1.1.min.js、TweenMax、D3.js、SVG</p>
+<p>额外的Svg.css文件用于存放index.html的主界面信息，增强可视化。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p><img src="/2018/08/07/D3-SVG随机树与时钟等/D.png" alt><br><img src="/2018/08/07/D3-SVG随机树与时钟等/E.png" alt><br><img src="/2018/08/07/D3-SVG随机树与时钟等/F.png" alt><br><a href="https://github.com/elbadaernU404/d3" target="_blank" rel="noopener">https://github.com/elbadaernU404/d3</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/D3-SVG/">D3-SVG</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Python爬虫相关"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -553,199 +751,6 @@ Day1.所谓实训的大目标只有一个俄罗斯方块的设计，工具为Cod
         <p class="article-more-link">
           <a href="/2018/05/07/ISCC2018的部分WP/#more">Read More</a>
         </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-关于QQ坦白说JSON源破解对方身份的方法"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/">关于QQ坦白说JSON源破解对方身份的方法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/" class="article-date">
-	  <time datetime="2018-04-03T05:06:04.000Z" itemprop="datePublished">2018-04-03</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/信息安全/">信息安全</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>这个问题在4月2日晚上七点左右已经被修复，存在时间不长。随着被修复的问题还有很多，墨水不多，这里不多说。<br>首先通过<a href="https://ti.qq.com/cgi-node/honest-say/receive/mine" target="_blank" rel="noopener">https://ti.qq.com/cgi-node/honest-say/receive/mine</a> ，可以打开自己的坦白说JSON源，然后发现EncodeUin后的加密代码，如图：<br><img src="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/B.png" alt><br>有大佬破解出了：<br><img src="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/A.png" alt><br>对照解码后便可以得到发送者的QQ号码……恩 ，很可怕。<br>当然问题很严重，修复也很快，现在只能被开发者调侃。怎么说呢，就当愚人节菜单吧，在匿名的世界里皮一下也得适当一些233。<br><img src="/2018/04/03/关于QQ坦白说JSON源破解对方身份的方法/C.png" alt></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QQ坦白说/">QQ坦白说</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-CTF-Tests-3"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/03/31/CTF-Tests-3/">CTF-Tests(3)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/03/31/CTF-Tests-3/" class="article-date">
-	  <time datetime="2018-03-31T13:02:45.000Z" itemprop="datePublished">2018-03-31</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/信息安全/">信息安全</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p>2018年0ctf签到题<br><img src="/2018/03/31/CTF-Tests-3/A.png" alt><br>根据提示要求加入freenode网站的IRC(Internet Relay Chat)0ctf2018聊天室来获取flag。初次进入chat.freenode.net，网页没有反应，推测端口问题或者是网络节点问题。之后我在进入freenode.net后，按照说明使用了6667~6669的端口，均不能成功，于是打开手机VPN，等待之后成功进入聊天页面，输入给定的#0ctf2018进入聊天室，得到flag。<br></p>
-        <!--  1.2018年0ctf签到题根据提示要求加入freenode网站的IRC(Internet Relay Chat)0ctf2018聊天室来获取flag。初次进入chat.freenode.net，网页没有反应，推测端口问题或者是网络节点问题。之后我在进入freenode.net后，按照说明使用了6667~6669的端口，均不能成功，于是打开手机VPN，等待之后成功进入聊天页面，输入给定的#......  -->
-        <p class="article-more-link">
-          <a href="/2018/03/31/CTF-Tests-3/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-一些密码学解密网站"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/03/29/一些密码学解密网站/">一些密码学解密网站</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/03/29/一些密码学解密网站/" class="article-date">
-	  <time datetime="2018-03-29T14:53:00.000Z" itemprop="datePublished">2018-03-29</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/信息安全/">信息安全</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>资料来源网络，持续更新。<br>URL[<a href="http://tool.chinaz.com/tools/urlencode.aspx]" target="_blank" rel="noopener">http://tool.chinaz.com/tools/urlencode.aspx]</a>;</p>
-<p>JSFuck[<a href="http://discogscounter.getfreehosting.co.uk/js-noalnum.php?i=1]" target="_blank" rel="noopener">http://discogscounter.getfreehosting.co.uk/js-noalnum.php?i=1]</a>;</p>
-<p>Base64[<a href="http://www1.tc711.com/tool/BASE64.htm]" target="_blank" rel="noopener">http://www1.tc711.com/tool/BASE64.htm]</a>;</p>
-<p>Base64(img)[<a href="http://www.vgot.net/test/image2base64.php]" target="_blank" rel="noopener">http://www.vgot.net/test/image2base64.php]</a>;</p>
-<p>Base32[<a href="https://tools.deamwork.com/crypt/decrypt/base32decode.html]" target="_blank" rel="noopener">https://tools.deamwork.com/crypt/decrypt/base32decode.html]</a>;</p>
-<p>String[<a href="http://www.5ixuexiwang.com/str/]" target="_blank" rel="noopener">http://www.5ixuexiwang.com/str/]</a>;</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/工具站/">工具站</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-CTF-Tests-2"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/03/29/CTF-Tests-2/">CTF-Tests(2)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/03/29/CTF-Tests-2/" class="article-date">
-	  <time datetime="2018-03-29T13:34:58.000Z" itemprop="datePublished">2018-03-29</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/信息安全/">信息安全</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script src="\assets\js\APlayer.min.js"> </script><p>仍然是5道普通的CTF。</p>
-<h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p><img src="/2018/03/29/CTF-Tests-2/A.png" alt><br>页面会不断弹出”FLAG就在这里”、”来找找吧”这样的信息。在强行关闭弹窗后，审查元素，得到如下的编码，弄清后在网站[<a href="http://tool.chinaz.com/tools/urlencode.aspx]" target="_blank" rel="noopener">http://tool.chinaz.com/tools/urlencode.aspx]</a> Unicode解码得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/B.png" alt></p>
-<h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><p><img src="/2018/03/29/CTF-Tests-2/C.png" alt><br>根据提示打开源代码，找到之后同样按照提示进行解码后便得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/D.png" alt><br><img src="/2018/03/29/CTF-Tests-2/E.png" alt></p>
-<h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><p><img src="/2018/03/29/CTF-Tests-2/F.png" alt><br>了解到同样是一个编码后，根据提示JSFuck(呃…)解码，会得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/G.png" alt><br><img src="/2018/03/29/CTF-Tests-2/H.png" alt></p>
-<h2 id="4"><a href="#4" class="headerlink" title="4."></a>4.</h2><p><img src="/2018/03/29/CTF-Tests-2/I.png" alt><br><img src="/2018/03/29/CTF-Tests-2/J.png" alt><br>题目叫头等舱，而打开后提示什么都没有，审查元素以及查看源后无果，用Burpsuite抓包，得到Flag。<br><img src="/2018/03/29/CTF-Tests-2/K.png" alt></p>
-<h2 id="5"><a href="#5" class="headerlink" title="5."></a>5.</h2><p><img src="/2018/03/29/CTF-Tests-2/L.png" alt><br>只有这些内容，尝试从语法入手后添加链接，回车后会得到FLAG。<br><img src="/2018/03/29/CTF-Tests-2/M.png" alt><br><img src="/2018/03/29/CTF-Tests-2/N.png" alt></p>
-
       
     </div>
     <footer class="article-footer">

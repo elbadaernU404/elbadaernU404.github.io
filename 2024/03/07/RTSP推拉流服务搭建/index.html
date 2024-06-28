@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>rtsp推拉流服务搭建 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="yolov8RTSP">
+  
+  
+  
+  
+  <meta name="description" content="一、基础服务搭建（windows）1.下载RTSP服务器下载链接：https://github.com/aler9/rtsp-simple-server/releases  2.下载FFmpeg工具下载链接：https://github.com/BtbN/FFmpeg-Builds/releases  3.启动服务器进入RTSP服务器路径，控制台执行.\mediamtx.exe">
+<meta name="keywords" content="yolov8,RTSP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RTSP推拉流服务搭建">
+<meta property="og:url" content="http://yoursite.com/2024/03/07/RTSP推拉流服务搭建/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="一、基础服务搭建（windows）1.下载RTSP服务器下载链接：https://github.com/aler9/rtsp-simple-server/releases  2.下载FFmpeg工具下载链接：https://github.com/BtbN/FFmpeg-Builds/releases  3.启动服务器进入RTSP服务器路径，控制台执行.\mediamtx.exe">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2024/03/07/RTSP推拉流服务搭建/1.png">
+<meta property="og:image" content="http://yoursite.com/2024/03/07/RTSP推拉流服务搭建/2.png">
+<meta property="og:image" content="http://yoursite.com/2024/03/07/RTSP推拉流服务搭建/3.png">
+<meta property="og:image" content="http://yoursite.com/2024/03/07/RTSP推拉流服务搭建/4.png">
+<meta property="og:image" content="http://yoursite.com/2024/03/07/RTSP推拉流服务搭建/5.png">
+<meta property="og:image" content="http://yoursite.com/2024/03/07/RTSP推拉流服务搭建/6.png">
+<meta property="og:image" content="http://yoursite.com/2024/03/07/RTSP推拉流服务搭建/7.png">
+<meta property="og:image" content="http://yoursite.com/2024/03/07/RTSP推拉流服务搭建/8.png">
+<meta property="og:image" content="http://yoursite.com/2024/03/07/RTSP推拉流服务搭建/9.png">
+<meta property="og:updated_time" content="2024-06-28T03:50:04.485Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RTSP推拉流服务搭建">
+<meta name="twitter:description" content="一、基础服务搭建（windows）1.下载RTSP服务器下载链接：https://github.com/aler9/rtsp-simple-server/releases  2.下载FFmpeg工具下载链接：https://github.com/BtbN/FFmpeg-Builds/releases  3.启动服务器进入RTSP服务器路径，控制台执行.\mediamtx.exe">
+<meta name="twitter:image" content="http://yoursite.com/2024/03/07/RTSP推拉流服务搭建/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-RTSP推拉流服务搭建" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      RTSP推拉流服务搭建
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2024/03/07/RTSP推拉流服务搭建/" class="article-date">
+	  <time datetime="2024-03-07T02:02:13.000Z" itemprop="datePublished">2024-03-07</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/流媒体/">流媒体</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="一、基础服务搭建（windows）"><a href="#一、基础服务搭建（windows）" class="headerlink" title="一、基础服务搭建（windows）"></a>一、基础服务搭建（windows）</h2><h3 id="1-下载RTSP服务器"><a href="#1-下载RTSP服务器" class="headerlink" title="1.下载RTSP服务器"></a>1.下载RTSP服务器</h3><p>下载链接：<a href="https://github.com/aler9/rtsp-simple-server/releases" target="_blank" rel="noopener">https://github.com/aler9/rtsp-simple-server/releases</a></p>
+<p><img src="/2024/03/07/RTSP推拉流服务搭建/1.png" alt></p>
+<h3 id="2-下载FFmpeg工具"><a href="#2-下载FFmpeg工具" class="headerlink" title="2.下载FFmpeg工具"></a>2.下载FFmpeg工具</h3><p>下载链接：<a href="https://github.com/BtbN/FFmpeg-Builds/releases" target="_blank" rel="noopener">https://github.com/BtbN/FFmpeg-Builds/releases</a></p>
+<p><img src="/2024/03/07/RTSP推拉流服务搭建/2.png" alt></p>
+<h3 id="3-启动服务器"><a href="#3-启动服务器" class="headerlink" title="3.启动服务器"></a>3.启动服务器</h3><p>进入RTSP服务器路径，控制台执行<code>.\mediamtx.exe</code></p>
+<p><img src="/2024/03/07/RTSP推拉流服务搭建/3.png" alt></p>
+<a id="more"></a>
+<h3 id="4-启动推流服务"><a href="#4-启动推流服务" class="headerlink" title="4.启动推流服务"></a>4.启动推流服务</h3><p>进入FFmpeg服务器路径，控制台执行<code>ffmpeg -re -stream_loop -1 -i belt.mp4 -c copy -f rtsp rtsp://127.0.0.1:8554/video</code>，循环播放视频文件并进行推流</p>
+<p><img src="/2024/03/07/RTSP推拉流服务搭建/4.png" alt></p>
+<h3 id="5-播放流媒体"><a href="#5-播放流媒体" class="headerlink" title="5.播放流媒体"></a>5.播放流媒体</h3><p>启动VLC播放器</p>
+<p><img src="/2024/03/07/RTSP推拉流服务搭建/5.png" alt></p>
+<p><img src="/2024/03/07/RTSP推拉流服务搭建/6.png" alt></p>
+<h2 id="二、opencv-python-实现RTSP推拉流"><a href="#二、opencv-python-实现RTSP推拉流" class="headerlink" title="二、opencv+python 实现RTSP推拉流"></a>二、opencv+python 实现RTSP推拉流</h2><h3 id="1-拉流"><a href="#1-拉流" class="headerlink" title="1.拉流"></a>1.拉流</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> queue</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">capturevideo</span><span class="params">(capture, framequeue)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> framequeue.full():</span><br><span class="line">            time.sleep(<span class="number">0.1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ret, frame = capture.read()</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> ret:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            image_bgr = frame</span><br><span class="line">            framequeue.put(image_bgr)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">execute_rtsp</span><span class="params">(rtsp_src)</span>:</span></span><br><span class="line">    capture = cv2.VideoCapture(rtsp_src)</span><br><span class="line">    framequeue = queue.Queue(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    thread = threading.Thread(</span><br><span class="line">        target=capturevideo, args=(capture, framequeue))</span><br><span class="line">    thread.start()</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))</span><br><span class="line">    height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))</span><br><span class="line">    fps = int(capture.get(cv2.CAP_PROP_FPS))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> framequeue.empty():</span><br><span class="line">            frame_bgr = framequeue.get()</span><br><span class="line">            cv2.imshow(<span class="string">"image"</span>, frame_bgr)  <span class="comment"># 显示图像</span></span><br><span class="line">            cv2.waitKey(<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    rtsp_url = <span class="string">'rtsp://192.168.9.164:8554/video'</span></span><br><span class="line">    execute_rtsp(rtsp_url)</span><br></pre></td></tr></table></figure>
+<h3 id="2-拉流-推流"><a href="#2-拉流-推流" class="headerlink" title="2.拉流+推流"></a>2.拉流+推流</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> queue</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> subprocess <span class="keyword">as</span> sp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">capturevideo</span><span class="params">(capture, framequeue)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> framequeue.full():</span><br><span class="line">            time.sleep(<span class="number">0.1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ret, frame = capture.read()</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> ret:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            image_bgr = frame</span><br><span class="line">            framequeue.put(image_bgr)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">execute_rtsp</span><span class="params">(rtsp_src, rtsp_dst)</span>:</span></span><br><span class="line">    capture = cv2.VideoCapture(rtsp_src)</span><br><span class="line">    framequeue = queue.Queue(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    thread = threading.Thread(</span><br><span class="line">        target=capturevideo, args=(capture, framequeue))</span><br><span class="line">    thread.start()</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))</span><br><span class="line">    height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))</span><br><span class="line">    fps = int(capture.get(cv2.CAP_PROP_FPS))</span><br><span class="line">    command = [<span class="string">'ffmpeg'</span>,</span><br><span class="line">               <span class="string">'-y'</span>,</span><br><span class="line">               <span class="string">'-f'</span>, <span class="string">'rawvideo'</span>,</span><br><span class="line">               <span class="string">'-vcodec'</span>, <span class="string">'rawvideo'</span>,</span><br><span class="line">               <span class="string">'-pix_fmt'</span>, <span class="string">'bgr24'</span>,</span><br><span class="line">               <span class="string">'-s'</span>, <span class="string">"&#123;&#125;x&#123;&#125;"</span>.format(width, height),</span><br><span class="line">               <span class="string">'-r'</span>, str(fps),</span><br><span class="line">               <span class="string">'-i'</span>, <span class="string">'-'</span>,</span><br><span class="line">               <span class="string">'-c:v'</span>, <span class="string">'libx264'</span>,</span><br><span class="line">               <span class="string">'-pix_fmt'</span>, <span class="string">'yuv420p'</span>,</span><br><span class="line">               <span class="string">'-preset'</span>, <span class="string">'ultrafast'</span>,</span><br><span class="line">               <span class="string">'-f'</span>, <span class="string">'rtsp'</span>,</span><br><span class="line">               rtsp_dst]</span><br><span class="line">    pipe = sp.Popen(command, stdin=sp.PIPE)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> framequeue.empty():</span><br><span class="line">            frame_bgr = framequeue.get()</span><br><span class="line">            pipe.stdin.write(frame_bgr.tostring())</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    rtsp_url = <span class="string">'rtsp://192.168.9.164:8554/video'</span></span><br><span class="line">    rtsp_stream = <span class="string">'rtsp://192.168.9.164:8554/live'</span></span><br><span class="line">    execute_rtsp(rtsp_url, rtsp_stream)</span><br></pre></td></tr></table></figure>
+<p><img src="/2024/03/07/RTSP推拉流服务搭建/7.png" alt></p>
+<p>可以看到，视频码流已推送到8554/live地址下</p>
+<h2 id="三、视频处理，推流"><a href="#三、视频处理，推流" class="headerlink" title="三、视频处理，推流"></a>三、视频处理，推流</h2><h3 id="1-多线程处理视频帧"><a href="#1-多线程处理视频帧" class="headerlink" title="1.多线程处理视频帧"></a>1.多线程处理视频帧</h3><p>主函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> queue</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">import</span> subprocess <span class="keyword">as</span> sp</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"><span class="keyword">from</span> visualize.detection <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">capturevideo</span><span class="params">(capture, framequeue)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> frame_id</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> framequeue.full():</span><br><span class="line">            time.sleep(<span class="number">0.1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            ret, frame = capture.read()</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> ret:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            image_bgr = frame</span><br><span class="line">            frame_id += <span class="number">1</span></span><br><span class="line">            framequeue.put((image_bgr, frame_id))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">execute_rtsp</span><span class="params">(rtsp_src, rtsp_dst)</span>:</span></span><br><span class="line">    capture = cv2.VideoCapture(rtsp_src)</span><br><span class="line">    framequeue = queue.Queue(<span class="number">10</span>)</span><br><span class="line">    outputqueue = queue.Queue(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    thread = threading.Thread(</span><br><span class="line">        target=capturevideo, args=(capture, framequeue))</span><br><span class="line">    thread.start()</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))</span><br><span class="line">    height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))</span><br><span class="line">    fps = int(capture.get(cv2.CAP_PROP_FPS))</span><br><span class="line">    command = [<span class="string">'ffmpeg'</span>,</span><br><span class="line">               <span class="string">'-y'</span>,</span><br><span class="line">               <span class="string">'-f'</span>, <span class="string">'rawvideo'</span>,</span><br><span class="line">               <span class="string">'-vcodec'</span>, <span class="string">'rawvideo'</span>,</span><br><span class="line">               <span class="string">'-pix_fmt'</span>, <span class="string">'bgr24'</span>,</span><br><span class="line">               <span class="string">'-s'</span>, <span class="string">"&#123;&#125;x&#123;&#125;"</span>.format(width, height),</span><br><span class="line">               <span class="string">'-r'</span>, str(fps),</span><br><span class="line">               <span class="string">'-i'</span>, <span class="string">'-'</span>,</span><br><span class="line">               <span class="string">'-c:v'</span>, <span class="string">'libx264'</span>,</span><br><span class="line">               <span class="string">'-pix_fmt'</span>, <span class="string">'yuv420p'</span>,</span><br><span class="line">               <span class="string">'-preset'</span>, <span class="string">'ultrafast'</span>,</span><br><span class="line">               <span class="string">'-f'</span>, <span class="string">'rtsp'</span>,</span><br><span class="line">               rtsp_dst]</span><br><span class="line">    pipe = sp.Popen(command, stdin=sp.PIPE)</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">5</span>):</span><br><span class="line">        t = threading.Thread(target=process, args=(framequeue, outputqueue, pipe))</span><br><span class="line">        t.start()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">process</span><span class="params">(framequeue, outputqueue, pipe)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> queue_id</span><br><span class="line">    model = YOLO(<span class="string">'runs/detect/helmet_model/weights/best.pt'</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> framequeue.empty():</span><br><span class="line">            frame_bgr, frame_uid = framequeue.get()</span><br><span class="line">            results = model.predict(</span><br><span class="line">                frame_bgr,</span><br><span class="line">                stream=<span class="literal">False</span>,</span><br><span class="line">                save=<span class="literal">False</span>,</span><br><span class="line">                classes=[<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>],</span><br><span class="line">                device=[<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                verbose=<span class="literal">False</span>,</span><br><span class="line">            )</span><br><span class="line">            names = results[<span class="number">0</span>].names</span><br><span class="line">            clses = [int(i) <span class="keyword">for</span> i <span class="keyword">in</span> results[<span class="number">0</span>].boxes.cls.tolist()]</span><br><span class="line">            boxes = results[<span class="number">0</span>].boxes.xyxy.tolist()</span><br><span class="line">            name_set = [names.get(i) <span class="keyword">for</span> i <span class="keyword">in</span> clses]</span><br><span class="line"></span><br><span class="line">            frame_bgr = visualize_det(frame_bgr, boxes, name_set)</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                time.sleep(<span class="number">0.0001</span>)</span><br><span class="line">                <span class="keyword">if</span> queue_id+<span class="number">1</span> == frame_uid:</span><br><span class="line">                    outputqueue.put(frame_bgr)</span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            frame = outputqueue.get()</span><br><span class="line">            pipe.stdin.write(frame.tostring())</span><br><span class="line">            queue_id += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    frame_id = <span class="number">0</span></span><br><span class="line">    queue_id = <span class="number">0</span></span><br><span class="line">    rtsp_url = <span class="string">'rtsp://192.168.9.164:8554/video'</span></span><br><span class="line">    rtsp_stream = <span class="string">'rtsp://192.168.9.164:8554/live'</span></span><br><span class="line">    execute_rtsp(rtsp_url, rtsp_stream)</span><br></pre></td></tr></table></figure>
+<p>可视化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageDraw, ImageFile, ImageFont</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> settings <span class="keyword">import</span> PR</span><br><span class="line"></span><br><span class="line">font_file = os.path.join(PR, <span class="string">'visualize/SourceHanSansCN-Medium.otf'</span>)</span><br><span class="line">ImageFile.LOAD_TRUNCATED_IMAGES = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_det</span><span class="params">(im, boxes, names)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">        im = Image.open(im)</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line"></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line">    im = im.convert(<span class="string">'RGBA'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, name <span class="keyword">in</span> enumerate(names):</span><br><span class="line">        box = boxes[i]</span><br><span class="line">        box = [int(j) <span class="keyword">for</span> j <span class="keyword">in</span> box]</span><br><span class="line">        text = name</span><br><span class="line"></span><br><span class="line">        draw = ImageDraw.Draw(im)</span><br><span class="line">        draw.text(</span><br><span class="line">            (box[<span class="number">0</span>], box[<span class="number">1</span>]),</span><br><span class="line">            text,</span><br><span class="line">            font=ImageFont.truetype(font_file, size=<span class="number">20</span>),</span><br><span class="line">            fill=(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1000</span>))</span><br><span class="line">        draw.rectangle(</span><br><span class="line">            ((box[<span class="number">0</span>], box[<span class="number">1</span>]), (box[<span class="number">2</span>], box[<span class="number">3</span>])),</span><br><span class="line">            fill=<span class="literal">None</span>,</span><br><span class="line">            outline=(<span class="number">139</span>, <span class="number">0</span>, <span class="number">139</span>),</span><br><span class="line">            width=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    im = im.convert(<span class="string">'RGB'</span>)</span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
+<p>参数配置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">PR = os.path.dirname(__file__)</span><br><span class="line"></span><br><span class="line">worker = &#123;</span><br><span class="line">    <span class="string">'worker_threads'</span>: <span class="number">12</span>,</span><br><span class="line">    <span class="string">'worker_queue_len'</span>: <span class="number">10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-多线程封装"><a href="#2-多线程封装" class="headerlink" title="2.多线程封装"></a>2.多线程封装</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> queue</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> subprocess <span class="keyword">as</span> sp</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"><span class="keyword">from</span> visualize.detection <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> settings <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StreamingDetectionServer</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, stream_src, stream_dst)</span>:</span></span><br><span class="line">        self.pipe = <span class="literal">None</span></span><br><span class="line">        self.model = <span class="literal">None</span></span><br><span class="line">        self.capture = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        self.fps = <span class="number">0</span></span><br><span class="line">        self.width = <span class="number">0</span></span><br><span class="line">        self.height = <span class="number">0</span></span><br><span class="line">        self.frame_id = <span class="number">0</span></span><br><span class="line">        self.solve_id = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        self.stream_src = stream_src</span><br><span class="line">        self.stream_dst = stream_dst</span><br><span class="line">        self.framequeue = queue.Queue(worker.get(<span class="string">'worker_queue_len'</span>))</span><br><span class="line">        self.outputqueue = queue.Queue(worker.get(<span class="string">'worker_queue_len'</span>))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.capture = cv2.VideoCapture(self.stream_src)</span><br><span class="line">        self.fps = int(self.capture.get(cv2.CAP_PROP_FPS))</span><br><span class="line">        self.width = int(self.capture.get(cv2.CAP_PROP_FRAME_WIDTH))</span><br><span class="line">        self.height = int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT))</span><br><span class="line"></span><br><span class="line">        capture_thread = threading.Thread(target=self.capture_video)</span><br><span class="line">        capture_thread.start()</span><br><span class="line"></span><br><span class="line">        command = [<span class="string">'ffmpeg'</span>,</span><br><span class="line">                   <span class="string">'-y'</span>,</span><br><span class="line">                   <span class="string">'-f'</span>, <span class="string">'rawvideo'</span>,</span><br><span class="line">                   <span class="string">'-vcodec'</span>, <span class="string">'rawvideo'</span>,</span><br><span class="line">                   <span class="string">'-pix_fmt'</span>, <span class="string">'bgr24'</span>,</span><br><span class="line">                   <span class="string">'-s'</span>, <span class="string">"&#123;&#125;x&#123;&#125;"</span>.format(self.width, self.height),</span><br><span class="line">                   <span class="string">'-r'</span>, str(self.fps),</span><br><span class="line">                   <span class="string">'-i'</span>, <span class="string">'-'</span>,</span><br><span class="line">                   <span class="string">'-c:v'</span>, <span class="string">'libx264'</span>,</span><br><span class="line">                   <span class="string">'-pix_fmt'</span>, <span class="string">'yuv420p'</span>,</span><br><span class="line">                   <span class="string">'-preset'</span>, <span class="string">'ultrafast'</span>,</span><br><span class="line">                   <span class="string">'-f'</span>, <span class="string">'rtsp'</span>,</span><br><span class="line">                   self.stream_dst]</span><br><span class="line">        self.pipe = sp.Popen(command, stdin=sp.PIPE)</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> range(worker.get(<span class="string">'worker_threads'</span>)):</span><br><span class="line">            process_thread = threading.Thread(target=self.process_video)</span><br><span class="line">            process_thread.start()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">capture_video</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> self.framequeue.full():</span><br><span class="line">                time.sleep(<span class="number">0.05</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                ret, frame = self.capture.read()</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> ret:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                image_bgr = frame</span><br><span class="line">                <span class="comment"># with lock:</span></span><br><span class="line">                self.frame_id += <span class="number">1</span></span><br><span class="line">                self.framequeue.put((image_bgr, self.frame_id))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_video</span><span class="params">(self)</span>:</span></span><br><span class="line">        model = YOLO(<span class="string">'runs/detect/helmet_model/weights/best.pt'</span>)</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> self.framequeue.empty():</span><br><span class="line">                frame_bgr, frame_id = self.framequeue.get()</span><br><span class="line">                results = model.predict(</span><br><span class="line">                    frame_bgr,</span><br><span class="line">                    stream=<span class="literal">False</span>,</span><br><span class="line">                    save=<span class="literal">False</span>,</span><br><span class="line">                    classes=[<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>],</span><br><span class="line">                    device=[<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">                    verbose=<span class="literal">False</span>,</span><br><span class="line">                )</span><br><span class="line">                names = results[<span class="number">0</span>].names</span><br><span class="line">                clses = [int(i) <span class="keyword">for</span> i <span class="keyword">in</span> results[<span class="number">0</span>].boxes.cls.tolist()]</span><br><span class="line">                boxes = results[<span class="number">0</span>].boxes.xyxy.tolist()</span><br><span class="line">                name_set = [names.get(i) <span class="keyword">for</span> i <span class="keyword">in</span> clses]</span><br><span class="line"></span><br><span class="line">                frame_bgr = visualize_det(frame_bgr, boxes, name_set)</span><br><span class="line">                <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                    time.sleep(<span class="number">0.0001</span>)</span><br><span class="line">                    <span class="keyword">if</span> self.solve_id + <span class="number">1</span> == frame_id:</span><br><span class="line">                        self.pipe.stdin.write(frame_bgr.tostring())</span><br><span class="line">                        self.solve_id += <span class="number">1</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    rtsp_url = <span class="string">'rtsp://192.168.9.164:8554/video'</span></span><br><span class="line">    rtsp_stream = <span class="string">'rtsp://192.168.9.164:8554/live'</span></span><br><span class="line">    sds = StreamingDetectionServer(rtsp_url, rtsp_stream)</span><br><span class="line">    sds.run()</span><br></pre></td></tr></table></figure>
+<h3 id="3-多进程处理视频帧（进一步提升算法处理速度）"><a href="#3-多进程处理视频帧（进一步提升算法处理速度）" class="headerlink" title="3.多进程处理视频帧（进一步提升算法处理速度）"></a>3.多进程处理视频帧（进一步提升算法处理速度）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">import</span> subprocess <span class="keyword">as</span> sp</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"><span class="keyword">from</span> visualize.detection <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> settings <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StreamingDetectionServer</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, stream_src, stream_dst)</span>:</span></span><br><span class="line">        self.pipe = <span class="literal">None</span></span><br><span class="line">        self.model = <span class="literal">None</span></span><br><span class="line">        self.capture = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        self.fps = <span class="number">0</span></span><br><span class="line">        self.width = <span class="number">0</span></span><br><span class="line">        self.height = <span class="number">0</span></span><br><span class="line">        self.frame_id = <span class="number">0</span></span><br><span class="line">        self.solve_id = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        self.stream_src = stream_src</span><br><span class="line">        self.stream_dst = stream_dst</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        framequeue = multiprocessing.Queue(<span class="number">10</span>)</span><br><span class="line">        solvequeue = multiprocessing.Queue(<span class="number">10</span>)</span><br><span class="line">        solvequeue.put(<span class="number">1</span>)</span><br><span class="line">        self.capture = cv2.VideoCapture(self.stream_src)</span><br><span class="line">        self.fps = int(self.capture.get(cv2.CAP_PROP_FPS))</span><br><span class="line">        self.width = int(self.capture.get(cv2.CAP_PROP_FRAME_WIDTH))</span><br><span class="line">        self.height = int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT))</span><br><span class="line"></span><br><span class="line">        command = [<span class="string">'ffmpeg'</span>,</span><br><span class="line">                   <span class="string">'-y'</span>,</span><br><span class="line">                   <span class="string">'-f'</span>, <span class="string">'rawvideo'</span>,</span><br><span class="line">                   <span class="string">'-vcodec'</span>, <span class="string">'rawvideo'</span>,</span><br><span class="line">                   <span class="string">'-pix_fmt'</span>, <span class="string">'bgr24'</span>,</span><br><span class="line">                   <span class="string">'-s'</span>, <span class="string">"&#123;&#125;x&#123;&#125;"</span>.format(self.width, self.height),</span><br><span class="line">                   <span class="string">'-r'</span>, str(self.fps),</span><br><span class="line">                   <span class="string">'-i'</span>, <span class="string">'-'</span>,</span><br><span class="line">                   <span class="string">'-c:v'</span>, <span class="string">'libx264'</span>,</span><br><span class="line">                   <span class="string">'-pix_fmt'</span>, <span class="string">'yuv420p'</span>,</span><br><span class="line">                   <span class="string">'-preset'</span>, <span class="string">'ultrafast'</span>,</span><br><span class="line">                   <span class="string">'-f'</span>, <span class="string">'rtsp'</span>,</span><br><span class="line">                   self.stream_dst]</span><br><span class="line">        pipe = sp.Popen(command, stdin=sp.PIPE)</span><br><span class="line"></span><br><span class="line">        capture_thread = threading.Thread(target=self.capture_video, args=(framequeue,))</span><br><span class="line">        capture_thread.start()</span><br><span class="line"></span><br><span class="line">        solve_id = multiprocessing.Value(<span class="string">'i'</span>, <span class="number">1</span>)  <span class="comment"># 使用进程全局变量记录处理视频帧的顺序</span></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> range(worker.get(<span class="string">'worker_threads'</span>)):</span><br><span class="line">            process_thread = multiprocessing.Process(target=self.process_video, args=(pipe, framequeue, solve_id))</span><br><span class="line">            process_thread.start()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">capture_video</span><span class="params">(self, framequeue)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> framequeue.full():</span><br><span class="line">                time.sleep(<span class="number">0.05</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                ret, frame = self.capture.read()</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> ret:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                image_bgr = frame</span><br><span class="line">                <span class="comment"># with lock:</span></span><br><span class="line">                self.frame_id += <span class="number">1</span></span><br><span class="line">                framequeue.put((image_bgr, self.frame_id))</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_video</span><span class="params">(pipe, framequeue, solve_id)</span>:</span></span><br><span class="line">        model = YOLO(<span class="string">'runs/detect/helmet_model/weights/best.pt'</span>)</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> framequeue.empty():</span><br><span class="line">                frame_bgr, frame_id = framequeue.get()</span><br><span class="line">                results = model.predict(</span><br><span class="line">                    frame_bgr,</span><br><span class="line">                    stream=<span class="literal">False</span>,</span><br><span class="line">                    save=<span class="literal">False</span>,</span><br><span class="line">                    classes=[<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">7</span>],</span><br><span class="line">                    device=[<span class="number">0</span>],</span><br><span class="line">                    verbose=<span class="literal">False</span>,</span><br><span class="line">                    tracker=<span class="string">"bytetrack.yaml"</span></span><br><span class="line">                )</span><br><span class="line">                names = results[<span class="number">0</span>].names</span><br><span class="line">                clses = [int(i) <span class="keyword">for</span> i <span class="keyword">in</span> results[<span class="number">0</span>].boxes.cls.tolist()]</span><br><span class="line">                boxes = results[<span class="number">0</span>].boxes.xyxy.tolist()</span><br><span class="line">                name_set = [names.get(i) <span class="keyword">for</span> i <span class="keyword">in</span> clses]</span><br><span class="line"></span><br><span class="line">                frame_bgr = visualize_det(frame_bgr, boxes, name_set)</span><br><span class="line">                <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                    time.sleep(<span class="number">0.0001</span>)</span><br><span class="line">                    <span class="keyword">if</span> solve_id.value == frame_id:</span><br><span class="line">                        pipe.stdin.write(frame_bgr.tobytes())</span><br><span class="line">                        solve_id.value += <span class="number">1</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    rtsp_url = <span class="string">'rtsp://192.168.9.164:8554/video'</span></span><br><span class="line">    rtsp_stream = <span class="string">'rtsp://192.168.9.164:8554/live'</span></span><br><span class="line">    sds = StreamingDetectionServer(rtsp_url, rtsp_stream)</span><br><span class="line">    sds.run()</span><br></pre></td></tr></table></figure>
+<p><img src="/2024/03/07/RTSP推拉流服务搭建/8.png" alt></p>
+<p><img src="/2024/03/07/RTSP推拉流服务搭建/9.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTSP/">RTSP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolov8/">yolov8</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/04/05/Bert-GRU地址归一算法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Bert+GRU地址归一算法
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/01/30/yolov8-pose/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">yolov8-pose：关键点姿态检测</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、基础服务搭建（windows）"><span class="nav-number">1.</span> <span class="nav-text">一、基础服务搭建（windows）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-下载RTSP服务器"><span class="nav-number">1.1.</span> <span class="nav-text">1.下载RTSP服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-下载FFmpeg工具"><span class="nav-number">1.2.</span> <span class="nav-text">2.下载FFmpeg工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-启动服务器"><span class="nav-number">1.3.</span> <span class="nav-text">3.启动服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-启动推流服务"><span class="nav-number">1.4.</span> <span class="nav-text">4.启动推流服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-播放流媒体"><span class="nav-number">1.5.</span> <span class="nav-text">5.播放流媒体</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、opencv-python-实现RTSP推拉流"><span class="nav-number">2.</span> <span class="nav-text">二、opencv+python 实现RTSP推拉流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-拉流"><span class="nav-number">2.1.</span> <span class="nav-text">1.拉流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-拉流-推流"><span class="nav-number">2.2.</span> <span class="nav-text">2.拉流+推流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、视频处理，推流"><span class="nav-number">3.</span> <span class="nav-text">三、视频处理，推流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-多线程处理视频帧"><span class="nav-number">3.1.</span> <span class="nav-text">1.多线程处理视频帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-多线程封装"><span class="nav-number">3.2.</span> <span class="nav-text">2.多线程封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-多进程处理视频帧（进一步提升算法处理速度）"><span class="nav-number">3.3.</span> <span class="nav-text">3.多进程处理视频帧（进一步提升算法处理速度）</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2024 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2024 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

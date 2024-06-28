@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>yolov8-seg：皮带机偏移实时检测 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="yolov8opencv">
+  
+  
+  
+  
+  <meta name="description" content="环境&amp;amp;安装同上文yolov8：火灾检测 模型使用yolov8n-seg 数据标注标注工具：labelme对分割目标进行多边矩形标注">
+<meta name="keywords" content="yolov8,opencv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="yolov8-seg：皮带机偏移实时检测">
+<meta property="og:url" content="http://yoursite.com/2024/05/11/yolov8-seg：皮带机偏移实时检测/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="环境&amp;amp;安装同上文yolov8：火灾检测 模型使用yolov8n-seg 数据标注标注工具：labelme对分割目标进行多边矩形标注">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2024/05/11/yolov8-seg：皮带机偏移实时检测/1.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/11/yolov8-seg：皮带机偏移实时检测/2.png">
+<meta property="og:image" content="http://yoursite.com/2024/05/11/yolov8-seg：皮带机偏移实时检测/3.png">
+<meta property="og:updated_time" content="2024-06-28T08:16:23.152Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="yolov8-seg：皮带机偏移实时检测">
+<meta name="twitter:description" content="环境&amp;amp;安装同上文yolov8：火灾检测 模型使用yolov8n-seg 数据标注标注工具：labelme对分割目标进行多边矩形标注">
+<meta name="twitter:image" content="http://yoursite.com/2024/05/11/yolov8-seg：皮带机偏移实时检测/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-yolov8-seg：皮带机偏移实时检测" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      yolov8-seg：皮带机偏移实时检测
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2024/05/11/yolov8-seg：皮带机偏移实时检测/" class="article-date">
+	  <time datetime="2024-05-11T01:58:37.000Z" itemprop="datePublished">2024-05-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/实例分割/">实例分割</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="环境-amp-安装"><a href="#环境-amp-安装" class="headerlink" title="环境&amp;安装"></a>环境&amp;安装</h2><p>同上文yolov8：火灾检测</p>
+<p>模型使用<code>yolov8n-seg</code></p>
+<h2 id="数据标注"><a href="#数据标注" class="headerlink" title="数据标注"></a>数据标注</h2><h3 id="标注工具：labelme"><a href="#标注工具：labelme" class="headerlink" title="标注工具：labelme"></a>标注工具：labelme</h3><p>对分割目标进行多边矩形标注</p>
+<p><img src="/2024/05/11/yolov8-seg：皮带机偏移实时检测/1.png" alt></p>
+<p><img src="/2024/05/11/yolov8-seg：皮带机偏移实时检测/2.png" alt></p>
+<a id="more"></a>
+<h3 id="数据格式转换"><a href="#数据格式转换" class="headerlink" title="数据格式转换"></a>数据格式转换</h3><p>将labelme多边矩形数据格式转为yolo-seg数据格式，通用转换代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convert_labelme_to_yolo</span><span class="params">(json_file, output_txt_file, label_to_class_id)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> open(json_file, <span class="string">'r'</span>) <span class="keyword">as</span> file:</span><br><span class="line">        data = json.load(file)</span><br><span class="line"></span><br><span class="line">    image_width = data[<span class="string">'imageWidth'</span>]</span><br><span class="line">    image_height = data[<span class="string">'imageHeight'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> open(output_txt_file, <span class="string">'w'</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">for</span> shape <span class="keyword">in</span> data[<span class="string">'shapes'</span>]:</span><br><span class="line">            points = shape[<span class="string">'points'</span>]</span><br><span class="line">            class_id = label_to_class_id.get(shape[<span class="string">'label'</span>], <span class="number">-1</span>)</span><br><span class="line">            normalized_points = []</span><br><span class="line">            <span class="keyword">for</span> x, y <span class="keyword">in</span> points:</span><br><span class="line">                nx = round(x / image_width, <span class="number">6</span>)</span><br><span class="line">                ny = round(y / image_height, <span class="number">6</span>)</span><br><span class="line">                normalized_points.append(<span class="string">f"<span class="subst">&#123;nx&#125;</span> <span class="subst">&#123;ny&#125;</span>"</span>)</span><br><span class="line">            file.write(<span class="string">f"<span class="subst">&#123;class_id&#125;</span> "</span> + <span class="string">" "</span>.join(normalized_points) + <span class="string">"\n"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">batch_convert</span><span class="params">(json_folder, output_folder, label_to_class_id)</span>:</span></span><br><span class="line">    <span class="comment"># 确保输出文件夹存在</span></span><br><span class="line">    os.makedirs(output_folder, exist_ok=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 遍历文件夹中的所有JSON文件</span></span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> os.listdir(json_folder):</span><br><span class="line">        <span class="keyword">if</span> filename.endswith(<span class="string">'.json'</span>):</span><br><span class="line">            json_file = os.path.join(json_folder, filename)</span><br><span class="line">            output_txt_file = os.path.join(output_folder, filename.replace(<span class="string">'.json'</span>, <span class="string">'.txt'</span>))</span><br><span class="line">            convert_labelme_to_yolo(json_file, output_txt_file, label_to_class_id)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_label_file</span><span class="params">(label_dict, output)</span>:</span></span><br><span class="line">    sorted_labels = [label <span class="keyword">for</span> label, _ <span class="keyword">in</span> sorted(label_dict.items(), key=<span class="keyword">lambda</span> item: item[<span class="number">1</span>])]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> open(output, <span class="string">'w'</span>) <span class="keyword">as</span> file:</span><br><span class="line">        <span class="keyword">for</span> label <span class="keyword">in</span> sorted_labels:</span><br><span class="line">            file.write(<span class="string">f"<span class="subst">&#123;label&#125;</span>\n"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 使用示例</span></span><br><span class="line">    label_map = &#123;</span><br><span class="line">        <span class="string">'belt'</span>: <span class="number">0</span>,</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    json_path = <span class="string">r'D:\pycharmproject_2\yolo\ultralytics\datasets\belt_seg\json'</span></span><br><span class="line">    output_path = <span class="string">r'D:\pycharmproject_2\yolo\ultralytics\datasets\belt_seg\images'</span></span><br><span class="line"></span><br><span class="line">    batch_convert(json_path, output_path, label_map)</span><br><span class="line">    <span class="comment"># 生成labelme.txt文件，按照label_dict的值从小到大排列，一个类别1行</span></span><br><span class="line">    create_label_file(label_map, <span class="string">r'D:\pycharmproject_2\yolo\ultralytics\datasets\belt_seg\yolo-label.txt'</span>)</span><br></pre></td></tr></table></figure>
+<p>完成后稍作整理，将数据集按5:1:1比例划分成train/test/val</p>
+<h3 id="创建训练yaml文件"><a href="#创建训练yaml文件" class="headerlink" title="创建训练yaml文件"></a>创建训练yaml文件</h3><p>参考<code>yolov8n-seg.yaml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">train:</span> <span class="string">/exp/work/video/ultralytics/datasets/belt_seg/data/train/images</span></span><br><span class="line"><span class="attr">val:</span> <span class="string">/exp/work/video/ultralytics/datasets/belt_seg/data/val/images</span></span><br><span class="line"><span class="attr">test:</span> <span class="string">/exp/work/video/ultralytics/datasets/belt_seg/data/test/images</span></span><br><span class="line"><span class="attr">nc:</span> <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="attr">names:</span> <span class="string">[belt]</span></span><br></pre></td></tr></table></figure>
+<h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载预训练模型</span></span><br><span class="line">model = YOLO(<span class="string">'yolov8n-seg.pt'</span>)  <span class="comment"># load a pretrained model (recommended for training)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用双卡训练</span></span><br><span class="line">model.train(</span><br><span class="line">    data=<span class="string">'datasets/belt_seg/belt_seg.yaml'</span>,</span><br><span class="line">    epochs=<span class="number">300</span>,</span><br><span class="line">    device=[<span class="number">0</span>, <span class="number">1</span>],</span><br><span class="line">    save_dir=<span class="string">'runs/segment/belt'</span>)</span><br><span class="line"><span class="comment"># 启用模型验证</span></span><br><span class="line">model.val()</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line">(py39_yolov8) [root@jdz ultralytics]# python yolov8_train.py </span><br><span class="line">Ultralytics YOLOv8.2.41 🚀 Python-3.9.18 torch-2.1.2+cu121 CUDA:0 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">                                                           CUDA:1 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">engine/trainer: task=segment, mode=train, model=yolov8n-seg.pt, data=datasets/belt_seg/belt_seg.yaml, epochs=300, time=None, patience=100, batch=16, imgsz=640, save=True, save_period=-1, cache=False, device=[0, 1], workers=8, project=None, name=train6, exist_ok=False, pretrained=True, optimizer=auto, verbose=True, seed=0, deterministic=True, single_cls=False, rect=False, cos_lr=False, close_mosaic=10, resume=False, amp=True, fraction=1.0, profile=False, freeze=None, multi_scale=False, overlap_mask=True, mask_ratio=4, dropout=0.0, val=True, split=val, save_json=False, save_hybrid=False, conf=None, iou=0.7, max_det=300, half=False, dnn=False, plots=True, source=None, vid_stride=1, stream_buffer=False, visualize=False, augment=False, agnostic_nms=False, classes=None, retina_masks=False, embed=None, show=False, save_frames=False, save_txt=False, save_conf=False, save_crop=False, show_labels=True, show_conf=True, show_boxes=True, line_width=None, format=torchscript, keras=False, optimize=False, int8=False, dynamic=False, simplify=False, opset=None, workspace=4, nms=False, lr0=0.01, lrf=0.01, momentum=0.937, weight_decay=0.0005, warmup_epochs=3.0, warmup_momentum=0.8, warmup_bias_lr=0.1, box=7.5, cls=0.5, dfl=1.5, pose=12.0, kobj=1.0, label_smoothing=0.0, nbs=64, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, degrees=0.0, translate=0.1, scale=0.5, shear=0.0, perspective=0.0, flipud=0.0, fliplr=0.5, bgr=0.0, mosaic=1.0, mixup=0.0, copy_paste=0.0, auto_augment=randaugment, erasing=0.4, crop_fraction=1.0, cfg=None, tracker=botsort.yaml, save_dir=runs/segment/train6</span><br><span class="line">Overriding model.yaml nc=80 with nc=1</span><br><span class="line"></span><br><span class="line">                   from  n    params  module                                       arguments                     </span><br><span class="line">  0                  -1  1       464  ultralytics.nn.modules.conv.Conv             [3, 16, 3, 2]                 </span><br><span class="line">  1                  -1  1      4672  ultralytics.nn.modules.conv.Conv             [16, 32, 3, 2]                </span><br><span class="line">  2                  -1  1      7360  ultralytics.nn.modules.block.C2f             [32, 32, 1, True]             </span><br><span class="line">  3                  -1  1     18560  ultralytics.nn.modules.conv.Conv             [32, 64, 3, 2]                </span><br><span class="line">  4                  -1  2     49664  ultralytics.nn.modules.block.C2f             [64, 64, 2, True]             </span><br><span class="line">  5                  -1  1     73984  ultralytics.nn.modules.conv.Conv             [64, 128, 3, 2]               </span><br><span class="line">  6                  -1  2    197632  ultralytics.nn.modules.block.C2f             [128, 128, 2, True]           </span><br><span class="line">  7                  -1  1    295424  ultralytics.nn.modules.conv.Conv             [128, 256, 3, 2]              </span><br><span class="line">  8                  -1  1    460288  ultralytics.nn.modules.block.C2f             [256, 256, 1, True]           </span><br><span class="line">  9                  -1  1    164608  ultralytics.nn.modules.block.SPPF            [256, 256, 5]                 </span><br><span class="line"> 10                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          </span><br><span class="line"> 11             [-1, 6]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 12                  -1  1    148224  ultralytics.nn.modules.block.C2f             [384, 128, 1]                 </span><br><span class="line"> 13                  -1  1         0  torch.nn.modules.upsampling.Upsample         [None, 2, 'nearest']          </span><br><span class="line"> 14             [-1, 4]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 15                  -1  1     37248  ultralytics.nn.modules.block.C2f             [192, 64, 1]                  </span><br><span class="line"> 16                  -1  1     36992  ultralytics.nn.modules.conv.Conv             [64, 64, 3, 2]                </span><br><span class="line"> 17            [-1, 12]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 18                  -1  1    123648  ultralytics.nn.modules.block.C2f             [192, 128, 1]                 </span><br><span class="line"> 19                  -1  1    147712  ultralytics.nn.modules.conv.Conv             [128, 128, 3, 2]              </span><br><span class="line"> 20             [-1, 9]  1         0  ultralytics.nn.modules.conv.Concat           [1]                           </span><br><span class="line"> 21                  -1  1    493056  ultralytics.nn.modules.block.C2f             [384, 256, 1]                 </span><br><span class="line"> 22        [15, 18, 21]  1   1004275  ultralytics.nn.modules.head.Segment          [1, 32, 64, [64, 128, 256]]   </span><br><span class="line">YOLOv8n-seg summary: 261 layers, 3263811 parameters, 3263795 gradients, 12.1 GFLOPs</span><br><span class="line"></span><br><span class="line">Transferred 381/417 items from pretrained weights</span><br><span class="line">DDP: debug command /root/anaconda3/envs/py39_yolov8/bin/python -m torch.distributed.run --nproc_per_node 2 --master_port 48598 /root/.config/Ultralytics/DDP/_temp_p1zi2y0s140608071072736.py</span><br><span class="line">Ultralytics YOLOv8.2.41 🚀 Python-3.9.18 torch-2.1.2+cu121 CUDA:0 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">                                                           CUDA:1 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">Overriding model.yaml nc=80 with nc=1</span><br><span class="line">Transferred 381/417 items from pretrained weights</span><br><span class="line">Freezing layer 'model.22.dfl.conv.weight'</span><br><span class="line">AMP: running Automatic Mixed Precision (AMP) checks with YOLOv8n...</span><br><span class="line">AMP: checks passed ✅</span><br><span class="line">train: Scanning /exp/work/video/ultralytics/datasets/belt_seg/data/train/labels... 100 images, 0 backgrounds, 0 corrupt: 100%|██████████| 100/100 [00:00&lt;00:00, 681.30it/s]</span><br><span class="line">train: WARNING ⚠️ /exp/work/video/ultralytics/datasets/belt_seg/data/train/images/04221812151.jpg: corrupt JPEG restored and saved</span><br><span class="line">train: WARNING ⚠️ /exp/work/video/ultralytics/datasets/belt_seg/data/train/images/1549055475952230.jpg: corrupt JPEG restored and saved</span><br><span class="line">train: New cache created: /exp/work/video/ultralytics/datasets/belt_seg/data/train/labels.cache</span><br><span class="line">val: Scanning /exp/work/video/ultralytics/datasets/belt_seg/data/val/labels... 20 images, 0 backgrounds, 0 corrupt: 100%|██████████| 20/20 [00:00&lt;00:00, 557.79it/s]</span><br><span class="line">val: New cache created: /exp/work/video/ultralytics/datasets/belt_seg/data/val/labels.cache</span><br><span class="line">Plotting labels to runs/segment/train6/labels.jpg... </span><br><span class="line">optimizer: 'optimizer=auto' found, ignoring 'lr0=0.01' and 'momentum=0.937' and determining best 'optimizer', 'lr0' and 'momentum' automatically... </span><br><span class="line">optimizer: AdamW(lr=0.000714, momentum=0.9) with parameter groups 66 weight(decay=0.0), 77 weight(decay=0.0005), 76 bias(decay=0.0)</span><br><span class="line">Image sizes 640 train, 640 val</span><br><span class="line">Using 16 dataloader workers</span><br><span class="line">Logging results to runs/segment/train6</span><br><span class="line">Starting training for 300 epochs...</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   seg_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">      1/300      1.57G     0.9085      3.003      2.743      1.368          6        640: 100%|██████████| 7/7 [00:05&lt;00:00,  1.35it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:00&lt;00:00,  2.54it/s]</span><br><span class="line">                   all         20         21     0.0035          1      0.179      0.087     0.0035          1      0.113     0.0414</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   seg_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">      2/300       1.6G     0.7924      2.131      2.561      1.221          6        640: 100%|██████████| 7/7 [00:01&lt;00:00,  4.83it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:00&lt;00:00,  8.52it/s]</span><br><span class="line">                   all         20         21     0.0035          1      0.753      0.548     0.0035          1      0.753      0.499</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   seg_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">      3/300      1.63G     0.5945      1.036      1.887       1.12          3        640: 100%|██████████| 7/7 [00:01&lt;00:00,  4.93it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:00&lt;00:00,  8.46it/s]</span><br><span class="line">                   all         20         21     0.0035          1      0.886      0.581     0.0035          1      0.886      0.616</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   seg_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">      4/300      1.62G     0.5529     0.7711      1.401      1.065          7        640: 100%|██████████| 7/7 [00:01&lt;00:00,  5.25it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:00&lt;00:00,  7.88it/s]</span><br><span class="line">                   all         20         21      0.606      0.952      0.819      0.582      0.606      0.952      0.819      0.641</span><br><span class="line">...</span><br><span class="line">      Epoch    GPU_mem   box_loss   seg_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    295/300      1.61G     0.1653     0.1045     0.2493     0.8894          3        640: 100%|██████████| 7/7 [00:01&lt;00:00,  5.45it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:00&lt;00:00,  9.24it/s]</span><br><span class="line">                   all         20         21      0.982          1      0.995      0.926      0.982          1      0.995      0.912</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   seg_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    296/300      1.63G     0.2021     0.1132     0.2765      0.895          2        640: 100%|██████████| 7/7 [00:01&lt;00:00,  5.70it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:00&lt;00:00,  9.00it/s]</span><br><span class="line">                   all         20         21      0.974          1      0.995      0.933      0.974          1      0.995      0.917</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   seg_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    297/300      1.63G     0.1777     0.1075     0.2616     0.8351          2        640: 100%|██████████| 7/7 [00:01&lt;00:00,  5.51it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:00&lt;00:00,  7.61it/s]</span><br><span class="line">                   all         20         21      0.969          1      0.995      0.927      0.969          1      0.995      0.915</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   seg_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    298/300      1.63G     0.1736     0.1195     0.2461     0.8778          2        640: 100%|██████████| 7/7 [00:01&lt;00:00,  5.64it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:00&lt;00:00,  8.73it/s]</span><br><span class="line">                   all         20         21      0.968          1      0.995      0.935      0.968          1      0.995      0.916</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   seg_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    299/300      1.61G     0.2036     0.6821     0.2815     0.8217          2        640: 100%|██████████| 7/7 [00:01&lt;00:00,  5.33it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:00&lt;00:00,  8.39it/s]</span><br><span class="line">                   all         20         21      0.962          1      0.995      0.933      0.962          1      0.995      0.905</span><br><span class="line"></span><br><span class="line">      Epoch    GPU_mem   box_loss   seg_loss   cls_loss   dfl_loss  Instances       Size</span><br><span class="line">    300/300      1.63G      0.155     0.1236     0.2409     0.8592          2        640: 100%|██████████| 7/7 [00:01&lt;00:00,  5.38it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:00&lt;00:00,  8.70it/s]</span><br><span class="line">                   all         20         21      0.977          1      0.995      0.927      0.977          1      0.995      0.917</span><br><span class="line"></span><br><span class="line">300 epochs completed in 0.181 hours.</span><br><span class="line">Optimizer stripped from runs/segment/train6/weights/last.pt, 6.8MB</span><br><span class="line">Optimizer stripped from runs/segment/train6/weights/best.pt, 6.8MB</span><br><span class="line"></span><br><span class="line">Validating runs/segment/train6/weights/best.pt...</span><br><span class="line">Ultralytics YOLOv8.2.41 🚀 Python-3.9.18 torch-2.1.2+cu121 CUDA:0 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">                                                           CUDA:1 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">YOLOv8n-seg summary (fused): 195 layers, 3258259 parameters, 0 gradients, 12.0 GFLOPs</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:00&lt;00:00,  9.32it/s]</span><br><span class="line">                   all         20         21      0.995          1      0.995      0.948      0.995          1      0.995      0.944</span><br><span class="line">Speed: 0.2ms preprocess, 1.5ms inference, 0.0ms loss, 0.9ms postprocess per image</span><br><span class="line">Results saved to runs/segment/train6</span><br><span class="line">Ultralytics YOLOv8.2.41 🚀 Python-3.9.18 torch-2.1.2+cu121 CUDA:0 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">                                                           CUDA:1 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">YOLOv8n-seg summary (fused): 195 layers, 3258259 parameters, 0 gradients, 12.0 GFLOPs</span><br><span class="line">val: Scanning /exp/work/video/ultralytics/datasets/belt_seg/data/val/labels.cache... 20 images, 0 backgrounds, 0 corrupt: 100%|██████████| 20/20 [00:00&lt;?, ?it/s]</span><br><span class="line">                 Class     Images  Instances      Box(P          R      mAP50  mAP50-95)     Mask(P          R      mAP50  mAP50-95): 100%|██████████| 2/2 [00:01&lt;00:00,  1.42it/s]</span><br><span class="line">                   all         20         21      0.995          1      0.995      0.948      0.995          1      0.995      0.944</span><br><span class="line">Speed: 0.3ms preprocess, 24.2ms inference, 0.0ms loss, 32.2ms postprocess per image</span><br><span class="line">Results saved to runs/segment/train62</span><br></pre></td></tr></table></figure>
+<h2 id="预测"><a href="#预测" class="headerlink" title="预测"></a>预测</h2><h3 id="导包、模型加载-amp-GPU加载"><a href="#导包、模型加载-amp-GPU加载" class="headerlink" title="导包、模型加载&amp;GPU加载"></a>导包、模型加载&amp;GPU加载</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"></span><br><span class="line">model2 = YOLO(<span class="string">'runs/segment/train6/weights/best.pt'</span>)</span><br><span class="line">t = time.time()</span><br><span class="line">results = model2.predict(<span class="string">'video/belt.mp4'</span>, stream=<span class="literal">False</span>, save=<span class="literal">False</span>, device=[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> res <span class="keyword">in</span> results:</span><br><span class="line">    print(res)</span><br><span class="line">print(time.time() - t)</span><br></pre></td></tr></table></figure>
+<h2 id="多媒体推拉流"><a href="#多媒体推拉流" class="headerlink" title="多媒体推拉流"></a>多媒体推拉流</h2><p>主函数（多进程）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">import</span> subprocess <span class="keyword">as</span> sp</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"><span class="keyword">from</span> visualize.segment <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> settings <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StreamingSegmentServer</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, stream_src, stream_dst, cordon)</span>:</span></span><br><span class="line">        self.pipe = <span class="literal">None</span></span><br><span class="line">        self.model = <span class="literal">None</span></span><br><span class="line">        self.capture = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        self.fps = <span class="number">0</span></span><br><span class="line">        self.width = <span class="number">0</span></span><br><span class="line">        self.height = <span class="number">0</span></span><br><span class="line">        self.frame_id = <span class="number">0</span></span><br><span class="line">        self.solve_id = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        self.cordon = cordon</span><br><span class="line">        self.stream_src = stream_src</span><br><span class="line">        self.stream_dst = stream_dst</span><br><span class="line"></span><br><span class="line">        self.center = self.calculate_geometric_center()</span><br><span class="line">        self.avg_width = (self.cordon[<span class="number">3</span>][<span class="number">0</span>]-self.cordon[<span class="number">0</span>][<span class="number">0</span>] + self.cordon[<span class="number">2</span>][<span class="number">0</span>]-self.cordon[<span class="number">1</span>][<span class="number">0</span>]) / <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">calculate_geometric_center</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> len(self.cordon) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        sum_x = sum([point[<span class="number">0</span>] <span class="keyword">for</span> point <span class="keyword">in</span> self.cordon])</span><br><span class="line">        sum_y = sum([point[<span class="number">1</span>] <span class="keyword">for</span> point <span class="keyword">in</span> self.cordon])</span><br><span class="line">        center_x = sum_x / len(self.cordon)</span><br><span class="line">        center_y = sum_y / len(self.cordon)</span><br><span class="line">        <span class="keyword">return</span> center_x, center_y</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        framequeue = multiprocessing.Queue(<span class="number">10</span>)</span><br><span class="line">        solvequeue = multiprocessing.Queue(<span class="number">10</span>)</span><br><span class="line">        solvequeue.put(<span class="number">1</span>)</span><br><span class="line">        self.capture = cv2.VideoCapture(self.stream_src)</span><br><span class="line">        self.fps = int(self.capture.get(cv2.CAP_PROP_FPS))</span><br><span class="line">        self.width = int(self.capture.get(cv2.CAP_PROP_FRAME_WIDTH))</span><br><span class="line">        self.height = int(self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT))</span><br><span class="line"></span><br><span class="line">        command = [<span class="string">'ffmpeg'</span>,</span><br><span class="line">                   <span class="string">'-y'</span>,</span><br><span class="line">                   <span class="string">'-f'</span>, <span class="string">'rawvideo'</span>,</span><br><span class="line">                   <span class="string">'-vcodec'</span>, <span class="string">'rawvideo'</span>,</span><br><span class="line">                   <span class="string">'-pix_fmt'</span>, <span class="string">'bgr24'</span>,</span><br><span class="line">                   <span class="string">'-s'</span>, <span class="string">"&#123;&#125;x&#123;&#125;"</span>.format(self.width, self.height),</span><br><span class="line">                   <span class="string">'-r'</span>, str(self.fps),</span><br><span class="line">                   <span class="string">'-i'</span>, <span class="string">'-'</span>,</span><br><span class="line">                   <span class="string">'-c:v'</span>, <span class="string">'libx264'</span>,</span><br><span class="line">                   <span class="string">'-pix_fmt'</span>, <span class="string">'yuv420p'</span>,</span><br><span class="line">                   <span class="string">'-preset'</span>, <span class="string">'ultrafast'</span>,</span><br><span class="line">                   <span class="string">'-f'</span>, <span class="string">'rtsp'</span>,</span><br><span class="line">                   self.stream_dst]</span><br><span class="line">        pipe = sp.Popen(command, stdin=sp.PIPE)</span><br><span class="line"></span><br><span class="line">        capture_thread = threading.Thread(target=self.capture_video, args=(framequeue,))</span><br><span class="line">        capture_thread.start()</span><br><span class="line"></span><br><span class="line">        solve_id = multiprocessing.Value(<span class="string">'i'</span>, <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> range(worker.get(<span class="string">'worker_threads'</span>)):</span><br><span class="line">            process_thread = multiprocessing.Process(target=self.process_video, args=(pipe, framequeue, solve_id))</span><br><span class="line">            process_thread.start()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">capture_video</span><span class="params">(self, framequeue)</span>:</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> framequeue.full():</span><br><span class="line">                time.sleep(<span class="number">0.05</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                ret, frame = self.capture.read()</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> ret:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                image_bgr = frame</span><br><span class="line">                self.frame_id += <span class="number">1</span></span><br><span class="line">                framequeue.put((image_bgr, self.frame_id))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_video</span><span class="params">(self, pipe, framequeue, solve_id)</span>:</span></span><br><span class="line">        model = YOLO(<span class="string">'runs/segment/train6/weights/best.pt'</span>)</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> framequeue.empty():</span><br><span class="line">                frame_bgr, frame_id = framequeue.get()</span><br><span class="line">                results = model.predict(</span><br><span class="line">                    frame_bgr,</span><br><span class="line">                    stream=<span class="literal">False</span>,</span><br><span class="line">                    save=<span class="literal">False</span>,</span><br><span class="line">                    device=[<span class="number">0</span>],</span><br><span class="line">                    verbose=<span class="literal">False</span></span><br><span class="line">                )</span><br><span class="line">                names = results[<span class="number">0</span>].names</span><br><span class="line">                clses = [int(i) <span class="keyword">for</span> i <span class="keyword">in</span> results[<span class="number">0</span>].boxes.cls.tolist()]</span><br><span class="line">                masks = [i.tolist() <span class="keyword">for</span> i <span class="keyword">in</span> results[<span class="number">0</span>].masks.xy]</span><br><span class="line">                name_set = [names.get(i) <span class="keyword">for</span> i <span class="keyword">in</span> clses]</span><br><span class="line"></span><br><span class="line">                frame_bgr = visualize_seg(</span><br><span class="line">                    frame_bgr,</span><br><span class="line">                    masks,</span><br><span class="line">                    name_set,</span><br><span class="line">                    self.cordon,</span><br><span class="line">                    self.center,</span><br><span class="line">                    self.avg_width)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                    time.sleep(<span class="number">0.0001</span>)</span><br><span class="line">                    <span class="keyword">if</span> solve_id.value == frame_id:</span><br><span class="line">                        pipe.stdin.write(frame_bgr.tobytes())</span><br><span class="line">                        solve_id.value += <span class="number">1</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    rtsp_url = <span class="string">'rtsp://192.168.9.164:8554/video'</span></span><br><span class="line">    rtsp_stream = <span class="string">'rtsp://192.168.9.164:8554/live'</span></span><br><span class="line">    outline = [[<span class="number">268</span>, <span class="number">4</span>], [<span class="number">145</span>, <span class="number">311</span>],..., [<span class="number">482</span>, <span class="number">311</span>], [<span class="number">358</span>, <span class="number">4</span>]] <span class="comment"># 自定义安全区域</span></span><br><span class="line">    sss = StreamingSegmentServer(rtsp_url, rtsp_stream, outline)</span><br><span class="line">    sss.run()</span><br></pre></td></tr></table></figure>
+<p>可视化 &amp; 偏移算法（计算分割掩码与安全区域中心点x轴偏移量）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageDraw, ImageFile, ImageFont</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> settings <span class="keyword">import</span> PR</span><br><span class="line"></span><br><span class="line">font_file = os.path.join(PR, <span class="string">'visualize/SourceHanSansCN-Medium.otf'</span>)</span><br><span class="line">ImageFile.LOAD_TRUNCATED_IMAGES = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculate_geometric_center</span><span class="params">(points)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> len(points) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    sum_x = sum([point[<span class="number">0</span>] <span class="keyword">for</span> point <span class="keyword">in</span> points])</span><br><span class="line">    sum_y = sum([point[<span class="number">1</span>] <span class="keyword">for</span> point <span class="keyword">in</span> points])</span><br><span class="line">    center_x = sum_x / len(points)</span><br><span class="line">    center_y = sum_y / len(points)</span><br><span class="line">    <span class="keyword">return</span> center_x, center_y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_seg</span><span class="params">(im, masks, names, cordon, center, avg_width)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">        im = Image.open(im)</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line"></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line">    im = im.convert(<span class="string">'RGBA'</span>)</span><br><span class="line">    size = im.size</span><br><span class="line"></span><br><span class="line">    layer = Image.new(<span class="string">'RGBA'</span>, size)</span><br><span class="line">    draw = ImageDraw.Draw(im)</span><br><span class="line">    draw2 = ImageDraw.Draw(layer)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, name <span class="keyword">in</span> enumerate(names):</span><br><span class="line">        mask = masks[i]</span><br><span class="line">        mask = [tuple(j) <span class="keyword">for</span> j <span class="keyword">in</span> mask]</span><br><span class="line">        text = name</span><br><span class="line">        center_rt = calculate_geometric_center(mask)</span><br><span class="line">        <span class="comment"># offset = math.sqrt(pow(center_rt[0] - center[0], 2) + pow(center_rt[1] - center[1], 2)) / avg_width 计算距离偏移</span></span><br><span class="line">        offset = (center_rt[<span class="number">0</span>] - center[<span class="number">0</span>]) / avg_width</span><br><span class="line"></span><br><span class="line">        draw2.polygon(mask,</span><br><span class="line">                      fill=(<span class="number">128</span>, <span class="number">0</span>, <span class="number">128</span>, <span class="number">160</span>),</span><br><span class="line">                      outline=(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>))</span><br><span class="line">        im.paste(layer, mask=layer)</span><br><span class="line">        draw.text(</span><br><span class="line">            (mask[<span class="number">0</span>][<span class="number">0</span>], mask[<span class="number">0</span>][<span class="number">1</span>]),</span><br><span class="line">            text,</span><br><span class="line">            font=ImageFont.truetype(font_file, size=<span class="number">13</span>),</span><br><span class="line">            fill=(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1000</span>))</span><br><span class="line">        draw.text(</span><br><span class="line">            (mask[<span class="number">0</span>][<span class="number">0</span>], mask[<span class="number">0</span>][<span class="number">1</span>]+<span class="number">20</span>),</span><br><span class="line">            <span class="string">'offset: '</span> + str(offset),</span><br><span class="line">            font=ImageFont.truetype(font_file, size=<span class="number">13</span>),</span><br><span class="line">            fill=(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1000</span>))</span><br><span class="line"></span><br><span class="line">    draw.polygon([tuple(i) <span class="keyword">for</span> i <span class="keyword">in</span> cordon],</span><br><span class="line">                 fill=<span class="literal">None</span>,</span><br><span class="line">                 outline=(<span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">255</span>))</span><br><span class="line">    im = im.convert(<span class="string">'RGB'</span>)</span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
+<p>配置项</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">PR = os.path.dirname(__file__)</span><br><span class="line"></span><br><span class="line">worker = &#123;</span><br><span class="line">    <span class="string">'worker_threads'</span>: <span class="number">12</span>,</span><br><span class="line">    <span class="string">'worker_queue_len'</span>: <span class="number">10</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2024/05/11/yolov8-seg：皮带机偏移实时检测/3.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolov8/">yolov8</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/06/28/doccano/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          doccano
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/04/05/Bert-GRU地址归一算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Bert+GRU地址归一算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境-amp-安装"><span class="nav-number">1.</span> <span class="nav-text">环境&amp;安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据标注"><span class="nav-number">2.</span> <span class="nav-text">数据标注</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标注工具：labelme"><span class="nav-number">2.1.</span> <span class="nav-text">标注工具：labelme</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据格式转换"><span class="nav-number">2.2.</span> <span class="nav-text">数据格式转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建训练yaml文件"><span class="nav-number">2.3.</span> <span class="nav-text">创建训练yaml文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练"><span class="nav-number">3.</span> <span class="nav-text">训练</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码"><span class="nav-number">3.1.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预测"><span class="nav-number">4.</span> <span class="nav-text">预测</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#导包、模型加载-amp-GPU加载"><span class="nav-number">4.1.</span> <span class="nav-text">导包、模型加载&amp;GPU加载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多媒体推拉流"><span class="nav-number">5.</span> <span class="nav-text">多媒体推拉流</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2024 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2024 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

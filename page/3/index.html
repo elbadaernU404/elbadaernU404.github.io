@@ -258,6 +258,365 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-搭建nebula-CentOS集群（极速版）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/07/10/搭建nebula-CentOS集群（极速版）/">搭建nebula-CentOS集群（极速版）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/07/10/搭建nebula-CentOS集群（极速版）/" class="article-date">
+	  <time datetime="2023-07-10T01:05:06.000Z" itemprop="datePublished">2023-07-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><ul>
+<li>系统</li>
+</ul>
+<p>CentOS7.9</p>
+<ul>
+<li>机器</li>
+</ul>
+<p>三台，分别为<code>nebula01</code>、<code>nebula02</code>、<code>nebula03</code>、</p>
+<ul>
+<li>安装位置</li>
+</ul>
+<p><code>/usr/local</code></p>
+<ul>
+<li>nebula版本</li>
+</ul>
+<p><code>2.6.1</code></p>
+<ul>
+<li>nebula-graph-studio版本</li>
+</ul>
+<p><code>3.2.3</code></p>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><ul>
+<li>下载<code>tar.gz</code>文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local</span><br><span class="line">wget https://oss-cdn.nebula-graph.com.cn/package/2.6.1/nebula-graph-2.6.1.el7.x86_64.tar.gz</span><br><span class="line">wget https://oss-cdn.nebula-graph.com.cn/nebula-graph-studio/3.2.3/nebula-graph-studio-3.2.3.x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+<ul>
+<li>解压缩并重命名文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf nebula-graph-2.6.1.el7.x86_64.tar.gz &amp;&amp; mv nebula-graph-2.6.1.el7.x86_64 nebula</span><br><span class="line">tar -zxvf nebula-graph-studio-3.2.3.x86_64.tar.gz &amp;&amp; mv nebula-graph-studio-3.2.3.x86_64 nebula-graph-studio</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制配置文件</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd nebula/etc</span><br><span class="line">cp nebula-graphd.conf.default nebula-graphd.conf</span><br><span class="line">cp nebula-metad.conf.default nebula-metad.conf</span><br><span class="line">cp nebula-storaged.conf.default nebula-storaged.conf</span><br></pre></td></tr></table></figure>
+        <!--  环境准备
+系统
+
+CentOS7.9
+
+机器
+
+三台，分别为nebula01、nebula02、nebula03、
+
+安装位置
+
+/usr/local
+
+nebula版本
+
+2.6.1
+
+nebula-graph-studio版本
+
+3.2.3
+快速开始
+下载tar.gz文件
+
+123cd /usr/localwget https://oss-cdn.nebula-graph.com.cn......  -->
+        <p class="article-more-link">
+          <a href="/2023/07/10/搭建nebula-CentOS集群（极速版）/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebua/">nebua</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Nebula-Spark"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/03/24/Nebula-Spark/">Nebula-Spark和图算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/03/24/Nebula-Spark/" class="article-date">
+	  <time datetime="2023-03-24T06:34:47.000Z" itemprop="datePublished">2023-03-24</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Nebula-Spark-Connector"><a href="#Nebula-Spark-Connector" class="headerlink" title="Nebula Spark Connector"></a>Nebula Spark Connector</h2><p>下载地址&amp;官方文档：【<a href="https://github.com/vesoft-inc/nebula-spark-connector" target="_blank" rel="noopener">https://github.com/vesoft-inc/nebula-spark-connector</a>】</p>
+<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p><strong>·</strong> nebula：<font color="orange">2.6.1</font><br><strong>·</strong> hadoop：<font color="orange">2.7</font><br><strong>·</strong> spark：<font color="orange">2.4.7</font><br><strong>·</strong> pyspark：<font color="orange">2.4.7</font><br><strong>·</strong> python：<font color="orange">3.7.16</font><br><strong>·</strong> nebula-spark-connector：<font color="orange">2.6.1</font></p>
+<h3 id="编译打包nebula-spark-connector"><a href="#编译打包nebula-spark-connector" class="headerlink" title="编译打包nebula-spark-connector"></a>编译打包nebula-spark-connector</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> nebula-spark-connector-2.6.1/nebula-spark-connector</span><br><span class="line">$ mvn clean package -Dmaven.test.skip=<span class="literal">true</span> -Dgpg.skip -Dmaven.javadoc.skip=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>成功后在<code>nebula-spark-connector/target/</code> 目录下得到 <code>nebula-spark-connector-2.6.1.jar</code>文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">(base) [root@root target]<span class="comment"># ll</span></span><br><span class="line">total 106792</span><br><span class="line">drwxr-xr-x 3 root root        17 Mar 11 14:14 classes</span><br><span class="line">-rw-r--r-- 1 root root         1 Mar 11 14:14 classes.-497386701.timestamp</span><br><span class="line">-rw-r--r-- 1 root root         1 Mar 11 14:14 classes.timestamp</span><br><span class="line">-rw-r--r-- 1 root root     30701 Mar 11 14:15 jacoco.exec</span><br><span class="line">drwxr-xr-x 2 root root        28 Mar 11 14:15 maven-archiver</span><br><span class="line">-rw-r--r-- 1 root root 108375457 Mar 11 14:16 nebula-spark-connector-2.6.1.jar</span><br><span class="line">-rw-r--r-- 1 root root    583482 Mar 11 14:16 nebula-spark-connector-2.6.1-javadoc.jar</span><br><span class="line">-rw-r--r-- 1 root root     36358 Mar 11 14:16 nebula-spark-connector-2.6.1-sources.jar</span><br><span class="line">-rw-r--r-- 1 root root    315392 Mar 11 14:15 original-nebula-spark-connector-2.6.1.jar</span><br><span class="line">drwxr-xr-x 4 root root        37 Mar 11 14:15 site</span><br></pre></td></tr></table></figure>
+<h3 id="PySpark-读取-NebulaGraph-数据"><a href="#PySpark-读取-NebulaGraph-数据" class="headerlink" title="PySpark 读取 NebulaGraph 数据"></a>PySpark 读取 NebulaGraph 数据</h3><p>从 <code>metaAddress</code> 为 <code>&quot;metad0:9559&quot;</code> 的 Nebula Graph 中读取整个 tag 下的数据为一个 dataframe：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">df = spark.read.format(</span><br><span class="line">  <span class="string">"com.vesoft.nebula.connector.NebulaDataSource"</span>).option(</span><br><span class="line">    <span class="string">"type"</span>, <span class="string">"vertex"</span>).option(</span><br><span class="line">    <span class="string">"spaceName"</span>, <span class="string">"basketballplayer"</span>).option(</span><br><span class="line">    <span class="string">"label"</span>, <span class="string">"player"</span>).option(</span><br><span class="line">    <span class="string">"returnCols"</span>, <span class="string">"name,age"</span>).option(</span><br><span class="line">    <span class="string">"metaAddress"</span>, <span class="string">"metad0:9559"</span>).option(</span><br><span class="line">    <span class="string">"partitionNumber"</span>, <span class="number">1</span>).load()</span><br></pre></td></tr></table></figure>
+<p>然后可以像这样 <code>show</code> 这个 dataframe：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>df.show(n=<span class="number">2</span>)</span><br><span class="line">+---------+--------------+---+</span><br><span class="line">|_vertexId|          name|age|</span><br><span class="line">+---------+--------------+---+</span><br><span class="line">|player105|   Danny Green| <span class="number">31</span>|</span><br><span class="line">|player109|Tiago Splitter| <span class="number">34</span>|</span><br><span class="line">+---------+--------------+---+</span><br><span class="line">only showing top <span class="number">2</span> rows</span><br></pre></td></tr></table></figure>
+        <!--  Nebula Spark Connector下载地址&amp;官方文档：【https://github.com/vesoft-inc/nebula-spark-connector】
+环境· nebula：2.6.1· hadoop：2.7· spark：2.4.7· pyspark：2.4.7· python：3.7.16· nebula-spark-connector：2.6.1
+编译打......  -->
+        <p class="article-more-link">
+          <a href="/2023/03/24/Nebula-Spark/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图算法/">图算法</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-ElasticSearch环境搭建"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/02/16/ElasticSearch环境搭建/">ElasticSearch环境搭建</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/02/16/ElasticSearch环境搭建/" class="article-date">
+	  <time datetime="2023-02-16T03:16:07.000Z" itemprop="datePublished">2023-02-16</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>* 配合nebula全文检索测试环境而搭建的es单机环境</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><p>【<a href="https://www.elastic.co/cn/downloads/elasticsearch#ga-release" target="_blank" rel="noopener">https://www.elastic.co/cn/downloads/elasticsearch#ga-release</a>】 (或前往elastic中文社区下载中心【<a href="https://elasticsearch.cn/download/" target="_blank" rel="noopener">https://elasticsearch.cn/download/</a>】)</p>
+<ul>
+<li>选择linux版本</li>
+</ul>
+<p><img src="/2023/02/16/ElasticSearch环境搭建/A.png" alt></p>
+<h3 id="安装ES"><a href="#安装ES" class="headerlink" title="安装ES"></a>安装ES</h3><ul>
+<li>解压缩</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> tar xf elasticsearch-7.14.2-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建es用户</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> useradd es &amp;&amp; passwd es</span><br></pre></td></tr></table></figure>
+<ul>
+<li>更名</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> mv elasticsearch-7.14.2 elasticsearch</span><br></pre></td></tr></table></figure>
+<ul>
+<li>赋予es用户权限</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> chown -R es:es elasticsearch</span><br></pre></td></tr></table></figure>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><pre><code>* 可使用es自带的java环境：ES_JAVA_HOME
+</code></pre><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> vim /etc/profile</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ES_JAVA_HOME</span></span><br><span class="line"><span class="built_in">export</span> ES_JAVA_HOME=/data/elasticsearch/jdk/</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$ES_JAVA_HOME</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">source</span> /etc/profile</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>elasticsearch config</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> elasticsearch/config</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> vim elasticsearch.yml</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">node.name:</span> <span class="string">node-1</span>                          <span class="comment">##节点名称</span></span><br><span class="line"><span class="attr">path.data:</span> <span class="string">/usr/local/elasticsearch/data</span>        <span class="comment">##数据存放路径</span></span><br><span class="line"><span class="attr">path.logs:</span> <span class="string">/usr/local/elasticsearch/logs</span>        <span class="comment">##日志存放路径 </span></span><br><span class="line"><span class="attr">bootstrap.memory_lock:</span> <span class="literal">true</span>                <span class="comment">##避免es使用swap交换分区</span></span><br><span class="line"><span class="attr">indices.requests.cache.size:</span> <span class="number">5</span><span class="string">%</span>            <span class="comment">##缓存配置</span></span><br><span class="line"><span class="attr">indices.queries.cache.size:</span> <span class="number">10</span><span class="string">%</span>            <span class="comment">##缓存配置</span></span><br><span class="line"><span class="attr">network.host:</span> <span class="number">192.168</span><span class="number">.80</span><span class="number">.128</span>               <span class="comment">##本机IP</span></span><br><span class="line"><span class="attr">http.port:</span> <span class="number">9200</span>                            <span class="comment">##默认端口</span></span><br><span class="line"><span class="attr">cluster.initial_master_nodes:</span> <span class="string">["node-1"]</span>   <span class="comment">##设置符合主节点条件的节点的主机名或 IP 地址来引导启动集群</span></span><br><span class="line"><span class="attr">http.cors.enabled:</span> <span class="literal">true</span>                    <span class="comment">##跨域</span></span><br><span class="line"><span class="attr">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>将当前用户软硬限制调大</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /etc/security/limits.conf</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">es</span> <span class="string">soft</span> <span class="string">nofile</span> <span class="number">65535</span></span><br><span class="line"><span class="string">es</span> <span class="string">hard</span> <span class="string">nofile</span> <span class="number">65537</span></span><br><span class="line"><span class="string">es</span> <span class="string">soft</span> <span class="string">memlock</span> <span class="string">unlimited</span></span><br><span class="line"><span class="string">es</span> <span class="string">hard</span> <span class="string">memlock</span> <span class="string">unlimited</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改vm.max_map_count内存</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">vm.max_map_count=655360</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sysctl -p</span><br></pre></td></tr></table></figure>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> su es</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ../bin</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./elasticsearch -d</span></span><br></pre></td></tr></table></figure>
+        <!--  * 配合nebula全文检索测试环境而搭建的es单机环境
+安装下载地址【https://www.elastic.co/cn/downloads/elasticsearch#ga-release】 (或前往elastic中文社区下载中心【https://elasticsearch.cn/download/】)
+
+选择linux版本
+
+
+安装ES
+解压缩
+
+1$ tar xf elastics......  -->
+        <p class="article-more-link">
+          <a href="/2023/02/16/ElasticSearch环境搭建/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elastic-search/">elastic search</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Spark-SQL"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/12/08/Spark-SQL/">Spark-SQL</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/12/08/Spark-SQL/" class="article-date">
+	  <time datetime="2022-12-08T08:50:52.000Z" itemprop="datePublished">2022-12-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/BigData/">BigData</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="SparkSQL"><a href="#SparkSQL" class="headerlink" title="SparkSQL"></a>SparkSQL</h2><p><strong>SparkSQL</strong>是spark的一个用于处理海量<strong>结构化数据</strong>的模块</p>
+<ul>
+<li>支持SQL语言</li>
+<li>自动优化</li>
+<li>性能强</li>
+<li>兼容HIVE</li>
+<li>API流程简单</li>
+<li>支持标准化JDBC和ODBC连接</li>
+<li>…</li>
+</ul>
+<h3 id="SparkSQL数据抽象"><a href="#SparkSQL数据抽象" class="headerlink" title="SparkSQL数据抽象"></a>SparkSQL数据抽象</h3><ul>
+<li><p><strong><font color="orange">Pandas · DataFrame</font></strong></p>
+<p><strong><font color="orange">·</font></strong> 二维表数据结构</p>
+<p><strong><font color="orange">·</font></strong> 单机（本地）集合</p>
+</li>
+<li><p><strong><font color="orange">SparkCore · RDD</font></strong></p>
+<p><strong><font color="orange">·</font></strong> 无标准数据结构</p>
+<p><strong><font color="orange">·</font></strong> 分布式（分区）集合</p>
+</li>
+<li><p><strong><font color="orange">SparkSQL · DataFrame</font></strong></p>
+<p><strong><font color="orange">·</font></strong> 二维表数据结构</p>
+<p><strong><font color="orange">·</font></strong> 分布式（分区）集合</p>
+</li>
+</ul>
+<h3 id="SparkSession对象"><a href="#SparkSession对象" class="headerlink" title="SparkSession对象"></a>SparkSession对象</h3><p>RDD程序的执行入口对象：<strong>SparkContext</strong></p>
+<p>在Spark2.0以后，推出了<strong>SparkSession</strong>对象，来作为Spark编码的统一入口对象。<strong>SparkSession</strong>：</p>
+<ul>
+<li>用于SparkSQL编程，作为入口对象</li>
+<li>用于SparkCore编程，通过SparkSession对象获取SparkContext</li>
+</ul>
+<p>构建SparkSession对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过builder方法来构建SparkSession对象</span></span><br><span class="line"><span class="comment"># appName：设置程序名称</span></span><br><span class="line"><span class="comment"># config：配置常用属性</span></span><br><span class="line"><span class="comment"># getOrCreate：完成创建SparkSession对象</span></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"test"</span>).master(<span class="string">"local[*]"</span>).config(<span class="string">"spark.sql.shuffle.partitions"</span>, <span class="string">"4"</span>).getOrCreate()</span><br></pre></td></tr></table></figure>
+<p>通过SparkSesion对象获取SparkContext对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"></span><br><span class="line">spark = SparkSession.builder.appName(<span class="string">"test"</span>).master(<span class="string">"local[*]"</span>).config(<span class="string">"spark.sql.shuffle.partitions"</span>, <span class="string">"4"</span>).getOrCreate()</span><br><span class="line"></span><br><span class="line">sc = spark.sparkContext</span><br></pre></td></tr></table></figure>
+        <!--  SparkSQLSparkSQL是spark的一个用于处理海量结构化数据的模块
+
+支持SQL语言
+自动优化
+性能强
+兼容HIVE
+API流程简单
+支持标准化JDBC和ODBC连接
+…
+
+SparkSQL数据抽象
+Pandas · DataFrame
+· 二维表数据结构
+· 单机（本地）集合
+
+SparkCore · RDD
+· 无标准数据结构
+· 分布式（分区）集合
+
+SparkSQL ·......  -->
+        <p class="article-more-link">
+          <a href="/2022/12/08/Spark-SQL/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spark/">spark</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Spark-Core"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -618,13 +977,13 @@ Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、S
         <h2 id="CentOS-Docker安装"><a href="#CentOS-Docker安装" class="headerlink" title="CentOS Docker安装"></a>CentOS Docker安装</h2><p>CentOS7要求64位，且内核版本高于3.10</p>
 <p>查看CentOS内核版本：<code>uname -r</code></p>
 <p><strong><font size="4" color="orange">·</font></strong> 安装Docker：卸载旧版本</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum remove docker \</span></span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
 <p><strong><font size="4" color="orange">·</font></strong> 安装所需软件包</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install -y yum-utils \</span></span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum install -y yum-utils \</span><br><span class="line">  device-mapper-persistent-data \</span><br><span class="line">  lvm2</span><br></pre></td></tr></table></figure>
 <p><strong><font size="4" color="orange">·</font></strong> 设置Docker仓库（清华源）</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum-config-manager \</span></span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo</span><br></pre></td></tr></table></figure>
 <p><strong><font size="4" color="orange">·</font></strong> 安装Docker Engine-Community</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo yum install docker-ce docker-ce-cli containerd.io</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> sudo yum install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
         <!--  CentOS Docker安装CentOS7要求64位，且内核版本高于3.10
 查看CentOS内核版本：uname -r
 · 安装Docker：卸载旧版本
@@ -639,375 +998,6 @@ Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、S
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Nebula-fastapi接口维护文档"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/08/19/Nebula-fastapi接口维护文档/">Nebula-fastapi接口维护文档</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/08/19/Nebula-fastapi接口维护文档/" class="article-date">
-	  <time datetime="2022-08-19T09:40:40.000Z" itemprop="datePublished">2022-08-19</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Web/">Web</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="普通接口"><a href="#普通接口" class="headerlink" title="普通接口"></a>普通接口</h1><h2 id="1-导入fastapi、连接nebula连接池"><a href="#1-导入fastapi、连接nebula连接池" class="headerlink" title="1.导入fastapi、连接nebula连接池"></a>1.导入fastapi、连接nebula连接池</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"><span class="keyword">from</span> nebula2.gclient.net <span class="keyword">import</span> ConnectionPool</span><br><span class="line"><span class="keyword">from</span> nebula2.Config <span class="keyword">import</span> Config</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭在线文档，防止攻击</span></span><br><span class="line">app_router = FastAPI(docs_url=<span class="literal">None</span>, redoc_url=<span class="literal">None</span>)</span><br><span class="line"></span><br><span class="line">config = Config()</span><br><span class="line">config.max_connection_pool_size = <span class="number">10</span></span><br><span class="line"><span class="comment"># 连接超时时间</span></span><br><span class="line">config.timeout = <span class="number">60000</span></span><br><span class="line"><span class="comment"># 关闭空闲连接时间</span></span><br><span class="line">config.idle_time = <span class="number">0</span></span><br><span class="line"><span class="comment"># 检查空闲连接时间间隔</span></span><br><span class="line">config.interval_check = <span class="number">-1</span></span><br><span class="line"><span class="comment"># 初始化连接池</span></span><br><span class="line">connection_pool = ConnectionPool()</span><br><span class="line"><span class="comment"># 如果给定的服务器正常，则返回true，否则返回false</span></span><br><span class="line">ok = connection_pool.init([(<span class="string">'host'</span>, <span class="number">9669</span>)], config)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">import</span> uvicorn</span><br><span class="line">    uvicorn.run(app=<span class="string">"nebula_api:app_router"</span>, reload=<span class="literal">True</span>, debug=<span class="literal">True</span>, host=host, port=port)</span><br></pre></td></tr></table></figure>
-<h2 id="2-CORS跨域访问设置"><a href="#2-CORS跨域访问设置" class="headerlink" title="2.CORS跨域访问设置"></a>2.CORS跨域访问设置</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi.middleware.cors <span class="keyword">import</span> CORSMiddleware</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># CORS</span></span><br><span class="line">origins = [</span><br><span class="line">    <span class="string">"*"</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">app_router.add_middleware(</span><br><span class="line">    CORSMiddleware,</span><br><span class="line">    allow_origins=origins,</span><br><span class="line">    allow_credentials=<span class="literal">True</span>,</span><br><span class="line">    allow_methods=[<span class="string">"*"</span>],</span><br><span class="line">    allow_headers=[<span class="string">"*"</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-        <!--  普通接口1.导入fastapi、连接nebula连接池123456789101112131415161718192021222324from fastapi import FastAPIfrom nebula2.gclient.net import ConnectionPoolfrom nebula2.Config import Config# 关闭在线文档，防止攻击app_router ......  -->
-        <p class="article-more-link">
-          <a href="/2022/08/19/Nebula-fastapi接口维护文档/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/fastapi/">fastapi</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-PaddleOCR表格识别"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/07/21/PaddleOCR表格识别/">PaddleOCR表格识别</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/07/21/PaddleOCR表格识别/" class="article-date">
-	  <time datetime="2022-07-21T06:15:22.000Z" itemprop="datePublished">2022-07-21</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>PaddleOCR2.5根目录下的ppstructure文件模块是PaddleOCR提供的一个可用于复杂文档结构分析处理的OCR工具包<br>github文档页面：<a href="https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/ppstructure/README_ch.md" target="_blank" rel="noopener">https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/ppstructure/README_ch.md</a></p>
-<h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><p><strong><font size="4" color="orange">·</font></strong> 安装paddleocr version&gt;=2.5<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install &quot;paddleocr&gt;=2.5&quot;</span><br></pre></td></tr></table></figure></p>
-<p><strong><font size="4" color="orange">·</font></strong> 安装版面分析依赖包layoutparser<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -U https://paddleocr.bj.bcebos.com/whl/layoutparser-0.0.0-py3-none-any.whl</span><br></pre></td></tr></table></figure></p>
-<p><strong><font size="4" color="orange">·</font></strong> 安装DocVQA依赖包paddlenlp（DocVQA功能，选装）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install paddlenlp</span><br></pre></td></tr></table></figure></p>
-<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><p>在PaddleOCR/ppstructure目录下进入CMD命令行，或者创建python脚本启动<br><strong><font size="4" color="orange">·</font></strong> 表格识别</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paddleocr --image_dir=docs/table/table.jpg --type=structure --layout=false</span><br></pre></td></tr></table></figure>
-<p>python脚本：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PPStructure,save_structure_res</span><br><span class="line"></span><br><span class="line">table_engine = PPStructure(layout=<span class="literal">False</span>, show_log=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">save_folder = <span class="string">'./output'</span></span><br><span class="line">img_path = <span class="string">'PaddleOCR/ppstructure/docs/table/table.jpg'</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">result = table_engine(img)</span><br><span class="line">save_structure_res(result, save_folder, os.path.basename(img_path).split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> result:</span><br><span class="line">    line.pop(<span class="string">'img'</span>)</span><br><span class="line">    print(line)</span><br></pre></td></tr></table></figure>
-<p><strong><font size="4" color="orange">·</font></strong> 版面分析</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paddleocr --image_dir=docs/table/1.png --type=structure --table=false --ocr=false</span><br></pre></td></tr></table></figure>
-<p>python脚本：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PPStructure,save_structure_res</span><br><span class="line"></span><br><span class="line">table_engine = PPStructure(table=<span class="literal">False</span>, ocr=<span class="literal">False</span>, show_log=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">save_folder = <span class="string">'./output'</span></span><br><span class="line">img_path = <span class="string">'PaddleOCR/ppstructure/docs/table/1.png'</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">result = table_engine(img)</span><br><span class="line">save_structure_res(result, save_folder, os.path.basename(img_path).split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> result:</span><br><span class="line">    line.pop(<span class="string">'img'</span>)</span><br><span class="line">    print(line)</span><br></pre></td></tr></table></figure>
-<p><strong><font size="4" color="orange">·</font></strong> 版面分析+表格识别</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">paddleocr --image_dir=docs/table/1.png --type=structure</span><br></pre></td></tr></table></figure>
-<p>python脚本：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> paddleocr <span class="keyword">import</span> PPStructure, draw_structure_result, save_structure_res</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line">table_engine = PPStructure(show_log=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">save_folder = <span class="string">'./output'</span></span><br><span class="line">img_path = <span class="string">'./ppstructure/docs/table/table.jpg'</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">result = table_engine(img)</span><br><span class="line">save_structure_res(result, save_folder, os.path.basename(img_path).split(<span class="string">'.'</span>)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> result:</span><br><span class="line">    line.pop(<span class="string">'img'</span>)</span><br><span class="line">    print(line)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">font_path = <span class="string">'./doc/fonts/simfang.ttf'</span></span><br><span class="line">image = Image.open(img_path).convert(<span class="string">'RGB'</span>)</span><br><span class="line">im_show = draw_structure_result(image, result, font_path=font_path)</span><br><span class="line">im_show = Image.fromarray(im_show)</span><br><span class="line">im_show.save(<span class="string">'result.jpg'</span>)</span><br></pre></td></tr></table></figure></p>
-        <!--  PaddleOCR2.5根目录下的ppstructure文件模块是PaddleOCR提供的一个可用于复杂文档结构分析处理的OCR工具包github文档页面：https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.5/ppstructure/README_ch.md
-安装依赖· 安装paddleocr version&gt;=2.51......  -->
-        <p class="article-more-link">
-          <a href="/2022/07/21/PaddleOCR表格识别/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-PaddleOCR"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/07/12/PaddleOCR/">PaddleOCR</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/07/12/PaddleOCR/" class="article-date">
-	  <time datetime="2022-07-12T06:20:14.000Z" itemprop="datePublished">2022-07-12</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>进入PaddleOCR的github页面（<a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank" rel="noopener">https://github.com/PaddlePaddle/PaddleOCR</a>），进行下载和解压</p>
-<p>使用pip进行安装，这里因为速度很慢推荐使用百度源<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure></p>
-<p>安装shapely（<a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/" target="_blank" rel="noopener">https://www.lfd.uci.edu/~gohlke/pythonlibs/</a>），下载shapely对应python和系统版本的安装包（我使用的是py39，windows_64），python版本目前不能超过3.9</p>
-<p>将下载好的Shapely-1.8.2-cp39-cp39-win_amd64.whl放进python根目录下的libs文件夹内，通过cmd或pycharm终端使用pip执行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Shapely-1.8.2-cp39-cp39-win_amd64.whl</span><br></pre></td></tr></table></figure></p>
-<p>完成以后接着来到PaddleOCR目录下，通过终端安装依赖，这里同样推荐使用百度源<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure></p>
-<p>到这里，PaddleOCR的安装完成了</p>
-<p>如果再执行<code>pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</code>到安装opencv4.4.0.46包时报错：</p>
-<font size="4" color="red">error: subprocess-exited-with-error</font>
-
-<p>说明python的版本可能存在问题，需要切换虚拟环境或回退python版本，因为opencv-python目前仅支持py3.6-3.9版本</p>
-<p>opencv-python镜像：<a href="https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/opencv-python/" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/opencv-python/</a><br></p>
-        <!--  安装进入PaddleOCR的github页面（https://github.com/PaddlePaddle/PaddleOCR），进行下载和解压
-使用pip进行安装，这里因为速度很慢推荐使用百度源1pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
-安装shapely（https://www.lfd.uci.e......  -->
-        <p class="article-more-link">
-          <a href="/2022/07/12/PaddleOCR/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-ClickHouse"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/07/07/ClickHouse/">ClickHouse</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/07/07/ClickHouse/" class="article-date">
-	  <time datetime="2022-07-07T08:02:23.000Z" itemprop="datePublished">2022-07-07</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文参考CK中文官方文档：<a href="https://clickhouse.com/docs/zh/" target="_blank" rel="noopener">https://clickhouse.com/docs/zh/</a><br>ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)</p>
-<p>在传统的行式数据库系统中，数据按如下顺序存储：</p>
-<table>
-<thead>
-<tr>
-<th>ROW</th>
-<th>Title</th>
-<th>Code</th>
-<th>Note</th>
-<th>Datetime</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>#0</td>
-<td>Database</td>
-<td>0</td>
-<td>数据库</td>
-<td>2022-07-07 16:03:00</td>
-</tr>
-<tr>
-<td>#1</td>
-<td>MySQL</td>
-<td>1</td>
-<td>关系型数据库</td>
-<td>2022-07-07 16:03:10</td>
-</tr>
-<tr>
-<td>#2</td>
-<td>Nebula</td>
-<td>1</td>
-<td>图数据库</td>
-<td>2022-07-07 16:03:20</td>
-</tr>
-<tr>
-<td>#3</td>
-<td>ClickHouse</td>
-<td>1</td>
-<td>列式数据库</td>
-<td>2022-07-07 16:03:30</td>
-</tr>
-<tr>
-<td>#N</td>
-<td>…</td>
-<td>1</td>
-<td>…</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<p>处于同一行中的数据总是被物理的存储在一起。常见的行式数据库系统有：<font color="orange">MySQL</font>、<font color="orange">Postgres</font> 和 <font color="orange">MS SQL Server</font> 等</p>
-<p>而在列式数据库系统中，数据则按如下顺序存储</p>
-<table>
-<thead>
-<tr>
-<th>ROW</th>
-<th>#0</th>
-<th>#1</th>
-<th>#2</th>
-<th>#3</th>
-<th>#4</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Title</strong></td>
-<td>Database</td>
-<td>MySQL</td>
-<td>Nebula</td>
-<td>ClickHouse</td>
-<td>…</td>
-</tr>
-<tr>
-<td><strong>Code</strong></td>
-<td>0</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td><strong>Note</strong></td>
-<td>数据库</td>
-<td>关系型数据库</td>
-<td>图数据库</td>
-<td>列式数据库</td>
-<td>…</td>
-</tr>
-<tr>
-<td><strong>Datetime</strong></td>
-<td>2022-0707 16:03:00</td>
-<td>2022-0707 16:03:10</td>
-<td>2022-0707 16:03:20</td>
-<td>2022-07-07 16:03:30</td>
-<td>…</td>
-</tr>
-</tbody>
-</table>
-<p>这些示例只显示了数据的排列顺序，来自不同列的值被单独存储，来自同一列的数据被存储在一起。常见的列式数据库系统有：<font color="orange">Vertica</font>、<font color="orange">Paraccel</font>(Actian Matrix, Amazon Redshift)、<font color="orange">Sybase IQ</font>、<font color="orange">Exasol</font>、<font color="orange">Infobright</font>、<font color="orange">InfiniDB</font>、<font color="orange">MonetDB</font>(VectorWise, Actian Vector)、<font color="orange">LucidDB</font>、<font color="orange">SAP HANA</font>、<font color="orange">Google Dremel</font>、<font color="orange">Google PowerDrill</font>、<font color="orange">Druid</font>、<font color="orange">kdb+</font> 等</p>
-<p>不同的数据存储方式适用不同的业务场景，数据访问的场景包括：进行了何种查询、多久查询一次以及各类查询的比例；每种类型的查询(行、列和字节)读取多少数据；读取数据和更新之间的关系；使用的数据集大小以及如何使用本地的数据集；是否使用事务,以及它们是如何进行隔离的；数据的复制机制与数据的完整性要求；每种类型的查询要求的延迟与吞吐量等等</p>
-<p>系统负载越高，依据使用场景进行定制化就越重要，并且定制将会变的越精细。没有一个系统能够同时适用所有不同的业务场景。如果系统适用于广泛的场景，在负载高的情况下，要兼顾所有的场景，那么将不得不做出选择：<font color="#008080">平衡</font> OR <font color="#008080">效率</font></p>
-<h2 id="联机分析（OLAP）场景的关键特征"><a href="#联机分析（OLAP）场景的关键特征" class="headerlink" title="联机分析（OLAP）场景的关键特征"></a>联机分析（OLAP）场景的关键特征</h2><pre><code>· 绝大多数是读请求
-
-· 数据以相当大的批次(&gt; 1000行)更新，而不是单行更新;或者根本没有更新。
-
-· 已添加到数据库的数据不能修改。
-
-· 对于读取，从数据库中提取相当多的行，但只提取列的一小部分。
-
-· 宽表，即每个表包含着大量的列
-
-· 查询相对较少(通常每台服务器每秒查询数百次或更少)
-
-· 对于简单查询，允许延迟大约50毫秒
-
-· 列中的数据相对较小：数字和短字符串(例如，每个URL 60个字节)
-
-· 处理单个查询时需要高吞吐量(每台服务器每秒可达数十亿行)
-
-· 事务不是必须的
-
-· 对数据一致性要求低
-
-· 每个查询有一个大表。除了他以外，其他的都很小。
-
-· 查询结果明显小于源数据。换句话说，数据经过过滤或聚合，因此结果适合于单个服务器的RAM中
-</code></pre><p>很容易可以看出，OLAP场景与其他通常业务场景(例如,OLTP或K/V)有很大的不同， 因此想要使用OLTP或Key-Value数据库去高效的处理分析查询场景，并不是非常完美的适用方案。例如，使用OLAP数据库去处理分析请求通常要优于使用MongoDB或Redis去处理分析请求。<br></p>
-        <!--  本文参考CK中文官方文档：https://clickhouse.com/docs/zh/ClickHouse是一个用于联机分析(OLAP)的列式数据库管理系统(DBMS)
-在传统的行式数据库系统中，数据按如下顺序存储：
-
-
-
-ROW
-Title
-Code
-Note
-Datetime
-
-
-
-
-#0
-Database
-0
-数据库
-2022-07-07 16:03:00
-
-
-#1
-MySQL
-1......  -->
-        <p class="article-more-link">
-          <a href="/2022/07/07/ClickHouse/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/clickhouse/">clickhouse</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database/">database</a></li></ul>
 
     </footer>
   </div>

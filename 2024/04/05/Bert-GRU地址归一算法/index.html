@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>bert+gru地址归一算法 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="BERTGRU">
+  
+  
+  
+  
+  <meta name="description" content="一、 算法简介本地址归一算法（已经下简称算法）旨在对输入文本中出现的地址信息或一般地址信息做地址结构化抽取，并输出该地址映射到数据库中的标准化地址。 二、算法模块算法由以下不同模块共同组成，各模块在算法的各个生命周期起到重要作用： 1、建立原始地址库使用postgres数据库（以下简pg）创建存储全国各级原始地址的原始地址库。通过网络爬虫不断采集和更新地址数据（主要来源为高德地图），并存储到原始地">
+<meta name="keywords" content="BERT,GRU">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bert+GRU地址归一算法">
+<meta property="og:url" content="http://yoursite.com/2024/04/05/Bert-GRU地址归一算法/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="一、 算法简介本地址归一算法（已经下简称算法）旨在对输入文本中出现的地址信息或一般地址信息做地址结构化抽取，并输出该地址映射到数据库中的标准化地址。 二、算法模块算法由以下不同模块共同组成，各模块在算法的各个生命周期起到重要作用： 1、建立原始地址库使用postgres数据库（以下简pg）创建存储全国各级原始地址的原始地址库。通过网络爬虫不断采集和更新地址数据（主要来源为高德地图），并存储到原始地">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2024/04/05/Bert-GRU地址归一算法/A.png">
+<meta property="og:image" content="http://yoursite.com/2024/04/05/Bert-GRU地址归一算法/3.png">
+<meta property="og:updated_time" content="2024-06-28T08:40:03.114Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bert+GRU地址归一算法">
+<meta name="twitter:description" content="一、 算法简介本地址归一算法（已经下简称算法）旨在对输入文本中出现的地址信息或一般地址信息做地址结构化抽取，并输出该地址映射到数据库中的标准化地址。 二、算法模块算法由以下不同模块共同组成，各模块在算法的各个生命周期起到重要作用： 1、建立原始地址库使用postgres数据库（以下简pg）创建存储全国各级原始地址的原始地址库。通过网络爬虫不断采集和更新地址数据（主要来源为高德地图），并存储到原始地">
+<meta name="twitter:image" content="http://yoursite.com/2024/04/05/Bert-GRU地址归一算法/A.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Bert-GRU地址归一算法" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Bert+GRU地址归一算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2024/04/05/Bert-GRU地址归一算法/" class="article-date">
+	  <time datetime="2024-04-05T08:23:15.000Z" itemprop="datePublished">2024-04-05</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/地址归一/">地址归一</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="一、-算法简介"><a href="#一、-算法简介" class="headerlink" title="一、 算法简介"></a>一、 算法简介</h2><p>本地址归一算法（已经下简称算法）旨在对输入文本中出现的地址信息或一般地址信息做地址结构化抽取，并输出该地址映射到数据库中的标准化地址。</p>
+<h2 id="二、算法模块"><a href="#二、算法模块" class="headerlink" title="二、算法模块"></a>二、算法模块</h2><p>算法由以下不同模块共同组成，各模块在算法的各个生命周期起到重要作用：</p>
+<h3 id="1、建立原始地址库"><a href="#1、建立原始地址库" class="headerlink" title="1、建立原始地址库"></a>1、建立原始地址库</h3><p>使用postgres数据库（以下简pg）创建存储全国各级原始地址的原始地址库。通过网络爬虫不断采集和更新地址数据（主要来源为高德地图），并存储到原始地址库，地址库包括地址的名称信息、poi信息、类别信息、经纬度信息等原始内容，为后续工作的开展做数据支撑。</p>
+<h3 id="2、文本地址抽取"><a href="#2、文本地址抽取" class="headerlink" title="2、文本地址抽取"></a>2、文本地址抽取</h3><p>使用UIE(Universal Information Extraction)框架，结合ERNIE3.0模型，使模型具备从无结构或半结构的文本中抽取地址信息的能力。</p>
+<h3 id="3、地址分级算法"><a href="#3、地址分级算法" class="headerlink" title="3、地址分级算法"></a>3、地址分级算法</h3><h4 id="i-分级标准"><a href="#i-分级标准" class="headerlink" title="i)分级标准"></a>i)分级标准</h4><p>首先需要确定一套地址的分级标准细节，本算法采用的分级标准基于阿里《文地址要素解析标注规范》，并做一定程度范围的修改，将地址分为18个不同级别：</p>
+<p>① Prov：省级行政区划，省、自治区、直辖市</p>
+<p>② City：地级行政区划，地级市、地区、自治州等</p>
+<p>③ District：县级行政区划，市辖区、县级市、县等</p>
+<p>④ Devzone：广义的上的开发区，包含一般性产业 园区、度假区</p>
+<p>⑤ Town：乡级行政区划，镇、街道、乡等</p>
+<p>⑥ Community：包含社区、行政村（生产大队、村委会），自然村</p>
+<p>⑦ Village Group：限定 xx 组、xx 队、xx 社</p>
+<p>⑧ Road：有正式名称的道路，包括隧道、高架、街、弄、巷等。 步行街、商业街</p>
+<p>⑨ Roadno：路牌号</p>
+<p>⑩ Poi：目标兴趣点</p>
+<p>⑪ Subpoi：目标兴趣点的子兴趣点</p>
+<p>⑫ Houseno：楼栋号，农村地址的门牌号(包括类似南楼、北楼一类的描述)</p>
+<p>⑬ Cellno：单元号，包括甲乙丙丁等</p>
+<p>⑭ Floorno：楼层号</p>
+<p>⑮ Roomno：房间号</p>
+<p>⑯ Assist：定位词，包括方位、解释性名词</p>
+<p>⑰ Intersection：路桥交叉口、交汇处、十字路口等</p>
+<p>⑱ Distance：距离</p>
+<h4 id="ii-算法细节"><a href="#ii-算法细节" class="headerlink" title="ii)算法细节"></a>ii)算法细节</h4><p>从爬虫获取的原始地址库构建地址结构化数据集，并对数据集划分为训练集和验证集进行数据标注。标注方式采用B-I-E-O-S五位序列标注法，该标注法将尽可能的保留被标注地址的分级信息。</p>
+<p>构建地址分级模型。使用基于多头注意力机制Transformers架构的BERT大模型作为预训练模型，并将模型结合CRF、GRU算法。CRF：全称为条件随机场（Conditional Random Fields），结合了最大熵模型和隐马尔可夫模型的特点，是一种无向图模型。它在序列标注任务如分词、词性标注和命名实体识别等方面取得了很好的效果；GRU：全称为门控循环单元（Gated Recurrent Unit），是一种常用于序列数据建模的神经网络模型，能够很好解决BERT循环神经网络中的长期依赖问题，捕获序列中的长期特征，避免训练过程中的梯度消失和梯度爆炸，使完成的模型结构具有更优秀的泛化能力、更好地拟合真实地址数据。</p>
+<p><img src="/2024/04/05/Bert-GRU地址归一算法/A.png" alt></p>
+<a id="more"></a>
+<h3 id="4、建立标准地址库"><a href="#4、建立标准地址库" class="headerlink" title="4、建立标准地址库"></a>4、建立标准地址库</h3><p>使用pg数据库建立标准地址库，地址库将包括地址的原始id、名称信息、poi信息、类别信息、经纬度信息以及18级分级信息。</p>
+<p>通过上一步骤训练好地址分级模型，并封装进数据计算中心，使用GPU并发计算原始地址库的数据，并将结果输出保存进标准地址库。</p>
+<h3 id="5、地址排序算法"><a href="#5、地址排序算法" class="headerlink" title="5、地址排序算法"></a>5、地址排序算法</h3><p>主要是基于希尔排序算法思想将模块二抽取到的地址信息进行排列组合，去除噪声、过滤冗余结构，最后拟合得到数据库中最接近当前地址信息的查询条件。</p>
+<p><img src="/2024/04/05/Bert-GRU地址归一算法/3.png" alt></p>
+<h3 id="6、建立地址分级匹配系统（检索）"><a href="#6、建立地址分级匹配系统（检索）" class="headerlink" title="6、建立地址分级匹配系统（检索）"></a>6、建立地址分级匹配系统（检索）</h3><p>通过pg数据库的高效检索功能，实现对地址数据的实时结构化查询和数据推送，实现算法完整功能。</p>
+<h2 id="三、接口服务"><a href="#三、接口服务" class="headerlink" title="三、接口服务"></a>三、接口服务</h2><p>算法目前可提供5类接口：</p>
+<p>1、文本地址自动归一接口：提取文本中的所有地址，并标准化；</p>
+<p>2、地址检索接口：自动拆分、检索相关地址；</p>
+<p>3、地址提取接口：仅提取文本中所有地址，不做标准化处理；</p>
+<p>4、地点检索接口：检索相关地点的标准地址；</p>
+<p>5、地址分级接口：对输入地址进行层级划分。</p>
+<h2 id="四、模型更新-amp-数据运维"><a href="#四、模型更新-amp-数据运维" class="headerlink" title="四、模型更新 &amp; 数据运维"></a>四、模型更新 &amp; 数据运维</h2><p>当前版本模型的更新包括分级模型的更新（再训练）和排序算法的更新。数据的维护主要从三个方面进行：</p>
+<p>1、爬虫脚本的定期维护，更新原始地址pg数据库；</p>
+<p>2、维持标准地址库的数据计算中心与爬虫同步运转；</p>
+<p>3、对标准地址库中的错误信息做提取，添加进训练集。</p>
+<h2 id="五、机器配置"><a href="#五、机器配置" class="headerlink" title="五、机器配置"></a>五、机器配置</h2><p>算法和模型的各个模块使用python语言编写，在linux服务器上进行训练和测试，并使用基于NVIDIA CUDA生态的Torch框架进行科学计算。</p>
+<p>目前满足模型各功能正常快速运转占用的显存理论上不低于5GB，显卡显存不低于8GB。</p>
+<h2 id="六、问题"><a href="#六、问题" class="headerlink" title="六、问题"></a>六、问题</h2><p>目前模型版本可能存在的问题：</p>
+<p>1、B-I-E-O-S序列标注法数据标注过程复杂，且对数据集的精度要求较高；</p>
+<p>2、部分复杂结构地址样本暂不充足；</p>
+<p>3、爬虫模块需要账号支撑正常运行，爬虫目前递归算法（DFS），可能存在遗漏情况；</p>
+<p>4、全国地址更新较为频繁，需要从爬虫和数据计算中心两个层面分别解决数据更新的问题；</p>
+<p>5、目前使用pg模糊检索不支持字段索引，随数据量指数上升可能存在性能瓶颈，暂未验证。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BERT/">BERT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GRU/">GRU</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/05/11/yolov8-seg：皮带机偏移实时检测/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          yolov8-seg：皮带机偏移实时检测
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/03/07/RTSP推拉流服务搭建/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">RTSP推拉流服务搭建</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、-算法简介"><span class="nav-number">1.</span> <span class="nav-text">一、 算法简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、算法模块"><span class="nav-number">2.</span> <span class="nav-text">二、算法模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、建立原始地址库"><span class="nav-number">2.1.</span> <span class="nav-text">1、建立原始地址库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、文本地址抽取"><span class="nav-number">2.2.</span> <span class="nav-text">2、文本地址抽取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、地址分级算法"><span class="nav-number">2.3.</span> <span class="nav-text">3、地址分级算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#i-分级标准"><span class="nav-number">2.3.1.</span> <span class="nav-text">i)分级标准</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ii-算法细节"><span class="nav-number">2.3.2.</span> <span class="nav-text">ii)算法细节</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、建立标准地址库"><span class="nav-number">2.4.</span> <span class="nav-text">4、建立标准地址库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、地址排序算法"><span class="nav-number">2.5.</span> <span class="nav-text">5、地址排序算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、建立地址分级匹配系统（检索）"><span class="nav-number">2.6.</span> <span class="nav-text">6、建立地址分级匹配系统（检索）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、接口服务"><span class="nav-number">3.</span> <span class="nav-text">三、接口服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、模型更新-amp-数据运维"><span class="nav-number">4.</span> <span class="nav-text">四、模型更新 &amp; 数据运维</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、机器配置"><span class="nav-number">5.</span> <span class="nav-text">五、机器配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、问题"><span class="nav-number">6.</span> <span class="nav-text">六、问题</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2024 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2024 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
