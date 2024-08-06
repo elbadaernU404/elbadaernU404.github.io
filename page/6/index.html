@@ -258,6 +258,67 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-HTTP请求方法"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2019/04/11/HTTP请求方法/">HTTP请求方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/04/11/HTTP请求方法/" class="article-date">
+	  <time datetime="2019-04-11T08:07:35.000Z" itemprop="datePublished">2019-04-11</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Web/">Web</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h2><p>请求指定的页面信息，并返回实体主体</p>
+<h2 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h2><p>向指定的资源提交数据，请求处理。数据被包含在请求体当中，重新提交页面，导致新资源的建立或已有资源的修改</p>
+<h2 id="PUT"><a href="#PUT" class="headerlink" title="PUT"></a>PUT</h2><p>从客户端向服务器传送数据来取代指定的文档内容</p>
+<h2 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h2><p>请求服务器删除指定的页面</p>
+<h2 id="HEAD"><a href="#HEAD" class="headerlink" title="HEAD"></a>HEAD</h2><p>类似GET请求，返回的响应中没有具体内容，仅获取报头</p>
+<h2 id="OPTIONS"><a href="#OPTIONS" class="headerlink" title="OPTIONS"></a>OPTIONS</h2><p>允许客户端查看服务器的内容</p>
+<h2 id="TRACE"><a href="#TRACE" class="headerlink" title="TRACE"></a>TRACE</h2><p>显示服务器收到的请求，用于测试或诊断</p>
+<h2 id="CONNECT"><a href="#CONNECT" class="headerlink" title="CONNECT"></a>CONNECT</h2><p>HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器</p>
+<h2 id="GET方法和POST方法的区别"><a href="#GET方法和POST方法的区别" class="headerlink" title="GET方法和POST方法的区别"></a>GET方法和POST方法的区别</h2><p><strong>·</strong> GET仅请求目标信息，返回/刷新是无害的，POST每次返回/刷新会重新提交数据</p>
+<p><strong>·</strong> GET可被保存在书签、缓存、历史记录当中，POST不行</p>
+<p><strong>·</strong> GET相对没有POST安全</p>
+<p><strong>·</strong> GET参数通过URL进行传递，POST参数存放在Request body当中</p>
+<p><strong>·</strong> GET请求时，浏览器会将http header和data一起发送除去，服务器响应为200；</p>
+<p>POST请求时，浏览器会先发送header，服务器响应100 continue，再发送data，服务器响应200（时间消耗相对GET要长）</p>
+<p><strong>·</strong> GET每次产生1个TCP数据包，POST产生两个</p>
+<p><strong>·</strong> GET对数据的长度有限制（2KB），POST没有限制</p>
+<p><strong>·</strong> GET仅允许ASCII字符，POST没有限制</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GET-POST/">GET/POST...</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Python的图片与字符画转换"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -704,60 +765,6 @@ Day1.所谓实训的大目标只有一个俄罗斯方块的设计，工具为Cod
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-ISCC2018的部分WP"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/05/07/ISCC2018的部分WP/">ISCC2018的部分WP</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2018/05/07/ISCC2018的部分WP/" class="article-date">
-	  <time datetime="2018-05-07T12:03:21.000Z" itemprop="datePublished">2018-05-07</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/信息安全/">信息安全</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>（持续更新…）</p>
-<h2 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h2><p><img src="/2018/05/07/ISCC2018的部分WP/1.png" alt><br>要求输入比服务器上大的数字，随便输入几个9，发现最多只能输入三位数，直接F12找到maxlength=3将3修改为4再随意填入一个四位数即可。<br><img src="/2018/05/07/ISCC2018的部分WP/2.png" alt></p>
-<h2 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h2><p>打开地址后是一份PHP代码：<br><img src="/2018/05/07/ISCC2018的部分WP/3.png" alt><br>由代码读出需要使strcmp函数值为0，应该是要构造出长度相等的数组。构造payload，在连接后添入/?password[]=a，返回flag。<br><img src="/2018/05/07/ISCC2018的部分WP/4.png" alt></p>
-<h2 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h2><p><img src="/2018/05/07/ISCC2018的部分WP/5.png" alt><br>用Burpsuite抓包，GO一次后得到提示在Request添加X-Forwarded-For:127.0.0.1即可。<br><img src="/2018/05/07/ISCC2018的部分WP/6.png" alt><br></p>
-        <!--  （持续更新…）
-1.要求输入比服务器上大的数字，随便输入几个9，发现最多只能输入三位数，直接F12找到maxlength=3将3修改为4再随意填入一个四位数即可。
-2.打开地址后是一份PHP代码：由代码读出需要使strcmp函数值为0，应该是要构造出长度相等的数组。构造payload，在连接后添入/?password[]=a，返回flag。
-3.用Burpsuite抓包，GO一次后得到提示......  -->
-        <p class="article-more-link">
-          <a href="/2018/05/07/ISCC2018的部分WP/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
 
     </footer>
   </div>

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>间隙树排序算法的可视化 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="OCR">
+  
+  
+  
+  
+  <meta name="description" content="做文档翻译的OCR程序时，会遇到这样一个场景，因为通常OCR模型的输出都是按文本块逐行返回，当结果进入翻译模型时会丢失行与行之间的信息。为了解决这个问题，需要对OCR结果进行进一步的版面分析，将文本块合并成段落，再输入到翻译模型中去。 算法间隙·树·排序算法 参考链接：https://github.com/hiroi-sora/GapTree_Sort_Algorithm  算法主要对文本块按间隙">
+<meta name="keywords" content="OCR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="间隙树排序算法的可视化">
+<meta property="og:url" content="http://yoursite.com/2024/08/06/间隙树排序算法的可视化/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="做文档翻译的OCR程序时，会遇到这样一个场景，因为通常OCR模型的输出都是按文本块逐行返回，当结果进入翻译模型时会丢失行与行之间的信息。为了解决这个问题，需要对OCR结果进行进一步的版面分析，将文本块合并成段落，再输入到翻译模型中去。 算法间隙·树·排序算法 参考链接：https://github.com/hiroi-sora/GapTree_Sort_Algorithm  算法主要对文本块按间隙">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2024/08/06/间隙树排序算法的可视化/1.png">
+<meta property="og:image" content="http://yoursite.com/2024/08/06/间隙树排序算法的可视化/2.png">
+<meta property="og:image" content="http://yoursite.com/2024/08/06/间隙树排序算法的可视化/3.png">
+<meta property="og:image" content="http://yoursite.com/2024/08/06/间隙树排序算法的可视化/4.png">
+<meta property="og:updated_time" content="2024-08-06T08:41:44.334Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="间隙树排序算法的可视化">
+<meta name="twitter:description" content="做文档翻译的OCR程序时，会遇到这样一个场景，因为通常OCR模型的输出都是按文本块逐行返回，当结果进入翻译模型时会丢失行与行之间的信息。为了解决这个问题，需要对OCR结果进行进一步的版面分析，将文本块合并成段落，再输入到翻译模型中去。 算法间隙·树·排序算法 参考链接：https://github.com/hiroi-sora/GapTree_Sort_Algorithm  算法主要对文本块按间隙">
+<meta name="twitter:image" content="http://yoursite.com/2024/08/06/间隙树排序算法的可视化/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-间隙树排序算法的可视化" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      间隙树排序算法的可视化
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2024/08/06/间隙树排序算法的可视化/" class="article-date">
+	  <time datetime="2024-08-06T07:10:43.000Z" itemprop="datePublished">2024-08-06</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>做文档翻译的OCR程序时，会遇到这样一个场景，因为通常OCR模型的输出都是按文本块逐行返回，当结果进入翻译模型时会丢失行与行之间的信息。为了解决这个问题，需要对OCR结果进行进一步的版面分析，将文本块合并成段落，再输入到翻译模型中去。</p>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>间隙·树·排序算法</p>
+<p>参考链接：<a href="https://github.com/hiroi-sora/GapTree_Sort_Algorithm" target="_blank" rel="noopener">https://github.com/hiroi-sora/GapTree_Sort_Algorithm</a></p>
+<p><img src="/2024/08/06/间隙树排序算法的可视化/1.png" alt></p>
+<p>算法主要对文本块按间隙进行划分，再经过树形排序，将底层OCR的输出结果从子文本块转化成段落文本块。</p>
+<h3 id="算法重构"><a href="#算法重构" class="headerlink" title="算法重构"></a>算法重构</h3><p>为了使文本块的定位更加准确，使用原算法输出段落块（content_blocks）的上下左右四个边界点构成新段落块（new_blocks）</p>
+<p>源码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">structure_ocr</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> line, tb <span class="keyword">in</span> enumerate(self.blocks_data):</span><br><span class="line">        tb[<span class="string">"bbox"</span>] = self.bboxes[line]</span><br><span class="line"></span><br><span class="line">    gtree = GapTree(<span class="keyword">lambda</span> tb: tb[<span class="string">"bbox"</span>])</span><br><span class="line">    sorted_text_blocks = gtree.sort(self.blocks_data)  <span class="comment"># 文本块排序</span></span><br><span class="line">    <span class="comment"># print(sorted_text_blocks)</span></span><br><span class="line">    pp = ParagraphParse(self.get_info, self.set_end)</span><br><span class="line">    <span class="comment"># 获取所有区块的文本块</span></span><br><span class="line">    nodes_text_blocks = gtree.get_nodes_text_blocks()</span><br><span class="line">    content_blocks = []</span><br><span class="line">    <span class="keyword">for</span> tbs <span class="keyword">in</span> nodes_text_blocks:</span><br><span class="line">        content = <span class="string">""</span></span><br><span class="line">        tbs = pp.run(tbs)  <span class="comment"># 预测结尾分隔符</span></span><br><span class="line">        <span class="keyword">for</span> tb <span class="keyword">in</span> tbs:  <span class="comment"># 输出文本和结尾分隔符</span></span><br><span class="line">            content += tb[<span class="string">"text"</span>] + tb[<span class="string">"end"</span>]</span><br><span class="line">        content_blocks.append(content)</span><br><span class="line"></span><br><span class="line">    node_tbs = []</span><br><span class="line">    <span class="keyword">for</span> node <span class="keyword">in</span> gtree.current_nodes:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> node[<span class="string">"units"</span>]:</span><br><span class="line">           <span class="keyword">continue</span>  <span class="comment"># 跳过没有块的根节点</span></span><br><span class="line">        x0 = node[<span class="string">"x_left"</span>]</span><br><span class="line">        x1 = node[<span class="string">"x_right"</span>]</span><br><span class="line">        y0 = gtree.current_rows[node[<span class="string">"r_top"</span>]][<span class="number">0</span>][<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">        y1 = gtree.current_rows[node[<span class="string">"r_bottom"</span>]][<span class="number">0</span>][<span class="number">0</span>][<span class="number">3</span>]</span><br><span class="line">        node_tbs.append([[x0, y0], [x1, y0], [x1, y1], [x0, y1]])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> node_tbs, content_blocks</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>修改后：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">structure_ocr</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> line, tb <span class="keyword">in</span> enumerate(self.blocks_data):</span><br><span class="line">        tb[<span class="string">"bbox"</span>] = self.bboxes[line]</span><br><span class="line"></span><br><span class="line">    gtree = GapTree(<span class="keyword">lambda</span> tb: tb[<span class="string">"bbox"</span>])</span><br><span class="line">    sorted_text_blocks = gtree.sort(self.blocks_data)  <span class="comment"># 文本块排序</span></span><br><span class="line">    <span class="comment"># print(sorted_text_blocks)</span></span><br><span class="line">    pp = ParagraphParse(self.get_info, self.set_end)</span><br><span class="line">    <span class="comment"># 获取所有区块的文本块</span></span><br><span class="line">    nodes_text_blocks = gtree.get_nodes_text_blocks()</span><br><span class="line">    content_blocks = []</span><br><span class="line">    <span class="keyword">for</span> tbs <span class="keyword">in</span> nodes_text_blocks:</span><br><span class="line">        content = <span class="string">""</span></span><br><span class="line">        tbs = pp.run(tbs)  <span class="comment"># 预测结尾分隔符</span></span><br><span class="line">        <span class="keyword">for</span> tb <span class="keyword">in</span> tbs:  <span class="comment"># 输出文本和结尾分隔符</span></span><br><span class="line">            content += tb[<span class="string">"text"</span>] + tb[<span class="string">"end"</span>]</span><br><span class="line">        content_blocks.append(content)</span><br><span class="line"></span><br><span class="line">    new_blocks = []</span><br><span class="line">    <span class="keyword">for</span> m <span class="keyword">in</span> nodes_text_blocks:</span><br><span class="line">        x1_list = []</span><br><span class="line">        y1_list = []</span><br><span class="line">        x2_list = []</span><br><span class="line">        y2_list = []</span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> m:</span><br><span class="line">            box_ = n.get(<span class="string">'box'</span>)</span><br><span class="line">            x1_list.append(box_[<span class="number">0</span>][<span class="number">0</span>])</span><br><span class="line">            y1_list.append(box_[<span class="number">0</span>][<span class="number">1</span>])</span><br><span class="line">            x2_list.append(box_[<span class="number">2</span>][<span class="number">0</span>])</span><br><span class="line">            y2_list.append(box_[<span class="number">2</span>][<span class="number">1</span>])</span><br><span class="line">        x1_ = min(x1_list)</span><br><span class="line">        y1_ = min(y1_list)</span><br><span class="line">        x2_ = max(x2_list)</span><br><span class="line">        y2_ = max(y2_list)</span><br><span class="line">        new_blocks.append([[x1_, y1_], [x2_, y1_], [x2_, y2_], [x1_, y2_]])</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> new_blocks, content_blocks</span><br></pre></td></tr></table></figure>
+<h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StructureOCR</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, blocks_data)</span>:</span></span><br><span class="line">        self.blocks_data = blocks_data</span><br><span class="line">        self.bboxes = linePreprocessing(self.blocks_data)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_info</span><span class="params">(tb)</span>:</span>  <span class="comment"># 返回信息</span></span><br><span class="line">        b = tb[<span class="string">"box"</span>]</span><br><span class="line">        <span class="keyword">return</span> (b[<span class="number">0</span>][<span class="number">0</span>], b[<span class="number">0</span>][<span class="number">1</span>], b[<span class="number">2</span>][<span class="number">0</span>], b[<span class="number">2</span>][<span class="number">1</span>]), tb[<span class="string">"text"</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_end</span><span class="params">(tb, end)</span>:</span>  <span class="comment"># 获取预测的块尾分隔符</span></span><br><span class="line">        tb[<span class="string">"end"</span>] = end</span><br><span class="line">        <span class="comment"># also： tb["text"] += end</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">structure_ocr</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> line, tb <span class="keyword">in</span> enumerate(self.blocks_data):</span><br><span class="line">            tb[<span class="string">"bbox"</span>] = self.bboxes[line]</span><br><span class="line"></span><br><span class="line">        gtree = GapTree(<span class="keyword">lambda</span> tb: tb[<span class="string">"bbox"</span>])</span><br><span class="line">        sorted_text_blocks = gtree.sort(self.blocks_data)  <span class="comment"># 文本块排序</span></span><br><span class="line">        <span class="comment"># print(sorted_text_blocks)</span></span><br><span class="line">        pp = ParagraphParse(self.get_info, self.set_end)</span><br><span class="line">        <span class="comment"># 获取所有区块的文本块</span></span><br><span class="line">        nodes_text_blocks = gtree.get_nodes_text_blocks()</span><br><span class="line">        content_blocks = []</span><br><span class="line">        <span class="keyword">for</span> tbs <span class="keyword">in</span> nodes_text_blocks:</span><br><span class="line">            content = <span class="string">""</span></span><br><span class="line">            tbs = pp.run(tbs)  <span class="comment"># 预测结尾分隔符</span></span><br><span class="line">            <span class="keyword">for</span> tb <span class="keyword">in</span> tbs:  <span class="comment"># 输出文本和结尾分隔符</span></span><br><span class="line">                content += tb[<span class="string">"text"</span>] + tb[<span class="string">"end"</span>]</span><br><span class="line">            content_blocks.append(content)</span><br><span class="line"></span><br><span class="line">        node_tbs = []</span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> gtree.current_nodes:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node[<span class="string">"units"</span>]:</span><br><span class="line">                <span class="keyword">continue</span>  <span class="comment"># 跳过没有块的根节点</span></span><br><span class="line">            x0 = node[<span class="string">"x_left"</span>]</span><br><span class="line">            x1 = node[<span class="string">"x_right"</span>]</span><br><span class="line">            y0 = gtree.current_rows[node[<span class="string">"r_top"</span>]][<span class="number">0</span>][<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">            y1 = gtree.current_rows[node[<span class="string">"r_bottom"</span>]][<span class="number">0</span>][<span class="number">0</span>][<span class="number">3</span>]</span><br><span class="line">            node_tbs.append([[x0, y0], [x1, y0], [x1, y1], [x0, y1]])</span><br><span class="line"></span><br><span class="line">        new_blocks = []</span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> nodes_text_blocks:</span><br><span class="line">            x1_list = []</span><br><span class="line">            y1_list = []</span><br><span class="line">            x2_list = []</span><br><span class="line">            y2_list = []</span><br><span class="line">            <span class="keyword">for</span> n <span class="keyword">in</span> m:</span><br><span class="line">                box_ = n.get(<span class="string">'box'</span>)</span><br><span class="line">                x1_list.append(box_[<span class="number">0</span>][<span class="number">0</span>])</span><br><span class="line">                y1_list.append(box_[<span class="number">0</span>][<span class="number">1</span>])</span><br><span class="line">                x2_list.append(box_[<span class="number">2</span>][<span class="number">0</span>])</span><br><span class="line">                y2_list.append(box_[<span class="number">2</span>][<span class="number">1</span>])</span><br><span class="line">            x1_ = min(x1_list)</span><br><span class="line">            y1_ = min(y1_list)</span><br><span class="line">            x2_ = max(x2_list)</span><br><span class="line">            y2_ = max(y2_list)</span><br><span class="line">            new_blocks.append([[x1_, y1_], [x2_, y1_], [x2_, y2_], [x1_, y2_]])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> new_blocks, content_blocks</span><br></pre></td></tr></table></figure>
+<h3 id="调用"><a href="#调用" class="headerlink" title="调用"></a>调用</h3><p>使用paddleOCR，将OCR结果转成算法输入的json_data</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">import</span> base64</span><br><span class="line">    <span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">    test_image = <span class="string">'./test/t2.png'</span></span><br><span class="line">    origin_image = cv2.imread(test_image)</span><br><span class="line">    encoded = cv2_base64(origin_image)</span><br><span class="line"></span><br><span class="line">    json_data = &#123;</span><br><span class="line">        <span class="string">"img_b64"</span>: encoded,</span><br><span class="line">        <span class="string">"lang"</span>: <span class="string">"cn"</span></span><br><span class="line">    &#125;</span><br><span class="line">    response = requests.post(<span class="string">'localhost:port/ai/ppocr/ai/ppocr'</span>, json=json_data).json()</span><br><span class="line">    ocr_result = response.get(<span class="string">'data'</span>)</span><br><span class="line">    ocr_boxes = [line[<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result[<span class="number">0</span>]]</span><br><span class="line">    ocr_txts = [line[<span class="number">1</span>][<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result[<span class="number">0</span>]]</span><br><span class="line">    ocr_scores = [line[<span class="number">1</span>][<span class="number">1</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result[<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line">    json_data = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(ocr_result[<span class="number">0</span>])):</span><br><span class="line">        json_data.append(&#123;</span><br><span class="line">            <span class="string">"box"</span>: [[int(i[<span class="number">0</span>]), int(i[<span class="number">1</span>])] <span class="keyword">for</span> i <span class="keyword">in</span> ocr_boxes[i]],</span><br><span class="line">            <span class="string">"score"</span>: ocr_scores[i],</span><br><span class="line">            <span class="string">"text"</span>: ocr_txts[i]</span><br><span class="line">        &#125;)</span><br><span class="line">        </span><br><span class="line">    so = StructureOCR(json_data)</span><br><span class="line">    blocks, paragraphs = so.structure_ocr()</span><br></pre></td></tr></table></figure>
+<h2 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h2><p>当文本成段后，不能直接通过<code>draw.text</code>等方法将文本写作一行，而是要设置每行文本不得超过段落块的长度，并且总行数不能超出段落块总长度。需要设计算法，当每行文本超出长度限制时，自动添加换行符。</p>
+<h3 id="段落换行算法"><a href="#段落换行算法" class="headerlink" title="段落换行算法"></a>段落换行算法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VisualizeOCR</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, im, boxes, texts)</span>:</span></span><br><span class="line">        self.boxes = boxes</span><br><span class="line">        self.texts = texts</span><br><span class="line">        <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">            self.im = Image.open(im)</span><br><span class="line">            self.im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">            self.im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        self.im = Image.fromarray(self.im)</span><br><span class="line">        self.im = self.im.convert(<span class="string">'RGBA'</span>)</span><br><span class="line">        self.size = (int(self.im.size[<span class="number">0</span>]), int(self.im.size[<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">split_text</span><span class="params">(self, width, sentence, font, text_scale)</span>:</span></span><br><span class="line">        <span class="comment"># 按规定宽度分组</span></span><br><span class="line">        max_line_height, total_lines = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        allText = []</span><br><span class="line">        <span class="keyword">for</span> sen <span class="keyword">in</span> sentence.split(<span class="string">'\n'</span>):</span><br><span class="line">            paragraph, line_height, line_count = self.get_paragraph(sen, width, font, text_scale)</span><br><span class="line">            max_line_height = max(line_height, max_line_height)</span><br><span class="line">            total_lines += line_count</span><br><span class="line">            allText.append((paragraph, line_count))</span><br><span class="line">        line_height = max_line_height</span><br><span class="line">        total_height = total_lines * line_height</span><br><span class="line">        <span class="keyword">return</span> allText, total_height, line_height</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_paragraph</span><span class="params">(text, width, font, text_scale)</span>:</span></span><br><span class="line">        <span class="comment"># 字体像素较小时，换行效果不佳，每5个像素换行下移0.05个像素</span></span><br><span class="line">        text_size = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> text_scale &lt;= <span class="number">15</span>:</span><br><span class="line">            text_size = <span class="number">0.1</span></span><br><span class="line">        <span class="keyword">elif</span> text_scale &lt;= <span class="number">10</span>:</span><br><span class="line">            text_size = <span class="number">0.15</span></span><br><span class="line">        <span class="keyword">elif</span> text_scale &lt;= <span class="number">5</span>:</span><br><span class="line">            text_size = <span class="number">0.2</span></span><br><span class="line"></span><br><span class="line">        txt = Image.new(<span class="string">'RGBA'</span>, (<span class="number">1033</span>, <span class="number">737</span>), (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>))</span><br><span class="line">        draw = ImageDraw.Draw(txt)</span><br><span class="line">        <span class="comment"># 所有文字的段落</span></span><br><span class="line">        paragraph = <span class="string">""</span></span><br><span class="line">        <span class="comment"># 宽度总和</span></span><br><span class="line">        sum_width = <span class="number">0</span></span><br><span class="line">        <span class="comment"># 行数</span></span><br><span class="line">        line_count = <span class="number">1</span></span><br><span class="line">        <span class="comment"># 行高</span></span><br><span class="line">        line_height = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> char <span class="keyword">in</span> text:</span><br><span class="line">            _, _, w, h = draw.textbbox((<span class="number">0</span>, <span class="number">0</span>), char, font=font)</span><br><span class="line"></span><br><span class="line">            sum_width += w</span><br><span class="line">            <span class="keyword">if</span> sum_width &gt; width:  <span class="comment"># 超过预设宽度就修改段落 以及当前行数</span></span><br><span class="line">                line_count += <span class="number">1</span></span><br><span class="line">                line_count += text_size + <span class="number">0.1</span></span><br><span class="line">                sum_width = <span class="number">0</span></span><br><span class="line">                paragraph += <span class="string">'\n'</span></span><br><span class="line">            paragraph += char</span><br><span class="line">            line_height = max(h, line_height)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> paragraph.endswith(<span class="string">'\n'</span>):</span><br><span class="line">            paragraph += <span class="string">'\n'</span></span><br><span class="line">        <span class="keyword">return</span> paragraph, line_height, line_count</span><br></pre></td></tr></table></figure>
+<p>实现换行后，还需要考虑字体的大小，将文字锁定在文本框内。在pillow库中<code>draw.text</code>方法中中文字符的大小近似于其正方矩形像素块的边长。接下来需要考虑的参数变量有三个：</p>
+<p><strong>1.每行最多的字符x（x_num）;</strong></p>
+<p><strong>2.总行数y（y_num）;</strong></p>
+<p><strong>3.字体像素s（text_scale）</strong></p>
+<p>同时考虑到并不是每行都能够写满段落块的长度，可能存在提前换行、空行、结束等情况。可以计算段落的总换行符数量（count(‘\n’)），将换行符出现的地方视作空行，并×2算作换行+留白部分产生的像素面积。那么已知常量包括：</p>
+<p><strong>1.换行次数b（blank_scale）；</strong></p>
+<p><strong>2.总字数l（len(text)）；</strong></p>
+<p><strong>3.段落框长度w（width_p，值取width*0.97，减少出界概率）</strong></p>
+<p><strong>3.段落框宽度h（height）</strong></p>
+<h4 id="设立方程组："><a href="#设立方程组：" class="headerlink" title="设立方程组："></a>设立方程组：</h4><p><strong><font color="gold">{</font></strong></p>
+<p><strong><font color="gold">① (y-b)*x=l</font></strong></p>
+<p><strong><font color="gold">② x*s = w</font></strong></p>
+<p><strong><font color="gold">③ y*s = h</font></strong></p>
+<p><strong><font color="gold">{</font></strong></p>
+<h4 id="转换到代码中："><a href="#转换到代码中：" class="headerlink" title="转换到代码中："></a>转换到代码中：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(y_num - blank_scale) * x_num = len(text)</span><br><span class="line">x_num * text_scale = width_p</span><br><span class="line">y_num * text_scale = height</span><br></pre></td></tr></table></figure>
+<h4 id="简化方程组："><a href="#简化方程组：" class="headerlink" title="简化方程组："></a>简化方程组：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(y_num - blank_scale) * x_num = len(text)</span><br><span class="line">x_num * text_scale = width_p</span><br><span class="line">y_num * text_scale = height</span><br><span class="line">===&gt;</span><br><span class="line">x_num = len(text) / (y_num - blank_scale)</span><br><span class="line">x_num = width_p / text_scale</span><br><span class="line">width_p / text_scale = len(text) / ((height / text_scale) - blank_scale)</span><br><span class="line">===&gt;</span><br><span class="line">len(text) * text_scale * text_scale + blank_scale * len(text) * text_scale - width_p * height = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h4 id="解方程"><a href="#解方程" class="headerlink" title="解方程"></a>解方程</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quadratic</span><span class="params">(a, b, c)</span>:</span></span><br><span class="line">    n = b * b - <span class="number">4</span> * a * c</span><br><span class="line">    <span class="keyword">import</span> math</span><br><span class="line">    <span class="keyword">if</span> n &gt;= <span class="number">0</span>:</span><br><span class="line">        x1 = (-b + math.sqrt(n)) / (<span class="number">2</span> * a)</span><br><span class="line">        x2 = (-b - math.sqrt(n)) / (<span class="number">2</span> * a)</span><br><span class="line">        <span class="keyword">return</span> x1 <span class="keyword">if</span> x1 &gt; <span class="number">0</span> <span class="keyword">else</span> x2</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">raise</span></span><br></pre></td></tr></table></figure>
+<h4 id="获取最佳像素值"><a href="#获取最佳像素值" class="headerlink" title="获取最佳像素值"></a>获取最佳像素值</h4><p>经过实际观察，对于中文字符，将计算得到的像素大小-2后视觉效果更佳。同时可以根据图像大小、单文本行不换行等因素，选择最佳字体大小</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">text_scale = min(</span><br><span class="line">    int(quadratic(len(text), blank_scale * len(text), -width_p * height)) - <span class="number">2</span>,</span><br><span class="line">    int(self.size[<span class="number">0</span>] / <span class="number">66</span>),</span><br><span class="line">    int(height/<span class="number">2</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="封装-1"><a href="#封装-1" class="headerlink" title="封装"></a>封装</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VisualizeOCR</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, im, boxes, texts)</span>:</span></span><br><span class="line">        self.boxes = boxes</span><br><span class="line">        self.texts = texts</span><br><span class="line">        <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">            self.im = Image.open(im)</span><br><span class="line">            self.im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">            self.im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        self.im = Image.fromarray(self.im)</span><br><span class="line">        self.im = self.im.convert(<span class="string">'RGBA'</span>)</span><br><span class="line">        self.size = (int(self.im.size[<span class="number">0</span>]), int(self.im.size[<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">split_text</span><span class="params">(self, width, sentence, font, text_scale)</span>:</span></span><br><span class="line">        <span class="comment"># 按规定宽度分组</span></span><br><span class="line">        max_line_height, total_lines = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        allText = []</span><br><span class="line">        <span class="keyword">for</span> sen <span class="keyword">in</span> sentence.split(<span class="string">'\n'</span>):</span><br><span class="line">            paragraph, line_height, line_count = self.get_paragraph(sen, width, font, text_scale)</span><br><span class="line">            max_line_height = max(line_height, max_line_height)</span><br><span class="line">            total_lines += line_count</span><br><span class="line">            allText.append((paragraph, line_count))</span><br><span class="line">        line_height = max_line_height</span><br><span class="line">        total_height = total_lines * line_height</span><br><span class="line">        <span class="keyword">return</span> allText, total_height, line_height</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_paragraph</span><span class="params">(text, width, font, text_scale)</span>:</span></span><br><span class="line">        text_size = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> text_scale &lt;= <span class="number">15</span>:</span><br><span class="line">            text_size = <span class="number">0.1</span></span><br><span class="line">        <span class="keyword">elif</span> text_scale &lt;= <span class="number">10</span>:</span><br><span class="line">            text_size = <span class="number">0.15</span></span><br><span class="line">        <span class="keyword">elif</span> text_scale &lt;= <span class="number">5</span>:</span><br><span class="line">            text_size = <span class="number">0.2</span></span><br><span class="line"></span><br><span class="line">        txt = Image.new(<span class="string">'RGBA'</span>, (<span class="number">1033</span>, <span class="number">737</span>), (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>))</span><br><span class="line">        draw = ImageDraw.Draw(txt)</span><br><span class="line">        <span class="comment"># 所有文字的段落</span></span><br><span class="line">        paragraph = <span class="string">""</span></span><br><span class="line">        <span class="comment"># 宽度总和</span></span><br><span class="line">        sum_width = <span class="number">0</span></span><br><span class="line">        <span class="comment"># 行数</span></span><br><span class="line">        line_count = <span class="number">1</span></span><br><span class="line">        <span class="comment"># 行高</span></span><br><span class="line">        line_height = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> char <span class="keyword">in</span> text:</span><br><span class="line">            _, _, w, h = draw.textbbox((<span class="number">0</span>, <span class="number">0</span>), char, font=font)</span><br><span class="line"></span><br><span class="line">            sum_width += w</span><br><span class="line">            <span class="keyword">if</span> sum_width &gt; width:  <span class="comment"># 超过预设宽度就修改段落 以及当前行数</span></span><br><span class="line">                line_count += <span class="number">1</span></span><br><span class="line">                line_count += text_size + <span class="number">0.1</span></span><br><span class="line">                sum_width = <span class="number">0</span></span><br><span class="line">                paragraph += <span class="string">'\n'</span></span><br><span class="line">            paragraph += char</span><br><span class="line">            line_height = max(h, line_height)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> paragraph.endswith(<span class="string">'\n'</span>):</span><br><span class="line">            paragraph += <span class="string">'\n'</span></span><br><span class="line">        <span class="keyword">return</span> paragraph, line_height, line_count</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">visualize_ocr</span><span class="params">(self)</span>:</span></span><br><span class="line">        im_canvas = Image.new(<span class="string">'RGBA'</span>, self.size, (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">1000</span>))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i, res <span class="keyword">in</span> enumerate(self.texts):</span><br><span class="line">            <span class="keyword">if</span> self.boxes <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                box = self.boxes[i]</span><br><span class="line">                x, y = box[<span class="number">0</span>][<span class="number">0</span>], box[<span class="number">0</span>][<span class="number">1</span>]</span><br><span class="line">                width = int(box[<span class="number">1</span>][<span class="number">0</span>] - box[<span class="number">0</span>][<span class="number">0</span>])</span><br><span class="line">                height = int(box[<span class="number">2</span>][<span class="number">1</span>] - box[<span class="number">1</span>][<span class="number">1</span>])</span><br><span class="line">                width_p = int((box[<span class="number">1</span>][<span class="number">0</span>] - box[<span class="number">0</span>][<span class="number">0</span>]) * <span class="number">0.97</span>)</span><br><span class="line">                text = res</span><br><span class="line">                <span class="keyword">if</span> text == <span class="string">""</span>:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">                blank_line_count = text.count(<span class="string">'\n'</span>)</span><br><span class="line">                blank_scale = blank_line_count * <span class="number">2</span> <span class="keyword">if</span> blank_line_count &gt; <span class="number">1</span> <span class="keyword">else</span> blank_line_count</span><br><span class="line"></span><br><span class="line">                <span class="string">"""</span></span><br><span class="line"><span class="string">                方程组，求字体最大像素</span></span><br><span class="line"><span class="string">                x_num: x轴个数</span></span><br><span class="line"><span class="string">                y_num: y轴个数</span></span><br><span class="line"><span class="string">                text_scale: 文本像素</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">                (y_num - blank_scale) * x_num = len(text)</span></span><br><span class="line"><span class="string">                x_num * text_scale = width_p</span></span><br><span class="line"><span class="string">                y_num * text_scale = height</span></span><br><span class="line"><span class="string">                ===&gt;</span></span><br><span class="line"><span class="string">                x_num = len(text) / (y_num - blank_scale)</span></span><br><span class="line"><span class="string">                x_num = width_p / text_scale</span></span><br><span class="line"><span class="string">                width_p / text_scale = len(text) / ((height / text_scale) - blank_scale)</span></span><br><span class="line"><span class="string">                ===&gt;</span></span><br><span class="line"><span class="string">                len(text) * text_scale * text_scale + blank_scale * len(text) * text_scale - width_p * height = 0</span></span><br><span class="line"><span class="string">                """</span></span><br><span class="line"></span><br><span class="line">                text_scale = min(</span><br><span class="line">                    int(quadratic(len(text), blank_scale * len(text), -width_p * height)) - <span class="number">2</span>,</span><br><span class="line">                    int(self.size[<span class="number">0</span>] / <span class="number">66</span>),</span><br><span class="line">                    int(height/<span class="number">2</span>)</span><br><span class="line">                )</span><br><span class="line"></span><br><span class="line">                font = ImageFont.truetype(<span class="string">"SourceHanSansCN-Medium.otf"</span>, text_scale)</span><br><span class="line">                draw = ImageDraw.Draw(im_canvas)</span><br><span class="line">                paragraph, note_height, line_height = self.split_text(width_p, text, font, text_scale)</span><br><span class="line"></span><br><span class="line">                <span class="keyword">for</span> sen, line_count <span class="keyword">in</span> paragraph:</span><br><span class="line">                    draw.text((x, y), sen, fill=(<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>), font=font)</span><br><span class="line">                    y += line_height * line_count</span><br><span class="line">                draw.rectangle(</span><br><span class="line">                    ((box[<span class="number">0</span>][<span class="number">0</span>], box[<span class="number">0</span>][<span class="number">1</span>]), (box[<span class="number">2</span>][<span class="number">0</span>], box[<span class="number">2</span>][<span class="number">1</span>])),</span><br><span class="line">                    fill=<span class="literal">None</span>,</span><br><span class="line">                    outline=(<span class="number">139</span>, <span class="number">0</span>, <span class="number">139</span>),</span><br><span class="line">                    width=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        im = image_join(self.im, im_canvas, <span class="string">'x'</span>)</span><br><span class="line">        im = im.convert(<span class="string">'RGB'</span>)</span><br><span class="line">        <span class="comment"># 还原连续存储数组</span></span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        <span class="keyword">return</span> im</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quadratic</span><span class="params">(a, b, c)</span>:</span></span><br><span class="line">    n = b * b - <span class="number">4</span> * a * c</span><br><span class="line">    <span class="keyword">import</span> math</span><br><span class="line">    <span class="keyword">if</span> n &gt;= <span class="number">0</span>:</span><br><span class="line">        x1 = (-b + math.sqrt(n)) / (<span class="number">2</span> * a)</span><br><span class="line">        x2 = (-b - math.sqrt(n)) / (<span class="number">2</span> * a)</span><br><span class="line">        <span class="keyword">return</span> x1 <span class="keyword">if</span> x1 &gt; <span class="number">0</span> <span class="keyword">else</span> x2</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'该一元二次方程无解'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">image_join</span><span class="params">(img1, img2, flag=<span class="string">'y'</span>)</span>:</span></span><br><span class="line">    size1, size2 = img1.size, img2.size</span><br><span class="line">    <span class="keyword">if</span> flag == <span class="string">'x'</span>:</span><br><span class="line">        im = Image.new(<span class="string">"RGB"</span>, (size1[<span class="number">0</span>] + size2[<span class="number">0</span>], size1[<span class="number">1</span>]))</span><br><span class="line">        loc1, loc2 = (<span class="number">0</span>, <span class="number">0</span>), (size1[<span class="number">0</span>], <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = Image.new(<span class="string">"RGB"</span>, (size1[<span class="number">0</span>], size2[<span class="number">1</span>] + size1[<span class="number">1</span>]))</span><br><span class="line">        loc1, loc2 = (<span class="number">0</span>, <span class="number">0</span>), (<span class="number">0</span>, size1[<span class="number">1</span>])</span><br><span class="line">    im.paste(img1, loc1)</span><br><span class="line">    im.paste(img2, loc2)</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
+<h3 id="调用-1"><a href="#调用-1" class="headerlink" title="调用"></a>调用</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">import</span> base64</span><br><span class="line">    <span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">    test_image = <span class="string">'./test/t2.png'</span></span><br><span class="line">    origin_image = cv2.imread(test_image)</span><br><span class="line">    encoded = cv2_base64(origin_image)</span><br><span class="line"></span><br><span class="line">    json_data = &#123;</span><br><span class="line">        <span class="string">"img_b64"</span>: encoded,</span><br><span class="line">        <span class="string">"lang"</span>: <span class="string">"cn"</span></span><br><span class="line">    &#125;</span><br><span class="line">    response = requests.post(<span class="string">'localhost:port/ai/ppocr'</span>, json=json_data).json()</span><br><span class="line">    ocr_result = response.get(<span class="string">'data'</span>)</span><br><span class="line">    ocr_boxes = [line[<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result[<span class="number">0</span>]]</span><br><span class="line">    ocr_txts = [line[<span class="number">1</span>][<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result[<span class="number">0</span>]]</span><br><span class="line">    ocr_scores = [line[<span class="number">1</span>][<span class="number">1</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result[<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line">    json_data = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(ocr_result[<span class="number">0</span>])):</span><br><span class="line">        json_data.append(&#123;</span><br><span class="line">            <span class="string">"box"</span>: [[int(i[<span class="number">0</span>]), int(i[<span class="number">1</span>])] <span class="keyword">for</span> i <span class="keyword">in</span> ocr_boxes[i]],</span><br><span class="line">            <span class="string">"score"</span>: ocr_scores[i],</span><br><span class="line">            <span class="string">"text"</span>: ocr_txts[i]</span><br><span class="line">        &#125;)</span><br><span class="line">        </span><br><span class="line">    so = StructureOCR(json_data)</span><br><span class="line">    blocks, paragraphs = so.structure_ocr()</span><br><span class="line">    </span><br><span class="line">    vo = VisualizeOCR(origin_image, blocks, paragraphs)</span><br><span class="line">    image = vo.visualize_ocr()</span><br><span class="line">    </span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    显示图像</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 适配显示器</span></span><br><span class="line">    <span class="keyword">if</span> image.shape[<span class="number">0</span>] &gt; <span class="number">1080</span>:</span><br><span class="line">        mag = int(image.shape[<span class="number">0</span>] / <span class="number">1080</span>)</span><br><span class="line">        image = cv2.resize(image, (int(image.shape[<span class="number">1</span>] / mag), int(image.shape[<span class="number">0</span>] / mag)))</span><br><span class="line">    <span class="keyword">if</span> image.shape[<span class="number">1</span>] &gt; <span class="number">1920</span>:</span><br><span class="line">        mag = image.shape[<span class="number">1</span>] / <span class="number">1920</span></span><br><span class="line">        image = cv2.resize(image, (int(image.shape[<span class="number">1</span>] / mag), int(image.shape[<span class="number">0</span>] / mag)))</span><br><span class="line"></span><br><span class="line">    cv2.imshow(<span class="string">"image"</span>, image)</span><br><span class="line">    cv2.waitKey(<span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+<p>效果演示：</p>
+<p><img src="/2024/08/06/间隙树排序算法的可视化/2.png" alt></p>
+<p><img src="/2024/08/06/间隙树排序算法的可视化/3.png" alt></p>
+<p><img src="/2024/08/06/间隙树排序算法的可视化/4.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/06/28/doccano/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">doccano</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法"><span class="nav-number">1.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#算法重构"><span class="nav-number">1.1.</span> <span class="nav-text">算法重构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封装"><span class="nav-number">1.2.</span> <span class="nav-text">封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用"><span class="nav-number">1.3.</span> <span class="nav-text">调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可视化"><span class="nav-number">2.</span> <span class="nav-text">可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#段落换行算法"><span class="nav-number">2.1.</span> <span class="nav-text">段落换行算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#设立方程组："><span class="nav-number">2.1.1.</span> <span class="nav-text">设立方程组：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转换到代码中："><span class="nav-number">2.1.2.</span> <span class="nav-text">转换到代码中：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简化方程组："><span class="nav-number">2.1.3.</span> <span class="nav-text">简化方程组：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解方程"><span class="nav-number">2.1.4.</span> <span class="nav-text">解方程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取最佳像素值"><span class="nav-number">2.1.5.</span> <span class="nav-text">获取最佳像素值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封装-1"><span class="nav-number">2.2.</span> <span class="nav-text">封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用-1"><span class="nav-number">2.3.</span> <span class="nav-text">调用</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2024 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2024 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
