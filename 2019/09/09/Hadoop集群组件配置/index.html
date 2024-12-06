@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/09/09/Hadoop集群组件配置/H.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/09/Hadoop集群组件配置/I.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/09/Hadoop集群组件配置/J.png">
-<meta property="og:updated_time" content="2022-06-27T07:30:06.571Z">
+<meta property="og:updated_time" content="2024-12-06T08:54:35.878Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hadoop集群组件配置">
 <meta name="twitter:description" content="Spark集群搭建首先在scala官网（http://www.scala-lang.org/files/archive/scala-2.10.4.tgz）下载scala语言并解压缩，配置/etc/profile下scala的环境变量12export SCALA_HOME=/usr/local/scalaexport PATH=$PATH:$&amp;#123;SCALA_HOME&amp;#125;/bin 环境">
@@ -205,9 +205,11 @@
       
         <script src="\assets\js\APlayer.min.js"> </script><h2 id="Spark集群搭建"><a href="#Spark集群搭建" class="headerlink" title="Spark集群搭建"></a>Spark集群搭建</h2><p>首先在scala官网（<a href="http://www.scala-lang.org/files/archive/scala-2.10.4.tgz" target="_blank" rel="noopener">http://www.scala-lang.org/files/archive/scala-2.10.4.tgz</a>）下载scala语言并解压缩，配置/etc/profile下scala的环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SCALA_HOME=/usr/local/scala</span><br><span class="line">export PATH=$PATH:$&#123;SCALA_HOME&#125;/bin</span><br></pre></td></tr></table></figure></p>
 <p>环境变量成功生效后进行测试，输入15*15,返回225，成功</p>
-<p><img src="/2019/09/09/Hadoop集群组件配置/A.png" alt><br>接下来到spark官网（<a href="http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz</a>）下载Spark包，继续配置环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SPARK_HOME=/usr/local/soft/spark-1.6.0-bin-hadoop2.6</span><br><span class="line">export PATH=$PATH:$&#123;SPARK_HOME&#125;/bin</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2019/09/09/Hadoop集群组件配置/A.png" alt><br>接下来到spark官网（<a href="http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz</a>)下载Spark包，继续配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SPARK_HOME=/usr/local/soft/spark-1.6.0-bin-hadoop2.6</span><br><span class="line">export PATH=$PATH:$&#123;SPARK_HOME&#125;/bin</span><br></pre></td></tr></table></figure>
 <p>完成后继续配置<font color="orange">${SPARK_HOME}/conf/spark-env.sh</font></p>
-<p><img src="/2019/09/09/Hadoop集群组件配置/B.png" alt><br>配置<font color="orange">{SPARK_HOME}/conf/ slaves</font>，在vi编辑器中添加node节点,在将程序分发给node节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node1:/usr/local/soft/</span><br><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node2:/usr/local/soft/</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2019/09/09/Hadoop集群组件配置/B.png" alt><br>配置<font color="orange">{SPARK_HOME}/conf/ slaves</font>，在vi编辑器中添加node节点,在将程序分发给node节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node1:/usr/local/soft/</span><br><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node2:/usr/local/soft/</span><br></pre></td></tr></table></figure>
 <p><img src="/2019/09/09/Hadoop集群组件配置/C.png" alt><br>可以通过<font color="#008080">./start-all.sh</font>命令来启动spark集群</p>
 <p><img src="/2019/09/09/Hadoop集群组件配置/D.png" alt><br>可也有通过节点来启动：</p>
 <p><strong>·</strong> 通过<font color="#008080">sbin/start-master.sh</font>启动主节点<br><strong>·</strong> 通过<font color="#008080">sbin/start-slave.sh 192.168.218.141:8070</font>等启动node节点</p>

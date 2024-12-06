@@ -258,6 +258,133 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-Python爬虫：识别网页的验证码（tesseract-OCR）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/">Python爬虫：识别网页的验证码（tesseract-OCR）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/" class="article-date">
+	  <time datetime="2022-04-29T07:00:29.000Z" itemprop="datePublished">2022-04-29</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人</p>
+<p>但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/0.png" alt></p>
+<h2 id="获取网页验证码"><a href="#获取网页验证码" class="headerlink" title="获取网页验证码"></a>获取网页验证码</h2><p>首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，读取内容后发现并不能得到生成验证码的对应id，以为是知网做了对爬虫头的限制，于是在headers里添加了<font color="green">“Referer”</font>和<font color="green">“Accept-Encoding”</font>等信息，但是并没有效果。抓包在Doc中发现网页HTTP请求的方法为”<font color="orange">GET</font>“方法，尝试不加id也得到了验证码图片</p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/A.png" alt><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">"method"</span>: <span class="string">"GET"</span>,</span><br><span class="line">    <span class="string">"Accept"</span>: <span class="string">"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Accept-Encoding"</span>: <span class="string">"gzip, deflate, br"</span>,</span><br><span class="line">    <span class="string">"Cache-Control"</span>: <span class="string">"max-age=0"</span>,</span><br><span class="line">    <span class="string">"scheme"</span>: <span class="string">"https"</span>,</span><br><span class="line">    <span class="string">"accept-language"</span>: <span class="string">"zh-CN,zh;q=0.9"</span>,</span><br><span class="line">    <span class="string">"Cookie"</span>: <span class="string">"U:M_distinctid=1809edfcf6e8ff-088ab0a6edb385-17333273-1fa400-1809edfcf6f9fe; _pk_ref=["</span><span class="string">","</span><span class="string">",1651932918,'https://www.baidu.com/link?url=PnlS4wubLFxXVNXrTBRCZMAhA0P5TZLlCBAhBvXfLke&amp;wd=&amp;eqid=e52482a8001102070000000562767ee2']; Ecp_ClientId=1220507221503170167; Ecp_IpLoginFail=22050736.161.51.128; Ecp_ClientIp=36.161.51.128; language=chs; _pk_id=2ce0e7fb-229f-4440-a78b-57771deac2fe.1651932918.1.1651933578.1651932918.; ASP.NET_SessionId=he1no3kmgo3bwuktv1xa1lhs; SID_mycnki=020101"</span>,</span><br><span class="line">    <span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"</span>,</span><br><span class="line">    <span class="string">"Referer"</span>: <span class="string">"https://www.cnki.net/"</span></span><br><span class="line">    <span class="string">"Sec-Fetch-Dest:"</span> <span class="string">'document'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Mode"</span>: <span class="string">'navigate'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-Site"</span>: <span class="string">'same-origin'</span>,</span><br><span class="line">    <span class="string">"Sec-Fetch-User"</span>: <span class="string">'?1'</span>,</span><br><span class="line">    <span class="string">"Upgrade-Insecure-Requests"</span>: <span class="string">'1'</span></span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">"https://my.cnki.net/Register/CommonRegister.aspx?returnUrl=https://www.cnki.net#"</span></span><br><span class="line">r = requests.get(url, headers=headers).content.decode(<span class="string">'utf-8'</span>)</span><br><span class="line">html = etree.HTML(r)</span><br><span class="line">link=html.xpath(<span class="string">'//*[@id="commonRe"]/div[10]/div[3]/a/img/@src'</span>)[<span class="number">0</span>]</span><br><span class="line">img_url = <span class="string">"https://my.cnki.net/Register/"</span> + link</span><br><span class="line">img = requests.get(img_url, headers=headers,stream=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'checkcode.jpg'</span>,<span class="string">'wb'</span>)<span class="keyword">as</span> file:</span><br><span class="line">    file.write(img.raw.read())</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/1.png" alt><br></p>
+        <!--  在实际的爬虫操作中，处于安全等原因网站会设置非常多的反爬虫手段来限制网络爬虫，最常见的比如设置图形验证码，来识别访客是否为机器人
+但是由于python拥有许多强大的图像识别库，所以最简单也是最原始的图形验证码目前已经慢慢没落了，我找了很久发现中国知网的注册界面目前居然还在使用中~ ^ ^
+
+获取网页验证码首先是获取验证码图片的目标链接，我使用xpath找到html标签中验证码的src链接，......  -->
+        <p class="article-more-link">
+          <a href="/2022/04/29/Python爬虫：识别网页的验证码（tesseract-OCR）/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-Numpy-Pandas"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2022/03/01/Numpy-Pandas/">Numpy &amp; Pandas</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2022/03/01/Numpy-Pandas/" class="article-date">
+	  <time datetime="2022-03-01T05:13:22.000Z" itemprop="datePublished">2022-03-01</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文主要记录一些Numpy和Pandas的方法</p>
+<h2 id="Numpy"><a href="#Numpy" class="headerlink" title="Numpy"></a>Numpy</h2><h3 id="1-惯用写法："><a href="#1-惯用写法：" class="headerlink" title="1.惯用写法："></a>1.惯用写法：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+<h3 id="2-从列表生成一个矩阵："><a href="#2-从列表生成一个矩阵：" class="headerlink" title="2.从列表生成一个矩阵："></a>2.从列表生成一个矩阵：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.array([[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>],[<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>]]))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/A.png" alt="创建矩阵"></p>
+<h3 id="3-创建全0或全1矩阵："><a href="#3-创建全0或全1矩阵：" class="headerlink" title="3.创建全0或全1矩阵："></a>3.创建全0或全1矩阵：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)))</span><br><span class="line">print(np.ones((<span class="number">5</span>,<span class="number">5</span>)))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/B.png" alt="0/1矩阵"></p>
+<h3 id="4-通过-shape得到当前矩阵的尺寸，通过-reshape-将当前矩阵转置"><a href="#4-通过-shape得到当前矩阵的尺寸，通过-reshape-将当前矩阵转置" class="headerlink" title="4.通过.shape得到当前矩阵的尺寸，通过.reshape()将当前矩阵转置"></a>4.通过<font color="orange">.shape</font>得到当前矩阵的尺寸，通过<font color="orange">.reshape()</font>将当前矩阵转置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)))</span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)).shape)</span><br><span class="line">print(np.zeros((<span class="number">3</span>,<span class="number">4</span>)).reshape(<span class="number">4</span>,<span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/C.png" alt="获取矩阵的尺寸，转置"></p>
+<h3 id="5-使用arange-创建递增-递减的数列"><a href="#5-使用arange-创建递增-递减的数列" class="headerlink" title="5.使用arange()创建递增/递减的数列"></a>5.使用<font color="orange">arange()</font>创建递增/递减的数列</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.arange(<span class="number">1</span>,<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/D.png" alt="arange()"></p>
+<h3 id="6-使用linspace-获取一个等分的区间序列，第三个参数是输出样本的总数"><a href="#6-使用linspace-获取一个等分的区间序列，第三个参数是输出样本的总数" class="headerlink" title="6.使用linspace()获取一个等分的区间序列，第三个参数是输出样本的总数"></a>6.使用<font color="orange">linspace()</font>获取一个等分的区间序列，第三个参数是输出样本的总数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.linspace(<span class="number">1</span>,<span class="number">100</span>,<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/E.png" alt="linspace()"></p>
+<h3 id="7-通过random-rand-生成随机数组"><a href="#7-通过random-rand-生成随机数组" class="headerlink" title="7.通过random.rand()生成随机数组"></a>7.通过<font color="orange">random.rand()</font>生成随机数组</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.random.rand(<span class="number">3</span>,<span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/F.png" alt="随机数组"></p>
+<h3 id="8-Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用dtype参数指定其他的数据类型"><a href="#8-Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用dtype参数指定其他的数据类型" class="headerlink" title="8.Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用dtype参数指定其他的数据类型"></a>8.Numpy中默认的数据类型为64位浮点数，可以在创建数组时使用<font color="orange">dtype</font>参数指定其他的数据类型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">print(np.ones((<span class="number">3</span>,<span class="number">4</span>),dtype=np.float32))</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/G.png" alt="numpy数据类型"></p>
+<h3 id="9-对先有的数组，也可以使用astype-来更改数据类型"><a href="#9-对先有的数组，也可以使用astype-来更改数据类型" class="headerlink" title="9.对先有的数组，也可以使用astype()来更改数据类型"></a>9.对先有的数组，也可以使用<font color="orange">astype()</font>来更改数据类型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array0=np.ones((<span class="number">3</span>,<span class="number">4</span>),dtype=np.float32)</span><br><span class="line">array1=array0.astype(int)</span><br><span class="line"></span><br><span class="line">print(array0,array1)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/H.png" alt="数据类型转换"></p>
+<h3 id="10-Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸"><a href="#10-Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸" class="headerlink" title="10.Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸"></a>10.Numpy数组可以直接与一个数进行运算，这个过程称之为广播；两个不同尺寸的数组也可以直接进行运算，这期间numpy会自动将两个数组扩展到相同的尺寸</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">array0=np.array([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>])</span><br><span class="line">array1=np.array([<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>])</span><br><span class="line">array2=np.array([[<span class="number">7</span>],</span><br><span class="line">                 [<span class="number">8</span>],</span><br><span class="line">                 [<span class="number">9</span>]])</span><br><span class="line"></span><br><span class="line">print(array0*<span class="number">10</span>)</span><br><span class="line">print(array1+array2)</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/03/01/Numpy-Pandas/INSERT.png" alt="numpy的广播与numpy中不同尺寸数组的运算"><br></p>
+        <!--  本文主要记录一些Numpy和Pandas的方法
+Numpy1.惯用写法：1import numpy as np
+2.从列表生成一个矩阵：123import numpy as npprint(np.array([[0,1,2,3,4,5],[6,7,8,9,10,11]]))
+
+3.创建全0或全1矩阵：1234import numpy as npprint(np.zeros((3,4)))p......  -->
+        <p class="article-more-link">
+          <a href="/2022/03/01/Numpy-Pandas/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy、pandas/">numpy、pandas</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-Django项目：订单管理系统"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -434,15 +561,15 @@
 <p>其连续和离散具有共同的特征：n=τ+(n-τ)，当令x=τ，y=n-τ时，有直线：x+y=n，其图像为如下图：</p>
 <p><img src="/2021/05/25/卷积神经网络算法/C.png" alt><br>如果遍历这些直线，就类似于沿直线卷起毛巾的过程。</p>
 <p>下面将卷积扩展到二维，有两个R2→R的二元函数f(x，y)和g(x，y)，那么令f和g的卷积就是一个新的R2→R的二元函数c(x，y)：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/D.png" alt><br>其含义为将f在(s，t)上的值乘以g在(x-s，y-t)上的值，再遍历从-∞到+∞全部s和t的值，进行f和g积分意义上的加和，最终得到c在(x，y)上的值（二重积分）。</p>
+<p><img src="/2021/05/25/卷积神经网络算法/D.png" alt><br>其含义为将f在(s，t)上的值乘以g在(x-s，y-t)上的值，再遍历从-∞到+∞全部s和t的值，进行f和g积分意义上的加和，最终得到c在(x，y)上的值（二重积分)。</p>
 <p>可以看出这种加和是一种加权求和，即以f为权，(x，y)为中心，将f在(s，t)上的值乘以g距离中心(-s，-t)上的值再相加。</p>
 <p>其离散的表示形式为：</p>
 <p><img src="/2021/05/25/卷积神经网络算法/E.png" alt></p>
 <h3 id="2-2-神经元"><a href="#2-2-神经元" class="headerlink" title="2.2 神经元"></a>2.2 神经元</h3><p>神经细胞有众多的树突和一个伸长的轴突，不同神经元之间通过树突连接轴突的方式，并通过神经脉冲的传导进行细胞间交流。具体过程为神经细胞A的轴突连接到神经细胞B的树突，传导神经脉冲，神经细胞A根据其树突传递来的信号决定是否通过轴突来向下一个神经细胞C传递信息。</p>
 <p>1943年，美国心理学家W.McCulloch和数学家W.Pitts根据生物神经元、生物电和生物化学的运行机理提出了二值神经元的数学模型，即神经细胞机能的简单化的数理模型，被称作莫克罗-彼特氏神经模型（McCulloch－Pitts′Neuron Model），也叫人工神经元模型。</p>
 <p><img src="/2021/05/25/卷积神经网络算法/F.png" alt><br>一个人工神经元模型就是对生物神经元的数学建模：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/G.png" alt><br>其中X1、X2、X3、…、Xn分别是从其他神经元传入的输入信号，Wi1、Wi2、Wi3、…、Win分别是对应X1、X2、X3、…、Xn的权重。θ表示一个阈值，或称为偏置（Bias），其设置目的是正确将样本分类。神经元当前的输入信号和偏置相加后产生当前神经元的最终处理信号Net，称为净激活或净激励（Net Activation），并作为激活函数或激励函数（Activation Function）f的输入，即f（net），最终得到对应的输出yi。形如：</p>
-<p><img src="/2021/05/25/卷积神经网络算法/H.png" alt><br>激活函数<strong>f（net）</strong>的作用是通过加入非线性因素来解决线性模型的表达和分类能力不足的问题。常见的激活函数有：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/G.png" alt><br>其中X1、X2、X3、…、Xn分别是从其他神经元传入的输入信号，Wi1、Wi2、Wi3、…、Win分别是对应X1、X2、X3、…、Xn的权重。θ表示一个阈值，或称为偏置（Bias），其设置目的是正确将样本分类。神经元当前的输入信号和偏置相加后产生当前神经元的最终处理信号Net，称为净激活或净激励（Net Activation），并作为激活函数或激励函数（Activation Function）f的输入，即f（net)，最终得到对应的输出yi。形如：</p>
+<p><img src="/2021/05/25/卷积神经网络算法/H.png" alt><br>激活函数<strong>f（net)</strong>的作用是通过加入非线性因素来解决线性模型的表达和分类能力不足的问题。常见的激活函数有：</p>
 <h4 id="1-Linear"><a href="#1-Linear" class="headerlink" title="1.Linear"></a>1.Linear</h4><p>Linear是一个线性激活函数：<strong>f(x)=∑i xiwi+b</strong>。本质上就是对输入的加权求和再加上偏置，所以相对简单，功能较为单一。</p>
 <p>由于多个矩阵进行连乘的结果仍是矩阵，类似的，如果一个神经网络中仅使用线性激活函数，那么就只能学习到线性函数。</p>
 <p><img src="/2021/05/25/卷积神经网络算法/I.png" alt></p>
@@ -508,9 +635,11 @@
       
         <h2 id="Spark集群搭建"><a href="#Spark集群搭建" class="headerlink" title="Spark集群搭建"></a>Spark集群搭建</h2><p>首先在scala官网（<a href="http://www.scala-lang.org/files/archive/scala-2.10.4.tgz" target="_blank" rel="noopener">http://www.scala-lang.org/files/archive/scala-2.10.4.tgz</a>）下载scala语言并解压缩，配置/etc/profile下scala的环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SCALA_HOME=/usr/local/scala</span><br><span class="line">export PATH=$PATH:$&#123;SCALA_HOME&#125;/bin</span><br></pre></td></tr></table></figure></p>
 <p>环境变量成功生效后进行测试，输入15*15,返回225，成功</p>
-<p><img src="/2019/09/09/Hadoop集群组件配置/A.png" alt><br>接下来到spark官网（<a href="http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz</a>）下载Spark包，继续配置环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SPARK_HOME=/usr/local/soft/spark-1.6.0-bin-hadoop2.6</span><br><span class="line">export PATH=$PATH:$&#123;SPARK_HOME&#125;/bin</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2019/09/09/Hadoop集群组件配置/A.png" alt><br>接下来到spark官网（<a href="http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz" target="_blank" rel="noopener">http://archive.cloudera.com/cdh5/cdh/5/spark-1.5.0-cdh5.6.0.tar.gz</a>)下载Spark包，继续配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SPARK_HOME=/usr/local/soft/spark-1.6.0-bin-hadoop2.6</span><br><span class="line">export PATH=$PATH:$&#123;SPARK_HOME&#125;/bin</span><br></pre></td></tr></table></figure>
 <p>完成后继续配置<font color="orange">${SPARK_HOME}/conf/spark-env.sh</font></p>
-<p><img src="/2019/09/09/Hadoop集群组件配置/B.png" alt><br>配置<font color="orange">{SPARK_HOME}/conf/ slaves</font>，在vi编辑器中添加node节点,在将程序分发给node节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node1:/usr/local/soft/</span><br><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node2:/usr/local/soft/</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2019/09/09/Hadoop集群组件配置/B.png" alt><br>配置<font color="orange">{SPARK_HOME}/conf/ slaves</font>，在vi编辑器中添加node节点,在将程序分发给node节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node1:/usr/local/soft/</span><br><span class="line">scp -r spark-1.6.0-bin-hadoop2.6. root@node2:/usr/local/soft/</span><br></pre></td></tr></table></figure>
 <p><img src="/2019/09/09/Hadoop集群组件配置/C.png" alt><br>可以通过<font color="#008080">./start-all.sh</font>命令来启动spark集群</p>
 <p><img src="/2019/09/09/Hadoop集群组件配置/D.png" alt><br>可也有通过节点来启动：</p>
 <p><strong>·</strong> 通过<font color="#008080">sbin/start-master.sh</font>启动主节点<br><strong>·</strong> 通过<font color="#008080">sbin/start-slave.sh 192.168.218.141:8070</font>等启动node节点</p>
@@ -769,134 +898,11 @@ Hadoop伪分布式搭建首先创建一台master虚拟机，并克隆node1、nod
 <!-- Table of Contents -->
 
   
-    <article id="post-Python爬虫：获取yuehui163用户资料"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/05/01/Python爬虫：获取yuehui163用户资料/">Python爬虫：获取yuehui163用户资料</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/05/01/Python爬虫：获取yuehui163用户资料/" class="article-date">
-	  <time datetime="2019-05-01T14:58:05.000Z" itemprop="datePublished">2019-05-01</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p><strong>·</strong> <font color="orange">目标网站</font>：网易<a href="https://yuehui.163.com/" target="_blank" rel="noopener">https://yuehui.163.com/</a>同城约会网站</p>
-<p><strong>·</strong> <font color="orange">目标数据</font>：用户的头像、性别、城市、地区、工作、学历等</p>
-<p><strong>·</strong> <font color="orange">数据存储</font>：png、txt、csv</p>
-<p><strong>·</strong> <font color="orange">爬虫方法</font>：requests、json</p>
-<p>通过json格式，对yuehui163网站用户的多页爬取，使用循环和字符串拼接等方式获取详细分页数据</p>
-<p><img src="/2019/05/01/Python爬虫：获取yuehui163用户资料/A.png" alt="yuehui163.com"><br></p>
-        <!--  描述· 目标网站：网易https://yuehui.163.com/同城约会网站
-· 目标数据：用户的头像、性别、城市、地区、工作、学历等
-· 数据存储：png、txt、csv
-· 爬虫方法：requests、json
-通过json格式，对yuehui163网站用户的多页爬取，使用循环和字符串拼接等方式获取详细分页数据
-抓包获取网站的json数据(源json很长，以下为一条用户的信息)12......  -->
-        <p class="article-more-link">
-          <a href="/2019/05/01/Python爬虫：获取yuehui163用户资料/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xpath/">xpath</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Python多线程基础"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2019/04/16/Python多线程基础/">Python多线程基础</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2019/04/16/Python多线程基础/" class="article-date">
-	  <time datetime="2019-04-16T13:00:56.000Z" itemprop="datePublished">2019-04-16</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/Python/">Python</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h2><h3 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h3><p>其实类似于小学时期如何在最短的时间内去完成所有事件的数学题。</p>
-<p>假设小明早上7：00起床，刷牙洗脸需要3分钟，烧水需要10分钟，穿衣叠被需要2分钟，吃早餐需要15分钟，收听早间新闻需要20分钟（7点开始），问小明起床做完这些事情至少需要多长时间？</p>
-<p>同步是指调用一旦开始，必须等待返回调用的结果，才能继续下一步操作</p>
-<p>那么结果就是，小明一共需要听新闻（20分钟）+穿衣叠被（2分钟）+刷牙洗脸（3分钟）+烧水（10分钟）+吃早餐（15分钟），总共50分钟，一定要迟到了，很笨</p>
-<h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><p>异步和同步相反，调用一旦开始，调用者无需等待方法的完成，就可以继续执行后续方法，被调用者通过状态体通知调用者，或者使用回调函数处理调用</p>
-<p>异步方法下，小明需要打开新闻，开始烧水，穿衣叠被，再洗漱，吃早餐，只需要20分钟，新闻结束，就可以高高兴兴去上学了</p>
-<h2 id="并发和并行"><a href="#并发和并行" class="headerlink" title="并发和并行"></a>并发和并行</h2><h3 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h3><p>并发是同时具有多个活动的系统，实质是一个或多个物理CPU在若干道程序（或线程）之间多路复用，其实就是n个事件在同一时间线上交替完成：小明做完所有事件花了50分钟</p>
-<p><img src="/2019/04/16/Python多线程基础/A.png" alt="并发"></p>
-<h3 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h3><p>并行是真正意义上的不同事件或线程在同一时刻同时执行。并行利用并发使系统运行更快，在操作系统的多个抽象层次运用，是n个事件在同一时刻上同时发生：小明家里雇了4个机器人保姆，1个打开电视后烧水，1个帮小明穿衣叠被，1个帮小明洗漱，最后1个喂小明吃早餐，这样在早间新闻放完前，小明只用了18分钟就完成了所有事件，还多出2分钟时间检查书包</p>
-<p><img src="/2019/04/16/Python多线程基础/B.png" alt="并行"></p>
-<h2 id="进程和线程"><a href="#进程和线程" class="headerlink" title="进程和线程"></a>进程和线程</h2><h3 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h3><p>程序不能自己运行，只有将程序装载进内存，由系统分配资源后才能运行。程序是指令的集合，可以视为指令的静态文本，而进程是指令的执行活动，是动态的行为</p>
-<p>进程是操作系统对于一个运行中程序的抽象，是CPU、内存、IO设备的抽象。系统可以同时运行多个进程</p>
-<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><p>线程是操作系统进行运算调度的最小单位，被包含于进程中，是进程的实际运作单位。一个进程可以由多个线程组成，线程之间共享代码和数据。</p>
-<p>由于在实际网络服务器中对并行的需求，线程成为重要的编程模型：</p>
-<p>1.多线程之间比多进程之间更易共享数据。<br>2.线程一般比进程高效。<br></p>
-        <!--  同步和异步同步其实类似于小学时期如何在最短的时间内去完成所有事件的数学题。
-假设小明早上7：00起床，刷牙洗脸需要3分钟，烧水需要10分钟，穿衣叠被需要2分钟，吃早餐需要15分钟，收听早间新闻需要20分钟（7点开始），问小明起床做完这些事情至少需要多长时间？
-同步是指调用一旦开始，必须等待返回调用的结果，才能继续下一步操作
-那么结果就是，小明一共需要听新闻（20分钟）+穿衣叠被（2分钟）+......  -->
-        <p class="article-more-link">
-          <a href="/2019/04/16/Python多线程基础/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
   </nav>
 
 </section>

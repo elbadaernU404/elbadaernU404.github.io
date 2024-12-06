@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>surya ocr | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="OCR">
+  
+  
+  
+  
+  <meta name="description" content="环境准备版本：python3.9 + surya-ocr 0.4.15 模型准备：检测模型：surya_det3 识别模型：surya_rec 版面模型：surya_layout3 源码修改因首次使用下载模型被墙，提前将模型收录至模型文件夹并修改源码导入部分： (源码位置：...Python39/Lib/site-packages/surya/settings.py) 12345678910111">
+<meta name="keywords" content="OCR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Surya OCR">
+<meta property="og:url" content="http://yoursite.com/2024/07/08/Surya-OCR/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="环境准备版本：python3.9 + surya-ocr 0.4.15 模型准备：检测模型：surya_det3 识别模型：surya_rec 版面模型：surya_layout3 源码修改因首次使用下载模型被墙，提前将模型收录至模型文件夹并修改源码导入部分： (源码位置：...Python39/Lib/site-packages/surya/settings.py) 12345678910111">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2024/07/08/Surya-OCR/yn.png">
+<meta property="og:updated_time" content="2024-12-06T09:44:51.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Surya OCR">
+<meta name="twitter:description" content="环境准备版本：python3.9 + surya-ocr 0.4.15 模型准备：检测模型：surya_det3 识别模型：surya_rec 版面模型：surya_layout3 源码修改因首次使用下载模型被墙，提前将模型收录至模型文件夹并修改源码导入部分： (源码位置：...Python39/Lib/site-packages/surya/settings.py) 12345678910111">
+<meta name="twitter:image" content="http://yoursite.com/2024/07/08/Surya-OCR/yn.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Surya-OCR" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Surya OCR
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2024/07/08/Surya-OCR/" class="article-date">
+	  <time datetime="2024-07-08T09:26:27.000Z" itemprop="datePublished">2024-07-08</time>
+	</a>
+
+      
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="版本："><a href="#版本：" class="headerlink" title="版本："></a>版本：</h3><p>python3.9 + surya-ocr 0.4.15</p>
+<h3 id="模型准备："><a href="#模型准备：" class="headerlink" title="模型准备："></a>模型准备：</h3><p>检测模型：surya_det3</p>
+<p>识别模型：surya_rec</p>
+<p>版面模型：surya_layout3</p>
+<h3 id="源码修改"><a href="#源码修改" class="headerlink" title="源码修改"></a>源码修改</h3><p>因首次使用下载模型被墙，提前将模型收录至模型文件夹并修改源码导入部分：</p>
+<p>(源码位置：<code>...Python39/Lib/site-packages/surya/settings.py</code>)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Dict, Optional</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> find_dotenv</span><br><span class="line"><span class="keyword">from</span> pydantic <span class="keyword">import</span> computed_field</span><br><span class="line"><span class="keyword">from</span> pydantic_settings <span class="keyword">import</span> BaseSettings</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Settings</span><span class="params">(BaseSettings)</span>:</span></span><br><span class="line">    <span class="comment"># General</span></span><br><span class="line">    TORCH_DEVICE: Optional[str] = <span class="literal">None</span></span><br><span class="line">    IMAGE_DPI: int = <span class="number">96</span></span><br><span class="line">    IN_STREAMLIT: bool = <span class="literal">False</span> <span class="comment"># Whether we're running in streamlit</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Paths</span></span><br><span class="line">    DATA_DIR: str = <span class="string">"data"</span></span><br><span class="line">    RESULT_DIR: str = <span class="string">"results"</span></span><br><span class="line">    BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))</span><br><span class="line">    FONT_DIR: str = os.path.join(BASE_DIR, <span class="string">"static"</span>, <span class="string">"fonts"</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @computed_field</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">TORCH_DEVICE_MODEL</span><span class="params">(self)</span> -&gt; str:</span></span><br><span class="line">        <span class="keyword">if</span> self.TORCH_DEVICE <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> self.TORCH_DEVICE</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> torch.cuda.is_available():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"cuda"</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> torch.backends.mps.is_available():</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"mps"</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">"cpu"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Text detection</span></span><br><span class="line">    DETECTOR_BATCH_SIZE: Optional[int] = <span class="literal">None</span> <span class="comment"># Defaults to 2 for CPU/MPS, 32 otherwise</span></span><br><span class="line">    DETECTOR_MODEL_CHECKPOINT: str = <span class="string">r"D:\pycharmproject_2\translate_plat\surya_ocr\models\surya_det3"</span></span><br><span class="line">    DETECTOR_BENCH_DATASET_NAME: str = <span class="string">"vikp/doclaynet_bench"</span></span><br><span class="line">    DETECTOR_IMAGE_CHUNK_HEIGHT: int = <span class="number">1400</span> <span class="comment"># Height at which to slice images vertically</span></span><br><span class="line">    DETECTOR_TEXT_THRESHOLD: float = <span class="number">0.6</span> <span class="comment"># Threshold for text detection (above this is considered text)</span></span><br><span class="line">    DETECTOR_BLANK_THRESHOLD: float = <span class="number">0.35</span> <span class="comment"># Threshold for blank space (below this is considered blank)</span></span><br><span class="line">    DETECTOR_POSTPROCESSING_CPU_WORKERS: int = min(<span class="number">8</span>, os.cpu_count()) <span class="comment"># Number of workers for postprocessing</span></span><br><span class="line">    DETECTOR_MIN_PARALLEL_THRESH: int = <span class="number">3</span> <span class="comment"># Minimum number of images before we parallelize</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Text recognition</span></span><br><span class="line">    RECOGNITION_MODEL_CHECKPOINT: str = <span class="string">r"D:\pycharmproject_2\translate_plat\surya_ocr\models\surya_rec"</span></span><br><span class="line">    RECOGNITION_MAX_TOKENS: int = <span class="number">175</span></span><br><span class="line">    RECOGNITION_BATCH_SIZE: Optional[int] = <span class="literal">None</span> <span class="comment"># Defaults to 8 for CPU/MPS, 256 otherwise</span></span><br><span class="line">    RECOGNITION_IMAGE_SIZE: Dict = &#123;<span class="string">"height"</span>: <span class="number">196</span>, <span class="string">"width"</span>: <span class="number">896</span>&#125;</span><br><span class="line">    RECOGNITION_RENDER_FONTS: Dict[str, str] = &#123;</span><br><span class="line">        <span class="string">"all"</span>: os.path.join(FONT_DIR, <span class="string">"GoNotoCurrent-Regular.ttf"</span>),</span><br><span class="line">        <span class="string">"zh"</span>: os.path.join(FONT_DIR, <span class="string">"GoNotoCJKCore.ttf"</span>),</span><br><span class="line">        <span class="string">"ja"</span>: os.path.join(FONT_DIR, <span class="string">"GoNotoCJKCore.ttf"</span>),</span><br><span class="line">        <span class="string">"ko"</span>: os.path.join(FONT_DIR, <span class="string">"GoNotoCJKCore.ttf"</span>),</span><br><span class="line">    &#125;</span><br><span class="line">    RECOGNITION_FONT_DL_BASE: str = <span class="string">"https://github.com/satbyy/go-noto-universal/releases/download/v7.0"</span></span><br><span class="line">    RECOGNITION_BENCH_DATASET_NAME: str = <span class="string">"vikp/rec_bench"</span></span><br><span class="line">    RECOGNITION_PAD_VALUE: int = <span class="number">255</span> <span class="comment"># Should be 0 or 255</span></span><br><span class="line">    RECOGNITION_STATIC_CACHE: bool = <span class="literal">False</span> <span class="comment"># Static cache for torch compile</span></span><br><span class="line">    RECOGNITION_MAX_LANGS: int = <span class="number">4</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Layout</span></span><br><span class="line">    LAYOUT_MODEL_CHECKPOINT: str = <span class="string">r"D:\pycharmproject_2\translate_plat\surya_ocr\models\surya_layout3"</span></span><br><span class="line">    LAYOUT_BENCH_DATASET_NAME: str = <span class="string">"vikp/publaynet_bench"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Ordering</span></span><br><span class="line">    ORDER_MODEL_CHECKPOINT: str = <span class="string">"vikp/surya_order"</span></span><br><span class="line">    ORDER_IMAGE_SIZE: Dict = &#123;<span class="string">"height"</span>: <span class="number">1024</span>, <span class="string">"width"</span>: <span class="number">1024</span>&#125;</span><br><span class="line">    ORDER_MAX_BOXES: int = <span class="number">256</span></span><br><span class="line">    ORDER_BATCH_SIZE: Optional[int] = <span class="literal">None</span>  <span class="comment"># Defaults to 4 for CPU/MPS, 32 otherwise</span></span><br><span class="line">    ORDER_BENCH_DATASET_NAME: str = <span class="string">"vikp/order_bench"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Tesseract (for benchmarks only)</span></span><br><span class="line">    TESSDATA_PREFIX: Optional[str] = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="meta">    @computed_field</span></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">MODEL_DTYPE</span><span class="params">(self)</span> -&gt; torch.dtype:</span></span><br><span class="line">        <span class="keyword">return</span> torch.float32 <span class="keyword">if</span> self.TORCH_DEVICE_MODEL == <span class="string">"cpu"</span> <span class="keyword">else</span> torch.float16</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Config</span>:</span></span><br><span class="line">        env_file = find_dotenv(<span class="string">"local.env"</span>)</span><br><span class="line">        extra = <span class="string">"ignore"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">settings = Settings()</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="小语种OCR识别"><a href="#小语种OCR识别" class="headerlink" title="小语种OCR识别"></a>小语种OCR识别</h3><p><img src="/2024/07/08/Surya-OCR/yn.png" alt></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">from</span> surya.detection <span class="keyword">import</span> batch_text_detection</span><br><span class="line"><span class="keyword">from</span> surya.layout <span class="keyword">import</span> batch_layout_detection</span><br><span class="line"><span class="keyword">from</span> surya.model.detection.model <span class="keyword">import</span> load_model, load_processor</span><br><span class="line"><span class="keyword">from</span> surya.settings <span class="keyword">import</span> settings</span><br><span class="line"></span><br><span class="line">IMAGE_PATH = <span class="string">'./test/7.png'</span>  <span class="comment">## 需检测图片地址</span></span><br><span class="line">DET_MODEL_PATH = <span class="string">'./models/surya_det3'</span>  <span class="comment">## 模型参数保存地址</span></span><br><span class="line">LAYOUT_MODEL_PATH = <span class="string">'./models/surya_layout3'</span>  <span class="comment">## 模型参数保存地址</span></span><br><span class="line"></span><br><span class="line">image = Image.open(IMAGE_PATH)</span><br><span class="line">surya_layout_model = load_model(checkpoint=settings.LAYOUT_MODEL_CHECKPOINT)</span><br><span class="line">surya_processor = load_processor(checkpoint=settings.LAYOUT_MODEL_CHECKPOINT)</span><br><span class="line">surya_det_model = load_model()</span><br><span class="line">surya_det_processor = load_processor()</span><br><span class="line"></span><br><span class="line"><span class="comment"># layout_predictions is a list of dicts, one per image</span></span><br><span class="line">line_predictions = batch_text_detection([image], surya_det_model, surya_det_processor)</span><br><span class="line">layout_predictions = batch_layout_detection([image], surya_layout_model, surya_processor, line_predictions)</span><br><span class="line"></span><br><span class="line">image = cv2.imread(IMAGE_PATH)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">surya_layout2paddle_structure</span><span class="params">(surya_layout_res, im)</span>:</span></span><br><span class="line">    paddle_structure_res = []</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> surya_layout_res[<span class="number">0</span>].bboxes:</span><br><span class="line">        surya_layout_dict = dict(item)</span><br><span class="line">        paddle_structure_res.append(&#123;</span><br><span class="line">            <span class="string">'bbox'</span>: [</span><br><span class="line">                surya_layout_dict[<span class="string">'polygon'</span>][<span class="number">0</span>][<span class="number">0</span>],</span><br><span class="line">                surya_layout_dict[<span class="string">'polygon'</span>][<span class="number">0</span>][<span class="number">1</span>],</span><br><span class="line">                surya_layout_dict[<span class="string">'polygon'</span>][<span class="number">2</span>][<span class="number">0</span>],</span><br><span class="line">                surya_layout_dict[<span class="string">'polygon'</span>][<span class="number">2</span>][<span class="number">1</span>]</span><br><span class="line">            ],</span><br><span class="line">            <span class="string">'type'</span>: surya_layout_dict[<span class="string">'label'</span>],</span><br><span class="line">            <span class="string">'img'</span>: im[</span><br><span class="line">                   surya_layout_dict[<span class="string">'polygon'</span>][<span class="number">0</span>][<span class="number">1</span>]: surya_layout_dict[<span class="string">'polygon'</span>][<span class="number">2</span>][<span class="number">1</span>],</span><br><span class="line">                   surya_layout_dict[<span class="string">'polygon'</span>][<span class="number">0</span>][<span class="number">0</span>]: surya_layout_dict[<span class="string">'polygon'</span>][<span class="number">2</span>][<span class="number">0</span>]</span><br><span class="line">                   ]</span><br><span class="line">        &#125;)</span><br><span class="line">    <span class="keyword">return</span> paddle_structure_res</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(surya_layout2paddle_structure(layout_predictions, image))</span><br><span class="line"></span><br><span class="line">res = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> layout_predictions[<span class="number">0</span>].bboxes:</span><br><span class="line">    res.append(dict(i))</span><br><span class="line">print(res)</span><br></pre></td></tr></table></figure>
+<p>识别结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Loaded detection model ./models/surya_det3 on device cpu with dtype torch.float32</span><br><span class="line">Loaded recognition model ./models/surya_rec on device cpu with dtype torch.float32</span><br><span class="line">ok</span><br><span class="line">Detecting bboxes: 100%|██████████| 1/1 [00:05&lt;00:00,  5.15s/it]</span><br><span class="line">Recognizing Text: 100%|██████████| 1/1 [00:18&lt;00:00, 18.12s/it]</span><br><span class="line"></span><br><span class="line">[OCRResult(text_lines=[TextLine(polygon=[[65.0, 12.0], [424.0, 11.0], [425.0, 49.0], [66.0, 50.0]], confidence=0.8231586813926697, text=&apos;Đ Phong Cách&apos;, bbox=[65.0, 12.0, 424.0, 49.0]), TextLine(polygon=[[146.0, 60.0], [345.0, 60.0], [345.0, 95.0], [146.0, 95.0]], confidence=0.9834306836128235, text=&apos;Khác Biêt&apos;, bbox=[146.0, 60.0, 345.0, 95.0]), TextLine(polygon=[[9.0, 114.0], [482.0, 114.0], [482.0, 126.0], [9.0, 126.0]], confidence=0.9684180021286011, text=&apos;Trên tay ché tác nquyên khői đẫn đầu xu hướng với thiết kế thân máy lièn mach, đô mòng ấn tương 8.5mm cùng&apos;, bbox=[9.0, 114.0, 482.0, 126.0]), TextLine(polygon=[[0.0, 132.0], [490.0, 132.0], [490.0, 143.0], [0.0, 143.0]], confidence=0.9850525856018066, text=&apos;kiểu dáng măt kính bóng mươt, sang trong từ Galaxy M30. Vừa văn hoàn hảo trong lòng bàn tay, thoả thích thể hiện&apos;, bbox=[0.0, 132.0, 490.0, 143.0]), TextLine(polygon=[[95.0, 149.0], [393.0, 149.0], [394.0, 160.0], [95.0, 160.0]], confidence=0.9769484400749207, text=&apos;phong cach thời thượng với hai phiên bản mảu Đen hoāc Xanh cá tính.&apos;, bbox=[95.0, 149.0, 393.0, 160.0])], languages=[&apos;en&apos;], image_bbox=[0.0, 0.0, 494.0, 182.0])]</span><br><span class="line">[&apos;Đ Phong Cách&apos;, &apos;Khác Biêt&apos;, &apos;Trên tay ché tác nquyên khői đẫn đầu xu hướng với thiết kế thân máy lièn mach, đô mòng ấn tương 8.5mm cùng&apos;, &apos;kiểu dáng măt kính bóng mươt, sang trong từ Galaxy M30. Vừa văn hoàn hảo trong lòng bàn tay, thoả thích thể hiện&apos;, &apos;phong cach thời thượng với hai phiên bản mảu Đen hoāc Xanh cá tính.&apos;] 5</span><br><span class="line">[[[65.0, 12.0], [424.0, 11.0], [425.0, 49.0], [66.0, 50.0]], [[146.0, 60.0], [345.0, 60.0], [345.0, 95.0], [146.0, 95.0]], [[9.0, 114.0], [482.0, 114.0], [482.0, 126.0], [9.0, 126.0]], [[0.0, 132.0], [490.0, 132.0], [490.0, 143.0], [0.0, 143.0]], [[95.0, 149.0], [393.0, 149.0], [394.0, 160.0], [95.0, 160.0]]] 5</span><br><span class="line">[0.8231586813926697, 0.9834306836128235, 0.9684180021286011, 0.9850525856018066, 0.9769484400749207] 5</span><br></pre></td></tr></table></figure>
+<h3 id="OCR版面分析"><a href="#OCR版面分析" class="headerlink" title="OCR版面分析"></a>OCR版面分析</h3><p>未完待续</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2024/08/06/间隙树排序算法的可视化/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          间隙树排序算法的可视化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/06/28/doccano/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">doccano</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">1.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#版本："><span class="nav-number">1.1.</span> <span class="nav-text">版本：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模型准备："><span class="nav-number">1.2.</span> <span class="nav-text">模型准备：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码修改"><span class="nav-number">1.3.</span> <span class="nav-text">源码修改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#小语种OCR识别"><span class="nav-number">2.1.</span> <span class="nav-text">小语种OCR识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OCR版面分析"><span class="nav-number">2.2.</span> <span class="nav-text">OCR版面分析</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2024 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2024 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

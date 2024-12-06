@@ -258,6 +258,154 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-paddleDetection-OpenCV检测框转中文"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/08/09/paddleDetection-OpenCV检测框转中文/">paddleDetection:OpenCV检测框转中文</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/08/09/paddleDetection-OpenCV检测框转中文/" class="article-date">
+	  <time datetime="2023-08-09T08:29:45.000Z" itemprop="datePublished">2023-08-09</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <font color="gold">注：OpenCV不能直接显示中文，通过PIL转换会损失一部分算力性能</font>
+
+<p><img src="/2023/08/09/paddleDetection-OpenCV检测框转中文/A.png" alt></p>
+<h2 id="修改源码（可视化）"><a href="#修改源码（可视化）" class="headerlink" title="修改源码（可视化）"></a>修改源码（可视化）</h2><p><code>./deploy/python/visualize.py</code></p>
+<h3 id="增加导入字体库和字体文件"><a href="#增加导入字体库和字体文件" class="headerlink" title="增加导入字体库和字体文件"></a>增加导入字体库和字体文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageDraw, ImageFile, ImageFont</span><br><span class="line"></span><br><span class="line">font_file = <span class="string">'/exp/work/video/PaddleDetection/deploy/pipeline/SourceHanSansCN-Medium.otf'</span></span><br></pre></td></tr></table></figure>
+<h3 id="visualize-attr"><a href="#visualize-attr" class="headerlink" title="visualize_attr"></a>visualize_attr</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">visualize_attr</span><span class="params">(im, results, boxes=None, is_mtmct=False)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">        im = Image.open(im)</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        im = np.ascontiguousarray(np.copy(im))</span><br><span class="line"></span><br><span class="line">    line_inter = im.shape[<span class="number">0</span>] / <span class="number">40.</span></span><br><span class="line">    text_scale = max(<span class="number">0.5</span>, im.shape[<span class="number">0</span>] / <span class="number">100.</span>)</span><br><span class="line">    <span class="comment"># 将nparray图像转PIL图像</span></span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, res <span class="keyword">in</span> enumerate(results):</span><br><span class="line">        print(i, res)</span><br><span class="line">        <span class="keyword">if</span> boxes <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            text_w = <span class="number">3</span></span><br><span class="line">            text_h = <span class="number">1</span></span><br><span class="line">        <span class="keyword">elif</span> is_mtmct:</span><br><span class="line">            box = boxes[i]  <span class="comment"># multi camera, bbox shape is x,y, w,h</span></span><br><span class="line">            text_w = int(box[<span class="number">0</span>]) + <span class="number">3</span></span><br><span class="line">            text_h = int(box[<span class="number">1</span>])</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            box = boxes[i]  <span class="comment"># single camera, bbox shape is 0, 0, x,y, w,h</span></span><br><span class="line">            text_w = int(box[<span class="number">2</span>]) + <span class="number">3</span></span><br><span class="line">            text_h = int(box[<span class="number">3</span>])</span><br><span class="line">        <span class="keyword">for</span> text <span class="keyword">in</span> res:</span><br><span class="line">            text_h += int(line_inter)</span><br><span class="line">            text_loc = (text_w, text_h)</span><br><span class="line">            <span class="comment"># 写入</span></span><br><span class="line">            draw = ImageDraw.Draw(im)</span><br><span class="line">            draw.text(</span><br><span class="line">                text_loc,</span><br><span class="line">                text,</span><br><span class="line">                font=ImageFont.truetype(font_file, size=int(text_scale)), <span class="comment"># 字体位置</span></span><br><span class="line">                fill=(<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>))</span><br><span class="line">    <span class="comment"># 还原连续存储数组</span></span><br><span class="line">    im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">    <span class="keyword">return</span> im</span><br></pre></td></tr></table></figure>
+        <!--  注：OpenCV不能直接显示中文，通过PIL转换会损失一部分算力性能
+
+
+修改源码（可视化）./deploy/python/visualize.py
+增加导入字体库和字体文件123from PIL import Image, ImageDraw, ImageFile, ImageFontfont_file = '/exp/work/video/PaddleDetection/deploy/......  -->
+        <p class="article-more-link">
+          <a href="/2023/08/09/paddleDetection-OpenCV检测框转中文/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paddlepaddle/">paddlepaddle</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-arcface-paddle"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2023/08/08/arcface-paddle/">arcface_paddle</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2023/08/08/arcface-paddle/" class="article-date">
+	  <time datetime="2023-08-08T09:12:11.000Z" itemprop="datePublished">2023-08-08</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/深度学习/">深度学习</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="GPU（物理）"><a href="#GPU（物理）" class="headerlink" title="GPU（物理）"></a>GPU（物理）</h3><ul>
+<li><p>NVIDIA 3090*2</p>
+</li>
+<li><p>显卡驱动 515.43.04</p>
+</li>
+<li><p>CUDA版本 11.7</p>
+</li>
+<li><p>CUDAtoolkit (cuda_11.7.0_515.43.04_linux)</p>
+</li>
+<li><p>cuDNN (v8.4.1)</p>
+</li>
+<li><p><font color="gold">paddlepaddle 多卡训练需要NCLL支持</font> (ncll v2.12.12 cuda11.7)</p>
+</li>
+</ul>
+<h3 id="paddlepaddle版本"><a href="#paddlepaddle版本" class="headerlink" title="paddlepaddle版本"></a>paddlepaddle版本</h3><ul>
+<li>paddlepaddle-gpu==2.2.0rc0（虚拟环境cuda11.2）</li>
+</ul>
+<h3 id="python环境"><a href="#python环境" class="headerlink" title="python环境"></a>python环境</h3><ul>
+<li><p>CentOS7.9</p>
+</li>
+<li><p>anaconda3</p>
+</li>
+<li><p>python3.8</p>
+</li>
+</ul>
+<h2 id="anaconda安装insightface"><a href="#anaconda安装insightface" class="headerlink" title="anaconda安装insightface"></a>anaconda安装insightface</h2><p><font color="gold">重要：pillow版本建议选择9.5 否则过高会导致安装insightface报错</font> （错误原因：pillow10移除了getsize方法，需要修改对应位置源码为<code>getbbox</code>或 <code>getlength</code>）</p>
+<p>告警信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tools/test_recognition.py:<span class="number">627</span>: DeprecationWarning: getsize <span class="keyword">is</span> deprecated <span class="keyword">and</span> will be removed <span class="keyword">in</span> Pillow <span class="number">10</span> (<span class="number">2023</span><span class="number">-07</span><span class="number">-01</span>). Use getbbox <span class="keyword">or</span> getlength instead.</span><br><span class="line">  tw = font.getsize(text)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> .</span></span><br><span class="line">conda install paddlepaddle-gpu==2.2.0rc0 cudatoolkit=11.2 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/Paddle/ -c conda-forge</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface</span></span><br><span class="line">pip install -r requirements.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface/recongition/arcface_paddle/</span></span><br><span class="line">pip install -r requirement.txt -i https://mirror.baidu.com/pypi/simple</span><br><span class="line"><span class="meta">#</span><span class="bash"> insightface-paddle</span></span><br><span class="line">pip install insightface-paddle -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
+        <!--  环境GPU（物理）
+NVIDIA 3090*2
+
+显卡驱动 515.43.04
+
+CUDA版本 11.7
+
+CUDAtoolkit (cuda_11.7.0_515.43.04_linux)
+
+cuDNN (v8.4.1)
+
+paddlepaddle 多卡训练需要NCLL支持 (ncll v2.12.12 cuda11.7)
+
+
+paddlepaddle版本
+paddlepaddle-gp......  -->
+        <p class="article-more-link">
+          <a href="/2023/08/08/arcface-paddle/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/paddlepaddle/">paddlepaddle</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-paddleDetection前置"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -919,139 +1067,11 @@ Windows补丁将hadoop.dll置于C:/windows/system32/目录下，然后配置hado
 <!-- Table of Contents -->
 
   
-    <article id="post-Spark基础"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/12/01/Spark基础/">Spark基础</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/12/01/Spark基础/" class="article-date">
-	  <time datetime="2022-12-01T07:40:17.000Z" itemprop="datePublished">2022-12-01</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><font color="gold">定义</font>：<font color="gold">Apache Spark是用于大规模数据处理的统一分析引擎。</font>其核心数据结构：弹性分布式数据集（RDD）能够在大规模集群中做内存运算，且具有一定容错方式。</p>
-<h2 id="Spark框架"><a href="#Spark框架" class="headerlink" title="Spark框架"></a>Spark框架</h2><h3 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h3><p><font color="orange"><strong>· Spark Core</strong></font>：以RDD为数据抽象，提供Python、Java、Scala、R语言的API和Spark的核心功能，是Spark运行的基础；</p>
-<p><font color="orange"><strong>· SparkSQL</strong></font>：基于SparkCore，提供机构化数据处理模块，支持以SQL语言对数据进行处理；同时可以作为StructuredStreaming模块的基础，进行数据流式计算；</p>
-<p><font color="orange"><strong>· SparkStreaming</strong></font>：基于SparkCore，提供数据流式计算；</p>
-<p><font color="orange"><strong>· MLlib</strong></font>：基于SparkCore，内置大量机器学习库和算法API，进行机器学习计算；</p>
-<p><font color="orange"><strong>· GraphX</strong></font>：基于SparkCore，提供了大量图计算API，用于分布式图计算</p>
-<h3 id="运行模式"><a href="#运行模式" class="headerlink" title="运行模式"></a>运行模式</h3><p><strong>· 本地模式（单机/local）</strong>：以一个独立进程，通过内部的多线程模拟Spark运行环境</p>
-<p><strong>· Standalone模式（集群）</strong>：Spark的各个角色以独立进程形式存在，组成集群环境</p>
-<p><strong>· Hadoop YARN模式（集群）</strong>：Spark的各个角色运行在YARN容器内部，组成集群环境</p>
-<p><strong>· Kubernetes模式（容器集群）</strong>：Spark的各个角色运行在Kubernetes容器内部，组成集群环境</p>
-<p><strong>· 云服务模式</strong></p>
-<h3 id="角色"><a href="#角色" class="headerlink" title="角色"></a>角色</h3><ul>
-<li><strong>资源</strong></li>
-</ul>
-<p><strong>· Master角色</strong>：集群资源管理</p>
-<p><strong>· Worker角色</strong>：单机资源管理(所在服务器资源管理)</p>
-<ul>
-<li><strong>任务</strong></li>
-</ul>
-<p><strong>· Driver角色</strong>：单个任务管理</p>
-<p><strong>· Executor角色</strong>：单个任务计算</p>
-        <!--  定义：Apache Spark是用于大规模数据处理的统一分析引擎。其核心数据结构：弹性分布式数据集（RDD）能够在大规模集群中做内存运算，且具有一定容错方式。
-Spark框架组成· Spark Core：以RDD为数据抽象，提供Python、Java、Scala、R语言的API和Spark的核心功能，是Spark运行的基础；
-· SparkSQL：基于SparkCore，提供机构化数据处理......  -->
-        <p class="article-more-link">
-          <a href="/2022/12/01/Spark基础/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spark/">Spark</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Nebula-全文检索"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2022/11/25/Nebula-全文检索/">Nebula-全文检索</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2022/11/25/Nebula-全文检索/" class="article-date">
-	  <time datetime="2022-11-25T06:17:41.000Z" itemprop="datePublished">2022-11-25</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/BigData/">BigData</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="连接ES"><a href="#连接ES" class="headerlink" title="连接ES"></a>连接ES</h2><h3 id="添加Nebula全文索引模板文件"><a href="#添加Nebula全文索引模板文件" class="headerlink" title="添加Nebula全文索引模板文件"></a>添加Nebula全文索引模板文件</h3><p><code>http://localhost:5601/app/dev_tools#/console</code></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">curl -H "Content-Type: application/json; charset=utf-8" -XPUT http://localhost:9200/_template/nebula_index_template -d '</span><br><span class="line">&#123;</span><br><span class="line"> <span class="attr">"template"</span>: <span class="string">"nebula*"</span>,</span><br><span class="line">  <span class="attr">"settings"</span>: &#123;</span><br><span class="line">    <span class="attr">"index"</span>: &#123;</span><br><span class="line">      <span class="attr">"number_of_shards"</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="attr">"number_of_replicas"</span>: <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"mappings"</span>: &#123;</span><br><span class="line">    <span class="attr">"properties"</span> : &#123;</span><br><span class="line">            <span class="attr">"tag_id"</span> : &#123; <span class="attr">"type"</span> : <span class="string">"long"</span> &#125;,</span><br><span class="line">            <span class="attr">"column_id"</span> : &#123; <span class="attr">"type"</span> : <span class="string">"text"</span> &#125;,</span><br><span class="line">            <span class="attr">"value"</span> :&#123; <span class="attr">"type"</span> : <span class="string">"keyword"</span>&#125;</span><br><span class="line">        &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;'</span><br></pre></td></tr></table></figure>
-<h3 id="登录ES客户端"><a href="#登录ES客户端" class="headerlink" title="登录ES客户端"></a>登录ES客户端</h3><p><code>SIGN IN TEXT SERVICE (localhost:9200,&quot;admin&quot;,&quot;123456&quot;)</code></p>
-<h3 id="查看ES客户端详情"><a href="#查看ES客户端详情" class="headerlink" title="查看ES客户端详情"></a>查看ES客户端详情</h3><p><code>SHOW TEXT SEARCH CLIENTS;</code></p>
-<h3 id="退出ES客户端"><a href="#退出ES客户端" class="headerlink" title="退出ES客户端"></a>退出ES客户端</h3><p><code>SIGN OUT TEXT SERVICE</code></p>
-<h2 id="配置Nebula"><a href="#配置Nebula" class="headerlink" title="配置Nebula"></a>配置Nebula</h2><h3 id="安装storage服务"><a href="#安装storage服务" class="headerlink" title="安装storage服务"></a>安装storage服务</h3><p>进入/usr/local/nebula根目录下，进入/etc子目录，找到nebula-storaged-listener.conf.production文件，复制一份并去除.production后缀。将文件中的listenr地址改为真实地址。</p>
-<p>随后启动listener：<code>./bin/nebula-storaged --flagfile etc/nebula-storaged-listener.conf</code></p>
-<h3 id="添加listener"><a href="#添加listener" class="headerlink" title="添加listener"></a>添加listener</h3><p><code>ADD LISTENER ELASTICSEARCH 192.168.100.1:9789,192.168.100.2:9789;</code>(<font color="gold">注：如果有多台图库集群，都要配置</font>)</p>
-<p>进入nebula-console，执行<code>SHOW LISTENER</code>可以查看图空间的所有listener。</p>
-<p>要删除所有listener，执行：<code>REMOVE LISTENER ELASTICSEARCH</code>(<font color="gold">注：一个图空间仅可执行一次</font>)</p>
-        <!--  连接ES添加Nebula全文索引模板文件http://localhost:5601/app/dev_tools#/console
-1234567891011121314151617curl -H "Content-Type: application/json; charset=utf-8" -XPUT http://localhost:9200/_template/nebula_index......  -->
-        <p class="article-more-link">
-          <a href="/2022/11/25/Nebula-全文检索/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/database-nebula/">-database -nebula</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
   </nav>
 
 </section>

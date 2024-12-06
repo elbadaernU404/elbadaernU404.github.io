@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/09/07/Hadoop入门/7.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/07/Hadoop入门/9.png">
 <meta property="og:image" content="http://yoursite.com/2019/09/07/Hadoop入门/10.png">
-<meta property="og:updated_time" content="2022-06-27T07:29:58.866Z">
+<meta property="og:updated_time" content="2024-12-06T08:53:41.815Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hadoop入门">
 <meta name="twitter:description" content="Hadoop是一个用Java编写的Apache开源框架，允许使用简单的编程模型跨计算机集群分布式处理大型数据集。Hadoop框架工作的应用程序在跨计算机集群提供分布式存储和计算的环境中工作。Hadoop旨在从单个服务器扩展到数千个机器，每个都提供本地计算和存储。 Hadoop伪分布式搭建首先创建一台master虚拟机，并克隆node1、node2两台节点机，我的虚拟机集群ip地址分别设置为： ·">
@@ -222,12 +222,14 @@
 <p><img src="/2019/09/07/Hadoop入门/4.png" alt><br><img src="/2019/09/07/Hadoop入门/A.png" alt></p>
 <h2 id="Mapreduce"><a href="#Mapreduce" class="headerlink" title="Mapreduce"></a>Mapreduce</h2><p>MapReduce是Hadoop中一套分布式的计算框架,分为Map和Reduce两个部分,Map用于数据的整理,Reduce负责数据的汇总，当hadoop平台搭建完成后，就可以使用内置的mapreduce程序”wordcount”进行测试，其作用是对输入文件的词频进行统计</p>
 <p>进入hadoop目录新建一个测试文件夹testfiles，并创建几个txt文本文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd $HADOOP_HOME</span><br><span class="line">mkdir testfiles</span><br><span class="line">echo Hello World &gt;&gt; testfiles/test1.txt</span><br><span class="line">echo Hello Hadoop &gt;&gt; testfiles/test2.txt</span><br><span class="line">echo Hello spark &gt;&gt; testfiles/test3.txt</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2019/09/07/Hadoop入门/5.png" alt><br>执行后再到dfs中创建一个inputtestfiles文件夹,并将用于测试的文本文件发送进去<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -mkdir /inputfiletests</span><br><span class="line">hadoop fs -put testfiles/* /inputfiletests</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2019/09/07/Hadoop入门/5.png" alt><br>执行后再到dfs中创建一个inputtestfiles文件夹,并将用于测试的文本文件发送进去</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -mkdir /inputfiletests</span><br><span class="line">hadoop fs -put testfiles/* /inputfiletests</span><br></pre></td></tr></table></figure>
 <p>找到mapreduce所在的位置，执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd $HADOOP_HOME/share/hadoop/mapreduce</span><br><span class="line">hadoop jar hadoop-mapreduce-examples-2.6.0.jar wordcount /inputfiletests /outputfiletests</span><br></pre></td></tr></table></figure></p>
-<p><img src="/2019/09/07/Hadoop入门/6.png" alt><br><img src="/2019/09/07/Hadoop入门/7.png" alt><br>执行完成后查看输出路径/outputfiletests，包含了运行成功文件和最终输出文件，打开输出的文件进行查看<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -ls /output</span><br><span class="line">hadoop fs -cat /outputfiletests/part-r-00000</span><br></pre></td></tr></table></figure></p>
+<p><img src="/2019/09/07/Hadoop入门/6.png" alt><br><img src="/2019/09/07/Hadoop入门/7.png" alt><br>执行完成后查看输出路径/outputfiletests，包含了运行成功文件和最终输出文件，打开输出的文件进行查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -ls /output</span><br><span class="line">hadoop fs -cat /outputfiletests/part-r-00000</span><br></pre></td></tr></table></figure>
 <p><img src="/2019/09/07/Hadoop入门/9.png" alt><br>同时在hadoop后台里也会有wordcount的运行结果</p>
-<p><img src="/2019/09/07/Hadoop入门/10.png" alt><br>最后，关闭hadoop集群<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">stop-dfs.sh</span><br><span class="line">stop-yarn.sh</span><br></pre></td></tr></table></figure></p>
-
+<p><img src="/2019/09/07/Hadoop入门/10.png" alt><br>最后，关闭hadoop集群</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">stop-dfs.sh</span><br><span class="line">stop-yarn.sh</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
