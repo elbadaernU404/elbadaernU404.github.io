@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>间隙树交并比聚类算法 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="OCRyolo">
+  
+  
+  
+  
+  <meta name="description" content="前文简单介绍过间隙·树·排序算法以及其更改过的可视化过程。但是由于算法本身是对纯文本块进行排序，当遇到较为复杂的图像结构时，由于缺少原始图像信息，存在丢失图片类型数据、无法理解表格等问题。 此算法的跟进版目标在于对排序算法的后续操作提供更为精确的版面恢复，故名称沿用自间隙·树·排序算法（项目地址：https://github.com/hiroi-sora/GapTree_Sort_Algorith">
+<meta name="keywords" content="OCR,yolo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="间隙树交并比聚类算法">
+<meta property="og:url" content="http://yoursite.com/2025/01/10/间隙树交并比聚类算法/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="前文简单介绍过间隙·树·排序算法以及其更改过的可视化过程。但是由于算法本身是对纯文本块进行排序，当遇到较为复杂的图像结构时，由于缺少原始图像信息，存在丢失图片类型数据、无法理解表格等问题。 此算法的跟进版目标在于对排序算法的后续操作提供更为精确的版面恢复，故名称沿用自间隙·树·排序算法（项目地址：https://github.com/hiroi-sora/GapTree_Sort_Algorith">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2025/01/10/间隙树交并比聚类算法/0.png">
+<meta property="og:image" content="http://yoursite.com/2025/01/10/间隙树交并比聚类算法/1.png">
+<meta property="og:image" content="http://yoursite.com/2025/01/10/间隙树交并比聚类算法/2.png">
+<meta property="og:image" content="http://yoursite.com/2025/01/10/间隙树交并比聚类算法/3.png">
+<meta property="og:image" content="http://yoursite.com/2025/01/10/间隙树交并比聚类算法/4.png">
+<meta property="og:image" content="http://yoursite.com/2025/01/10/间隙树交并比聚类算法/5.png">
+<meta property="og:updated_time" content="2025-02-12T03:59:28.831Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="间隙树交并比聚类算法">
+<meta name="twitter:description" content="前文简单介绍过间隙·树·排序算法以及其更改过的可视化过程。但是由于算法本身是对纯文本块进行排序，当遇到较为复杂的图像结构时，由于缺少原始图像信息，存在丢失图片类型数据、无法理解表格等问题。 此算法的跟进版目标在于对排序算法的后续操作提供更为精确的版面恢复，故名称沿用自间隙·树·排序算法（项目地址：https://github.com/hiroi-sora/GapTree_Sort_Algorith">
+<meta name="twitter:image" content="http://yoursite.com/2025/01/10/间隙树交并比聚类算法/0.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-间隙树交并比聚类算法" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      间隙树交并比聚类算法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2025/01/10/间隙树交并比聚类算法/" class="article-date">
+	  <time datetime="2025-01-10T05:15:10.000Z" itemprop="datePublished">2025-01-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><p>前文简单介绍过<strong>间隙·树·排序算法</strong>以及其更改过的可视化过程。但是由于算法本身是对纯文本块进行排序，当遇到较为复杂的图像结构时，由于缺少原始图像信息，存在丢失图片类型数据、无法理解表格等问题。</p>
+<p>此算法的跟进版目标在于对排序算法的后续操作提供更为精确的版面恢复，故名称沿用自间隙·树·排序算法（项目地址：<a href="https://github.com/hiroi-sora/GapTree_Sort_Algorithm" target="_blank" rel="noopener">https://github.com/hiroi-sora/GapTree_Sort_Algorithm</a>），命名<strong>间隙·树·交并比（IoU）聚类算法</strong>，以下简称GTIoUC。算法的最终目的与传统OCR或版面恢复不同，旨在将OCR结果在版面分析结果中聚合成包含完整语义的段落，为翻译提供服务。</p>
+<font color="gold"><strong>GTIoUC包含的算法：</strong></font> <em><br><br><font color="gold">❶</font> <strong>GapTree提供的文本块排序算法；</strong><br><br><font color="gold">❷</font> <strong>基于YOLO的版面分析算法；</strong><br><br><font color="gold">❸</font> <strong>OCR box和 YOLO layoutbox之间的交并比聚类算法</strong><br><br><font color="gold"><strong>GTIoUC解决的问题：</strong></font></em><br><br><font color="gold">❶</font> <strong>仅仅版面分析的效果不够精确；</strong><br><br><font color="gold">❷</font> <strong>版面分析后内容总是存在缺失；</strong><br><br><font color="gold">❸</font> <strong>版面分析获得图像结构后往往不再OCR图像中文字；</strong><br><br><font color="gold">❹</font> <strong>OCR结果按行返回，无段落结构，上下文语义存在缺失；</strong><br><br><font color="gold"></font>
+
+<h1 id="GapTreeIoU-Cluster-Algorithm-间隙·树·交并比聚类算法"><a href="#GapTreeIoU-Cluster-Algorithm-间隙·树·交并比聚类算法" class="headerlink" title="GapTreeIoU_Cluster_Algorithm | 间隙·树·交并比聚类算法"></a><font color="#0099ee">GapTreeIoU_Cluster_Algorithm | 间隙·树·交并比聚类算法</font></h1><p><img src="/2025/01/10/间隙树交并比聚类算法/0.png" alt></p>
+<p><strong>GTIoUC算法的特殊之处：</strong></p>
+<p><font color="gold">❶</font> <strong>PPStructure等版面分析算法需要根据版面分析结果做N次截取片段OCR，但是传入OCR模型的<code>det_limit_side_len</code>参数总是固定的，导致OCR经常提取不到相应结果，产生空白页。算法模型层面每轮仅做1次完整的全文OCR和1次Layout，解决OCR空白页的同时一定程度上优化了时间复杂度；</strong></p>
+<p><font color="gold">❷</font> <strong>算法的版面分析模型由YOLOV11结合DocLayNet数据集训练得到，精度较早期模型具有较大提升，适用于复杂文档，泛化能力高的同时兼顾了多语种识别；</strong></p>
+<p><font color="gold">❸</font> <strong>尽管如此，目前任何版面恢复模型仍旧不具备100%捕获文档信息的能力。此时由于算法的OCR部分和Layout部分是相对独立进行的，最终OCR和Layout的结果将进行IoU聚类，IoU过程中先前Layout缺失的信息将被OCR结果补充、得到段落完整语义，极大程度上提高了版面恢复的准确度。</strong></p>
+<p>下面将详细介绍GTIoUC的版面恢复流程。</p>
+<a id="more"></a>
+<h2 id="算法流程"><a href="#算法流程" class="headerlink" title="算法流程"></a>算法流程</h2><h3 id="1-Layout"><a href="#1-Layout" class="headerlink" title="1.Layout"></a>1.Layout</h3><h4 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h4><p>DocLayNet（<a href="https://github.com/DS4SD/DocLayNet" target="_blank" rel="noopener">https://github.com/DS4SD/DocLayNet</a>），选择<code>Doclaynet core dataset</code>数据集下载</p>
+<p><img src="/2025/01/10/间隙树交并比聚类算法/1.png" alt></p>
+<p>数据集共包括十种常见的文档板块类型：</p>
+<p><strong>· Captain：</strong>大标题</p>
+<p><strong>· Footnote：</strong>脚注</p>
+<p><strong>· Formula：</strong>公式</p>
+<p><strong>· List-item：</strong>表格/列表项</p>
+<p><strong>· Page-footer：</strong>页脚</p>
+<p><strong>· Page-header：</strong>页眉</p>
+<p><strong>· Picture：</strong>图像</p>
+<p><strong>· Section-header：</strong>章节标题</p>
+<p><strong>· Table：</strong>表格</p>
+<p><strong>· Title：</strong>小标题</p>
+<h4 id="yaml"><a href="#yaml" class="headerlink" title="yaml"></a>yaml</h4><p>数据集已是yolo格式，不需要进行转换。补充yaml文件<code>layout.yaml</code>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">path:</span> <span class="string">&#123;fullpath&#125;/doclaynet</span></span><br><span class="line"><span class="attr">train:</span> <span class="string">train.txt</span></span><br><span class="line"><span class="attr">val:</span> <span class="string">val.txt</span></span><br><span class="line"><span class="attr">test:</span> <span class="string">val.txt</span></span><br><span class="line"></span><br><span class="line"><span class="attr">names:</span></span><br><span class="line">  <span class="attr">0:</span> <span class="string">Caption</span></span><br><span class="line">  <span class="attr">1:</span> <span class="string">Footnote</span></span><br><span class="line">  <span class="attr">2:</span> <span class="string">Formula</span></span><br><span class="line">  <span class="attr">3:</span> <span class="string">List-item</span></span><br><span class="line">  <span class="attr">4:</span> <span class="string">Page-footer</span></span><br><span class="line">  <span class="attr">5:</span> <span class="string">Page-header</span></span><br><span class="line">  <span class="attr">6:</span> <span class="string">Picture</span></span><br><span class="line">  <span class="attr">7:</span> <span class="string">Section-header</span></span><br><span class="line">  <span class="attr">8:</span> <span class="string">Table</span></span><br><span class="line">  <span class="attr">9:</span> <span class="string">Text</span></span><br><span class="line">  <span class="attr">10:</span> <span class="string">Title</span></span><br></pre></td></tr></table></figure>
+<h4 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h4><p>需要安装最新<code>ultralytics</code>（yolo11），根据显存大小调整batch_size。这里使用的GPU环境：RTX3090 24G*2；batch_size设置为8时，显存占用13Gbi/卡；使用的yolo预训练模型：yolo11x.pt。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load a model</span></span><br><span class="line">model = YOLO(<span class="string">'/exp/work/translate_plat/yolov11/yolo11x.pt'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train the model with 2 GPUs</span></span><br><span class="line">model.train(</span><br><span class="line">    data=<span class="string">'layout.yaml'</span>,</span><br><span class="line">    batch=<span class="number">8</span>,</span><br><span class="line">    imgsz=<span class="number">1120</span>,</span><br><span class="line">    epochs=<span class="number">500</span>,</span><br><span class="line">    lr0=<span class="number">0.02</span>,</span><br><span class="line">    optimizer=<span class="string">'SGD'</span>,</span><br><span class="line">    device=[<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line">model.val()</span><br></pre></td></tr></table></figure>
+<p>训练过程中每个epoch约1小时，训练时间过长，不定性因素较多。当训练中止后可更换训练脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load a model</span></span><br><span class="line">model = YOLO(<span class="string">'/exp/work/translate_plat/yolov11/runs/detect/train/weights/best.pt'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Train the model with 2 GPUs</span></span><br><span class="line">model.train(</span><br><span class="line">    data=<span class="string">'layout.yaml'</span>,</span><br><span class="line">    batch=<span class="number">8</span>,</span><br><span class="line">    imgsz=<span class="number">1120</span>,</span><br><span class="line">    epochs=<span class="number">500</span>,</span><br><span class="line">    lr0=<span class="number">0.02</span>,</span><br><span class="line">    resume=<span class="literal">True</span>,</span><br><span class="line">    optimizer=<span class="string">'SGD'</span>,</span><br><span class="line">    device=[<span class="number">0</span>, <span class="number">1</span>])</span><br><span class="line">model.val()</span><br></pre></td></tr></table></figure>
+<p>约500小时（3周）以后得到最终Layout模型。获取版面分析结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">det_res = model.predict(</span><br><span class="line">    image,</span><br><span class="line">    iou=<span class="number">0.1</span>,</span><br><span class="line">    imgsz=<span class="number">1024</span>,</span><br><span class="line">    conf=<span class="number">0.5</span>,</span><br><span class="line">    device=<span class="string">"cuda:1"</span>,</span><br><span class="line">    save=<span class="literal">False</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><img src="/2025/01/10/间隙树交并比聚类算法/2.png" alt></p>
+<h3 id="2-OCR"><a href="#2-OCR" class="headerlink" title="2.OCR"></a>2.OCR</h3><p>OCR作为一切的基石，选择常用的即可，仅需要对OCR的结果做一层数据结构的标准化。</p>
+<p>这里推荐使用两款OCR：PaddleOCR和SuryaOCR，前者较为常用，对中英文方便开箱使用。后者中文效果较差，但是多语种效果几乎碾压PaddleOCR。</p>
+<p>以PaddleOCR为例：</p>
+<p><img src="/2025/01/10/间隙树交并比聚类算法/3.png" alt></p>
+<p>OCR接口返回结果示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[[[[225.0, 9.0], [782.0, 9.0], [782.0, 27.0], [225.0, 27.0]], [&apos;(CollegeofComputerScience,ChongqingUniversity,Chongqing400044,China)&apos;, 0.9394824504852295]], [[[32.0, 45.0], [981.0, 46.0], [981.0, 65.0], [32.0, 64.0]], [&apos;[Abstract]There areboth relevant informationand irrelevant information in a Webpage,the irrelevant information brings some negative&apos;, 0.9342334866523743]], [[[24.0, 73.0], [981.0, 76.0], [981.0, 94.0], [24.0, 92.0]], [&apos;influence to their classification, storage and retrieve.In order to reduce the influence, aiming at theme-related Web pages, this paper&apos;, 0.9241952300071716]], [[[23.0, 103.0], [982.0, 102.0], [982.0, 124.0], [23.0, 125.0]], [&apos;proposes a new method to extract the content of Web pages based on their text and structural features. It removes those unrelated tags in the&apos;, 0.947555661201477]], [[[26.0, 134.0], [979.0, 134.0], [979.0, 152.0], [26.0, 152.0]], [&apos;Webpagebyregular expressions,and segments theWeb into blocks according to Webpages structureand thetext informationBy&apos;, 0.9187150597572327]], [[[25.0, 162.0], [980.0, 162.0], [980.0, 181.0], [25.0, 181.0]], [&apos;analyzing the text blocks and link blocks of the Web, it only retains the main content of the page; those noisy parts are deleted from the&apos;, 0.9074915051460266]], [[[31.0, 219.0], [934.0, 222.0], [934.0, 240.0], [31.0, 238.0]], [&apos;[Keywords] contentextraction; Webpagedenoising;Web pagesegmentation, subject crawling,informationretrieve;Webmining&apos;, 0.9111730456352234]], [[[27.0, 251.0], [328.0, 251.0], [328.0, 267.0], [27.0, 267.0]], [&apos;DOl:10.3969/j.issn.1000-3428.2013.12.043&apos;, 0.9246572256088257]], [[[11.0, 344.0], [98.0, 347.0], [97.0, 373.0], [11.0, 370.0]], [&apos;1概述&apos;, 0.9476785063743591]], [[[564.0, 337.0], [987.0, 337.0], [987.0, 352.0], [564.0, 352.0]], [&apos;针对来自同一站点的网通常具有同样的结构，许多&apos;, 0.9185552597045898]], [[[525.0, 363.0], [991.0, 363.0], [991.0, 385.0], [525.0, 385.0]], [&apos;学者提出了基于模板的提取方法[3-4]。算法通过对来自同一&apos;, 0.9745544195175171]], [[[56.0, 397.0], [469.0, 397.0], [469.0, 412.0], [56.0, 412.0]], [&apos;网贞的内容可以分为两部分，一部分是网贞的正文，&apos;, 0.8542546033859253]], [[[526.0, 396.0], [987.0, 396.0], [987.0, 415.0], [526.0, 415.0]], [&apos;网站2个页面的DOM树结构进行比较，删除其公共部分，&apos;, 0.977752149105072]], [[[18.0, 428.0], [480.0, 428.0], [480.0, 443.0], [18.0, 443.0]], [&apos;即网贞的主题内容；另一部分是和正文无关的部分，即“噪&apos;, 0.9320459961891174]], [[[526.0, 429.0], [988.0, 429.0], [988.0, 444.0], [526.0, 444.0]], [&apos;下部分就作为各自的主题信息。基于模板的方法具有准&apos;, 0.9174962043762207]], [[[19.0, 458.0], [475.0, 458.0], [475.0, 474.0], [19.0, 474.0]], [&apos;音”部分（即导航条、相关链接、广告链接、版权声明等）。&apos;, 0.9373550415039062]], [[[526.0, 460.0], [977.0, 460.0], [977.0, 475.0], [526.0, 475.0]], [&apos;确率高的等点，但缺点是互联网上具有难以计数的网站：&apos;, 0.9136723279953003]], [[[26.0, 488.0], [482.0, 488.0], [482.0, 507.0], [26.0, 507.0]], [&apos;“噪音”部分内容通常占据整个网页的40%~50%，甚至还&apos;, 0.9449021220207214]], [[[526.0, 490.0], [989.0, 490.0], [989.0, 506.0], [526.0, 506.0]], [&apos;不可能用同一模板来对网负内容进行提取，因此，基于模&apos;, 0.9249494671821594]], [[[16.0, 519.0], [128.0, 516.0], [128.0, 536.0], [16.0, 539.0]], [&apos;在逐渐增加门。&apos;, 0.860722541809082]], [[[525.0, 519.0], [714.0, 519.0], [714.0, 537.0], [525.0, 537.0]], [&apos;板的方法不具有普遍性。&apos;, 0.961738646030426]], [[[56.0, 552.0], [480.0, 552.0], [480.0, 567.0], [56.0, 567.0]], [&apos;早在2001年，Rahman等人就提出了“内容提取”的&apos;, 0.9352570176124573]], [[[564.0, 552.0], [987.0, 552.0], [987.0, 567.0], [564.0, 567.0]], [&apos;网贞正文部分具有文字内容多、链接内容少、标签少&apos;, 0.9434654116630554]], [[[18.0, 582.0], [480.0, 582.0], [480.0, 598.0], [18.0, 598.0]], [&apos;既念，正文提取在Web挖掘、自然语言处理(NLP）、信息检&apos;, 0.920298159122467]], [[[526.0, 582.0], [987.0, 582.0], [987.0, 598.0], [526.0, 598.0]], [&apos;的特点。基于统计理论的研究方法正是基于此类特征提出&apos;, 0.9824463725090027]], [[[17.0, 612.0], [482.0, 612.0], [482.0, 631.0], [17.0, 631.0]], [&apos;索、网页在小屏幕尺寸设备（手机、PAD等）上显示等领域都&apos;, 0.9575836062431335]], [[[525.0, 612.0], [989.0, 612.0], [989.0, 631.0], [525.0, 631.0]], [&apos;的。文献[5]将网页解析成DOM树的结构，然后计算树中&apos;, 0.9075543284416199]], [[[15.0, 642.0], [167.0, 639.0], [167.0, 661.0], [15.0, 664.0]], [&apos;具有重要的作用[2]。&apos;, 0.9330642819404602]], [[[526.0, 645.0], [987.0, 645.0], [987.0, 660.0], [526.0, 660.0]], [&apos;的节点部分进行文本密度，将文本密度天的部分当成网贞&apos;, 0.870039701461792]], [[[55.0, 676.0], [480.0, 676.0], [480.0, 691.0], [55.0, 691.0]], [&apos;近年来，网页正文提取一直是web研究的热点，已经&apos;, 0.9165266156196594]], [[[524.0, 673.0], [987.0, 674.0], [987.0, 693.0], [524.0, 692.0]], [&apos;的正文，以此来进行正文内容提取。文献[6]通过分析得知，&apos;, 0.9288652539253235]], [[[17.0, 705.0], [480.0, 704.0], [480.0, 723.0], [17.0, 724.0]], [&apos;有许多学者在这方面做过很多相关研究，并且取得了不少&apos;, 0.9702548384666443]], [[[525.0, 705.0], [989.0, 705.0], [989.0, 724.0], [525.0, 724.0]], [&apos;正文部分和网页其他部分相比，所含有的文字个数与&apos;, 0.9652908444404602]]]]</span><br></pre></td></tr></table></figure>
+<p>假设OCR原始返回结果为<code>ocr_result</code>，需要将OCR结果转换成以下数据结构（<code>json_data</code>），供后续解析：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ocr_boxes = [line[<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result[<span class="number">0</span>]]        <span class="comment"># 检测框</span></span><br><span class="line">ocr_txts = [line[<span class="number">1</span>][<span class="number">0</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result[<span class="number">0</span>]]      <span class="comment"># 文本</span></span><br><span class="line">ocr_scores = [line[<span class="number">1</span>][<span class="number">1</span>] <span class="keyword">for</span> line <span class="keyword">in</span> ocr_result[<span class="number">0</span>]]    <span class="comment"># 置信度</span></span><br><span class="line"></span><br><span class="line">json_data = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(ocr_result[<span class="number">0</span>])):</span><br><span class="line">    json_data.append(&#123;</span><br><span class="line">        <span class="string">"box"</span>: [[int(i[<span class="number">0</span>]), int(i[<span class="number">1</span>])] <span class="keyword">for</span> i <span class="keyword">in</span> ocr_boxes[i]],</span><br><span class="line">        <span class="string">"score"</span>: ocr_scores[i],</span><br><span class="line">        <span class="string">"text"</span>: ocr_txts[i]</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="3-间隙·树·排序算法"><a href="#3-间隙·树·排序算法" class="headerlink" title="3.间隙·树·排序算法"></a>3.间隙·树·排序算法</h3><p>剪去多余步骤，重新封装成类<code>StructureOCR</code>，仅使用GapTree的文本块排序功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gap_tree <span class="keyword">import</span> GapTree</span><br><span class="line"><span class="keyword">from</span> preprocessing <span class="keyword">import</span> linePreprocessing</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StructureOCR</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, blocks_data)</span>:</span></span><br><span class="line">        self.blocks_data = blocks_data</span><br><span class="line">        self.bboxes = linePreprocessing(self.blocks_data)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_info</span><span class="params">(tb)</span>:</span>  <span class="comment"># 返回信息</span></span><br><span class="line">        b = tb[<span class="string">"box"</span>]</span><br><span class="line">        <span class="keyword">return</span> (b[<span class="number">0</span>][<span class="number">0</span>], b[<span class="number">0</span>][<span class="number">1</span>], b[<span class="number">2</span>][<span class="number">0</span>], b[<span class="number">2</span>][<span class="number">1</span>]), tb[<span class="string">"text"</span>]</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_end</span><span class="params">(tb, end)</span>:</span>  <span class="comment"># 获取预测的块尾分隔符</span></span><br><span class="line">        tb[<span class="string">"end"</span>] = end</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">structure_ocr</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> line, tb <span class="keyword">in</span> enumerate(self.blocks_data):</span><br><span class="line">            tb[<span class="string">"bbox"</span>] = self.bboxes[line]</span><br><span class="line"></span><br><span class="line">        gtree = GapTree(<span class="keyword">lambda</span> tb: tb[<span class="string">"bbox"</span>])</span><br><span class="line">        sorted_text_blocks = gtree.sort(self.blocks_data)  <span class="comment"># 文本块排序</span></span><br><span class="line">        <span class="keyword">return</span> sorted_text_blocks</span><br></pre></td></tr></table></figure>
+<p>获取经过排序的OCR字符串序列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">so = StructureOCR(json_data)</span><br><span class="line">blocks = so.structure_ocr()</span><br></pre></td></tr></table></figure>
+<h3 id="4-IoU聚类"><a href="#4-IoU聚类" class="headerlink" title="4.IoU聚类"></a>4.IoU聚类</h3><p>在得到Layout结果后，首先需要明确的是那些板块需要做聚类（保持换行/上下文语义的连贯性），哪些板块不做聚类，而是保留OCR的结果。</p>
+<p>在翻译任务中，通常需要保证语义连贯的部分都存在于正文中，对表格、图片和公式往往并不需要对文本进行上下文语义拼接，在DocLayNet数据集中分别对应着<code>Formula</code>、<code>Picture</code>和<code>Table</code>三种标签类型。这里将需要聚类的部分设置成两组列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">content_clses = [<span class="string">"Caption"</span>, <span class="string">"Footnote"</span>, <span class="string">"List-item"</span>, <span class="string">"Section-header"</span>, <span class="string">"Text"</span>, <span class="string">"Title"</span>]</span><br><span class="line">figure_clses = [<span class="string">"Formula"</span>, <span class="string">"Picture"</span>, <span class="string">"Table"</span>]</span><br></pre></td></tr></table></figure>
+<p>分别获取需要和不需要聚类板块的类别和检测框Layout box。det_res为上文最终版面分析的结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> res <span class="keyword">in</span> det_res:</span><br><span class="line">    boxes = res.boxes</span><br><span class="line">    names = res.names</span><br><span class="line">    clses = [names.get(i) <span class="keyword">for</span> i <span class="keyword">in</span> res.boxes.cls.tolist()]</span><br><span class="line"></span><br><span class="line">    layout_results = [</span><br><span class="line">        &#123;<span class="string">'layout_cls'</span>: cls,</span><br><span class="line">         <span class="string">'layout_box'</span>: [</span><br><span class="line">             [int(box[<span class="number">0</span>]), int(box[<span class="number">1</span>])],</span><br><span class="line">             [int(box[<span class="number">2</span>]), int(box[<span class="number">1</span>])],</span><br><span class="line">             [int(box[<span class="number">2</span>]), int(box[<span class="number">3</span>])],</span><br><span class="line">             [int(box[<span class="number">0</span>]), int(box[<span class="number">3</span>])]</span><br><span class="line">         ]</span><br><span class="line">        &#125; <span class="keyword">for</span> cls, box <span class="keyword">in</span> zip(clses, boxes.xyxy.tolist()) <span class="keyword">if</span> cls <span class="keyword">in</span> content_clses]</span><br><span class="line"></span><br><span class="line">    layout_figures = [</span><br><span class="line">        &#123;<span class="string">'layout_cls'</span>: cls,</span><br><span class="line">         <span class="string">'layout_box'</span>: [</span><br><span class="line">             [int(box[<span class="number">0</span>]), int(box[<span class="number">1</span>])],</span><br><span class="line">             [int(box[<span class="number">2</span>]), int(box[<span class="number">1</span>])],</span><br><span class="line">             [int(box[<span class="number">2</span>]), int(box[<span class="number">3</span>])],</span><br><span class="line">             [int(box[<span class="number">0</span>]), int(box[<span class="number">3</span>])]</span><br><span class="line">         ]</span><br><span class="line">        &#125; <span class="keyword">for</span> cls, box <span class="keyword">in</span> zip(clses, boxes.xyxy.tolist()) <span class="keyword">if</span> cls <span class="keyword">in</span> figure_clses]</span><br></pre></td></tr></table></figure>
+<p>将每个OCR box分别与聚类板块中的Layout box进行IoU交并比计算，将结果全部存储并排序，获取IoU最大的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># OCR对所有文本块进行排序，每个文本块匹配最近板块id</span></span><br><span class="line">layout_blocks = []        <span class="comment"># 聚合结果</span></span><br><span class="line">un_layout_blocks = []     <span class="comment"># 缺失信息</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> blocks:</span><br><span class="line">    iou_set = []</span><br><span class="line">    <span class="keyword">for</span> i, layout_result <span class="keyword">in</span> enumerate(layout_results):</span><br><span class="line">        ocr_box = line.get(<span class="string">'box'</span>)</span><br><span class="line">        lay_box = layout_result.get(<span class="string">'layout_box'</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># IoU</span></span><br><span class="line">        poly1 = Polygon(ocr_box)</span><br><span class="line">        poly2 = Polygon(lay_box)</span><br><span class="line">        intersection = poly1.intersection(poly2)</span><br><span class="line">        iou_area = intersection.area <span class="keyword">if</span> <span class="keyword">not</span> intersection.is_empty <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">        iou_set.append((i, iou_area, line.get(<span class="string">'text'</span>)))</span><br><span class="line"></span><br><span class="line">        iou_set = sorted(iou_set, key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>])[<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<p>将有IoU极大值的OCR结果存入<code>layout_blocks</code>，无结果的数据则存入<code>un_layout_blocks</code>作为版面分析过程中缺失信息。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 为板块添加在其内部的OCR文本块</span></span><br><span class="line"><span class="keyword">if</span> iou_set[<span class="number">1</span>] &gt; <span class="number">0</span>:</span><br><span class="line">    layout_blocks.append((iou_set[<span class="number">0</span>], iou_set[<span class="number">2</span>]))</span><br><span class="line">    <span class="comment"># 额外处理不在任何板块内的OCR文本块</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    un_layout_blocks.append(&#123;<span class="string">"paragraph"</span>: line.get(<span class="string">'text'</span>), <span class="string">"layout_box"</span>: line.get(<span class="string">'box'</span>)&#125;)</span><br></pre></td></tr></table></figure>
+<p>再将聚合过的Laybox中的文本聚合成段落。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将文本块排序结果按板块id聚合，聚合结果——板块id：段落</span></span><br><span class="line">grouped_layout_blocks = defaultdict(list)</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> layout_blocks:</span><br><span class="line">    grouped_layout_blocks[line[<span class="number">0</span>]].append(line[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<p>构建最终结果，添加保存的段落和未聚合的结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将板块检测框添加进聚合结果内</span></span><br><span class="line">layout_paragraphs = []</span><br><span class="line">layout_figures_list = [i.get(<span class="string">'layout_box'</span>) <span class="keyword">for</span> i <span class="keyword">in</span> layout_figures]</span><br><span class="line"><span class="keyword">for</span> i, layout_result <span class="keyword">in</span> enumerate(layout_results):</span><br><span class="line">    paragraph = grouped_layout_blocks.get(i)</span><br><span class="line">    layout_paragraphs.append(&#123;<span class="string">"paragraph"</span>: <span class="string">""</span>.join(paragraph), <span class="string">"layout_box"</span>: layout_result.get(<span class="string">"layout_box"</span>)&#125;)</span><br><span class="line">    layout_paragraphs.extend(un_layout_blocks)</span><br><span class="line">    layout_paragraphs_list = [i.get(<span class="string">'paragraph'</span>) <span class="keyword">for</span> i <span class="keyword">in</span> layout_paragraphs]</span><br><span class="line">    layout_boxes_list = [i.get(<span class="string">'layout_box'</span>) <span class="keyword">for</span> i <span class="keyword">in</span> layout_paragraphs]</span><br></pre></td></tr></table></figure>
+<h2 id="可视化"><a href="#可视化" class="headerlink" title="可视化"></a>可视化</h2><p>整体思想参照前文：<strong>间隙树排序算法的可视化</strong>，略有修改</p>
+<p>当文本成段后，不能直接通过<code>draw.text</code>等方法将文本写作一行，而是要设置每行文本不得超过段落块的长度，并且总行数不能超出段落块总长度。需要设计算法，当每行文本超出长度限制时，自动添加换行符。</p>
+<h3 id="段落换行算法"><a href="#段落换行算法" class="headerlink" title="段落换行算法"></a>段落换行算法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VisualizeOCR</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, im, layout_boxes, texts, figures)</span>:</span></span><br><span class="line">        self.boxes = layout_boxes</span><br><span class="line">        self.texts = texts</span><br><span class="line">        self.figures = figures</span><br><span class="line">        <span class="keyword">if</span> isinstance(im, str):</span><br><span class="line">            self.im = Image.open(im)</span><br><span class="line">            self.im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">            self.im = cv2.cvtColor(im, cv2.COLOR_RGB2BGR)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.im = np.ascontiguousarray(np.copy(im))</span><br><span class="line">        self.im = Image.fromarray(self.im)</span><br><span class="line">        self.im = self.im.convert(<span class="string">'RGBA'</span>)</span><br><span class="line">        self.size = (int(self.im.size[<span class="number">0</span>]), int(self.im.size[<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">split_text</span><span class="params">(self, width, sentence, font)</span>:</span></span><br><span class="line">        <span class="comment"># 按规定宽度分组</span></span><br><span class="line">        max_line_height, total_lines = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">        allText = []</span><br><span class="line">        <span class="keyword">for</span> sen <span class="keyword">in</span> sentence.split(<span class="string">'\n'</span>):</span><br><span class="line">            paragraph_content, line_height, line_count = self.get_paragraph(sen, width, font)</span><br><span class="line">            max_line_height = max(line_height, max_line_height)</span><br><span class="line">            total_lines += line_count</span><br><span class="line">            allText.append((paragraph_content, line_count))</span><br><span class="line">        line_height = max_line_height</span><br><span class="line">        total_height = total_lines * line_height</span><br><span class="line">        <span class="keyword">return</span> allText, total_height, line_height</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_paragraph</span><span class="params">(text, width, font)</span>:</span></span><br><span class="line">        txt = Image.new(<span class="string">'RGBA'</span>, (<span class="number">1920</span>, <span class="number">1080</span>), (<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>))</span><br><span class="line">        draw = ImageDraw.Draw(txt)</span><br><span class="line">        <span class="comment"># 所有文字的段落</span></span><br><span class="line">        paragraph_content = <span class="string">""</span></span><br><span class="line">        <span class="comment"># 宽度总和</span></span><br><span class="line">        sum_width = <span class="number">0</span></span><br><span class="line">        <span class="comment"># 行数</span></span><br><span class="line">        line_count = <span class="number">0</span></span><br><span class="line">        <span class="comment"># 行高</span></span><br><span class="line">        line_height = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> char <span class="keyword">in</span> text:</span><br><span class="line">            _, _, w, h = draw.textbbox((<span class="number">0</span>, <span class="number">0</span>), char, font=font)</span><br><span class="line"></span><br><span class="line">            sum_width += w</span><br><span class="line">            <span class="keyword">if</span> sum_width &gt; width:  <span class="comment"># 超过预设宽度就修改段落 以及当前行数</span></span><br><span class="line">                line_count += <span class="number">1</span></span><br><span class="line">                sum_width = <span class="number">0</span></span><br><span class="line">                paragraph_content += <span class="string">'\n'</span></span><br><span class="line">            paragraph_content += char</span><br><span class="line">            line_height = max(h, line_height)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> paragraph_content.endswith(<span class="string">'\n'</span>):</span><br><span class="line">            paragraph_content += <span class="string">'\n'</span></span><br><span class="line">        <span class="keyword">return</span> paragraph_content, line_height, line_count</span><br></pre></td></tr></table></figure>
+<h3 id="段落字体大小算法"><a href="#段落字体大小算法" class="headerlink" title="段落字体大小算法"></a>段落字体大小算法</h3><p>实现换行后，还需要考虑字体的大小，将文字锁定在文本框内。在pillow库中<code>draw.text</code>方法中中文字符的大小近似于其正方矩形像素块的边长。接下来需要考虑的参数变量有三个：</p>
+<p><strong>1.每行最多的字符x（x_num）;</strong></p>
+<p><strong>2.总行数y（y_num）;</strong></p>
+<p><strong>3.字体像素s（text_scale）</strong></p>
+<p>同时考虑到并不是每行都能够写满段落块的长度，可能存在提前换行、空行、结束等情况。可以计算段落的总换行符数量（count(‘\n’)），将换行符出现的地方视作空行，并×2算作换行+留白部分产生的像素面积。那么已知常量包括：</p>
+<p><strong>1.换行次数b（blank_scale）；</strong></p>
+<p><strong>2.总字数l（len(text)）；</strong></p>
+<p><strong>3.段落框长度w（width_p，值取width*0.97，减少出界概率）</strong></p>
+<p><strong>3.段落框宽度h（height）</strong></p>
+<h4 id="设立方程组："><a href="#设立方程组：" class="headerlink" title="设立方程组："></a>设立方程组：</h4><p><strong><font color="gold">{</font></strong></p>
+<p><strong><font color="gold">① (y-b)*x=l</font></strong></p>
+<p><strong><font color="gold">② x*s = w</font></strong></p>
+<p><strong><font color="gold">③ y*s = h</font></strong></p>
+<p><strong><font color="gold">{</font></strong></p>
+<h4 id="转换到代码中："><a href="#转换到代码中：" class="headerlink" title="转换到代码中："></a>转换到代码中：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(y_num - blank_scale) * x_num = len(text)</span><br><span class="line">x_num * text_scale = width_p</span><br><span class="line">y_num * text_scale = height</span><br></pre></td></tr></table></figure>
+<h4 id="简化方程组："><a href="#简化方程组：" class="headerlink" title="简化方程组："></a>简化方程组：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(y_num - blank_scale) * x_num = len(text)</span><br><span class="line">x_num * text_scale = width_p</span><br><span class="line">y_num * text_scale = height</span><br><span class="line">===&gt;</span><br><span class="line">x_num = len(text) / (y_num - blank_scale)</span><br><span class="line">x_num = width_p / text_scale</span><br><span class="line">width_p / text_scale = len(text) / ((height / text_scale) - blank_scale)</span><br><span class="line">===&gt;</span><br><span class="line">len(text) * text_scale * text_scale + blank_scale * width_p * text_scale - width_p * height = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h4 id="解方程："><a href="#解方程：" class="headerlink" title="解方程："></a>解方程：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quadratic</span><span class="params">(a, b, c)</span>:</span></span><br><span class="line">    n = b * b - <span class="number">4</span> * a * c</span><br><span class="line">    <span class="keyword">import</span> math</span><br><span class="line">    <span class="keyword">if</span> n &gt;= <span class="number">0</span>:</span><br><span class="line">        x1 = (-b + math.sqrt(n)) / (<span class="number">2</span> * a)</span><br><span class="line">        x2 = (-b - math.sqrt(n)) / (<span class="number">2</span> * a)</span><br><span class="line">        <span class="keyword">return</span> x1 <span class="keyword">if</span> x1 &gt; <span class="number">0</span> <span class="keyword">else</span> x2</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">raise</span></span><br></pre></td></tr></table></figure>
+<h4 id="获取最终字号："><a href="#获取最终字号：" class="headerlink" title="获取最终字号："></a>获取最终字号：</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">text_scale = int(quadratic(<span class="number">3</span> * len(text), <span class="number">3</span> * blank_scale * width_p, <span class="number">2</span> * -width_p * height))</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> sen, line_count <span class="keyword">in</span> paragraph_content:</span><br><span class="line">    draw.text((x, y), sen, fill=(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), font=font)</span><br><span class="line">    y += line_height * line_count</span><br></pre></td></tr></table></figure>
+<h3 id="版面恢复"><a href="#版面恢复" class="headerlink" title="版面恢复"></a>版面恢复</h3><p>最终的翻译步骤中需要将IoU聚合好的段落或未聚合的内容提交给翻译模型。此时可以选择单独新开页面还原文档或在原文档上进行P图修改。这里使用高斯模糊算法直接在原图进行修改。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">im_rectangle = self.im.crop((box[<span class="number">0</span>][<span class="number">0</span>], box[<span class="number">0</span>][<span class="number">1</span>], box[<span class="number">2</span>][<span class="number">0</span>], box[<span class="number">2</span>][<span class="number">1</span>]))</span><br><span class="line">im_rectangle = im_rectangle.filter(ImageFilter.GaussianBlur(radius=<span class="number">2000</span>))</span><br><span class="line">self.im.paste(im_rectangle, (box[<span class="number">0</span>][<span class="number">0</span>], box[<span class="number">0</span>][<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+<p>到这里，所有逻辑部分已封装完成，接下来可以进行测试调用模型和代码。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    ocr_api = <span class="string">'host:7773/ai/surya/ocr'</span></span><br><span class="line">    ocr_lang = <span class="string">'vi'</span></span><br><span class="line">    img = cv2.imread(<span class="string">'imgs/vi.png'</span>)</span><br><span class="line">    ocr_layout_paragraphs, \</span><br><span class="line">        ocr_layout_boxes_list, \</span><br><span class="line">        ocr_layout_paragraphs_list, \</span><br><span class="line">        ocr_layout_figures_list = get_layout_img(img, ocr_api, ocr_lang)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 结果可视化</span></span><br><span class="line">    vo = VisualizeOCR(img, ocr_layout_boxes_list, ocr_layout_paragraphs_list, ocr_layout_figures_list)</span><br><span class="line">    translated_image = vo.visualize_ocr()</span><br><span class="line">    cv2.imwrite(<span class="string">'output.png'</span>, translated_image)</span><br></pre></td></tr></table></figure>
+<p>版面恢复可视化：</p>
+<p><img src="/2025/01/10/间隙树交并比聚类算法/4.png" alt></p>
+<p>翻译可视化：</p>
+<p><img src="/2025/01/10/间隙树交并比聚类算法/5.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolo/">yolo</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/02/10/yolo系模型的tensorrt加速/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          yolo系模型的tensorrt加速
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2024/11/26/关键信息提取（KIE）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">关键信息提取（KIE）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GapTreeIoU-Cluster-Algorithm-间隙·树·交并比聚类算法"><span class="nav-number">1.</span> <span class="nav-text">GapTreeIoU_Cluster_Algorithm | 间隙·树·交并比聚类算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法流程"><span class="nav-number">1.1.</span> <span class="nav-text">算法流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Layout"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.Layout</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据集"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">数据集</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yaml"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">yaml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#训练"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">训练</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-OCR"><span class="nav-number">1.1.2.</span> <span class="nav-text">2.OCR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-间隙·树·排序算法"><span class="nav-number">1.1.3.</span> <span class="nav-text">3.间隙·树·排序算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-IoU聚类"><span class="nav-number">1.1.4.</span> <span class="nav-text">4.IoU聚类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可视化"><span class="nav-number">1.2.</span> <span class="nav-text">可视化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#段落换行算法"><span class="nav-number">1.2.1.</span> <span class="nav-text">段落换行算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#段落字体大小算法"><span class="nav-number">1.2.2.</span> <span class="nav-text">段落字体大小算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#设立方程组："><span class="nav-number">1.2.2.1.</span> <span class="nav-text">设立方程组：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#转换到代码中："><span class="nav-number">1.2.2.2.</span> <span class="nav-text">转换到代码中：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#简化方程组："><span class="nav-number">1.2.2.3.</span> <span class="nav-text">简化方程组：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解方程："><span class="nav-number">1.2.2.4.</span> <span class="nav-text">解方程：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取最终字号："><span class="nav-number">1.2.2.5.</span> <span class="nav-text">获取最终字号：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版面恢复"><span class="nav-number">1.2.3.</span> <span class="nav-text">版面恢复</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">1.3.</span> <span class="nav-text">测试</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2025 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2025 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

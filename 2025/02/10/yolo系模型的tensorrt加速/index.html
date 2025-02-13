@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>yolo系模型的tensorrt加速 | 青域</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="yolotensorrt">
+  
+  
+  
+  
+  <meta name="description" content="前言trt简介摘自Ultralytics。总而言之就是能极大程度的提高模型速度，正文部分主要记录部署流程和排坑日志。 TensorRT是由NVIDIA 开发，专为高速深度学习推理而设计的SDK，该SDK可针对NVIDIA GPU优化深度学习模型，从而实现更快、更高效的操作。将深度学习模型转换为TensorRT格式可以充分发挥NVIDIA GPU的潜力，非常适合目标检测等实时应用。  TensorR">
+<meta name="keywords" content="yolo,tensorrt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="yolo系模型的tensorrt加速">
+<meta property="og:url" content="http://yoursite.com/2025/02/10/yolo系模型的tensorrt加速/index.html">
+<meta property="og:site_name" content="青域">
+<meta property="og:description" content="前言trt简介摘自Ultralytics。总而言之就是能极大程度的提高模型速度，正文部分主要记录部署流程和排坑日志。 TensorRT是由NVIDIA 开发，专为高速深度学习推理而设计的SDK，该SDK可针对NVIDIA GPU优化深度学习模型，从而实现更快、更高效的操作。将深度学习模型转换为TensorRT格式可以充分发挥NVIDIA GPU的潜力，非常适合目标检测等实时应用。  TensorR">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/2025/02/10/yolo系模型的tensorrt加速/1.png">
+<meta property="og:image" content="http://yoursite.com/2025/02/10/yolo系模型的tensorrt加速/2.png">
+<meta property="og:image" content="http://yoursite.com/2025/02/10/yolo系模型的tensorrt加速/3.png">
+<meta property="og:updated_time" content="2025-02-13T02:41:43.647Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="yolo系模型的tensorrt加速">
+<meta name="twitter:description" content="前言trt简介摘自Ultralytics。总而言之就是能极大程度的提高模型速度，正文部分主要记录部署流程和排坑日志。 TensorRT是由NVIDIA 开发，专为高速深度学习推理而设计的SDK，该SDK可针对NVIDIA GPU优化深度学习模型，从而实现更快、更高效的操作。将深度学习模型转换为TensorRT格式可以充分发挥NVIDIA GPU的潜力，非常适合目标检测等实时应用。  TensorR">
+<meta name="twitter:image" content="http://yoursite.com/2025/02/10/yolo系模型的tensorrt加速/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="青域" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+
+</head>
+</html>
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-yolo系模型的tensorrt加速" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      yolo系模型的tensorrt加速
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2025/02/10/yolo系模型的tensorrt加速/" class="article-date">
+	  <time datetime="2025-02-10T08:14:44.000Z" itemprop="datePublished">2025-02-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/TensorRT/">TensorRT</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script src="\assets\js\APlayer.min.js"> </script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>trt简介摘自Ultralytics。总而言之就是能极大程度的提高模型速度，正文部分主要记录部署流程和排坑日志。</p>
+<p><a href="https://developer.nvidia.com/tensorrt" target="_blank" rel="noopener">TensorRT</a>是由NVIDIA 开发，专为高速深度学习推理而设计的SDK，该SDK可针对NVIDIA GPU优化深度学习模型，从而实现更快、更高效的操作。将深度学习模型转换为TensorRT格式可以充分发挥NVIDIA GPU的潜力，非常适合目标检测等实时应用。</p>
+<p><img src="/2025/02/10/yolo系模型的tensorrt加速/1.png" alt></p>
+<p>TensorRT模型具有一系列关键特性：</p>
+<ul>
+<li><strong>精度校准</strong>：TensorRT支持精度校准，允许针对特定精度要求对模型进行微调，包括对 INT8 和 FP16 等降低精度格式的支持，这可以进一步提高推理速度，同时保持可接受的精度水平。</li>
+<li><strong>层融合</strong>：TensorRT优化过程包括层融合，即将神经网络的多个层合并为一个操作。这可以减少计算开销，并通过最大限度地减少内存访问和计算来提高推理速度。</li>
+</ul>
+<p><img src="/2025/02/10/yolo系模型的tensorrt加速/2.png" alt></p>
+<ul>
+<li><strong>动态Tensor 内存管理</strong>：TensorRT在推理过程中有效管理tensor内存使用情况，减少内存开销并优化内存分配。这使得GPU的内存使用效率更高。</li>
+<li><strong>自动内核调整</strong>：TensorRT应用自动内核调整功能，为模型的每一层选择最优化的GPU内核。这种自适应方法可确保模型充分利用 GPU的计算能力。</li>
+</ul>
+<a id="more"></a>
+<h2 id="YOLO导出TensorRT"><a href="#YOLO导出TensorRT" class="headerlink" title="YOLO导出TensorRT"></a>YOLO导出TensorRT</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><h4 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h4><ul>
+<li><font color="gold">NVIDIA 3090*2</font></li>
+<li><font color="gold">显卡驱动 535.104.05</font></li>
+<li><font color="gold">CUDA版本 12.2</font></li>
+<li><font color="gold">CUDAtoolkit</font> (cuda_12.2.2_535.104.05_linux)</li>
+<li><font color="gold">cuDNN <del>(v8.9.7)</del> (v9.5.0)</font>
+
+</li>
+</ul>
+<h4 id="yolo版本"><a href="#yolo版本" class="headerlink" title="yolo版本"></a>yolo版本</h4><ul>
+<li><font color="gold">v11</font> (ultralytics yolov11)</li>
+</ul>
+<h4 id="pytorch版本"><a href="#pytorch版本" class="headerlink" title="pytorch版本"></a>pytorch版本</h4><ul>
+<li><font color="gold">v2.1.2</font>
+
+</li>
+</ul>
+<h4 id="python环境"><a href="#python环境" class="headerlink" title="python环境"></a>python环境</h4><ul>
+<li><font color="gold">CentOS7.9</font>
+</li>
+<li><font color="gold">anaconda3</font>
+</li>
+<li><font color="gold">python3.9</font>
+
+</li>
+</ul>
+<h3 id="安装python依赖"><a href="#安装python依赖" class="headerlink" title="安装python依赖"></a>安装python依赖</h3><p>首先需要更新Ultralytics源码。</p>
+<p><code>pip install -U ultralytics -i https://pypi.tuna.tsinghua.edu.cn/simple</code></p>
+<p>源码默认不包括trt的导出部分，所以需要单独安装onnx和tensorrt的python包。直接使用官方导出代码亦可自动安装，国内速度较慢。</p>
+<p><code>pip install onnx==1.17.0 onnxruntime-gpu==1.16.3 -i https://pypi.tuna.tsinghua.edu.cn/simple</code></p>
+<p>tensorrt版本官方要求&gt;7.0.0，!=10.1.0，但是当前环境下安装高版本tensorrt会一直安装失败，推测可能是cudnn环境配置有问题。故折中选择9.0.0.post11.dev1镜像版本。</p>
+<p><code>pip install tensorrt==9.0.0.post11.dev1 -i https://pypi.tuna.tsinghua.edu.cn/simple</code> </p>
+<h3 id="engin模型导出"><a href="#engin模型导出" class="headerlink" title="engin模型导出"></a>engin模型导出</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"></span><br><span class="line">model = YOLO(<span class="string">"yolo11n.pt"</span>)</span><br><span class="line">model.export(format=<span class="string">"engine"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="踩坑日志"><a href="#踩坑日志" class="headerlink" title="踩坑日志"></a>踩坑日志</h3><p><strong>以下部分为踩坑日志，主要记录过程中的错误。导出部分可跳转至下一章节。</strong></p>
+<p>测试将yolo11n.pt模型转成trt格式，示例代码中<code>.onnx</code>格式生成没有任何问题，导出<code>.engine</code>格式时发生问题，报错：</p>
+<font color="red"><code>Unable to load any of {libcudnn_engines_precompiled.so.9.5.0, libcudnn_engines_precompiled.so.9.5, libcudnn_engines_precompiled.so.9, libcudnn_engines_precompiled.so}</code></font>
+
+<font color="red"><code>...</code></font><br><font color="red"><code>RuntimeError: CUDNN_BACKEND_TENSOR_DESCRIPTOR cudnnFinalize failed cudnn_status: CUDNN_STATUS_SUBLIBRARY_LOADING_FAILED</code></font>
+
+<p>首先聚焦问题<code>CUDNN_BACKEND_TENSOR_DESCRIPTOR cudnnFinalize failed cudnn_status: CUDNN_STATUS_SUBLIBRARY_LOADING_FAILED</code></p>
+<p>搜索了全网，几乎没有合理的解决方案，只能定位到是CUDNN出了问题。由于Pytorch使用的是conda内部cudnn，但是日常工作中经常需要用到paddlepaddle，服务器属于物理cudnn和虚拟cudnn共存的状态。</p>
+<p>尝试移除物理CUDNN环境、手动添加torch cudnn到系统临时环境变量，报错依然存在。开始重审报错信息，发现开头的<code>Unable to load any of {libcudnn_engines_precompiled.so.9.5.0, libcudnn_engines_precompiled.so.9.5, libcudnn_engines_precompiled.so.9, libcudnn_engines_precompiled.so}</code></p>
+<p>这里就清晰明了了，当前cudnn环境下缺了<code>libcudnn_engines_precompiled.so*</code>，进行全盘搜索：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name libcudnn_engines_precompiled.so*</span><br></pre></td></tr></table></figure>
+<p>检查了一下conda环境中存在<code>libcudnn_engines_precompiled.so</code>，而物理环境<code>/usr/local/cuda</code>下并未找到，猜测仍可能是读取物理cudnn环境而导致的冲突。重新检索了物理环境下的cudnn原始安装包，发现确实不存在<code>libcudnn_engines_precompiled*</code>软件，猜测可能需要单独安装tensorrt。</p>
+<p>于是单独安装pycuda，下载了<a href="https://docs.nvidia.com/deeplearning/tensorrt/archives/index.html" target="_blank" rel="noopener">tensorrt</a>。解压后发现仍然没有<code>libcudnn_engines_precompiled.so*</code>的影子。</p>
+<p>最后推测需要更新服务器cudnn试试。这里踩了一个坑，我安装cudnn的地址是<a href="https://developer.nvidia.com/rdp/cudnn-archive" target="_blank" rel="noopener">https://developer.nvidia.com/rdp/cudnn-archive</a>，这里的cudnn最高版本只到v8.9.7，所以当我下载后看到曾经装过的安装包以后相当疑惑。毕竟已经安装一年了，不可能还没有更新。立马想清楚地址有问题，要找新下载地址。</p>
+<p>功夫不负有心人，找到了新的下载链接。因为提示缺少的版本是<code>.9.5</code>，所以我选择了cudnn v9.5.0版本：<a href="https://developer.nvidia.com/cudnn-9-5-0-download-archive" target="_blank" rel="noopener">https://developer.nvidia.com/cudnn-9-5-0-download-archive</a></p>
+<p><img src="/2025/02/10/yolo系模型的tensorrt加速/3.png" alt></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://developer.download.nvidia.com/compute/cudnn/redist/cudnn/linux-x86_64/cudnn-linux-x86_64-9.5.0.50_cuda12-archive.tar.xz</span><br></pre></td></tr></table></figure>
+<p>解压后更新cudnn到9.5.0。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">xz -d cudnn-linux-x86_64-9.5.0.50_cuda12-archive.tar.xz</span><br><span class="line">tar -zxvf cudnn-linux-x86_64-9.5.0.50_cuda12-archive.tar</span><br><span class="line">cp cudnn-linux-x86_64-9.5.0.50_cuda12-archive/include/* /usr/local/cuda-12.2/include/</span><br><span class="line">cp cudnn-linux-x86_64-9.5.0.50_cuda12-archive/lib/libcudnn* /usr/local/cuda-12.2/lib64/</span><br><span class="line">chmod a+r /usr/local/cuda-12.2/include/cudnn*.h</span><br><span class="line">chmod a+r /usr/local/cuda-12.2/lib64/libcudnn*</span><br></pre></td></tr></table></figure>
+<p>检查版本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]# cat /usr/local/cuda-12.2/targets/x86_64-linux/include/cudnn_version.h | grep CUDNN_MAJOR -A 2</span><br><span class="line"><span class="meta">#</span>define CUDNN_MAJOR 9</span><br><span class="line"><span class="meta">#</span>define CUDNN_MINOR 5</span><br><span class="line"><span class="meta">#</span>define CUDNN_PATCHLEVEL 0</span><br><span class="line">--</span><br><span class="line"><span class="meta">#</span>define CUDNN_VERSION (CUDNN_MAJOR * 10000 + CUDNN_MINOR * 100 + CUDNN_PATCHLEVEL)</span><br><span class="line"></span><br><span class="line">/* cannot use constexpr here since this is a C-only file */</span><br></pre></td></tr></table></figure>
+<p>按理说trt读取不到虚拟cudnn下的<code>libcudnn_engines_precompiled.so*</code>，那么正常应该会读取物理cudnn的。但是发现报错依然存在。于是添加临时系统变量，将其强制加载到环境中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LD_PRELOAD=/usr/local/cuda-12.2/targets/x86_64-linux/lib/libcudnn_engines_precompiled.so</span><br></pre></td></tr></table></figure>
+<p>这回妥了，系统可以检索到<code>libcudnn_engines_precompiled.so</code>。但是接下来报了新的错误：</p>
+<font color="red"><code>/lib64/libm.so.6: version &#39;GLIBC_2.27&#39; not found</code></font>
+
+<p>很搞心态，但是不难看出只是缺少了这个版本的GNU库。验证一下，查看系统中当前<code>GLIBC</code>版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">strings /lib64/libc.so.6 | grep GLIBC</span><br></pre></td></tr></table></figure>
+<p>确实最高只到了2.17</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GLIBC_2.2.5</span><br><span class="line">GLIBC_2.2.6</span><br><span class="line">GLIBC_2.3</span><br><span class="line">GLIBC_2.3.2</span><br><span class="line">GLIBC_2.3.3</span><br><span class="line">GLIBC_2.3.4</span><br><span class="line">GLIBC_2.4</span><br><span class="line">GLIBC_2.5</span><br><span class="line">GLIBC_2.6</span><br><span class="line">GLIBC_2.7</span><br><span class="line">GLIBC_2.8</span><br><span class="line">GLIBC_2.9</span><br><span class="line">GLIBC_2.10</span><br><span class="line">GLIBC_2.11</span><br><span class="line">GLIBC_2.12</span><br><span class="line">GLIBC_2.13</span><br><span class="line">GLIBC_2.14</span><br><span class="line">GLIBC_2.15</span><br><span class="line">GLIBC_2.16</span><br><span class="line">GLIBC_2.17</span><br><span class="line">GLIBC_PRIVATE</span><br></pre></td></tr></table></figure>
+<p>接下来更新<code>GLIBC</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://ftp.gnu.org/gnu/glibc/glibc-2.27.tar.gz</span><br><span class="line">tar xf glibc-2.27.tar.gz </span><br><span class="line">cd glibc-2.27/ &amp;&amp; mkdir build  &amp;&amp; cd build</span><br><span class="line">../configure --prefix=/usr --disable-profile --enable-add-ons --with-headers=/usr/include --with-binutils=/usr/bin</span><br><span class="line">make -j4 &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>此过程中还需要安装一个插件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install bison</span><br></pre></td></tr></table></figure>
+<p>在生成<code>Makefile</code>过程中照例发生报错（真是习以为常了）：</p>
+<font color="red"><code>LD_LIBRARY_PATH shouldn&#39;t contain the current directory when building glibc. Please change the envir</code></font>
+
+<p>解决：<code>LD_LIBRARY_PATH</code>不能包含当前目录，需要修改环境变量并重新执行configure</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]# echo $LD_LIBRARY_PATH</span><br><span class="line">:/usr/local/cuda-12.2</span><br><span class="line">[root@master ~]# export LD_LIBRARY_PATH=</span><br><span class="line">[root@master ~]# echo $LD_LIBRARY_PATH</span><br></pre></td></tr></table></figure>
+<p>终于成功生成makefile。接下来进行make时还是报错了：</p>
+<font color="red"><code>cc1: all warnings being treated as errors</code></font>
+
+<p>问题的本质上是在生成配置文件时默认添加 “-Werror” 编译器标记，CentOS7.9在编译时 warning 被当作 error 处理。网上搜索到都是去<code>Makefile</code>中关闭所有警告注释，但是<code>GLIBC</code>的<code>Makefile</code>中没有 “-Werror” 。去其他文件中进行修改：</p>
+<p>config.make：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">enable-werror = no</span><br></pre></td></tr></table></figure>
+<p>config.status：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S[&quot;enable_werror&quot;]=&quot;no&quot;</span><br></pre></td></tr></table></figure>
+<p>Makefile添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CFLAGS = -Wall -Wpointer-arith -Wno-unused</span><br><span class="line">KBUILD_CFLAGS += -w</span><br></pre></td></tr></table></figure>
+<p>继续执行make，报错：</p>
+<font color="red"><code>make[2]: *** [/usr/local/glibc-2.28/build/link-defines.h] Error 1</code></font>
+
+<font color="red"><code>*** These critical programs are missing or too old: make</code></font>
+
+<p>更新make解决。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate https://ftp.gnu.org/gnu/make/make-4.3.tar.gz</span><br><span class="line">tar -xzvf make-4.3.tar.gz </span><br><span class="line">cd make-4.3/</span><br><span class="line">./configure  --prefix=/usr/local/make</span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line">cd /usr/bin/</span><br><span class="line">mv make make.bak</span><br><span class="line">ln -sv /usr/local/make/bin/make /usr/bin/make</span><br><span class="line">make -v</span><br></pre></td></tr></table></figure>
+<p>此时再执行<code>make -j 4</code>，终于成功。执行<code>make install</code>最后报错信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/ld: cannot find -lnss_test2: No such file or directory</span><br><span class="line">collect2: error: ld returned 1 exit status</span><br><span class="line">Execution of gcc -B/usr/bin/ failed!</span><br><span class="line">The script has found some problems with your installation!</span><br><span class="line">Please read the FAQ and the README file and check the following:</span><br><span class="line">- Did you change the gcc specs file (necessary after upgrading from</span><br><span class="line">  Linux libc5)?</span><br><span class="line">- Are there any symbolic links of the form libXXX.so to old libraries?</span><br><span class="line">  Links like libm.so -&gt; libm.so.5 (where libm.so.5 is an old library) are wrong,</span><br><span class="line">  libm.so should point to the newly installed glibc file - and there should be</span><br><span class="line">  only one such link (check e.g. /lib and /usr/lib)</span><br><span class="line">You should restart this script from your build directory after you've</span><br><span class="line">fixed all problems!</span><br><span class="line">Btw. the script doesn't work if you're installing GNU libc not as your</span><br><span class="line">primary library!</span><br><span class="line">make[1]: *** [Makefile:111: install] Error 1</span><br><span class="line">make[1]: Leaving directory '/usr/local/glibc-2.28'</span><br><span class="line">make: *** [Makefile:15: install] Error 2</span><br></pre></td></tr></table></figure>
+<p>心已凉透。缓过神看此报错信息大致意思是，/lib64/libm.so.x (/lib64/libm.so.5)已经被占用了。需要我们解决这个占用的问题。</p>
+<p>但是实际查看/lib64/libm.so.6的软链，已经链接到了需要的版本。检查<code>GLIBC</code>版本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@master build]# ldd --version</span><br><span class="line">ldd (GNU libc) 2.28</span><br><span class="line">Copyright (C) 2018 Free Software Foundation, Inc.</span><br><span class="line">This is free software; see the source for copying conditions.  There is NO</span><br><span class="line">warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.</span><br><span class="line">Written by Roland McGrath and Ulrich Drepper.</span><br></pre></td></tr></table></figure>
+<p>安装成功了。</p>
+<h3 id="使用-engine模型"><a href="#使用-engine模型" class="headerlink" title="使用.engine模型"></a>使用<code>.engine</code>模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load the exported TensorRT model</span></span><br><span class="line">tensorrt_model = YOLO(<span class="string">"yolo11n.engine"</span>)</span><br><span class="line"></span><br><span class="line">t = time.time()</span><br><span class="line"><span class="comment"># 首次预测，模型加载占用时间较长</span></span><br><span class="line">results = tensorrt_model(<span class="string">"test.jpg"</span>)</span><br><span class="line">print(time.time() - t)</span><br><span class="line"></span><br><span class="line">t = time.time()</span><br><span class="line"><span class="comment"># 第二次预测，开始进入正常速度</span></span><br><span class="line">results2 = tensorrt_model(<span class="string">"test.jpg"</span>)</span><br><span class="line">print(time.time() - t)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环测试，查看稳定的输出时间</span></span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">999</span>):</span><br><span class="line">    t = time.time()</span><br><span class="line">    tensorrt_model(<span class="string">"test.jpg"</span>, device=<span class="string">"cuda:1"</span>, save=<span class="literal">False</span>)</span><br><span class="line">    print(time.time() - t)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">image 1/1 /exp/work/video/yolov11trt/bus.jpg: 640x480 4 persons, 1 bus, 0.9ms</span><br><span class="line">Speed: 2.0ms preprocess, 0.9ms inference, 1.0ms postprocess per image at shape (1, 3, 640, 480)</span><br><span class="line">0.009032964706420898</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>可以看出稳定情况下约9ms/图，但是实际log日志输出的预处理+预测+后处理时间约4ms，还有一半时间不知道做什么用了。</p>
+<h3 id="导出FP16和INT8模型"><a href="#导出FP16和INT8模型" class="headerlink" title="导出FP16和INT8模型"></a>导出FP16和INT8模型</h3><h4 id="FP16"><a href="#FP16" class="headerlink" title="FP16"></a>FP16</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load the YOLO11 model</span></span><br><span class="line">model = YOLO(<span class="string">"yolo11n.pt"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Export the model to TensorRT format</span></span><br><span class="line">model.export(format=<span class="string">"engine"</span>, half=<span class="literal">True</span>, imgsz=(<span class="number">640</span>, <span class="number">640</span>),)  <span class="comment"># creates 'yolo11n.engine'</span></span><br></pre></td></tr></table></figure>
+<h4 id="Int8"><a href="#Int8" class="headerlink" title="Int8"></a>Int8</h4><p>添加coco数据集</p>
+<p>yaml文件：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Ultralytics YOLO 🚀, AGPL-3.0 license</span></span><br><span class="line"><span class="comment"># COCO128 dataset https://www.kaggle.com/ultralytics/coco128 (first 128 images from COCO train2017) by Ultralytics</span></span><br><span class="line"><span class="comment"># Documentation: https://docs.ultralytics.com/datasets/detect/coco/</span></span><br><span class="line"><span class="comment"># Example usage: yolo train data=coco128.yaml</span></span><br><span class="line"><span class="comment"># parent</span></span><br><span class="line"><span class="comment"># ├── ultralytics</span></span><br><span class="line"><span class="comment"># └── datasets</span></span><br><span class="line"><span class="comment">#     └── coco128  ← downloads here (7 MB)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]</span></span><br><span class="line"></span><br><span class="line"><span class="attr">train:</span> <span class="string">/exp/work/video/yolov11trt/coco128/images/train2017</span></span><br><span class="line"><span class="attr">val:</span> <span class="string">/exp/work/video/yolov11trt/coco128/images/train2017</span></span><br><span class="line"><span class="attr">test:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Classes</span></span><br><span class="line"><span class="attr">names:</span></span><br><span class="line">  <span class="attr">0:</span> <span class="string">person</span></span><br><span class="line">  <span class="attr">1:</span> <span class="string">bicycle</span></span><br><span class="line">  <span class="attr">2:</span> <span class="string">car</span></span><br><span class="line">  <span class="attr">3:</span> <span class="string">motorcycle</span></span><br><span class="line">  <span class="attr">4:</span> <span class="string">airplane</span></span><br><span class="line">  <span class="attr">5:</span> <span class="string">bus</span></span><br><span class="line">  <span class="attr">6:</span> <span class="string">train</span></span><br><span class="line">  <span class="attr">7:</span> <span class="string">truck</span></span><br><span class="line">  <span class="attr">8:</span> <span class="string">boat</span></span><br><span class="line">  <span class="attr">9:</span> <span class="string">traffic</span> <span class="string">light</span></span><br><span class="line">  <span class="attr">10:</span> <span class="string">fire</span> <span class="string">hydrant</span></span><br><span class="line">  <span class="attr">11:</span> <span class="string">stop</span> <span class="string">sign</span></span><br><span class="line">  <span class="attr">12:</span> <span class="string">parking</span> <span class="string">meter</span></span><br><span class="line">  <span class="attr">13:</span> <span class="string">bench</span></span><br><span class="line">  <span class="attr">14:</span> <span class="string">bird</span></span><br><span class="line">  <span class="attr">15:</span> <span class="string">cat</span></span><br><span class="line">  <span class="attr">16:</span> <span class="string">dog</span></span><br><span class="line">  <span class="attr">17:</span> <span class="string">horse</span></span><br><span class="line">  <span class="attr">18:</span> <span class="string">sheep</span></span><br><span class="line">  <span class="attr">19:</span> <span class="string">cow</span></span><br><span class="line">  <span class="attr">20:</span> <span class="string">elephant</span></span><br><span class="line">  <span class="attr">21:</span> <span class="string">bear</span></span><br><span class="line">  <span class="attr">22:</span> <span class="string">zebra</span></span><br><span class="line">  <span class="attr">23:</span> <span class="string">giraffe</span></span><br><span class="line">  <span class="attr">24:</span> <span class="string">backpack</span></span><br><span class="line">  <span class="attr">25:</span> <span class="string">umbrella</span></span><br><span class="line">  <span class="attr">26:</span> <span class="string">handbag</span></span><br><span class="line">  <span class="attr">27:</span> <span class="string">tie</span></span><br><span class="line">  <span class="attr">28:</span> <span class="string">suitcase</span></span><br><span class="line">  <span class="attr">29:</span> <span class="string">frisbee</span></span><br><span class="line">  <span class="attr">30:</span> <span class="string">skis</span></span><br><span class="line">  <span class="attr">31:</span> <span class="string">snowboard</span></span><br><span class="line">  <span class="attr">32:</span> <span class="string">sports</span> <span class="string">ball</span></span><br><span class="line">  <span class="attr">33:</span> <span class="string">kite</span></span><br><span class="line">  <span class="attr">34:</span> <span class="string">baseball</span> <span class="string">bat</span></span><br><span class="line">  <span class="attr">35:</span> <span class="string">baseball</span> <span class="string">glove</span></span><br><span class="line">  <span class="attr">36:</span> <span class="string">skateboard</span></span><br><span class="line">  <span class="attr">37:</span> <span class="string">surfboard</span></span><br><span class="line">  <span class="attr">38:</span> <span class="string">tennis</span> <span class="string">racket</span></span><br><span class="line">  <span class="attr">39:</span> <span class="string">bottle</span></span><br><span class="line">  <span class="attr">40:</span> <span class="string">wine</span> <span class="string">glass</span></span><br><span class="line">  <span class="attr">41:</span> <span class="string">cup</span></span><br><span class="line">  <span class="attr">42:</span> <span class="string">fork</span></span><br><span class="line">  <span class="attr">43:</span> <span class="string">knife</span></span><br><span class="line">  <span class="attr">44:</span> <span class="string">spoon</span></span><br><span class="line">  <span class="attr">45:</span> <span class="string">bowl</span></span><br><span class="line">  <span class="attr">46:</span> <span class="string">banana</span></span><br><span class="line">  <span class="attr">47:</span> <span class="string">apple</span></span><br><span class="line">  <span class="attr">48:</span> <span class="string">sandwich</span></span><br><span class="line">  <span class="attr">49:</span> <span class="string">orange</span></span><br><span class="line">  <span class="attr">50:</span> <span class="string">broccoli</span></span><br><span class="line">  <span class="attr">51:</span> <span class="string">carrot</span></span><br><span class="line">  <span class="attr">52:</span> <span class="string">hot</span> <span class="string">dog</span></span><br><span class="line">  <span class="attr">53:</span> <span class="string">pizza</span></span><br><span class="line">  <span class="attr">54:</span> <span class="string">donut</span></span><br><span class="line">  <span class="attr">55:</span> <span class="string">cake</span></span><br><span class="line">  <span class="attr">56:</span> <span class="string">chair</span></span><br><span class="line">  <span class="attr">57:</span> <span class="string">couch</span></span><br><span class="line">  <span class="attr">58:</span> <span class="string">potted</span> <span class="string">plant</span></span><br><span class="line">  <span class="attr">59:</span> <span class="string">bed</span></span><br><span class="line">  <span class="attr">60:</span> <span class="string">dining</span> <span class="string">table</span></span><br><span class="line">  <span class="attr">61:</span> <span class="string">toilet</span></span><br><span class="line">  <span class="attr">62:</span> <span class="string">tv</span></span><br><span class="line">  <span class="attr">63:</span> <span class="string">laptop</span></span><br><span class="line">  <span class="attr">64:</span> <span class="string">mouse</span></span><br><span class="line">  <span class="attr">65:</span> <span class="string">remote</span></span><br><span class="line">  <span class="attr">66:</span> <span class="string">keyboard</span></span><br><span class="line">  <span class="attr">67:</span> <span class="string">cell</span> <span class="string">phone</span></span><br><span class="line">  <span class="attr">68:</span> <span class="string">microwave</span></span><br><span class="line">  <span class="attr">69:</span> <span class="string">oven</span></span><br><span class="line">  <span class="attr">70:</span> <span class="string">toaster</span></span><br><span class="line">  <span class="attr">71:</span> <span class="string">sink</span></span><br><span class="line">  <span class="attr">72:</span> <span class="string">refrigerator</span></span><br><span class="line">  <span class="attr">73:</span> <span class="string">book</span></span><br><span class="line">  <span class="attr">74:</span> <span class="string">clock</span></span><br><span class="line">  <span class="attr">75:</span> <span class="string">vase</span></span><br><span class="line">  <span class="attr">76:</span> <span class="string">scissors</span></span><br><span class="line">  <span class="attr">77:</span> <span class="string">teddy</span> <span class="string">bear</span></span><br><span class="line">  <span class="attr">78:</span> <span class="string">hair</span> <span class="string">drier</span></span><br><span class="line">  <span class="attr">79:</span> <span class="string">toothbrush</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Download script/URL (optional)</span></span><br><span class="line"><span class="comment">#download: https://ultralytics.com/assets/coco128.zip</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#v5loader: True</span></span><br><span class="line"><span class="comment">#fl_gamma: 0.0</span></span><br><span class="line"><span class="comment">#image_weights: False</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ultralytics <span class="keyword">import</span> YOLO</span><br><span class="line"></span><br><span class="line">model = YOLO(<span class="string">"yolo11n_int8.pt"</span>)</span><br><span class="line">model.export(</span><br><span class="line">    format=<span class="string">"engine"</span>,</span><br><span class="line">    int8=<span class="literal">True</span>,</span><br><span class="line">    data=<span class="string">'/exp/work/video/yolov11trt/coco128/coco128.yaml'</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Load the exported TensorRT INT8 model</span></span><br><span class="line">model = YOLO(<span class="string">"yolo11n_int8.engine"</span>)</span><br></pre></td></tr></table></figure>
+<p>预测方式类似。有其他内容后续继续更新。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorrt/">tensorrt</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolo/">yolo</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/01/10/间隙树交并比聚类算法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">间隙树交并比聚类算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YOLO导出TensorRT"><span class="nav-number">2.</span> <span class="nav-text">YOLO导出TensorRT</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境"><span class="nav-number">2.1.</span> <span class="nav-text">环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#GPU"><span class="nav-number">2.1.1.</span> <span class="nav-text">GPU</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yolo版本"><span class="nav-number">2.1.2.</span> <span class="nav-text">yolo版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pytorch版本"><span class="nav-number">2.1.3.</span> <span class="nav-text">pytorch版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python环境"><span class="nav-number">2.1.4.</span> <span class="nav-text">python环境</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装python依赖"><span class="nav-number">2.2.</span> <span class="nav-text">安装python依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#engin模型导出"><span class="nav-number">2.3.</span> <span class="nav-text">engin模型导出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#踩坑日志"><span class="nav-number">2.4.</span> <span class="nav-text">踩坑日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-engine模型"><span class="nav-number">2.5.</span> <span class="nav-text">使用.engine模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导出FP16和INT8模型"><span class="nav-number">2.6.</span> <span class="nav-text">导出FP16和INT8模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#FP16"><span class="nav-number">2.6.1.</span> <span class="nav-text">FP16</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Int8"><span class="nav-number">2.6.2.</span> <span class="nav-text">Int8</span></a></li></ol></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2017 - 2025 青域 All Rights Reserved.</p>
+
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            青域
+          </div>
+          <div class="panel-body">
+            Copyright © 2025 tianL.R All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"left","width":170,"height":340},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>

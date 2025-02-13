@@ -258,6 +258,127 @@
         
           <section id="main" style="float:none;">
   
+    <article id="post-yolo系模型的tensorrt加速"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2025/02/10/yolo系模型的tensorrt加速/">yolo系模型的tensorrt加速</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2025/02/10/yolo系模型的tensorrt加速/" class="article-date">
+	  <time datetime="2025-02-10T08:14:44.000Z" itemprop="datePublished">2025-02-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/TensorRT/">TensorRT</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>trt简介摘自Ultralytics。总而言之就是能极大程度的提高模型速度，正文部分主要记录部署流程和排坑日志。</p>
+<p><a href="https://developer.nvidia.com/tensorrt" target="_blank" rel="noopener">TensorRT</a>是由NVIDIA 开发，专为高速深度学习推理而设计的SDK，该SDK可针对NVIDIA GPU优化深度学习模型，从而实现更快、更高效的操作。将深度学习模型转换为TensorRT格式可以充分发挥NVIDIA GPU的潜力，非常适合目标检测等实时应用。</p>
+<p><img src="/2025/02/10/yolo系模型的tensorrt加速/1.png" alt></p>
+<p>TensorRT模型具有一系列关键特性：</p>
+<ul>
+<li><strong>精度校准</strong>：TensorRT支持精度校准，允许针对特定精度要求对模型进行微调，包括对 INT8 和 FP16 等降低精度格式的支持，这可以进一步提高推理速度，同时保持可接受的精度水平。</li>
+<li><strong>层融合</strong>：TensorRT优化过程包括层融合，即将神经网络的多个层合并为一个操作。这可以减少计算开销，并通过最大限度地减少内存访问和计算来提高推理速度。</li>
+</ul>
+<p><img src="/2025/02/10/yolo系模型的tensorrt加速/2.png" alt></p>
+<ul>
+<li><strong>动态Tensor 内存管理</strong>：TensorRT在推理过程中有效管理tensor内存使用情况，减少内存开销并优化内存分配。这使得GPU的内存使用效率更高。</li>
+<li><strong>自动内核调整</strong>：TensorRT应用自动内核调整功能，为模型的每一层选择最优化的GPU内核。这种自适应方法可确保模型充分利用 GPU的计算能力。</li>
+</ul>
+        <!--  前言trt简介摘自Ultralytics。总而言之就是能极大程度的提高模型速度，正文部分主要记录部署流程和排坑日志。
+TensorRT是由NVIDIA 开发，专为高速深度学习推理而设计的SDK，该SDK可针对NVIDIA GPU优化深度学习模型，从而实现更快、更高效的操作。将深度学习模型转换为TensorRT格式可以充分发挥NVIDIA GPU的潜力，非常适合目标检测等实时应用。
+
+Ten......  -->
+        <p class="article-more-link">
+          <a href="/2025/02/10/yolo系模型的tensorrt加速/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorrt/">tensorrt</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolo/">yolo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-间隙树交并比聚类算法"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2025/01/10/间隙树交并比聚类算法/">间隙树交并比聚类算法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2025/01/10/间隙树交并比聚类算法/" class="article-date">
+	  <time datetime="2025-01-10T05:15:10.000Z" itemprop="datePublished">2025-01-10</time>
+	</a>
+
+      
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>前文简单介绍过<strong>间隙·树·排序算法</strong>以及其更改过的可视化过程。但是由于算法本身是对纯文本块进行排序，当遇到较为复杂的图像结构时，由于缺少原始图像信息，存在丢失图片类型数据、无法理解表格等问题。</p>
+<p>此算法的跟进版目标在于对排序算法的后续操作提供更为精确的版面恢复，故名称沿用自间隙·树·排序算法（项目地址：<a href="https://github.com/hiroi-sora/GapTree_Sort_Algorithm" target="_blank" rel="noopener">https://github.com/hiroi-sora/GapTree_Sort_Algorithm</a>），命名<strong>间隙·树·交并比（IoU）聚类算法</strong>，以下简称GTIoUC。算法的最终目的与传统OCR或版面恢复不同，旨在将OCR结果在版面分析结果中聚合成包含完整语义的段落，为翻译提供服务。</p>
+<font color="gold"><strong>GTIoUC包含的算法：</strong></font> <em><br><br><font color="gold">❶</font> <strong>GapTree提供的文本块排序算法；</strong><br><br><font color="gold">❷</font> <strong>基于YOLO的版面分析算法；</strong><br><br><font color="gold">❸</font> <strong>OCR box和 YOLO layoutbox之间的交并比聚类算法</strong><br><br><font color="gold"><strong>GTIoUC解决的问题：</strong></font></em><br><br><font color="gold">❶</font> <strong>仅仅版面分析的效果不够精确；</strong><br><br><font color="gold">❷</font> <strong>版面分析后内容总是存在缺失；</strong><br><br><font color="gold">❸</font> <strong>版面分析获得图像结构后往往不再OCR图像中文字；</strong><br><br><font color="gold">❹</font> <strong>OCR结果按行返回，无段落结构，上下文语义存在缺失；</strong><br><br><font color="gold"></font>
+
+<h1 id="GapTreeIoU-Cluster-Algorithm-间隙·树·交并比聚类算法"><a href="#GapTreeIoU-Cluster-Algorithm-间隙·树·交并比聚类算法" class="headerlink" title="GapTreeIoU_Cluster_Algorithm | 间隙·树·交并比聚类算法"></a><font color="#0099ee">GapTreeIoU_Cluster_Algorithm | 间隙·树·交并比聚类算法</font></h1><p><img src="/2025/01/10/间隙树交并比聚类算法/0.png" alt></p>
+<p><strong>GTIoUC算法的特殊之处：</strong></p>
+<p><font color="gold">❶</font> <strong>PPStructure等版面分析算法需要根据版面分析结果做N次截取片段OCR，但是传入OCR模型的<code>det_limit_side_len</code>参数总是固定的，导致OCR经常提取不到相应结果，产生空白页。算法模型层面每轮仅做1次完整的全文OCR和1次Layout，解决OCR空白页的同时一定程度上优化了时间复杂度；</strong></p>
+<p><font color="gold">❷</font> <strong>算法的版面分析模型由YOLOV11结合DocLayNet数据集训练得到，精度较早期模型具有较大提升，适用于复杂文档，泛化能力高的同时兼顾了多语种识别；</strong></p>
+<p><font color="gold">❸</font> <strong>尽管如此，目前任何版面恢复模型仍旧不具备100%捕获文档信息的能力。此时由于算法的OCR部分和Layout部分是相对独立进行的，最终OCR和Layout的结果将进行IoU聚类，IoU过程中先前Layout缺失的信息将被OCR结果补充、得到段落完整语义，极大程度上提高了版面恢复的准确度。</strong></p>
+<p>下面将详细介绍GTIoUC的版面恢复流程。</p>
+        <!--  前文简单介绍过间隙·树·排序算法以及其更改过的可视化过程。但是由于算法本身是对纯文本块进行排序，当遇到较为复杂的图像结构时，由于缺少原始图像信息，存在丢失图片类型数据、无法理解表格等问题。
+此算法的跟进版目标在于对排序算法的后续操作提供更为精确的版面恢复，故名称沿用自间隙·树·排序算法（项目地址：https://github.com/hiroi-sora/GapTree_Sort_Algo......  -->
+        <p class="article-more-link">
+          <a href="/2025/01/10/间隙树交并比聚类算法/#more">Read More</a>
+        </p>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OCR/">OCR</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolo/">yolo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
     <article id="post-关键信息提取（KIE）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
@@ -744,166 +865,6 @@ pip安装注：百......  -->
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolov8/">yolov8</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-yolov8：火灾检测"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2024/01/25/yolov8：火灾检测/">yolov8-火灾检测</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2024/01/25/yolov8：火灾检测/" class="article-date">
-	  <time datetime="2024-01-25T09:23:20.000Z" itemprop="datePublished">2024-01-25</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/目标检测/">目标检测</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><h3 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h3><ul>
-<li><font color="gold">NVIDIA 3090*2</font></li>
-<li><font color="gold">显卡驱动 535.104.05</font></li>
-<li><font color="gold">CUDA版本 12.2</font></li>
-<li><font color="gold">CUDAtoolkit</font> (cuda_12.2.2_535.104.05_linux)</li>
-<li><font color="gold">cuDNN (v8.9.7)</font>
-
-</li>
-</ul>
-<h3 id="yolo版本"><a href="#yolo版本" class="headerlink" title="yolo版本"></a>yolo版本</h3><ul>
-<li><font color="gold">v8.1.5</font> (ultralytics yolov8)</li>
-</ul>
-<h3 id="pytorch版本"><a href="#pytorch版本" class="headerlink" title="pytorch版本"></a>pytorch版本</h3><ul>
-<li><font color="gold">v2.1.2</font>
-
-</li>
-</ul>
-<h3 id="python环境"><a href="#python环境" class="headerlink" title="python环境"></a>python环境</h3><ul>
-<li><font color="gold">CentOS7.9</font>
-</li>
-<li><font color="gold">anaconda3</font>
-</li>
-<li><font color="gold">python3.9</font>
-
-</li>
-</ul>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>源码主页：<a href="https://github.com/ultralytics/ultralytics" target="_blank" rel="noopener">https://github.com/ultralytics/ultralytics</a></p>
-<p>官方文档：<a href="https://docs.ultralytics.com/zh" target="_blank" rel="noopener">https://docs.ultralytics.com/zh</a></p>
-<p><img src="/2024/01/25/yolov8：火灾检测/1.png" alt></p>
-<h3 id="克隆源码"><a href="#克隆源码" class="headerlink" title="克隆源码"></a>克隆源码</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://hub.nuaa.cf/ultralytics/ultralytics.git</span><br></pre></td></tr></table></figure>
-<h3 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pip install ultralytics -i https://mirror.baidu.com/pypi/simple</span><br></pre></td></tr></table></figure>
-<h3 id="环境验证"><a href="#环境验证" class="headerlink" title="环境验证"></a>环境验证</h3><p>python</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ultralytics</span><br><span class="line">ultralytics.checks()</span><br></pre></td></tr></table></figure>
-<p>cli</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yolo predict model=yolov8n.pt source=ultralytics/assets/zidane.jpg</span><br></pre></td></tr></table></figure>
-<p>执行完毕后得到输出的结果如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(py39_yolov8) [root@jdz yolov8]# yolo predict model=yolov8n.pt source=ultralytics/assets/zidane.jpg </span><br><span class="line">Ultralytics YOLOv8.1.5 🚀 Python-3.9.18 torch-2.1.2+cu121 CUDA:0 (NVIDIA GeForce RTX 3090, 24260MiB)</span><br><span class="line">YOLOv8n summary (fused): 168 layers, 3151904 parameters, 0 gradients, 8.7 GFLOPs</span><br><span class="line"></span><br><span class="line">image 1/1 /exp/work/video/yolov8/ultralytics/assets/zidane.jpg: 384x640 2 persons, 1 tie, 216.9ms</span><br><span class="line">Speed: 7.3ms preprocess, 216.9ms inference, 762.4ms postprocess per image at shape (1, 3, 384, 640)</span><br><span class="line">Results saved to runs/detect/predict</span><br><span class="line">💡 Learn more at https://docs.ultralytics.com/modes/predict</span><br></pre></td></tr></table></figure>
-<p>将在<code>Results saved to runs/detect/predict</code>目录下找到输出结果</p>
-        <!--  环境GPU
-NVIDIA 3090*2
-显卡驱动 535.104.05
-CUDA版本 12.2
-CUDAtoolkit (cuda_12.2.2_535.104.05_linux)
-cuDNN (v8.9.7)
-
-
-
-yolo版本
-v8.1.5 (ultralytics yolov8)
-
-pytorch版本
-v2.1.2
-
-
-
-python环境
-CentOS7.9
-
-anaconda3
-
-......  -->
-        <p class="article-more-link">
-          <a href="/2024/01/25/yolov8：火灾检测/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolov8/">yolov8</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-NetworkX-图论算法应用"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2024/01/08/NetworkX-图论算法应用/">NetworkX: 图论算法应用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2024/01/08/NetworkX-图论算法应用/" class="article-date">
-	  <time datetime="2024-01-08T07:48:56.000Z" itemprop="datePublished">2024-01-08</time>
-	</a>
-
-      
-    <a class="article-category-link" href="/categories/NetworkX/">NetworkX</a>
-
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="NetworkX"><a href="#NetworkX" class="headerlink" title="NetworkX"></a>NetworkX</h2><p>NetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等</p>
-<p>参考文献地址: <a href="https://www.osgeo.cn/networkx/reference/index.html" target="_blank" rel="noopener">https://www.osgeo.cn/networkx/reference/index.html</a></p>
-<h2 id="图计算应用方式比较"><a href="#图计算应用方式比较" class="headerlink" title="图计算应用方式比较"></a>图计算应用方式比较</h2><h3 id="1-nebula-spark"><a href="#1-nebula-spark" class="headerlink" title="1.nebula + spark"></a>1.nebula + spark</h3><p>依赖nebula-spark-connector包、nebula-algorithm包和spark集群的数据读取、图计算方式</p>
-<h3 id="2-clickhouse-NetworkX"><a href="#2-clickhouse-NetworkX" class="headerlink" title="2.clickhouse + NetworkX"></a>2.clickhouse + NetworkX</h3><p>由于nebula-algorithm依赖spark集群，且nebula-console原生的数据读取能力不佳，在环境受限且计算量有限的情况下优先考虑跳过spark集群和nebula图库，采用clickhouse + NetworkX的图计算方式，其中clickhouse是存储了nebula源数据的列式分布式表，作用类似于方法1中将nebula集群数据通过nebula-spark-connector包导入为spark-DataFrame，仅用做数据读取，再通过将数据转化为NetworkX的图结构进行图计算</p>
-<p><img src="/2024/01/08/NetworkX-图论算法应用/9.png" alt></p>
-        <!--  NetworkXNetworkX是一款Python的软件包，用于创造、操作复杂网络，以及学习复杂网络的结构、动力学及其功能。有了NetworkX就可以用标准或者不标准的数据格式加载或者存储网络，它可以产生许多种类的随机网络或经典网络，也可以分析网络结构、建立网络模型、设计新的网络算法、绘制网络等
-参考文献地址: https://www.osgeo.cn/networkx/reference......  -->
-        <p class="article-more-link">
-          <a href="/2024/01/08/NetworkX-图论算法应用/#more">Read More</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nebula/">nebula</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/networkx/">networkx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/图算法/">图算法</a></li></ul>
 
     </footer>
   </div>
